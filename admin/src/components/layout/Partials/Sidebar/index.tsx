@@ -2,8 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import SidebarLinkGroup from './SidebarLinkGroup'
 import Logo from '@/assets/images/logo/logo.svg'
-import { DashboardIcon, InfoPersonalIcon, SettingIcon } from '@/components/icons'
-import TableIcon from '@/components/icons/TableIcon'
+import { DashboardIcon, InfoPersonalIcon, SettingIcon ,TableIcon } from '@/components/icons'
 
 interface SidebarProps {
   sidebarOpen: boolean

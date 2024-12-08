@@ -1,18 +1,20 @@
-import { ICategory } from '@/models/types/'
+import { ICategory } from '@/models/interfaces/'
 import Button from '../Button'
-import Search from '../Search'
+import Search from '../Forms/Search'
 
 type Props = {
-  categories: ICategory[],
-  onSearch:(query:string) => void
+  categories: ICategory[]
+  onSearch: (query: string) => void
 }
 
-function CategoryTable({ categories , onSearch }: Props) {
+function CategoryTable({ categories, onSearch }: Props) {
   return (
     <div className='rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1'>
       <div className='flex items-center justify-between mb-6'>
-        <Search onSearch={(query:string)=>onSearch(query)}/>
-        <Button type='link' to='/tables/category/add' size='sm'>Add</Button>
+        <Search onSearch={(query: string) => onSearch(query)} />
+        <Button type='link' to='/tables/category/add' size='sm'>
+          Add
+        </Button>
       </div>
       <div className='max-w-full overflow-x-auto'>
         <table className='w-full table-auto'>

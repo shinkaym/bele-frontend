@@ -4,8 +4,6 @@ import DefaultLayout from '@/components/layout/DefaultLayout'
 import SignIn from '@/pages/Authentication/SignIn'
 import SignUp from '@/pages/Authentication/SignUp'
 import Dashboard from '@/pages/Dashboard'
-import FormElements from '@/pages/Form/FormElements'
-import FormLayout from '@/pages/Form/FormLayout'
 import Add from '@/pages/Tables/Category/Add'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
@@ -83,24 +81,6 @@ function AppRouter() {
               ),
             }
           ]
-        },
-        {
-          path: '/forms',
-          element: (
-            <>
-              <PageTitle title="Form" />
-              <FormLayout/>
-            </>
-          ),
-        },
-        {
-          path: '/forms/elements',
-          element: (
-            <>
-              <PageTitle title="Form" />
-              <FormElements/>
-            </>
-          ),
         },
       ]
     },
