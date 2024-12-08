@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import Breadcrumb from '../../components/common/Breadcrumbs/Breadcrumb';
-import SelectGroupOne from '../../components/Forms/SelectGroup/SelectGroupOne';
+import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb';
+import SelectGroupOne from '@/components/common/Forms/SelectGroup/SelectGroupOne';
 
 const FormLayout = () => {
   return (

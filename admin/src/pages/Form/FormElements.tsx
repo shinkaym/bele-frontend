@@ -1,17 +1,17 @@
-import Breadcrumb from '../../components/common/Breadcrumbs/Breadcrumb';
-import CheckboxFive from '../../components/common/Checkboxes/CheckboxFive';
-import CheckboxFour from '../../components/common/Checkboxes/CheckboxFour';
-import CheckboxOne from '../../components/common/Checkboxes/CheckboxOne';
-import CheckboxThree from '../../components/common/Checkboxes/CheckboxThree';
-import CheckboxTwo from '../../components/common/Checkboxes/CheckboxTwo';
-import SwitcherFour from '../../components/common/Switchers/SwitcherFour';
-import SwitcherOne from '../../components/common/Switchers/SwitcherOne';
-import SwitcherThree from '../../components/common/Switchers/SwitcherThree';
-import SwitcherTwo from '../../components/common/Switchers/SwitcherTwo';
-import DatePickerOne from '../../components/Forms/DatePicker/DatePickerOne';
-import DatePickerTwo from '../../components/Forms/DatePicker/DatePickerTwo';
-import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
-import MultiSelect from '../../components/Forms/MultiSelect';
+import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb';
+import CheckboxFive from '@/components/common/Checkboxes/CheckboxFive';
+import CheckboxFour from '@/components/common/Checkboxes/CheckboxFour';
+import CheckboxOne from '@/components/common/Checkboxes/CheckboxOne';
+import CheckboxThree from '@/components/common/Checkboxes/CheckboxThree';
+import CheckboxTwo from '@/components/common/Checkboxes/CheckboxTwo';
+import SwitcherFour from '@/components/common/Switchers/SwitcherFour';
+import SwitcherOne from '@/components/common/Switchers/SwitcherOne';
+import SwitcherThree from '@/components/common/Switchers/SwitcherThree';
+import SwitcherTwo from '@/components/common/Switchers/SwitcherTwo';
+import DatePickerOne from '@/components/common/Forms/DatePicker/DatePickerOne';
+import DatePickerTwo from '@/components/common/Forms/DatePicker/DatePickerTwo';
+import SelectGroupTwo from '@/components/common/Forms/SelectGroup/SelectGroupTwo';
+import MultiSelect from '@/components/common/Forms/MultiSelect';
 
 const FormElements = () => {
   return (
