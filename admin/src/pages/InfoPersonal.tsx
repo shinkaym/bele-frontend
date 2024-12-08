@@ -1,11 +1,11 @@
 import Breadcrumb from '../components/common/Breadcrumbs/Breadcrumb';
 import userThree from '@/assets/images/user/user-03.png';
 
-const Settings = () => {
+const InfoPersonal = () => {
   return (
     <>
       <div className="mx-auto max-w-270">
-        <Breadcrumb pageName="Settings" />
+        <Breadcrumb pageName="InfoPersonal" />
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">
@@ -308,4 +308,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default InfoPersonal;
