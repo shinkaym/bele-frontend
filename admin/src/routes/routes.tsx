@@ -5,6 +5,7 @@ import SignIn from '@/pages/Authentication/SignIn'
 import SignUp from '@/pages/Authentication/SignUp'
 import Dashboard from '@/pages/Dashboard'
 import Add from '@/pages/Tables/Category/Add'
+import Edit from '@/pages/Tables/Category/Edit'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
 
@@ -16,95 +17,100 @@ const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> =>
   )
 }
 
-const InfoPersonal = Loadable(lazy(() => import('@/pages/InfoPersonal')));
-const Setting = Loadable(lazy(() => import('@/pages/Setting')));
-const Category = Loadable(lazy(() => import('@/pages/Tables/Category')));
-
-
-
-
+const InfoPersonal = Loadable(lazy(() => import('@/pages/InfoPersonal')))
+const Setting = Loadable(lazy(() => import('@/pages/Setting')))
+const Category = Loadable(lazy(() => import('@/pages/Tables/Category')))
 
 function AppRouter() {
   const routes = [
     {
-      path:'/',
-      element:<DefaultLayout/>,
-      children:[
+      path: '/',
+      element: <DefaultLayout />,
+      children: [
         {
           path: '/',
-          index:true,
+          index: true,
           element: (
             <>
-              <PageTitle title="Dashboard" />
+              <PageTitle title='Dashboard' />
               <Dashboard />
             </>
-          ),
+          )
         },
         {
           path: '/info-personal',
-          index:true,
+          index: true,
           element: (
             <>
-              <PageTitle title="Info Personal" />
+              <PageTitle title='Info Personal' />
               <InfoPersonal />
             </>
-          ),
+          )
         },
         {
           path: '/setting',
           element: (
             <>
-              <PageTitle title="Setting" />
+              <PageTitle title='Setting' />
               <Setting />
             </>
-          ),
+          )
         },
         {
           path: '/tables/category',
-          children:[
+          children: [
             {
-              path:'',
+              path: '',
               element: (
                 <>
-                  <PageTitle title="Category" />
-                  <Category/>
+                  <PageTitle title='Category' />
+                  <Category />
                 </>
-              ),
+              )
             },
             {
               path: 'add',
               element: (
                 <>
-                  <PageTitle title="Add Category" />
-                  <Add/>
+                  <PageTitle title='Add Category' />
+                  <Add />
                 </>
-              ),
+              )
+            },
+            {
+              path: 'edit/:categoryId',
+              element: (
+                <>
+                  <PageTitle title='Edit Category' />
+                  <Edit />
+                </>
+              )
             }
           ]
-        },
+        }
       ]
     },
     {
       path: '/signin',
       element: (
         <>
-          <PageTitle title="Signin" />
+          <PageTitle title='Signin' />
           <SignIn />
         </>
-      ),
+      )
     },
     {
       path: '/signup',
       element: (
         <>
-          <PageTitle title="Signup" />
+          <PageTitle title='Signup' />
           <SignUp />
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
-  return useRoutes(routes);
+  return useRoutes(routes)
 }
 
 export default AppRouter

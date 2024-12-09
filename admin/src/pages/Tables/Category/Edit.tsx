@@ -13,6 +13,7 @@ import { z } from 'zod'
 import RadioGroup from '@/components/common/Forms/RadioGroup'
 import { statusData } from '@/models/data'
 import Alert from '@/components/common/Alert'
+import { useParams } from 'react-router-dom'
 
 type Props = {}
 
@@ -29,17 +30,19 @@ interface AlertOption {
   isOpen: boolean
 }
 
-function Add({}: Props) {
+function Edit({}: Props) {
   const [loading, setLoading] = useState(false)
   const [options, setOptions] = useState<IOptions[]>([])
   const [categoryData, setCategoryData] = useState<ICategory[]>([])
+  const [categoryACtive, setCategoryActive] = useState<ICategory>()
   const [alert, setAlert] = useState<AlertOption>({
     type: 'success',
-    message: 'Add Category Successfully!',
-    title: 'Add Category',
+    message: 'Edit Category Successfully!',
+    title: 'Edit Category',
     isOpen: false
   })
-
+  const params = useParams()
+  const categoryId: number = Number(params.categoryId)
   useEffect(() => {
     let timeoutId: NodeJS.Timeout
     try {
@@ -48,6 +51,15 @@ function Add({}: Props) {
       timeoutId = setTimeout(() => {
         const data = categoryApi.getAll()
         setCategoryData(data)
+        const category = categoryApi.getCat(categoryId)
+        if (category) {
+          reset({
+            name: category.name,
+            parentId: category.parentId,
+            status: category.status
+          })
+          setCategoryActive(category)
+        }
         let newData: IOptions[] = data
           .filter((cat) => !cat.parentName) // Lọc các phần tử không có parentName
           .map((cat) => ({
@@ -72,15 +84,20 @@ function Add({}: Props) {
       clearTimeout(timeoutId) // Dọn dẹp timeout khi unmount
     }
   }, [])
-
   // Cấu hình Zod schema
   const categorySchema = z.object({
     name: z
       .string()
       .min(1, { message: 'Category name is required' })
-      .refine((name) => !categoryData.some((category) => category.name.toLowerCase() === name.toLowerCase()), {
-        message: 'Category name must be unique'
-      }), // Bắt buộc nhập tên
+      .refine(
+        (name) =>
+          !categoryData.some(
+            (category) => category.name.toLowerCase() === name.toLowerCase() && category.id !== categoryId
+          ),
+        {
+          message: 'Category name must be unique'
+        }
+      ), // Bắt buộc nhập tên
     parentId: z.number(),
     status: z.number()
   })
@@ -104,8 +121,8 @@ function Add({}: Props) {
     } catch (error) {
       setAlert({
         type: 'danger',
-        message: 'Add Category Failure!',
-        title: 'Add Category',
+        message: 'Edit Category Failure!',
+        title: 'Edit Category',
         isOpen: true
       })
       reset()
@@ -125,7 +142,7 @@ function Add({}: Props) {
         <Loader />
       ) : (
         <div className='flex flex-col gap-10'>
-          <Breadcrumb pageName='Add Category' parentPageName='Category' parentTo='/tables/category' />
+          <Breadcrumb pageName='Edit Category' parentPageName='Category' parentTo='/tables/category' />
 
           <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-4 '>
             {/* Category Name */}
@@ -146,12 +163,11 @@ function Add({}: Props) {
                 <Controller
                   name='status'
                   control={control}
-                  defaultValue={1}
                   render={({ field }) => (
                     <RadioGroup
                       {...field}
                       options={statusData}
-                      selectedValue={field.value.toString()}
+                      selectedValue={(field.value ?? 1).toString()}
                       layout='horizontal'
                       onChange={(value) => field.onChange(parseInt(value))}
                     />
@@ -161,7 +177,6 @@ function Add({}: Props) {
               <Controller
                 name='parentId'
                 control={control}
-                defaultValue={0} // Giá trị mặc định là 0
                 render={({ field }) => (
                   <SelectGroup
                     value={field.value} // Đồng bộ hóa giá trị
@@ -176,7 +191,7 @@ function Add({}: Props) {
 
             <div className='grid grid-cols-6'>
               <Button type='button' className='max-h-12 mr-4'>
-                Add
+                Edit
               </Button>
               <Button type='link' to='/tables/category' color='meta-3' className='max-h-12'>
                 Back
@@ -190,4 +205,4 @@ function Add({}: Props) {
   )
 }
 
-export default Add
+export default Edit
