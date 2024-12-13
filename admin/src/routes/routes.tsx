@@ -6,7 +6,7 @@ import SignUp from '@/pages/Authentication/SignUp'
 import Dashboard from '@/pages/Dashboard'
 import Add from '@/pages/Tables/Category/Add'
 import Edit from '@/pages/Tables/Category/Edit'
-import { Children, ComponentType, lazy, ReactNode, Suspense } from 'react'
+import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
 
 const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> => {
