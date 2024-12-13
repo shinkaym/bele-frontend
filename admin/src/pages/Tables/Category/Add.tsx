@@ -2,25 +2,20 @@ import categoryApi from '@/apis/modules/categoy.api'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
 import Button from '@/components/common/Button'
 import Input from '@/components/common/Forms/Input'
-import Loader from '@/components/common/Loader'
+import RadioGroup from '@/components/common/Forms/RadioGroup'
 import SelectGroup from '@/components/common/Forms/SelectGroup'
-import ICategory from '@/models/interfaces/category'
-import IOptions from '@/models/interfaces/options'
+import Loader from '@/components/common/Loader'
+import { statusData } from '@/models/data'
+import { EToastOption } from '@/models/enums/option'
+import { CategoryFormData, ICategory } from '@/models/interfaces/category'
+import { IOptions } from '@/models/interfaces/options'
+import { UToast } from '@/utils/swal'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import RadioGroup from '@/components/common/Forms/RadioGroup'
-import { statusData } from '@/models/data'
-import Alert from '@/components/common/Alert'
 
 type Props = {}
-
-interface CategoryFormData {
-  name: string
-  parentId: number
-  status: number
-}
 
 interface AlertOption {
   type: 'success' | 'warning' | 'danger'
@@ -33,12 +28,6 @@ function Add({}: Props) {
   const [loading, setLoading] = useState(false)
   const [options, setOptions] = useState<IOptions[]>([])
   const [categoryData, setCategoryData] = useState<ICategory[]>([])
-  const [alert, setAlert] = useState<AlertOption>({
-    type: 'success',
-    message: 'Add Category Successfully!',
-    title: 'Add Category',
-    isOpen: false
-  })
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout
@@ -96,27 +85,15 @@ function Add({}: Props) {
 
   const onSubmit = (data: CategoryFormData) => {
     try {
-      setAlert((prev) => ({ ...prev, isOpen: true }))
+      //call api in here...
+
+      UToast(EToastOption.SUCCESS, 'Add Category Successfully!')
       reset()
-      setTimeout(() => {
-        setAlert((prev) => ({ ...prev, isOpen: false }))
-      }, 2000)
     } catch (error) {
-      setAlert({
-        type: 'danger',
-        message: 'Add Category Failure!',
-        title: 'Add Category',
-        isOpen: true
-      })
+      UToast(EToastOption.SUCCESS, 'Add Category Failure!')
       reset()
-      setTimeout(() => {
-        setAlert((prev) => ({ ...prev, isOpen: false }))
-      }, 2000)
     }
     console.log(data) // Dữ liệu khi submit
-
-    setTimeout
-    reset()
   }
 
   return (
@@ -140,7 +117,7 @@ function Add({}: Props) {
                     placeholder='Enter Category Name'
                     className='border border-gray-300 mb-4'
                   />
-                )}
+                )}  
               />
               <div className='flex justify-end items-center'>
                 <Controller
@@ -183,7 +160,6 @@ function Add({}: Props) {
               </Button>
             </div>
           </form>
-          {alert.isOpen && <Alert type={alert.type} message={alert.message} title={alert.title} />}
         </div>
       )}
     </>

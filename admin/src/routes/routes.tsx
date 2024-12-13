@@ -20,6 +20,7 @@ const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> =>
 const InfoPersonal = Loadable(lazy(() => import('@/pages/InfoPersonal')))
 const Setting = Loadable(lazy(() => import('@/pages/Setting')))
 const Category = Loadable(lazy(() => import('@/pages/Tables/Category')))
+const Product = Loadable(lazy(() => import('@/pages/Tables/Products')))
 
 function AppRouter() {
   const routes = [
@@ -83,6 +84,20 @@ function AppRouter() {
                 <>
                   <PageTitle title='Edit Category' />
                   <Edit />
+                </>
+              )
+            }
+          ]
+        },
+        {
+          path: '/tables/product',
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='Product' />
+                  <Product />
                 </>
               )
             }

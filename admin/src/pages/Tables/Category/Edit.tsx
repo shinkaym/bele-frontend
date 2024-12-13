@@ -2,45 +2,26 @@ import categoryApi from '@/apis/modules/categoy.api'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
 import Button from '@/components/common/Button'
 import Input from '@/components/common/Forms/Input'
-import Loader from '@/components/common/Loader'
+import RadioGroup from '@/components/common/Forms/RadioGroup'
 import SelectGroup from '@/components/common/Forms/SelectGroup'
-import ICategory from '@/models/interfaces/category'
-import IOptions from '@/models/interfaces/options'
+import Loader from '@/components/common/Loader'
+import { statusData } from '@/models/data'
+import { EToastOption } from '@/models/enums/option'
+import { CategoryFormData, ICategory } from '@/models/interfaces/category'
+import { IOptions } from '@/models/interfaces/options'
+import { UToast } from '@/utils/swal'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { z } from 'zod'
-import RadioGroup from '@/components/common/Forms/RadioGroup'
-import { statusData } from '@/models/data'
-import Alert from '@/components/common/Alert'
 import { useParams } from 'react-router-dom'
+import { z } from 'zod'
 
 type Props = {}
-
-interface CategoryFormData {
-  name: string
-  parentId: number
-  status: number
-}
-
-interface AlertOption {
-  type: 'success' | 'warning' | 'danger'
-  message: string
-  title: string
-  isOpen: boolean
-}
 
 function Edit({}: Props) {
   const [loading, setLoading] = useState(false)
   const [options, setOptions] = useState<IOptions[]>([])
   const [categoryData, setCategoryData] = useState<ICategory[]>([])
-  const [categoryACtive, setCategoryActive] = useState<ICategory>()
-  const [alert, setAlert] = useState<AlertOption>({
-    type: 'success',
-    message: 'Edit Category Successfully!',
-    title: 'Edit Category',
-    isOpen: false
-  })
   const params = useParams()
   const categoryId: number = Number(params.categoryId)
   useEffect(() => {
@@ -58,7 +39,6 @@ function Edit({}: Props) {
             parentId: category.parentId,
             status: category.status
           })
-          setCategoryActive(category)
         }
         let newData: IOptions[] = data
           .filter((cat) => !cat.parentName) // Lọc các phần tử không có parentName
@@ -113,27 +93,15 @@ function Edit({}: Props) {
 
   const onSubmit = (data: CategoryFormData) => {
     try {
-      setAlert((prev) => ({ ...prev, isOpen: true }))
+      //call api in here...
+
+      UToast(EToastOption.SUCCESS, 'Edit Category Successfully!')
       reset()
-      setTimeout(() => {
-        setAlert((prev) => ({ ...prev, isOpen: false }))
-      }, 2000)
     } catch (error) {
-      setAlert({
-        type: 'danger',
-        message: 'Edit Category Failure!',
-        title: 'Edit Category',
-        isOpen: true
-      })
       reset()
-      setTimeout(() => {
-        setAlert((prev) => ({ ...prev, isOpen: false }))
-      }, 2000)
+      UToast(EToastOption.Error, 'Edit Category Failure!')
     }
     console.log(data) // Dữ liệu khi submit
-
-    setTimeout
-    reset()
   }
 
   return (
@@ -198,7 +166,6 @@ function Edit({}: Props) {
               </Button>
             </div>
           </form>
-          {alert.isOpen && <Alert type={alert.type} message={alert.message} title={alert.title} />}
         </div>
       )}
     </>

@@ -1,4 +1,4 @@
-import { ICategory } from "../interfaces/";
+import { ICategory } from "../interfaces/category";
 
 const categoryData: ICategory[] = [
     {

@@ -1,6 +1,5 @@
-interface IOptions{
-    value:number,
+export interface IOptions{
+    value:number | string,
     label:string
 }
 
-export default IOptions

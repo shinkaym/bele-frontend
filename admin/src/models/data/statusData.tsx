@@ -1,4 +1,4 @@
-import { IOptions } from "../interfaces/";
+import { IOptions } from "../interfaces/options";
 
 const statusData:IOptions[] = [
     {
