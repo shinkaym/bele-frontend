@@ -1,6 +1,6 @@
+import clsx from 'clsx';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import clsx from 'clsx';
 
 interface ButtonProps {
   type?: 'button' | 'link' | 'a'; // Loại phần tử
@@ -11,7 +11,8 @@ interface ButtonProps {
   color?: string; // Màu tùy chỉnh
   children: React.ReactNode; // Nội dung của button
   className?: string; // Lớp CSS tùy chỉnh
-  onClick?: () => void; // Hàm sự kiện click
+  onClick?: (value?:number | string) => void; // Hàm sự kiện click
+  value?:number | string
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -23,6 +24,7 @@ const Button: React.FC<ButtonProps> = ({
   color = 'primary',
   children,
   className,
+  value,
   onClick,
 }) => {
   // Lớp cơ bản
@@ -74,7 +76,7 @@ const Button: React.FC<ButtonProps> = ({
 
   // Mặc định là nút button
   return (
-    <button type="submit" className={combinedStyles} onClick={onClick}>
+    <button type="submit" className={combinedStyles} onClick={()=>onClick?.(value)}>
       {children}
     </button>
   );

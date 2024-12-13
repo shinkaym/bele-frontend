@@ -1,9 +1,9 @@
+import categoryApi from '@/apis/modules/categoy.api'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
 import Loader from '@/components/common/Loader'
 import CategoryTable from '@/components/common/Tables/CategoryTable'
-import ICategory from '@/models/interfaces/category'
+import { ICategory } from '@/models/interfaces/category'
 import { useEffect, useState } from 'react'
-import categoryApi from '@/apis/modules/categoy.api'
 
 type Props = {}
 

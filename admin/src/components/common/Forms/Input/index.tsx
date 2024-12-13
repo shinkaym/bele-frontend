@@ -3,7 +3,7 @@ import React, { ForwardedRef } from 'react';
 interface InputProps {
   label?: string;
   name: string;
-  placeholder: string;
+  placeholder?: string;
   type?: string;
   className?: string;
   error?: string;

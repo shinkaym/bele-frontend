@@ -1,16 +1,34 @@
-import { ICategory } from '@/models/interfaces/'
+import DeleteIcon from '@/components/icons/Crud/DeleteIcon'
+import EditIcon from '@/components/icons/Crud/EditIcon'
+import { EToastOption } from '@/models/enums/option'
+import { EStatus } from '@/models/enums/status'
+import { ICategory } from '@/models/interfaces/category'
+import { UCaptchaAlert, UToast } from '@/utils/swal'
+import { Link } from 'react-router-dom'
 import Button from '../Button'
 import Search from '../Forms/Search'
-import EditIcon from '@/components/icons/Crud/EditIcon'
-import { Link } from 'react-router-dom'
-import DeleteIcon from '@/components/icons/Crud/DeleteIcon'
-
 type Props = {
   categories: ICategory[]
   onSearch: (query: string) => void
 }
 
 function CategoryTable({ categories, onSearch }: Props) {
+  //Call Alert
+  const handleDelete = async (id: number, captchaCode = 'ABCD') => {
+    await UCaptchaAlert(captchaCode, (value) => {
+      if (value === captchaCode) {
+         //call api in here...
+
+        UToast(EToastOption.SUCCESS, 'Delete Category Successfully!')
+      } else {
+        UToast(EToastOption.Error, 'Captcha is wrong')
+      }
+    })
+  }
+  const handleStatus = (value?:number | string)=>{
+    console.log(value)
+  }
+
   return (
     <div className='rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1'>
       <div className='flex items-center justify-between mb-6'>
@@ -27,7 +45,7 @@ function CategoryTable({ categories, onSearch }: Props) {
               <th className='min-w-[220px] py-4 px-4 font-medium text-black dark:text-white'>Name</th>
               <th className='min-w-[150px] py-4 px-4 font-medium text-black dark:text-white'>Parent Name</th>
               <th className='min-w-[120px] py-4 px-4 font-medium text-black dark:text-white'>Created At</th>
-              <th className='min-w-[120px] py-4 px-4 font-medium text-black dark:text-white '>Status</th>
+              <th className='min-w-[120px] py-4 px-4 font-medium text-black dark:text-white'>Status</th>
               <th className='py-4 px-4 font-medium text-black dark:text-white'>Actions</th>
             </tr>
           </thead>
@@ -47,22 +65,24 @@ function CategoryTable({ categories, onSearch }: Props) {
                   <p className='text-black dark:text-white'>{new Date(cat.createdAt).toLocaleDateString()}</p>
                 </td>
                 <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                  <p
-                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                      cat.status === 1 ? 'bg-success text-success' : 'bg-danger text-danger'
-                    }`}
+                  <Button
+                    type='button'
+                    className={`${cat.status === 1 ? 'bg-success text-success' : 'bg-danger text-danger'}`}
+                    value={cat.id}
+                    onClick={handleStatus}
                   >
-                    {cat.status === 1 ? 'Active' : 'Unactive'}
-                  </p>
+                    {cat.status === 1 ? EStatus.ACTIVE : EStatus.UNACTIVE}
+                    
+                  </Button>
                 </td>
                 <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
                   <div className='flex items-center space-x-3.5'>
                     <Link to={`/tables/category/edit/${cat.id}`} className='hover:text-primary'>
                       <EditIcon />
                     </Link>
-                    <button type='button' className='hover:text-primary'>
+                    <button type='button' className='hover:text-primary' onClick={() => handleDelete(cat.id)}>
                       <DeleteIcon />
-                    </button> 
+                    </button>
                   </div>
                 </td>
               </tr>
