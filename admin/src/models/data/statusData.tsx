@@ -1,6 +1,6 @@
 import { IOptions } from "../interfaces/options";
 
-const statusData:IOptions[] = [
+export const statusData:IOptions[] = [
     {
         value:1,
         label:'Active'
@@ -10,5 +10,3 @@ const statusData:IOptions[] = [
         label:'UnActive'
     }
 ]
-
-export default statusData

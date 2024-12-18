@@ -1,5 +1,5 @@
 import React, { ForwardedRef, useState } from 'react'
-import IOptions from '@/models/interfaces/options'
+import {IOptions} from '@/models/interfaces/options'
 
 interface RadioGroupProps {
   options: IOptions[]
@@ -39,7 +39,7 @@ const RadioGroup = (
                 type='radio'
                 id={option.value.toString()}
                 name={name}
-                value={option.value}
+                value={option.value.toString()}
                 checked={selected === option.value.toString()}
                 onChange={() => handleChange(option.value.toString())}
                 className='sr-only'

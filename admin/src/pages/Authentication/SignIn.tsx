@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import LogoDark from '@/assets/images/logo/logo-dark.svg';
-import Logo from '@/assets/images/logo/logo.svg';
+import Logo from '@/assets/images/logo/logo.png';
 
 const SignIn: React.FC = () => {
   return (
