@@ -1,12 +1,15 @@
-function EditIcon() {
+import { IIcon } from '@/models/interfaces/icon'
+const EditIcon: React.FC<IIcon> = ({ size = 16, color = 'currentColor', className }) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
       fill='none'
       viewBox='0 0 24 24'
       strokeWidth={1.5}
-      stroke='currentColor'
-      className='w-6 h-6'
+      stroke={color}
+      width={size}
+      height={size}
+      className={className}
     >
       <path
         strokeLinecap='round'

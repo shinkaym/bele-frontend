@@ -5,9 +5,9 @@ import Input from '@/components/common/Forms/Input'
 import RadioGroup from '@/components/common/Forms/RadioGroup'
 import SelectGroup from '@/components/common/Forms/SelectGroup'
 import Loader from '@/components/common/Loader'
-import { statusData } from '@/models/data'
+import { statusData } from '@/models/data/statusData'
 import { EToastOption } from '@/models/enums/option'
-import { CategoryFormData, ICategory } from '@/models/interfaces/category'
+import { ICategoryFormData, ICategory } from '@/models/interfaces/category'
 import { IOptions } from '@/models/interfaces/options'
 import { UToast } from '@/utils/swal'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -17,49 +17,39 @@ import { z } from 'zod'
 
 type Props = {}
 
-interface AlertOption {
-  type: 'success' | 'warning' | 'danger'
-  message: string
-  title: string
-  isOpen: boolean
-}
-
 function Add({}: Props) {
   const [loading, setLoading] = useState(false)
   const [options, setOptions] = useState<IOptions[]>([])
   const [categoryData, setCategoryData] = useState<ICategory[]>([])
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout
-    try {
-      setLoading(true) // Bật trạng thái loading
-      // Giả lập fetch từ backend (thay bằng axios hoặc fetch nếu cần)
-      timeoutId = setTimeout(() => {
-        const data = categoryApi.getAll()
+    const handleGetData = async()=>{
+      setLoading(true)
+      try {
+        const data = await categoryApi.getList()
         setCategoryData(data)
-        let newData: IOptions[] = data
-          .filter((cat) => !cat.parentName) // Lọc các phần tử không có parentName
-          .map((cat) => ({
-            value: cat.id,
-            label: cat.name
-          }))
-        newData = [
-          {
-            value: 0,
-            label: '---Select Category---'
-          },
-          ...newData
-        ]
-        setOptions(newData) // Cập nhật dữ liệu
+        //set Option Category Parent
+        // let newData: IOptions[] = data
+        //   .filter((cat) => !cat.parentName) // Lọc các phần tử không có parentName
+        //   .map((cat) => ({
+        //     value: cat.id,
+        //     label: cat.name
+        //   }))
+        // newData = [
+        //   {
+        //     value: 0,
+        //     label: '---Select Category---'
+        //   },
+        //   ...newData
+        // ]
+        // setOptions(newData) // Cập nhật dữ liệu
         setLoading(false) // Tắt trạng thái loading
-      }, 1000)
-    } catch (error) {
-      console.error('Error fetching categories:', error)
-      setLoading(false)
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+        setLoading(false)
+      }
     }
-    return () => {
-      clearTimeout(timeoutId) // Dọn dẹp timeout khi unmount
-    }
+    handleGetData()
   }, [])
 
   // Cấu hình Zod schema
@@ -70,20 +60,22 @@ function Add({}: Props) {
       .refine((name) => !categoryData.some((category) => category.name.toLowerCase() === name.toLowerCase()), {
         message: 'Category name must be unique'
       }), // Bắt buộc nhập tên
-    parentId: z.number(),
+    referenceCategoryId: z.number(),
     status: z.number()
   })
+
+  type categoryFormData = z.infer<typeof categorySchema>
 
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm<CategoryFormData>({
+  } = useForm<categoryFormData>({
     resolver: zodResolver(categorySchema)
   })
 
-  const onSubmit = (data: CategoryFormData) => {
+  const onSubmit = (data: categoryFormData) => {
     try {
       //call api in here...
 
@@ -117,7 +109,7 @@ function Add({}: Props) {
                     placeholder='Enter Category Name'
                     className='border border-gray-300 mb-4'
                   />
-                )}  
+                )}
               />
               <div className='flex justify-end items-center'>
                 <Controller
@@ -136,7 +128,7 @@ function Add({}: Props) {
                 />
               </div>
               <Controller
-                name='parentId'
+                name='referenceCategoryId'
                 control={control}
                 defaultValue={0} // Giá trị mặc định là 0
                 render={({ field }) => (
@@ -145,7 +137,7 @@ function Add({}: Props) {
                     onChange={(value) => field.onChange(parseInt(value))} // Chuyển giá trị từ string thành số
                     options={options} // Danh sách tùy chọn
                     label='Category'
-                    error={errors.parentId?.message} // Hiển thị lỗi (nếu có)
+                    error={errors.referenceCategoryId?.message} // Hiển thị lỗi (nếu có)
                   />
                 )}
               />
@@ -155,7 +147,7 @@ function Add({}: Props) {
               <Button type='button' className='max-h-12 mr-4'>
                 Add
               </Button>
-              <Button type='link' to='/tables/category' color='meta-3' className='max-h-12'>
+              <Button type='link' to='/tables/category' color='secondary' className='max-h-12'>
                 Back
               </Button>
             </div>

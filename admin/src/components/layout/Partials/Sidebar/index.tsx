@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import SidebarLinkGroup from './SidebarLinkGroup'
-import Logo from '@/assets/images/logo/logo.svg'
+import Logo from '@/assets/images/logo/logo.png'
 import { DashboardIcon, InfoPersonalIcon, SettingIcon ,TableIcon } from '@/components/icons'
 
 interface SidebarProps {
@@ -172,6 +172,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       {/* <!-- Dropdown Menu Start --> */}
                       <div className={`translate transform overflow-hidden ${!open && 'hidden'}`}>
                         <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6'>
+                          {/* Category */}
                           <li>
                             <NavLink
                               to='/tables/category'
@@ -181,6 +182,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               }
                             >
                               Category
+                            </NavLink>
+                          </li>
+                          {/* Product */}
+                          <li>
+                            <NavLink
+                              to='/tables/product'
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Product
                             </NavLink>
                           </li>
                         </ul>

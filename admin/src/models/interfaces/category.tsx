@@ -1,15 +1,14 @@
 export interface ICategory {
   id: number
   name: string
-  parentName: string | null
-  parentId: number | 0 | string
+  referenceCategory: ICategory | null
   status: number
-  deleted: number
   slug: string
   createdAt: string
+  updateAt:string
 }
 
-export interface CategoryFormData {
+export interface ICategoryFormData {
   name: string
   parentId: number | string
   status: number

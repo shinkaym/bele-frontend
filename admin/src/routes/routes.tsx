@@ -4,8 +4,6 @@ import DefaultLayout from '@/components/layout/DefaultLayout'
 import SignIn from '@/pages/Authentication/SignIn'
 import SignUp from '@/pages/Authentication/SignUp'
 import Dashboard from '@/pages/Dashboard'
-import Add from '@/pages/Tables/Category/Add'
-import Edit from '@/pages/Tables/Category/Edit'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
 
@@ -20,7 +18,12 @@ const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> =>
 const InfoPersonal = Loadable(lazy(() => import('@/pages/InfoPersonal')))
 const Setting = Loadable(lazy(() => import('@/pages/Setting')))
 const Category = Loadable(lazy(() => import('@/pages/Tables/Category')))
-const Product = Loadable(lazy(() => import('@/pages/Tables/Products')))
+const AddCat = Loadable(lazy(() => import('@/pages/Tables/Category/Add')))
+const EditCat = Loadable(lazy(() => import('@/pages/Tables/Category/Edit')))
+const Product = Loadable(lazy(() => import('@/pages/Tables/Product'))) 
+const AddProduct= Loadable(lazy(() => import('@/pages/Tables/Product/Add')))
+const EditProduct= Loadable(lazy(() => import('@/pages/Tables/Product/Edit')))
+
 
 function AppRouter() {
   const routes = [
@@ -74,7 +77,7 @@ function AppRouter() {
               element: (
                 <>
                   <PageTitle title='Add Category' />
-                  <Add />
+                  <AddCat />
                 </>
               )
             },
@@ -83,7 +86,7 @@ function AppRouter() {
               element: (
                 <>
                   <PageTitle title='Edit Category' />
-                  <Edit />
+                  <EditCat />
                 </>
               )
             }
@@ -100,9 +103,27 @@ function AppRouter() {
                   <Product />
                 </>
               )
+            },
+            {
+              path: 'add',
+              element: (
+                <>
+                  <PageTitle title='Add Product' />
+                  <AddProduct />
+                </>
+              )
+            },
+            {
+              path: 'edit/:productId',
+              element: (
+                <>
+                  <PageTitle title='Edit Product' />
+                  <EditProduct />
+                </>
+              )
             }
           ]
-        }
+        },
       ]
     },
     {
