@@ -5,9 +5,9 @@ import Input from '@/components/common/Forms/Input'
 import RadioGroup from '@/components/common/Forms/RadioGroup'
 import SelectGroup from '@/components/common/Forms/SelectGroup'
 import Loader from '@/components/common/Loader'
-import { statusData } from '@/models/data'
+import { statusData } from '@/models/data/statusData'
 import { EToastOption } from '@/models/enums/option'
-import { CategoryFormData, ICategory } from '@/models/interfaces/category'
+import { ICategoryFormData, ICategory } from '@/models/interfaces/category'
 import { IOptions } from '@/models/interfaces/options'
 import { UToast } from '@/utils/swal'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -24,6 +24,7 @@ function Edit({}: Props) {
   const [categoryData, setCategoryData] = useState<ICategory[]>([])
   const params = useParams()
   const categoryId: number = Number(params.categoryId)
+
   useEffect(() => {
     let timeoutId: NodeJS.Timeout
     try {
@@ -87,14 +88,14 @@ function Edit({}: Props) {
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm<CategoryFormData>({
+  } = useForm<ICategoryFormData>({
     resolver: zodResolver(categorySchema)
   })
 
-  const onSubmit = (data: CategoryFormData) => {
+  const onSubmit = (data: ICategoryFormData) => {
     try {
       //call api in here...
-
+      
       UToast(EToastOption.SUCCESS, 'Edit Category Successfully!')
       reset()
     } catch (error) {
@@ -161,7 +162,7 @@ function Edit({}: Props) {
               <Button type='button' className='max-h-12 mr-4'>
                 Edit
               </Button>
-              <Button type='link' to='/tables/category' color='meta-3' className='max-h-12'>
+              <Button type='link' to='/tables/category' color='secondary' className='max-h-12'>
                 Back
               </Button>
             </div>

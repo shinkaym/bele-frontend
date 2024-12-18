@@ -22,7 +22,7 @@ export const UToast = (type = EToastOption.SUCCESS, title = ''): void => {
 
 export const UCaptchaAlert = async (captchaCode = 'ABCD', handleChange: (inputValue: string) => void) => {
   withReactContent(Swal).fire({
-    title: `${captchaCode}</i>`,
+    title: `${captchaCode}`,
     input: 'text',
     inputPlaceholder: 'Fill captcha...',
     inputAttributes: {

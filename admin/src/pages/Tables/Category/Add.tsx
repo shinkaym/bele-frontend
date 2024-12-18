@@ -5,9 +5,9 @@ import Input from '@/components/common/Forms/Input'
 import RadioGroup from '@/components/common/Forms/RadioGroup'
 import SelectGroup from '@/components/common/Forms/SelectGroup'
 import Loader from '@/components/common/Loader'
-import { statusData } from '@/models/data'
+import { statusData } from '@/models/data/statusData'
 import { EToastOption } from '@/models/enums/option'
-import { CategoryFormData, ICategory } from '@/models/interfaces/category'
+import { ICategoryFormData, ICategory } from '@/models/interfaces/category'
 import { IOptions } from '@/models/interfaces/options'
 import { UToast } from '@/utils/swal'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -16,13 +16,6 @@ import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 type Props = {}
-
-interface AlertOption {
-  type: 'success' | 'warning' | 'danger'
-  message: string
-  title: string
-  isOpen: boolean
-}
 
 function Add({}: Props) {
   const [loading, setLoading] = useState(false)
@@ -74,16 +67,18 @@ function Add({}: Props) {
     status: z.number()
   })
 
+  type categoryFormData = z.infer<typeof categorySchema>
+
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm<CategoryFormData>({
+  } = useForm<categoryFormData>({
     resolver: zodResolver(categorySchema)
   })
 
-  const onSubmit = (data: CategoryFormData) => {
+  const onSubmit = (data: ICategoryFormData) => {
     try {
       //call api in here...
 
@@ -117,7 +112,7 @@ function Add({}: Props) {
                     placeholder='Enter Category Name'
                     className='border border-gray-300 mb-4'
                   />
-                )}  
+                )}
               />
               <div className='flex justify-end items-center'>
                 <Controller
@@ -155,7 +150,7 @@ function Add({}: Props) {
               <Button type='button' className='max-h-12 mr-4'>
                 Add
               </Button>
-              <Button type='link' to='/tables/category' color='meta-3' className='max-h-12'>
+              <Button type='link' to='/tables/category' color='secondary' className='max-h-12'>
                 Back
               </Button>
             </div>
