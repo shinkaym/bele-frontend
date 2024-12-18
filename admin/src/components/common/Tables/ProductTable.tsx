@@ -68,8 +68,8 @@ function ProductTable({ Products, onSearch }: Props) {
               <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white pl-9'>Id</th>
               <th className='min-w-[220px] py-4 px-4 font-medium text-black dark:text-white'>Product</th>
               <th className='min-w-[150px] py-4 px-4 font-medium text-black dark:text-white'>Category</th>
-              <th className='min-w-[100px] py-4 px-4 font-medium text-black dark:text-white'>Base Price</th>
-              <th className='min-w-[150px] py-4 px-4 font-medium text-black dark:text-white'>Slug</th>
+              <th className='min-w-[150px] py-4 px-4 font-medium text-black dark:text-white'>Base Price</th>
+              <th className='min-w-[200px] py-4 px-4 font-medium text-black dark:text-white'>Slug</th>
               <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white'>View</th>
               <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white'>Like</th>
               <th className='min-w-[120px] py-4 px-4 font-medium text-black dark:text-white'>Created At</th>

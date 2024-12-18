@@ -1,12 +1,11 @@
 export interface ICategory {
   id: number
   name: string
-  parentName: string | null
-  parentId: number | 0 | string
+  referenceCategory: ICategory | null
   status: number
   slug: string
   createdAt: string
-  UpdateAt:string
+  updateAt:string
 }
 
 export interface ICategoryFormData {

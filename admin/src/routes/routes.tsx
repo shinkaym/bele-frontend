@@ -20,9 +20,6 @@ const Setting = Loadable(lazy(() => import('@/pages/Setting')))
 const Category = Loadable(lazy(() => import('@/pages/Tables/Category')))
 const AddCat = Loadable(lazy(() => import('@/pages/Tables/Category/Add')))
 const EditCat = Loadable(lazy(() => import('@/pages/Tables/Category/Edit')))
-const Image = Loadable(lazy(() => import('@/pages/Tables/Image')))
-const AddImg = Loadable(lazy(() => import('@/pages/Tables/Image/Add')))
-const EditImg = Loadable(lazy(() => import('@/pages/Tables/Image/Edit')))
 const Product = Loadable(lazy(() => import('@/pages/Tables/Product'))) 
 const AddProduct= Loadable(lazy(() => import('@/pages/Tables/Product/Add')))
 const EditProduct= Loadable(lazy(() => import('@/pages/Tables/Product/Edit')))
@@ -90,38 +87,6 @@ function AppRouter() {
                 <>
                   <PageTitle title='Edit Category' />
                   <EditCat />
-                </>
-              )
-            }
-          ]
-        },
-        {
-          path: '/tables/image',
-          children: [
-            {
-              path: '',
-              element: (
-                <>
-                  <PageTitle title='Image' />
-                  <Image />
-                </>
-              )
-            },
-            {
-              path: 'add',
-              element: (
-                <>
-                  <PageTitle title='Add Image' />
-                  <AddImg />
-                </>
-              )
-            },
-            {
-              path: 'edit/:imageId',
-              element: (
-                <>
-                  <PageTitle title='Edit Image' />
-                  <EditImg />
                 </>
               )
             }

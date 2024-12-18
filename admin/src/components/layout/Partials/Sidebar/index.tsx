@@ -184,18 +184,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               Category
                             </NavLink>
                           </li>
-                          {/* Image */}
-                          <li>
-                            <NavLink
-                              to='/tables/image'
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Image
-                            </NavLink>
-                          </li>
                           {/* Product */}
                           <li>
                             <NavLink

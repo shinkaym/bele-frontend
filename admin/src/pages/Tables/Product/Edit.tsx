@@ -259,7 +259,7 @@ function Add({}: Props) {
               render={({ field }) => <TinyMCEEditor value={field.value} onChange={field.onChange} className='mb-6' />}
             />
             <div className='grid grid-cols-2 gap-4'>
-              <Button type='link' to='/tables/image' color='secondary' className='max-h-12'>
+              <Button type='link' to='/tables/product' color='secondary' className='max-h-12'>
                 Back
               </Button>
               <Button type='button' className='max-h-12 mr-4'>

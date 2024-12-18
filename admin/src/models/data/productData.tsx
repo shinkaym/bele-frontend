@@ -16,7 +16,7 @@ export const productData: IProduct[] = [
     attributeType:['color','size'],
     discountId:1,
     discountName:'20%',
-    deleted: 0,
+    updateAt: "2023-01-15T00:00:00Z",
     createdAt: "2023-01-15T00:00:00Z",
   }
 ];

@@ -23,36 +23,33 @@ function Add({}: Props) {
   const [categoryData, setCategoryData] = useState<ICategory[]>([])
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout
-    try {
-      setLoading(true) // Bật trạng thái loading
-      // Giả lập fetch từ backend (thay bằng axios hoặc fetch nếu cần)
-      timeoutId = setTimeout(() => {
-        const data = categoryApi.getAll()
+    const handleGetData = async()=>{
+      setLoading(true)
+      try {
+        const data = await categoryApi.getList()
         setCategoryData(data)
-        let newData: IOptions[] = data
-          .filter((cat) => !cat.parentName) // Lọc các phần tử không có parentName
-          .map((cat) => ({
-            value: cat.id,
-            label: cat.name
-          }))
-        newData = [
-          {
-            value: 0,
-            label: '---Select Category---'
-          },
-          ...newData
-        ]
-        setOptions(newData) // Cập nhật dữ liệu
+        //set Option Category Parent
+        // let newData: IOptions[] = data
+        //   .filter((cat) => !cat.parentName) // Lọc các phần tử không có parentName
+        //   .map((cat) => ({
+        //     value: cat.id,
+        //     label: cat.name
+        //   }))
+        // newData = [
+        //   {
+        //     value: 0,
+        //     label: '---Select Category---'
+        //   },
+        //   ...newData
+        // ]
+        // setOptions(newData) // Cập nhật dữ liệu
         setLoading(false) // Tắt trạng thái loading
-      }, 1000)
-    } catch (error) {
-      console.error('Error fetching categories:', error)
-      setLoading(false)
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+        setLoading(false)
+      }
     }
-    return () => {
-      clearTimeout(timeoutId) // Dọn dẹp timeout khi unmount
-    }
+    handleGetData()
   }, [])
 
   // Cấu hình Zod schema
@@ -63,7 +60,7 @@ function Add({}: Props) {
       .refine((name) => !categoryData.some((category) => category.name.toLowerCase() === name.toLowerCase()), {
         message: 'Category name must be unique'
       }), // Bắt buộc nhập tên
-    parentId: z.number(),
+    referenceCategoryId: z.number(),
     status: z.number()
   })
 
@@ -78,7 +75,7 @@ function Add({}: Props) {
     resolver: zodResolver(categorySchema)
   })
 
-  const onSubmit = (data: ICategoryFormData) => {
+  const onSubmit = (data: categoryFormData) => {
     try {
       //call api in here...
 
@@ -131,7 +128,7 @@ function Add({}: Props) {
                 />
               </div>
               <Controller
-                name='parentId'
+                name='referenceCategoryId'
                 control={control}
                 defaultValue={0} // Giá trị mặc định là 0
                 render={({ field }) => (
@@ -140,7 +137,7 @@ function Add({}: Props) {
                     onChange={(value) => field.onChange(parseInt(value))} // Chuyển giá trị từ string thành số
                     options={options} // Danh sách tùy chọn
                     label='Category'
-                    error={errors.parentId?.message} // Hiển thị lỗi (nếu có)
+                    error={errors.referenceCategoryId?.message} // Hiển thị lỗi (nếu có)
                   />
                 )}
               />

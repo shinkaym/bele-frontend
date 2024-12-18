@@ -1,18 +1,18 @@
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import { ICategory } from '@/models/interfaces/category'
-import { categoryData } from '@/models/data/categoryData'
+import axiosPublic from '../client/public.client'
 
-const productEndpoints = {
-  list: 'product',
-  detail: (id: string | number) => `product/${id}`
+const categoryEndpoints = {
+  list: 'category',
+  detail: (id: string | number) => `category/${id}`
 }
 
 const categoryApi = {
-  getAll: (): ICategory[] => {
-    return categoryData
+  getList():Promise<ICategory[]>{
+    return axiosPublic.get(categoryEndpoints.list)
   },
-  getCat: (id: number) => {
-    return categoryData.find((cat) => cat.id === id)
+  getCat(id: number):Promise<ICategory>{
+    return axiosPublic.get(categoryEndpoints.detail(id))
   }
 }
 

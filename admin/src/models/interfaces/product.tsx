@@ -12,7 +12,7 @@ export interface IProduct {
   view: number // Số lượt xem sản phẩm
   like: number // Số lượt thích sản phẩm
   status: number // Trạng thái sản phẩm (1: hoạt động, 0: không hoạt động)
-  deleted: number // Trạng thái xóa (0: chưa xóa, 1: đã xóa)
+  updateAt: string // Trạng thái xóa (0: chưa xóa, 1: đã xóa)
   createdAt: string // Thời gian tạo sản phẩm
   attributeType:string[]
 }
