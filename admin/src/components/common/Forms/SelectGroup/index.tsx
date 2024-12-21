@@ -12,7 +12,7 @@ interface SelectGroupProps {
 
 // Bọc component với forwardRef
 const SelectGroup = React.forwardRef<HTMLSelectElement, SelectGroupProps>(
-  ({ value, onChange, options, label = 'Subject', error , className }: SelectGroupProps, ref) => {
+  ({ value, onChange, options, label, error , className }: SelectGroupProps, ref) => {
     return (
       <div className={className}>
         {label && <label className='mb-2.5 block text-black dark:text-white'>{label}</label>}

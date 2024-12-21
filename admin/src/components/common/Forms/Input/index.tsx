@@ -20,7 +20,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     return (
-      <div className={``}>
+      <>
         {label && (
           <label htmlFor={name} className='mb-3 block text-black dark:text-white'>
             {label}
@@ -37,10 +37,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           readOnly={isReadonly}
           disabled={isDisabled}
           min={1}
-          className={`w-full rounded-lg border-[1.5px] border-stroke bg-transparent ${isDisabled || isReadonly ? 'opacity-50' : ''} py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${className}`}
+          className={`${type === 'color'?'':` py-3 px-5`} w-full rounded-lg border-[1.5px] border-stroke bg-transparent ${isDisabled || isReadonly ? 'opacity-50' : ''} text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-not-allowed disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${className}`}
         />
         {error && <p className='text-sm text-red-500'>{error}</p>}
-      </div>
+      </>
     )
   }
 )
