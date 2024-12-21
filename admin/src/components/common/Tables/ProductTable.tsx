@@ -110,7 +110,7 @@ function ProductTable({ Products, onSearch }: Props) {
                 <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
                   <Button
                     type='button'
-                    className={`${pro.status === 1 ? 'bg-success text-success' : 'bg-danger text-danger'}`}
+                    color={pro.status === 1 ? 'success' : 'danger'}
                     value={pro.id}
                     onClick={handleStatus}
                   >

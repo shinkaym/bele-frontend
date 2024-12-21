@@ -7,7 +7,7 @@ export interface IAttributeValue{
     id:number | string
     attributeType:IAttributeType
     name:string
-    value:string | null
+    value:string
     status:number
     createdAt:string
     updateAt:string

@@ -23,7 +23,9 @@ const EditCat = Loadable(lazy(() => import('@/pages/Tables/Category/Edit')))
 const Product = Loadable(lazy(() => import('@/pages/Tables/Product'))) 
 const AddProduct= Loadable(lazy(() => import('@/pages/Tables/Product/Add')))
 const EditProduct= Loadable(lazy(() => import('@/pages/Tables/Product/Edit')))
-
+const AttributeValue = Loadable(lazy(() => import('@/pages/Tables/AttributeValue'))) 
+const AddAttributeValue= Loadable(lazy(() => import('@/pages/Tables/AttributeValue/Add')))
+const EditAttributeValue= Loadable(lazy(() => import('@/pages/Tables/AttributeValue/Edit')))
 
 function AppRouter() {
   const routes = [
@@ -119,6 +121,38 @@ function AppRouter() {
                 <>
                   <PageTitle title='Edit Product' />
                   <EditProduct />
+                </>
+              )
+            }
+          ]
+        },
+        {
+          path: '/tables/attribute-value',
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='Attribute Value' />
+                  <AttributeValue />
+                </>
+              )
+            },
+            {
+              path: 'add',
+              element: (
+                <>
+                  <PageTitle title='Add AttributeValue' />
+                  <AddAttributeValue />
+                </>
+              )
+            },
+            {
+              path: 'edit/:attributeValueId',
+              element: (
+                <>
+                  <PageTitle title='Edit Attribute Value' />
+                  <EditAttributeValue />
                 </>
               )
             }

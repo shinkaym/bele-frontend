@@ -7,9 +7,3 @@ export interface ICategory {
   createdAt: string
   updateAt:string
 }
-
-export interface ICategoryFormData {
-  name: string
-  parentId: number | string
-  status: number
-}
