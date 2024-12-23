@@ -64,7 +64,7 @@ const Search: React.FC<SearchProps> = ({ onSearch, size = "md", radius = "md", c
         onClick={handleSearch}
         className={buttonStyles}
       >
-        <SearchIcon />
+        <SearchIcon className='w-6 h-6'/>
       </button>
     </div>
   );

@@ -1,16 +1,14 @@
-import { IIcon } from '@/models/interfaces/icon'
+import { ComponentProps } from 'react'
 
-const EyeIcon: React.FC<IIcon> = ({ size = 16, color = 'currentColor', className }) => {
+const EyeIcon = (props: ComponentProps<"svg">) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
       fill='none'
       viewBox='0 0 24 24'
       strokeWidth={1.5}
-      stroke={color}
-      width={size}
-      height={size}
-      className={className}
+      stroke='currentColor'
+      {...props}
     >
       <path
         strokeLinecap='round'

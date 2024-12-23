@@ -26,6 +26,12 @@ const EditProduct= Loadable(lazy(() => import('@/pages/Tables/Product/Edit')))
 const AttributeValue = Loadable(lazy(() => import('@/pages/Tables/AttributeValue'))) 
 const AddAttributeValue= Loadable(lazy(() => import('@/pages/Tables/AttributeValue/Add')))
 const EditAttributeValue= Loadable(lazy(() => import('@/pages/Tables/AttributeValue/Edit')))
+const Employee = Loadable(lazy(() => import('@/pages/Tables/Employee'))) 
+const AddEmployee= Loadable(lazy(() => import('@/pages/Tables/Employee/Add')))
+const EditEmployee= Loadable(lazy(() => import('@/pages/Tables/Employee/Edit')))
+const Rate = Loadable(lazy(() => import('@/pages/Tables/Rate'))) 
+const Order = Loadable(lazy(() => import('@/pages/Tables/Order'))) 
+const EditOrder= Loadable(lazy(() => import('@/pages/Tables/Order/Edit')))
 
 function AppRouter() {
   const routes = [
@@ -153,6 +159,75 @@ function AppRouter() {
                 <>
                   <PageTitle title='Edit Attribute Value' />
                   <EditAttributeValue />
+                </>
+              )
+            }
+          ]
+        },
+        {
+          path: '/tables/employee',
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='Employee' />
+                  <Employee />
+                </>
+              )
+            },
+            {
+              path: 'add',
+              element: (
+                <>
+                  <PageTitle title='Add Employee' />
+                  <AddEmployee />
+                </>
+              )
+            },
+            {
+              path: 'edit/:id',
+              element: (
+                <>
+                  <PageTitle title='Edit Employee' />
+                  <EditEmployee />
+                </>
+              )
+            }
+          ]
+        },
+        {
+          path: '/tables/rate',
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='Rate' />
+                  <Rate />
+                </>
+              )
+            }
+          ]
+        },
+        {
+          path: '/tables/order',
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='Order' />
+                  <Order />
+                </>
+              )
+            },
+            {
+              path: 'edit/:id',
+              element: (
+                <>
+                  <PageTitle title='Edit Order' />
+                  <EditOrder />
                 </>
               )
             }

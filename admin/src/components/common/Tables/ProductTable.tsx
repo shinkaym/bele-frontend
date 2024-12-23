@@ -65,49 +65,77 @@ function ProductTable({ Products, onSearch }: Props) {
         <table className='w-full table-auto'>
           <thead>
             <tr className='bg-gray-2 text-left dark:bg-meta-4'>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white pl-9'>Id</th>
-              <th className='min-w-[220px] py-4 px-4 font-medium text-black dark:text-white'>Product</th>
-              <th className='min-w-[150px] py-4 px-4 font-medium text-black dark:text-white'>Category</th>
-              <th className='min-w-[150px] py-4 px-4 font-medium text-black dark:text-white'>Base Price</th>
-              <th className='min-w-[200px] py-4 px-4 font-medium text-black dark:text-white'>Slug</th>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white'>View</th>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white'>Like</th>
-              <th className='min-w-[120px] py-4 px-4 font-medium text-black dark:text-white'>Created At</th>
-              <th className='min-w-[120px] py-4 px-4 font-medium text-black dark:text-white'>Status</th>
-              <th className='py-4 px-4 font-medium text-black dark:text-white'>Actions</th>
+              <th className='min-w-[20px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                Id
+              </th>
+              <th className='min-w-[200px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                Product
+              </th>
+              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                Category
+              </th>
+              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                Base Price
+              </th>
+              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                Slug
+              </th>
+              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                View
+              </th>
+              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                Like
+              </th>
+              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                Created At
+              </th>
+              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                Status
+              </th>
+              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {Products.map((pro, key) => (
               <tr key={key}>
-                <td className='border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white'>{pro.id}</h5>
+                <td className='border-b border-[#eee] py-4 px-4 pl-9 dark:border-strokedark'>
+                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{pro.id}</h5>
                 </td>
-                <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                   <div className='flex items-center'>
-                    <img src={pro.thumbnail} alt={pro.name} className='bg-boxdark object-cover w-15' />
-                    <h5 className='text-black dark:text-white ml-2'>{pro.name}</h5>
+                    <img src={pro.thumbnail} alt={pro.name} className='bg-boxdark object-cover w-10' />
+                    <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] ml-2'>
+                      {pro.name}
+                    </h5>
                   </div>
                 </td>
-                <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                  <p className='text-black dark:text-white'>{pro.categoryName}</p>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                  <p className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                    {pro.categoryName}
+                  </p>
                 </td>
-                <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                  <p className='text-black dark:text-white'>{pro.basePrice}</p>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                  <p className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                    {pro.basePrice}
+                  </p>
                 </td>
-                <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                  <p className='text-black dark:text-white'>{pro.slug}</p>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                  <p className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{pro.slug}</p>
                 </td>
-                <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                  <p className='text-black dark:text-white'>{pro.view}</p>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                  <p className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{pro.view}</p>
                 </td>
-                <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                  <p className='text-black dark:text-white'>{pro.like}</p>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                  <p className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{pro.like}</p>
                 </td>
-                <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                  <p className='text-black dark:text-white'>{new Date(pro.createdAt).toLocaleDateString()}</p>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                  <p className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                    {new Date(pro.createdAt).toLocaleDateString()}
+                  </p>
                 </td>
-                <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                   <Button
                     type='button'
                     color={pro.status === 1 ? 'success' : 'danger'}
@@ -117,16 +145,16 @@ function ProductTable({ Products, onSearch }: Props) {
                     {pro.status === 1 ? EStatus.ACTIVE : EStatus.UNACTIVE}
                   </Button>
                 </td>
-                <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                   <div className='flex items-center space-x-3.5'>
                     <button type='button' className='hover:text-primary' onClick={() => handleView(pro.id)}>
-                      <EyeIcon size={24} />
+                      <EyeIcon width={24} height={24} />
                     </button>
                     <Link to={`/tables/product/edit/${pro.id}`} className='hover:text-primary'>
-                      <EditIcon size={24} />
+                      <EditIcon width={24} height={24} />
                     </Link>
                     <button type='button' className='hover:text-primary' onClick={() => handleDelete(pro.id)}>
-                      <DeleteIcon size={24} />
+                      <DeleteIcon width={24} height={24} />
                     </button>
                   </div>
                 </td>

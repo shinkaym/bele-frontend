@@ -1,4 +1,4 @@
-export type Chat = {
+export type TChat = {
   avatar: string;
   name: string;
   text: string;

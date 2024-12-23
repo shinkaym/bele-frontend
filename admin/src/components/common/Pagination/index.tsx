@@ -47,7 +47,7 @@ const Pagination: React.FC<IPagination> = ({
           onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
-          <ArrowLeftIcon />
+          <ArrowLeftIcon width={16} height={16}/>
           <span className='ml-2'>Previous</span>
         </button>
       </li>
@@ -81,7 +81,7 @@ const Pagination: React.FC<IPagination> = ({
           disabled={currentPage === totalPages}
         >
           <span className='mr-2'>Next</span>
-          <ArrowRightIcon size={16}/>
+          <ArrowRightIcon width={16} height={16}/>
         </button>
       </li>
     </ul>

@@ -104,7 +104,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     pathname.includes('calendar') && 'bg-graydark dark:bg-meta-4'
                   }`}
                 >
-                  <DashboardIcon />
+                  <DashboardIcon className='w-6 h-6'/>
                   Dashboard
                 </NavLink>
               </li>
@@ -118,7 +118,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     pathname.includes('profile') && 'bg-graydark dark:bg-meta-4'
                   }`}
                 >
-                  <InfoPersonalIcon />
+                  <InfoPersonalIcon className='w-6 h-6'/>
                   Info Personal
                 </NavLink>
               </li>
@@ -130,7 +130,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     pathname.includes('profile') && 'bg-graydark dark:bg-meta-4'
                   }`}
                 >
-                  <SettingIcon />
+                  <SettingIcon className='w-6 h-6'/>
                   Setting
                 </NavLink>
               </li>
@@ -151,7 +151,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           sidebarExpanded ? handleClick() : setSidebarExpanded(true)
                         }}
                       >
-                        <TableIcon />
+                        <TableIcon className='w-6 h-6'/>
                         Tables
                         <svg
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'}`}

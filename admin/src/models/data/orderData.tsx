@@ -1,0 +1,60 @@
+import { IOrderTableResponse } from '../interfaces/order'; // Giả sử bạn đã có interface này
+
+export const IOrderTableResponseData: IOrderTableResponse = {
+  status: 200,
+  data: {
+    orders: [
+      {
+        id: 1,
+        email: "johndoe@example.com",
+        name: "John Doe",
+        phoneNumber: "123-456-7890",
+        address: "123 Main St, Cityville",
+        note: "Urgent delivery",
+        payMethod: "Credit Card",
+        totalMoney: 100.5,
+        shipDate: "2024-12-01",
+        receiveDate: "2024-12-05",
+        status: 1,
+        createdAt: "1734974964.4281",
+        updatedAt: "1734974964.4281",
+      },
+      {
+        id: 2,
+        email: "janesmith@example.com",
+        name: "Jane Smith",
+        phoneNumber: "234-567-8901",
+        address: "456 Elm St, Townsville",
+        note: "Gift for friend",
+        payMethod: "Paypal",
+        totalMoney: 150.75,
+        shipDate: "2024-12-02",
+        receiveDate: "2024-12-06",
+        status: 1,
+        createdAt: "1734974964.4281",
+        updatedAt: "1734974964.4281",
+      },
+      {
+        id: 3,
+        email: "alicebrown@example.com",
+        name: "Alice Brown",
+        phoneNumber: "345-678-9012",
+        address: "789 Oak St, Villagetown",
+        note: "Special request for packaging",
+        payMethod: "Bank Transfer",
+        totalMoney: 120.30,
+        shipDate: "2024-12-03",
+        receiveDate: "2024-12-07",
+        status: 1,
+        createdAt: "1734974964.4281",
+        updatedAt: "1734974964.4281",
+      },
+    ],
+    pagination: {
+      currentPage: 1,
+      totalPages: 2,
+      totalRecords: 5,
+    },
+  },
+  message: "Data fetched successfully."
+};

@@ -50,34 +50,52 @@ function CategoryTable({ categories, onSearch }: Props) {
         <table className='w-full table-auto'>
           <thead>
             <tr className='bg-gray-2 text-left dark:bg-meta-4'>
-              <th className='min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11'>Id</th>
-              <th className='min-w-[220px] py-4 px-4 font-medium text-black dark:text-white'>Name</th>
-              <th className='min-w-[150px] py-4 px-4 font-medium text-black dark:text-white'>Parent Name</th>
-              <th className='min-w-[150px] py-4 px-4 font-medium text-black dark:text-white'>Slug</th>
-              <th className='min-w-[120px] py-4 px-4 font-medium text-black dark:text-white'>Created At</th>
-              <th className='min-w-[120px] py-4 px-4 font-medium text-black dark:text-white'>Status</th>
-              <th className='py-4 px-4 font-medium text-black dark:text-white'>Actions</th>
+              <th className='min-w-[20px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                Id
+              </th>
+              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                Name
+              </th>
+              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                Parent Name
+              </th>
+              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                Slug
+              </th>
+              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                Created At
+              </th>
+              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
+                Status
+              </th>
+              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap text-center'>
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {categories.map((cat, key) => (
               <tr key={key}>
-                <td className='border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11'>
-                  <h5 className='font-medium text-black dark:text-white'>{cat.id}</h5>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{cat.id}</h5>
                 </td>
-                <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                  <h5 className='text-black dark:text-white'>{cat.name}</h5>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{cat.name}</h5>
                 </td>
-                <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                  <p className='text-black dark:text-white'>{cat.parentName}</p>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                  <p className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                    {cat.parentName}
+                  </p>
                 </td>
-                <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                  <p className='text-black dark:text-white'>{cat.slug}</p>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                  <p className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{cat.slug}</p>
                 </td>
-                <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                  <p className='text-black dark:text-white'>{new Date(cat.createdAt).toLocaleDateString()}</p>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                  <p className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                    {new Date(cat.createdAt).toLocaleDateString()}
+                  </p>
                 </td>
-                <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                   <Button
                     type='button'
                     color={cat.status === 1 ? 'success' : 'danger'}
@@ -87,13 +105,13 @@ function CategoryTable({ categories, onSearch }: Props) {
                     {cat.status === 1 ? EStatus.ACTIVE : EStatus.UNACTIVE}
                   </Button>
                 </td>
-                <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
+                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                   <div className='flex items-center space-x-3.5'>
                     <Link to={`/tables/category/edit/${cat.id}`} className='hover:text-primary'>
-                      <EditIcon size={24}/>
+                      <EditIcon width={24} height={24} />
                     </Link>
                     <button type='button' className='hover:text-primary' onClick={() => handleDelete(cat.id)}>
-                      <DeleteIcon size={24}/>
+                      <DeleteIcon width={24} height={24} />
                     </button>
                   </div>
                 </td>
