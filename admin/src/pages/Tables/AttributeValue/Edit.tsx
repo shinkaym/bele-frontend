@@ -9,7 +9,6 @@ import { attributeTypeOptions } from '@/models/data/attributeTypeData'
 import { statusData } from '@/models/data/statusData'
 import { EToastOption } from '@/models/enums/option'
 import { IAttributeValue } from '@/models/interfaces/attribute'
-import { IOptions } from '@/models/interfaces/options'
 import { UToast } from '@/utils/swal'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
@@ -20,8 +19,8 @@ import { z } from 'zod'
 type Props = {}
 
 function Edit({}: Props) {
-  const [loading, setLoading] = useState(false)
-  const [options, setOptions] = useState<IOptions[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
+  const [attrValueById, setAttrValueById] = useState<IAttributeValue>(Object)
   const [attributeValueData, setAttributeValueData] = useState<IAttributeValue[]>([])
   const params = useParams()
   const attributeValueId: number = Number(params.attributeValueId)
@@ -39,7 +38,7 @@ function Edit({}: Props) {
         }
       ), // Bắt buộc nhập tên
     value: z.string().optional(),
-    status: z.union([z.number(),z.string()]),
+    status: z.union([z.number(), z.string()]),
     attributeTypeId: z.union([z.number(), z.string()]).refine((value) => Number(value) !== 0, {
       message: 'Attribute Type is required'
     })
@@ -60,10 +59,7 @@ function Edit({}: Props) {
 
   const colorValue = watch('value')
   const attributeTypeId = watch('attributeTypeId')
-
-  useEffect(() => {
-    resetField('value', { defaultValue: '' }) // Reset trường 'value' về giá trị mặc định
-  }, [attributeTypeId])
+  const status = watch('status')
 
   useEffect(() => {
     const handleGetData = async () => {
@@ -72,15 +68,18 @@ function Edit({}: Props) {
         const data = await attributeValueApi.getList()
         setAttributeValueData(data)
         const attrValue = attributeValueApi.getAttrValue(attributeValueId)
-        console.log(attrValue);
+        console.log(attrValue)
         if (attrValue) {
+          setAttrValueById(attrValue)
+          console.log(attrValue.status)
           reset({
             name: attrValue.name,
-            value:attrValue.value,
+            value: attrValue.value,
             status: attrValue.status,
-            attributeTypeId:attrValue.attributeType.id
+            attributeTypeId: attrValue.attributeType.id
           })
         }
+        setLoading(false)
         //set Option attributeValue Parent
         // let newData: IOptions[] = data
         //   .filter((cat) => !cat.parentName) // Lọc các phần tử không có parentName
@@ -96,7 +95,6 @@ function Edit({}: Props) {
         //   ...newData
         // ]
         // setOptions(newData) // Cập nhật dữ liệu
-        setLoading(false) // Tắt trạng thái loading
       } catch (error) {
         console.error('Error fetching categories:', error)
         setLoading(false)
@@ -104,6 +102,16 @@ function Edit({}: Props) {
     }
     handleGetData()
   }, [])
+
+  useEffect(() => {
+    if (attributeTypeId !== 1) resetField('value', { defaultValue: '' }) // Reset trường 'value' về giá trị mặc định
+  }, [attributeTypeId])
+
+  useEffect(() => {
+    if (status) {
+      resetField('status', { defaultValue: status })
+    }
+  }, [status])
 
   const onSubmit = (data: attributeValueFormData) => {
     try {
@@ -117,94 +125,94 @@ function Edit({}: Props) {
     }
     console.log(data) // Dữ liệu khi submit
   }
+  console.log(Object.keys(attrValueById).length > 0, attrValueById)
 
   return (
     <>
       {loading ? (
         <Loader />
       ) : (
-        <div className='flex flex-col gap-10'>
-          <Breadcrumb
-            pageName='Edit Attribute Value'
-            parentPageName='Attribute Value'
-            parentTo='/tables/attribute-value'
-          />
-
-          <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-4 '>
-            {/* attributeValue Name */}
-            <div>
-              <Controller
-                name='attributeTypeId'
-                control={control}
-                render={({ field }) => (
-                  <SelectGroup
-                    value={field.value} // Đồng bộ hóa giá trị
-                    onChange={(value) => field.onChange(parseInt(value))} // Chuyển giá trị từ string thành số
-                    options={attributeTypeOptions} // Danh sách tùy chọn
-                    error={errors.attributeTypeId?.message} // Hiển thị lỗi (nếu có)
-                    className='mb-6'
-                  />
-                )}
-              />
-              <div className='flex justify-end items-center'>
+        Object.keys(attrValueById).length > 0 && (
+          <div className='flex flex-col gap-10'>
+            <Breadcrumb
+              pageName='Edit Attribute Value'
+              parentPageName='Attribute Value'
+              parentTo='/tables/attribute-value'
+            />
+            <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-4 '>
+              {/* attributeValue Name */}
+              <div>
                 <Controller
-                  name='status'
+                  name='attributeTypeId'
                   control={control}
                   render={({ field }) => (
-                    <RadioGroup
-                      {...field}
-                      options={statusData}
-                      selectedValue={(field.value ?? 0).toString()}
-                      layout='horizontal'
-                      onChange={(value) => field.onChange(parseInt(value))}
+                    <SelectGroup
+                      value={field.value} // Đồng bộ hóa giá trị
+                      onChange={(value) => field.onChange(parseInt(value))} // Chuyển giá trị từ string thành số
+                      options={attributeTypeOptions} // Danh sách tùy chọn
+                      error={errors.attributeTypeId?.message} // Hiển thị lỗi (nếu có)
+                      className='mb-6'
                     />
                   )}
                 />
-              </div>
-              <Controller
-                name='name'
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    label='Name'
-                    error={errors.name?.message}
-                    {...field} // Truyền tất cả props từ field vào Input
-                    placeholder='Enter Category Name'
-                    className='border border-gray-300 mb-6'
-                  />
-                )}
-              />
-              <div>
-                <label className='mb-3 block text-black dark:text-white'>Value</label>
-                <div className='space-x-4 flex items-center'>
+                <div className='flex justify-end items-center'>
                   <Controller
-                    name='value'
+                    name='status'
                     control={control}
                     render={({ field }) => (
-                      <Input
-                        isDisabled={attributeTypeId !== 1 ? true : false}
-                        type='color'
-                        {...field} // Truyền tất cả props từ field vào Input
-                        placeholder='Enter attributeValue Name'
-                        className='max-w-20 rounded h-12 cursor-pointer'
+                      <RadioGroup
+                        {...field}
+                        options={statusData}
+                        selectedValue={field.value.toString()}
+                        layout='horizontal'
+                        onChange={(value: string) => field.onChange(value)}
                       />
                     )}
                   />
-                  <Input name='showColorCode' value={colorValue} placeholder='#000000' isDisabled={true} />
+                </div>
+                <Controller
+                  name='name'
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      label='Name'
+                      error={errors.name?.message}
+                      {...field} // Truyền tất cả props từ field vào Input
+                      placeholder='Enter Category Name'
+                      className='border border-gray-300 mb-6'
+                    />
+                  )}
+                />
+                <div>
+                  <label className='mb-3 block text-black dark:text-white'>Value</label>
+                  <div className='space-x-4 flex items-center'>
+                    <Controller
+                      name='value'
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          isDisabled={attributeTypeId !== 1}
+                          type='color'
+                          {...field} // Truyền tất cả props từ field vào Input
+                          className='max-w-20 rounded h-12 cursor-pointer'
+                        />
+                      )}
+                    />
+                    <Input name='showColorCode' value={colorValue} placeholder='#000000' isDisabled={true} />
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className='grid grid-cols-6'>
-              <Button type='button' className='max-h-12 mr-4'>
-                Edit
-              </Button>
-              <Button type='link' to='/tables/attribute-value' color='secondary' className='max-h-12'>
-                Back
-              </Button>
-            </div>
-          </form>
-        </div>
+              <div className='grid grid-cols-6'>
+                <Button type='button' className='max-h-12 mr-4'>
+                  Edit
+                </Button>
+                <Button type='link' to='/tables/attribute-value' color='secondary' className='max-h-12'>
+                  Back
+                </Button>
+              </div>
+            </form>
+          </div>
+        )
       )}
     </>
   )

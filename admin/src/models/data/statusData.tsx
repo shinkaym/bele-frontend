@@ -7,6 +7,6 @@ export const statusData:IOptions[] = [
     },
     {
         value:0,
-        label:'UnActive'
+        label:'InActive'
     }
 ]
