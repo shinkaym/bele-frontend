@@ -20,7 +20,7 @@ function Product({}: Props) {
       setLoading(true) // Bật trạng thái loading
       // Giả lập fetch từ backend (thay bằng axios hoặc fetch nếu cần)
       timeoutId = setTimeout(() => {
-        const data = ProductApi.getAll();
+        const data = ProductApi.getList();
         setProductData(data) // Cập nhật dữ liệu
         setLoading(false) // Tắt trạng thái loading
       }, 1000)

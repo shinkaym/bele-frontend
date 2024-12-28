@@ -1,4 +1,5 @@
 import { ICategory } from '../interfaces/category'
+import { IOptions } from '../interfaces/options'
 
 export const categoryData: ICategory[] = [
   {
@@ -8,7 +9,7 @@ export const categoryData: ICategory[] = [
     status: 1,
     slug: 'shirt',
     createdAt: '2023-01-15T00:00:00Z',
-    updateAt: '2023-01-15T00:00:00Z',
+    updatedAt: '2023-01-15T00:00:00Z',
   },
   {
     id: 2,
@@ -20,11 +21,22 @@ export const categoryData: ICategory[] = [
       status: 1,
       slug: 'shirt',
       createdAt: '2023-01-15T00:00:00Z',
-      updateAt: '2023-01-15T00:00:00Z',
+      updatedAt: '2023-01-15T00:00:00Z',
     },
     status: 1,
     slug: 'mobile-phones',
     createdAt: '2023-01-15T00:00:00Z',
-    updateAt:'2023-01-15T00:00:00Z',
+    updatedAt:'2023-01-15T00:00:00Z',
+  }
+]
+
+export const categoryChildOption:IOptions[] = [
+  {
+    value:0,
+    label:'---Select Category---'
+  },
+  {
+    value: 2,
+    label: 'Polo Shirt',
   }
 ]

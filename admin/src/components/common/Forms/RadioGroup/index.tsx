@@ -30,14 +30,14 @@ const RadioGroup = (
       <div ref={ref} className={`${layout === 'horizontal' ? 'flex flex-wrap' : ''}`}>
         {options.map((option) => (
           <label
-            key={option?.value}
-            htmlFor={option?.value.toString()}
+            key={name + option?.value}
+            htmlFor={name + option?.value.toString()}
             className={`flex cursor-pointer select-none items-center mb-2 ${layout === 'horizontal' ? 'mr-6' : ''}`}
           >
             <div className='relative'>
               <input
                 type='radio'
-                id={option?.value.toString()}
+                id={name + option?.value.toString()}
                 name={name}
                 value={option?.value.toString()}
                 checked={selected === option?.value.toString()}

@@ -3,10 +3,6 @@ import { IOptions } from "../interfaces/options";
 
 export const attributeTypeOptions:IOptions[] = [
     {
-        value:0,
-        label:'---Select Attribute Type---'
-    },
-    {
         value:1,
         label:'Color'
     },
@@ -14,6 +10,17 @@ export const attributeTypeOptions:IOptions[] = [
         value:2,
         label:'Size'
     },
+]
+
+export const attributeTypeCheckboxOptions:IOptions[] = [
+  {
+      value:'color',
+      label:'Color'
+  },
+  {
+      value:'size',
+      label:'Size'
+  },
 ]
 
 export const attributeTypeData:IAttributeType[] = [
@@ -35,7 +42,7 @@ export const attributeValueData: IAttributeValue[] = [
     value: '#FF0000',
     status: 1,
     createdAt: '2024-01-01T12:00:00Z',
-    updateAt: '2024-01-01T12:00:00Z',
+    updatedAt: '2024-01-01T12:00:00Z',
   },
   {
     id: 2,
@@ -44,7 +51,7 @@ export const attributeValueData: IAttributeValue[] = [
     value: '#0000FF',
     status: 1,
     createdAt: '2024-01-02T12:00:00Z',
-    updateAt: '2024-01-02T12:00:00Z',
+    updatedAt: '2024-01-02T12:00:00Z',
   },
   {
     id: 3,
@@ -53,7 +60,7 @@ export const attributeValueData: IAttributeValue[] = [
     value: '',
     status: 1,
     createdAt: '2024-01-03T12:00:00Z',
-    updateAt: '2024-01-03T12:00:00Z',
+    updatedAt: '2024-01-03T12:00:00Z',
   },
   {
     id: 4,
@@ -62,6 +69,28 @@ export const attributeValueData: IAttributeValue[] = [
     value: '',
     status: 0,
     createdAt: '2024-01-04T12:00:00Z',
-    updateAt: '2024-01-04T12:00:00Z',
+    updatedAt: '2024-01-04T12:00:00Z',
   },
 ];
+
+export const attributeColorValueOptionsData:IOptions[] = [
+  {
+    value:1,
+    label:'Red'
+  },
+  {
+    value:2,
+    label:'Blue'
+  }
+]
+
+export const attributeSizeValueOptionsData:IOptions[] = [
+  {
+    value:3,
+    label:'S'
+  },
+  {
+    value:4,
+    label:'M'
+  }
+]

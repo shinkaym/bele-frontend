@@ -23,7 +23,7 @@ function Edit({}: Props) {
   const [attrValueById, setAttrValueById] = useState<IAttributeValue>(Object)
   const [attributeValueData, setAttributeValueData] = useState<IAttributeValue[]>([])
   const params = useParams()
-  const attributeValueId: number = Number(params.attributeValueId)
+  const attributeValueId: number = Number(params.id)
 
   // Cấu hình Zod schema
   const attributeValueSchema = z.object({
@@ -80,21 +80,6 @@ function Edit({}: Props) {
           })
         }
         setLoading(false)
-        //set Option attributeValue Parent
-        // let newData: IOptions[] = data
-        //   .filter((cat) => !cat.parentName) // Lọc các phần tử không có parentName
-        //   .map((cat) => ({
-        //     value: cat.id,
-        //     label: cat.name
-        //   }))
-        // newData = [
-        //   {
-        //     value: 0,
-        //     label: '---Select attributeValue---'
-        //   },
-        //   ...newData
-        // ]
-        // setOptions(newData) // Cập nhật dữ liệu
       } catch (error) {
         console.error('Error fetching categories:', error)
         setLoading(false)
@@ -125,7 +110,6 @@ function Edit({}: Props) {
     }
     console.log(data) // Dữ liệu khi submit
   }
-  console.log(Object.keys(attrValueById).length > 0, attrValueById)
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { ForwardedRef, useState } from 'react'
+import React, { ForwardedRef, useEffect, useState } from 'react'
 import { IOptions } from '@/models/interfaces/options'
 
 interface CheckboxGroupProps {
@@ -28,21 +28,25 @@ const CheckboxGroup = (
       onChange(newSelected)
     }
   }
-
+  useEffect(() => {
+    if (selectedValues.length === 0) {
+      setSelected([])
+    }
+  }, [selectedValues])
   return (
     <div className={className}>
       {label && <label className='mb-2.5 block text-black dark:text-white'>{label}</label>}
       <div ref={ref} className={`${layout === 'horizontal' ? 'flex flex-wrap' : ''}`}>
         {options.map((option) => (
           <label
-            key={option.value}
-            htmlFor={option.value.toString()}
+            key={name + option.value}
+            htmlFor={name + option.value.toString()}
             className={`flex cursor-pointer select-none items-center mb-2 ${layout === 'horizontal' ? 'mr-6' : ''}`}
           >
             <div className='relative'>
               <input
                 type='checkbox'
-                id={option.value.toString()}
+                id={name + option.value.toString()}
                 name={name}
                 value={option.value.toString()}
                 checked={selected.includes(option.value.toString())}

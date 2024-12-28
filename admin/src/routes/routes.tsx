@@ -32,6 +32,11 @@ const EditEmployee= Loadable(lazy(() => import('@/pages/Tables/Employee/Edit')))
 const Rate = Loadable(lazy(() => import('@/pages/Tables/Rate'))) 
 const Order = Loadable(lazy(() => import('@/pages/Tables/Order'))) 
 const EditOrder= Loadable(lazy(() => import('@/pages/Tables/Order/Edit')))
+const Variant = Loadable(lazy(() => import('@/pages/Tables/Variant'))) 
+const AddVariant = Loadable(lazy(() => import('@/pages/Tables/Variant/Add'))) 
+const EditVariant = Loadable(lazy(() => import('@/pages/Tables/Variant/Edit'))) 
+
+
 
 function AppRouter() {
   const routes = [
@@ -90,7 +95,7 @@ function AppRouter() {
               )
             },
             {
-              path: 'edit/:categoryId',
+              path: 'edit/:id',
               element: (
                 <>
                   <PageTitle title='Edit Category' />
@@ -122,7 +127,7 @@ function AppRouter() {
               )
             },
             {
-              path: 'edit/:productId',
+              path: 'edit/:id',
               element: (
                 <>
                   <PageTitle title='Edit Product' />
@@ -154,7 +159,7 @@ function AppRouter() {
               )
             },
             {
-              path: 'edit/:attributeValueId',
+              path: 'edit/:id',
               element: (
                 <>
                   <PageTitle title='Edit Attribute Value' />
@@ -228,6 +233,38 @@ function AppRouter() {
                 <>
                   <PageTitle title='Edit Order' />
                   <EditOrder />
+                </>
+              )
+            }
+          ]
+        },
+        {
+          path: '/tables/variant',
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='Variant' />
+                  <Variant />
+                </>
+              )
+            },
+            {
+              path: 'add',
+              element: (
+                <>
+                  <PageTitle title='Add Variant' />
+                  <AddVariant />
+                </>
+              )
+            },
+            {
+              path: 'edit/:id',
+              element: (
+                <>
+                  <PageTitle title='Edit Variant' />
+                  <EditVariant />
                 </>
               )
             }

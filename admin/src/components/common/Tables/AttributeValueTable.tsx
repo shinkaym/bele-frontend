@@ -3,7 +3,7 @@ import EditIcon from '@/components/icons/Crud/EditIcon'
 import { EToastOption } from '@/models/enums/option'
 import { EStatus } from '@/models/enums/status'
 import { IAttributeValue } from '@/models/interfaces/attribute'
-import { UCaptchaAlert, UToast } from '@/utils/swal'
+import { UInputAlert, UToast } from '@/utils/swal'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../Button'
@@ -24,15 +24,23 @@ function AttributeValueTable({ attributeValues, onSearch }: Props) {
   }
   //Call Alert
   const handleDelete = async (id: number | string, captchaCode = 'ABCD') => {
-    await UCaptchaAlert(captchaCode, (value) => {
-      if (value === captchaCode) {
-        //call api in here...
+    await UInputAlert(
+      captchaCode,
+      'text',
+      (value) => {
+        if (value === captchaCode) {
+          //call api in here...
 
-        UToast(EToastOption.SUCCESS, 'Delete Category Successfully!')
-      } else {
-        UToast(EToastOption.Error, 'Captcha is wrong')
+          UToast(EToastOption.SUCCESS, 'Delete Variant Successfully!')
+        } else {
+          UToast(EToastOption.Error, 'Captcha is wrong')
+        }
+      },
+      {
+        autocomplete: 'off', // Disable autocomplete
+        maxlength: '4'
       }
-    })
+    )
   }
   const handleStatus = (value?: number | string) => {
     console.log(value)

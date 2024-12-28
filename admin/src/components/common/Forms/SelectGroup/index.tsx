@@ -8,21 +8,23 @@ interface SelectGroupProps {
   error?: string
   label?: string
   className?:string
+  isDisabled?: boolean
 }
 
 // Bọc component với forwardRef
 const SelectGroup = React.forwardRef<HTMLSelectElement, SelectGroupProps>(
-  ({ value, onChange, options, label, error , className }: SelectGroupProps, ref) => {
+  ({ value, onChange, options, label, error , isDisabled = false , className }: SelectGroupProps, ref) => {
     return (
       <div className={className}>
         {label && <label className='mb-2.5 block text-black dark:text-white'>{label}</label>}
 
         <div className='relative z-20 bg-transparent dark:bg-form-input'>
           <select
+          disabled={isDisabled}
             ref={ref}
             value={value} // Đồng bộ giá trị
             onChange={(e) => onChange(e.target.value)} // Truyền giá trị mới cho React Hook Form
-            className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${
+            className={`${isDisabled ? 'opacity-50' : ''} relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${
               value ? 'text-black dark:text-white' : ''
             }`}
           >

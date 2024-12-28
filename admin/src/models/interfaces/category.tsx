@@ -6,5 +6,5 @@ export interface ICategory {
   status: number
   slug: string
   createdAt: string
-  updateAt:string
+  updatedAt:string
 }

@@ -8,6 +8,7 @@ interface ImageUploadProps {
   error?: string
   onChange?: (file: File | null) => void // Callback when file changes
   initialImageUrl?: string // URL of the image for editing
+  setInitialImageUrl?:React.Dispatch<React.SetStateAction<string>>
   isDisabled?: boolean
   delay?: number
 }
@@ -21,6 +22,7 @@ const ImageUpload = React.forwardRef<HTMLInputElement, ImageUploadProps>(
       error,
       onChange,
       initialImageUrl,
+      setInitialImageUrl,
       isDisabled = false,
       delay = 500
     }: ImageUploadProps,
@@ -39,6 +41,9 @@ const ImageUpload = React.forwardRef<HTMLInputElement, ImageUploadProps>(
           setLoading(true)
           setTimeout(() => {
             setPreview(reader.result as string)
+            if(setInitialImageUrl){
+              setInitialImageUrl(reader.result as string)
+            }
             setLoading(false)
           }, delay)
         }
@@ -50,7 +55,6 @@ const ImageUpload = React.forwardRef<HTMLInputElement, ImageUploadProps>(
       // Call the callback with the new file
       if (onChange) onChange(file)
     }
-
     // Optionally reset the preview if initial image URL changes
     useEffect(() => {
       const hanleUpload = async () => {
@@ -60,11 +64,12 @@ const ImageUpload = React.forwardRef<HTMLInputElement, ImageUploadProps>(
             setPreview(initialImageUrl)
             setLoading(false)
           }, delay)
+        }else{
+          setPreview(null)
         }
       }
       hanleUpload()
     }, [initialImageUrl])
-
     return (
       <div className={`relative`}>
         {label && (

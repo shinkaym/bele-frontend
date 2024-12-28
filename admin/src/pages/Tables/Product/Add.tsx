@@ -1,8 +1,7 @@
-import categoryApi from '@/apis/modules/categoy.api'
 import productApi from '@/apis/modules/product.api'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
 import Button from '@/components/common/Button'
-import ForwardedCheckboxGroup from '@/components/common/Forms/CheckboxGroup'
+import CheckboxGroup from '@/components/common/Forms/CheckboxGroup'
 import Input from '@/components/common/Forms/Input'
 import RadioGroup from '@/components/common/Forms/RadioGroup'
 import SelectGroup from '@/components/common/Forms/SelectGroup'
@@ -10,10 +9,10 @@ import ImageUpload from '@/components/common/ImageUpload'
 import Loader from '@/components/common/Loader'
 import TinyMCEEditor from '@/components/common/TinyMCEEditor'
 import { attributeTypeOptions } from '@/models/data/attributeTypeData'
+import { categoryChildOption } from '@/models/data/categoryData'
 import { discountOption } from '@/models/data/discountData'
 import { statusData } from '@/models/data/statusData'
 import { EToastOption } from '@/models/enums/option'
-import { IOptions } from '@/models/interfaces/options'
 import { IProduct } from '@/models/interfaces/product'
 import { UToast } from '@/utils/swal'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -26,41 +25,21 @@ type Props = {}
 function Add({}: Props) {
   const [loading, setLoading] = useState(false)
   const [productData, setProductData] = useState<IProduct[]>([])
-  const [categoryOption, setCategoryOption] = useState<IOptions[]>([])
+  const [initialImageUrl, setInitialImageUrl] = useState<string>('')
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout
-    try {
+    const handleGetData = async () => {
       setLoading(true) // Bật trạng thái loading
-      // Giả lập fetch từ backend (thay bằng axios hoặc fetch nếu cần)
-      timeoutId = setTimeout(() => {
-        const data = productApi.getAll()
+      try {
+        const data = productApi.getList()
         setProductData(data)
-
-        const categoryData = categoryApi.getAll()
-        let categoryOption: IOptions[] = categoryData
-          .filter((cat) => cat.parentId !== 0) // Lọc các phần tử không có parentName
-          .map((cat) => ({
-            value: cat.id,
-            label: cat.name
-          }))
-        categoryOption = [
-          {
-            value: 0,
-            label: '---Select Category---'
-          },
-          ...categoryOption
-        ]
-        setCategoryOption(categoryOption)
         setLoading(false) // Tắt trạng thái loading
-      }, 1000)
-    } catch (error) {
-      console.error('Error fetching images:', error)
-      setLoading(false)
+      } catch (error) {
+        console.error('Error fetching images:', error)
+        setLoading(false)
+      }
     }
-    return () => {
-      clearTimeout(timeoutId) // Dọn dẹp timeout khi unmount
-    }
+    handleGetData()
   }, [])
 
   // Cấu hình Zod schema
@@ -92,12 +71,21 @@ function Add({}: Props) {
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
     reset
   } = useForm<productFormData>({
     resolver: zodResolver(productSchema)
   })
 
+  const imgUrl = watch('thumbnail')
+
+  useEffect(() => {
+    if (!imgUrl) {
+      console.log(imgUrl);
+      setInitialImageUrl('')
+    }
+  }, [imgUrl])
   const onSubmit = (data: productFormData) => {
     try {
       //call api in here...
@@ -161,6 +149,8 @@ function Add({}: Props) {
                       label='Upload Image'
                       error={errors.thumbnail?.message} // Hiển thị lỗi nếu có
                       onChange={(file) => field.onChange(file)} // Cập nhật giá trị khi file thay đổi
+                      initialImageUrl={initialImageUrl}
+                      setInitialImageUrl={setInitialImageUrl}
                     />
                   )}
                 />
@@ -170,11 +160,12 @@ function Add({}: Props) {
                 <Controller
                   name='categoryId'
                   control={control}
+                  defaultValue={0}
                   render={({ field }) => (
                     <SelectGroup
                       value={field.value} // Đồng bộ hóa giá trị
                       onChange={(value) => field.onChange(value)} // Chuyển giá trị từ string thành số
-                      options={categoryOption} // Danh sách tùy chọn
+                      options={categoryChildOption} // Danh sách tùy chọn
                       label='Category'
                       className='mb-6'
                       error={errors.categoryId?.message} // Hiển thị lỗi (nếu có)
@@ -220,7 +211,7 @@ function Add({}: Props) {
                   control={control}
                   defaultValue={[]}
                   render={({ field }) => (
-                    <ForwardedCheckboxGroup
+                    <CheckboxGroup
                       {...field}
                       label='Attribute Type'
                       options={attributeTypeOptions}

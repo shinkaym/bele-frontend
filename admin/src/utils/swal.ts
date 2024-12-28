@@ -1,5 +1,5 @@
-import Swal from 'sweetalert2'
 import { EToastOption } from '@/models/enums/option'
+import Swal, { SweetAlertOptions } from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 export const UToast = (type = EToastOption.SUCCESS, title = ''): void => {
@@ -20,14 +20,18 @@ export const UToast = (type = EToastOption.SUCCESS, title = ''): void => {
   })
 }
 
-export const UCaptchaAlert = async (captchaCode = 'ABCD', handleChange: (inputValue: string) => void) => {
+export const UInputAlert = async (
+  title = 'ABCD',
+  inputType: SweetAlertOptions['input'] = 'text',
+  handleChange: (inputValue: string) => void,
+  attributes?:Record<string, string> ,
+) => {
   withReactContent(Swal).fire({
-    title: `${captchaCode}`,
-    input: 'text',
+    title: `${title}`,
+    input: inputType,
     inputPlaceholder: 'Fill captcha...',
     inputAttributes: {
-      autocomplete: 'off', // Tắt tính năng tự động hoàn thành
-      maxlength: '4',
+      ...attributes
     },
     preConfirm: () => {
       const inputValue = Swal.getInput()?.value || ''

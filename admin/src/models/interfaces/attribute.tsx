@@ -10,5 +10,5 @@ export interface IAttributeValue{
     value:string
     status:number
     createdAt:string
-    updateAt:string
+    updatedAt:string
 }

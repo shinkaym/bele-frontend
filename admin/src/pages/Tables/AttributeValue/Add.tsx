@@ -20,8 +20,8 @@ type Props = {}
 
 function Add({}: Props) {
   const [loading, setLoading] = useState(false)
-  const [options, setOptions] = useState<IOptions[]>([])
   const [attributeValueData, setAttributeValueData] = useState<IAttributeValue[]>([])
+  const [attrTypeOptions, setAttrTypeOptions] = useState<IOptions[]>([])
 
   useEffect(() => {
     const handleGetData = async () => {
@@ -29,21 +29,13 @@ function Add({}: Props) {
       try {
         const data = await attributeValueApi.getList()
         setAttributeValueData(data)
-        //set Option attributeValue Parent
-        // let newData: IOptions[] = data
-        //   .filter((cat) => !cat.parentName) // Lọc các phần tử không có parentName
-        //   .map((cat) => ({
-        //     value: cat.id,
-        //     label: cat.name
-        //   }))
-        // newData = [
-        //   {
-        //     value: 0,
-        //     label: '---Select attributeValue---'
-        //   },
-        //   ...newData
-        // ]
-        // setOptions(newData) // Cập nhật dữ liệu
+        setAttrTypeOptions([
+          {
+            value: 0,
+            label: '---Select Attribute Type'
+          },
+          ...attributeTypeOptions
+        ])
         setLoading(false) // Tắt trạng thái loading
       } catch (error) {
         console.error('Error fetching categories:', error)
@@ -111,7 +103,11 @@ function Add({}: Props) {
         <Loader />
       ) : (
         <div className='flex flex-col gap-10'>
-          <Breadcrumb pageName='Add Attribute Value' parentPageName='Attribute Value' parentTo='/tables/attribute-value' />
+          <Breadcrumb
+            pageName='Add Attribute Value'
+            parentPageName='Attribute Value'
+            parentTo='/tables/attribute-value'
+          />
 
           <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-4 '>
             {/* attributeValue Name */}
@@ -124,7 +120,7 @@ function Add({}: Props) {
                   <SelectGroup
                     value={field.value} // Đồng bộ hóa giá trị
                     onChange={(value) => field.onChange(parseInt(value))} // Chuyển giá trị từ string thành số
-                    options={attributeTypeOptions} // Danh sách tùy chọn
+                    options={attrTypeOptions} // Danh sách tùy chọn
                     error={errors.attributeTypeId?.message} // Hiển thị lỗi (nếu có)
                     className='mb-6'
                   />

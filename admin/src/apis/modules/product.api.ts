@@ -8,10 +8,10 @@ const productEndpoints = {
 }
 
 const productApi = {
-   getAll: (): IProduct[] => {
+   getList: (): IProduct[] => {
       return productData
     },
-    getProduct: (id: number) => {
+    getProductById: (id: number) => {
       return productData.find((pro) => pro.id === id)
     }
 }

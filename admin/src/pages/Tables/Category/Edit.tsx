@@ -23,7 +23,7 @@ function Edit({}: Props) {
   const [options, setOptions] = useState<IOptions[]>([])
   const [categoryData, setCategoryData] = useState<ICategory[]>([])
   const params = useParams()
-  const categoryId: number = Number(params.categoryId)
+  const categoryId: number = Number(params.id)
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout
