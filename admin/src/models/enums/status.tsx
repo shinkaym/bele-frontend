@@ -6,7 +6,8 @@ export enum EStatus {
 export enum EOrderStatus {
   UNKNOWN = 'Unknown',
   PENDING = 'Pending',
-  COMPLETED = 'Completed',
+  DELIVERED = 'Delivered',
+  SHIPPED = 'Shipped',
   CANCELED = 'Cancelled'
 }
 

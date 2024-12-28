@@ -1,137 +1,239 @@
 import { IOrder } from '@/models/interfaces/order'
-import Search from '../Forms/Search'
-import Button from '../Button'
 import { DeleteIcon, EditIcon } from '@/components/icons'
 import { Link } from 'react-router-dom'
-import { orderStatusLabels } from '@/constants'
+import { formatDate } from '@/utils'
+import Swal from 'sweetalert2'
+import { useState } from 'react'
+import orderApi from '@/apis/modules/order.api'
+import OrderStatusBadge from '../OrderStatusBadge'
+import { orderStatus, orderTableHeaders } from '@/constants'
+import ConfirmationModal from '../ConfirmationModal'
 import { EOrderStatus } from '@/models/enums/status'
+import ReCAPCHAModal from '../ReCAPCHAModal'
+import StatusModal from '../StatusModal'
 
 type OrderTableProps = {
   orders: IOrder[]
-  onSearch: (query: string) => void
 }
 
-const OrderTable = ({ orders, onSearch }: OrderTableProps) => {
-  return (
-    <div className='rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1'>
-      <div className='flex items-center justify-between mb-6'>
-        <Search onSearch={(query: string) => onSearch(query)} />
-        <Button type='link' to='/tables/order/add' size='sm'>
-          Add
-        </Button>
-      </div>
+const OrderTable = ({ orders }: OrderTableProps) => {
+  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const [selectedStatus, setSelectedStatus] = useState<number | null>(null)
+  const [currentOrder, setCurrentOrder] = useState<IOrder | null>(null)
+  const [isOpenDeleteReCaptchaModal, setIsOpenDeleteReCaptchaModal] = useState(false)
+  const [isOpenStatusReCaptchaModal, setIsOpenStatusReCaptchaModal] = useState(false)
+  const [isOpenConfirmDeleteModal, setIsOpenConfirmDeleteModal] = useState(false)
+  const [isOpenStatusListModal, setIsOpenStatusListModal] = useState(false)
+  const [isOpenConfirmStatusChangeModal, setIsOpenConfirmStatusChangeModal] = useState(false)
 
-      <div className='max-w-full overflow-x-auto mb-6 scrollbar-thin dark:scrollbar-thumb-boxdark dark:scrollbar-track-gray-3 scrollbar-thumb-white scrollbar-track-boxdark'>
-        <table className='w-full table-auto'>
-          <thead>
-            <tr className='bg-gray-2 text-left dark:bg-meta-4'>
-              <th className='min-w-[20px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Id
+  const handleDeleteClick = (orderId: number) => {
+    setSelectedId(orderId)
+    setIsOpenDeleteReCaptchaModal(true)
+  }
+
+  const handleDeleteReCaptchaChange = async (token: string | null) => {
+    if (token && selectedId) {
+      setIsOpenConfirmDeleteModal(true)
+      setIsOpenDeleteReCaptchaModal(false)
+    }
+  }
+
+  const handleConfirmDelete = async () => {
+    if (selectedId) {
+      try {
+        const response = await orderApi.delete({ id: selectedId })
+
+        if (response.status === 200) {
+          Swal.fire('Deleted!', response.message, 'success')
+        } else {
+          Swal.fire('Error!', response.message, 'error')
+        }
+      } catch (error) {
+        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
+      } finally {
+        setIsOpenConfirmDeleteModal(false)
+        setSelectedId(null)
+      }
+    }
+  }
+
+  const handleCancelDelete = () => {
+    setIsOpenDeleteReCaptchaModal(false)
+    setIsOpenConfirmDeleteModal(false)
+    setSelectedId(null)
+  }
+
+  const handleStatusClick = (order: IOrder) => {
+    setCurrentOrder(order)
+    setIsOpenStatusReCaptchaModal(true)
+  }
+
+  const handleStatusReCaptchaChange = async (token: string | null) => {
+    if (token && currentOrder) {
+      setIsOpenStatusListModal(true)
+      setIsOpenStatusReCaptchaModal(false)
+    }
+  }
+
+  const handleUpdateStatus = (statusValue: number) => {
+    setSelectedStatus(statusValue)
+    setIsOpenStatusListModal(false)
+    setIsOpenConfirmStatusChangeModal(true)
+  }
+
+  const handleConfirmStatusChange = async () => {
+    if (currentOrder && selectedStatus !== null) {
+      try {
+        const response = await orderApi.updateStatus({
+          id: currentOrder.id,
+          status: selectedStatus
+        })
+        if (response.status === 200) {
+          Swal.fire('Success!', 'Order status updated successfully', 'success')
+        } else {
+          Swal.fire('Error!', response.message, 'error')
+        }
+      } catch (error) {
+        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
+      } finally {
+        setIsOpenConfirmStatusChangeModal(false)
+        setSelectedStatus(null)
+      }
+    }
+  }
+
+  const handleCancelStatusChange = () => {
+    setIsOpenStatusReCaptchaModal(false)
+    setIsOpenConfirmStatusChangeModal(false)
+    setIsOpenStatusListModal(false)
+    setSelectedStatus(null)
+  }
+
+  const getStatusName = (statusValue: number | null): string => {
+    const status = orderStatus.find((s) => s.value === statusValue)
+    return status ? status.title : EOrderStatus.UNKNOWN
+  }
+
+  return (
+    <div className='max-w-full overflow-x-auto mb-6 scrollbar-thin dark:scrollbar-thumb-boxdark dark:scrollbar-track-gray-3 scrollbar-thumb-white scrollbar-track-boxdark'>
+      <table className='w-full table-auto'>
+        <thead>
+          <tr className='bg-gray-2 text-left dark:bg-meta-4'>
+            {orderTableHeaders.map((h) => (
+              <th
+                key={h.value}
+                className={`${h.className} py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap`}
+              >
+                {h.title}
               </th>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Email
-              </th>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Name
-              </th>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Phone Number
-              </th>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Address
-              </th>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Note
-              </th>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Pay Method
-              </th>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Total
-              </th>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Ship Date
-              </th>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Receive Date
-              </th>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Status
-              </th>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Created At
-              </th>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Updated At
-              </th>
-              <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap text-center'>
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((or, key) => (
-              <tr key={key}>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.id}</h5>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.email}</h5>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                    {or.name}
-                  </h5>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.phoneNumber}</h5>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.address}</h5>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.note}</h5>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.payMethod}</h5>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.totalMoney}</h5>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.shipDate}</h5>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.receiveDate}</h5>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{orderStatusLabels[or.status] || EOrderStatus.UNKNOWN}</h5>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                    {or.createdAt}
-                  </h5>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                    {or.updatedAt}
-                  </h5>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <div className='flex items-center space-x-3.5'>
-                    <Link to={`/tables/order/edit/${or.id}`} className='hover:text-primary'>
-                      <EditIcon width={24} height={24} />
-                    </Link>
-                    <button type='button' className='hover:text-primary' onClick={() => {}}>
-                      <DeleteIcon width={24} height={24} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </tr>
+        </thead>
+        <tbody>
+          {orders.map((or, key) => (
+            <tr key={key}>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.id}</h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.email}</h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.name}</h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {or.phoneNumber}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.address}</h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.note}</h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {or.payMethod}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {or.totalMoney}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.shipDate}</h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {or.receiveDate}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  <OrderStatusBadge status={or.status} onClick={() => handleStatusClick(or)} />
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {formatDate(or.createdAt)}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {formatDate(or.updatedAt)}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <div className='flex items-center space-x-3.5'>
+                  <Link to={`/tables/order/edit/${or.id}`} className='hover:text-primary'>
+                    <EditIcon width={24} height={24} />
+                  </Link>
+                  <button type='button' className='hover:text-primary' onClick={() => handleDeleteClick(or.id)}>
+                    <DeleteIcon width={24} height={24} />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {isOpenDeleteReCaptchaModal && (
+        <ReCAPCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
+      )}
+
+      {isOpenConfirmDeleteModal && (
+        <ConfirmationModal
+          title='Are you sure you want to delete this order?'
+          className='bg-red-500'
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+        />
+      )}
+
+      {isOpenStatusReCaptchaModal && (
+        <ReCAPCHAModal onChange={handleStatusReCaptchaChange} onCancel={handleCancelStatusChange} />
+      )}
+
+      {isOpenStatusListModal && currentOrder && (
+        <StatusModal
+          status={currentOrder.status}
+          onUpdateStatus={handleUpdateStatus}
+          onCancel={handleCancelStatusChange}
+          statusList={orderStatus}
+          modalTitle='Order'
+        />
+      )}
+
+      {isOpenConfirmStatusChangeModal && (
+        <ConfirmationModal
+          title={`Are you sure you want to change the status to ${getStatusName(selectedStatus)}?`}
+          className='bg-blue-500'
+          onConfirm={handleConfirmStatusChange}
+          onCancel={handleCancelStatusChange}
+        />
+      )}
     </div>
   )
 }
