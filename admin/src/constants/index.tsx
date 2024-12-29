@@ -12,14 +12,38 @@ export const menuItems: TMenuItem[] = [
   }
 ]
 
+export const sortByOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+    title: EFieldByTitle.CREATED_AT,
+    value: EFieldByValue.CREATED_AT
+  },
+  {
+    title: EFieldByTitle.UPDATED_AT,
+    value: EFieldByValue.UPDATED_AT
+  }
+]
+
+export const sortOrderOptions: { title: ESortOrderTitle; value: ESortOrderValue }[] = [
+  {
+    title: ESortOrderTitle.ASC,
+    value: ESortOrderValue.ASC
+  },
+  {
+    title: ESortOrderTitle.DESC,
+    value: ESortOrderValue.DESC
+  }
+]
+
 export const rateStatus: IStatus[] = [
   {
     title: ERateStatus.INACTIVE,
-    value: 0
+    value: 0,
+    className: 'text-orange-600 border-orange-600 bg-orange-200'
   },
   {
     title: ERateStatus.ACTIVE,
-    value: 1
+    value: 1,
+    className: 'text-green-600 border-green-600 bg-green-200'
   }
 ]
 
@@ -64,28 +88,6 @@ export const employeeStatus: IStatus[] = [
   }
 ]
 
-export const sortByOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
-  {
-    title: EFieldByTitle.CREATED_AT,
-    value: EFieldByValue.CREATED_AT
-  },
-  {
-    title: EFieldByTitle.UPDATED_AT,
-    value: EFieldByValue.UPDATED_AT
-  }
-]
-
-export const sortOrderOptions: { title: ESortOrderTitle; value: ESortOrderValue }[] = [
-  {
-    title: ESortOrderTitle.ASC,
-    value: ESortOrderValue.ASC
-  },
-  {
-    title: ESortOrderTitle.DESC,
-    value: ESortOrderValue.DESC
-  }
-]
-
 export const orderFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
   {
     title: EFieldByTitle.ID,
@@ -93,8 +95,22 @@ export const orderFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[]
   }
 ]
 
+export const employeeFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+    title: EFieldByTitle.ID,
+    value: EFieldByValue.ID
+  }
+]
+
+export const rateFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+    title: EFieldByTitle.ID,
+    value: EFieldByValue.ID
+  }
+]
+
 export const orderTableHeaders: ITable[] = [
-  { title: 'Id', value: 1, className: 'min-w-[20px]' },
+  { title: 'Id', value: 1, className: 'min-w-[20px] text-center' },
   { title: 'Email', value: 2, className: 'min-w-[80px]' },
   { title: 'Name', value: 3, className: 'min-w-[80px]' },
   { title: 'Phone Number', value: 4, className: 'min-w-[80px]' },
@@ -108,4 +124,30 @@ export const orderTableHeaders: ITable[] = [
   { title: 'Created At', value: 12, className: 'min-w-[80px]' },
   { title: 'Updated At', value: 13, className: 'min-w-[80px]' },
   { title: 'Action', value: 14, className: 'min-w-[80px] text-center' }
+]
+
+export const employeeTableHeaders: ITable[] = [
+  { title: 'Id', value: 1, className: 'min-w-[20px] text-center' },
+  { title: 'Name', value: 2, className: 'min-w-[80px]' },
+  { title: 'Phone Number', value: 3, className: 'min-w-[80px]' },
+  { title: 'Email', value: 4, className: 'min-w-[80px]' },
+  { title: 'Sex', value: 5, className: 'min-w-[80px]' },
+  { title: 'Role', value: 6, className: 'min-w-[80px]' },
+  { title: 'Status', value: 7, className: 'min-w-[80px] text-center' },
+  { title: 'Created At', value: 8, className: 'min-w-[80px]' },
+  { title: 'Updated At', value: 9, className: 'min-w-[80px]' },
+  { title: 'Action', value: 10, className: 'min-w-[80px] text-center' }
+]
+
+export const rateTableHeaders: ITable[] = [
+  { title: 'Id', value: 1, className: 'min-w-[20px] text-center' },
+  { title: 'Product', value: 2, className: 'min-w-[200px]' },
+  { title: 'Name', value: 3, className: 'min-w-[80px]' },
+  { title: 'Star', value: 4, className: 'min-w-[80px] text-center' },
+  { title: 'Content', value: 5, className: 'min-w-[80px]' },
+  { title: 'Reply', value: 6, className: 'min-w-[80px] text-center' },
+  { title: 'Status', value: 7, className: 'min-w-[80px] text-center' },
+  { title: 'Created At', value: 8, className: 'min-w-[80px]' },
+  { title: 'Updated At', value: 9, className: 'min-w-[80px]' },
+  { title: 'Action', value: 10, className: 'min-w-[80px] text-center' }
 ]

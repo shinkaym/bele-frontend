@@ -12,7 +12,7 @@ interface StatusModalProps {
 const StatusModal: React.FC<StatusModalProps> = ({ status, statusList, modalTitle, onUpdateStatus, onCancel }) => {
   return (
     <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50'>
-      <div className='bg-white p-6 rounded shadow-lg'>
+      <div className='bg-white p-6  rounded shadow-lg'>
         <h3 className='text-lg font-medium mb-4'>Change {modalTitle} Status</h3>
         <div className='grid grid-cols-2 gap-4'>
           {statusList
@@ -20,7 +20,7 @@ const StatusModal: React.FC<StatusModalProps> = ({ status, statusList, modalTitl
             .map((s) => (
               <button
                 key={s.value}
-                className={`s-button ${s.className}`}
+                className={`s-button ${s.className} py-3 px-2 rounded`}
                 data-value={s.value}
                 onClick={() => onUpdateStatus(s.value)}
               >
@@ -29,7 +29,7 @@ const StatusModal: React.FC<StatusModalProps> = ({ status, statusList, modalTitl
             ))}
         </div>
         <button
-              className='bg-gray-500 text-white px-4 py-2 mt-4 rounded'
+              className='bg-gray-500 text-white px-4 py-2 mt-5 rounded'
               onClick={onCancel}
             >
               Cancel

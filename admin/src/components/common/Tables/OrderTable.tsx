@@ -11,17 +11,18 @@ import ConfirmationModal from '../ConfirmationModal'
 import { EOrderStatus } from '@/models/enums/status'
 import ReCAPCHAModal from '../ReCAPCHAModal'
 import StatusModal from '../StatusModal'
+import StatusBadge from '../OrderStatusBadge'
 
 type OrderTableProps = {
   orders: IOrder[]
+  onRefresh: () => void
 }
 
-const OrderTable = ({ orders }: OrderTableProps) => {
+const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [selectedStatus, setSelectedStatus] = useState<number | null>(null)
   const [currentOrder, setCurrentOrder] = useState<IOrder | null>(null)
   const [isOpenDeleteReCaptchaModal, setIsOpenDeleteReCaptchaModal] = useState(false)
-  const [isOpenStatusReCaptchaModal, setIsOpenStatusReCaptchaModal] = useState(false)
   const [isOpenConfirmDeleteModal, setIsOpenConfirmDeleteModal] = useState(false)
   const [isOpenStatusListModal, setIsOpenStatusListModal] = useState(false)
   const [isOpenConfirmStatusChangeModal, setIsOpenConfirmStatusChangeModal] = useState(false)
@@ -44,6 +45,7 @@ const OrderTable = ({ orders }: OrderTableProps) => {
         const response = await orderApi.delete({ id: selectedId })
 
         if (response.status === 200) {
+          onRefresh()
           Swal.fire('Deleted!', response.message, 'success')
         } else {
           Swal.fire('Error!', response.message, 'error')
@@ -65,18 +67,11 @@ const OrderTable = ({ orders }: OrderTableProps) => {
 
   const handleStatusClick = (order: IOrder) => {
     setCurrentOrder(order)
-    setIsOpenStatusReCaptchaModal(true)
+    setIsOpenStatusListModal(true)
   }
 
-  const handleStatusReCaptchaChange = async (token: string | null) => {
-    if (token && currentOrder) {
-      setIsOpenStatusListModal(true)
-      setIsOpenStatusReCaptchaModal(false)
-    }
-  }
-
-  const handleUpdateStatus = (statusValue: number) => {
-    setSelectedStatus(statusValue)
+  const handleUpdateStatus = (status: number) => {
+    setSelectedStatus(status)
     setIsOpenStatusListModal(false)
     setIsOpenConfirmStatusChangeModal(true)
   }
@@ -89,6 +84,7 @@ const OrderTable = ({ orders }: OrderTableProps) => {
           status: selectedStatus
         })
         if (response.status === 200) {
+          onRefresh()
           Swal.fire('Success!', 'Order status updated successfully', 'success')
         } else {
           Swal.fire('Error!', response.message, 'error')
@@ -103,15 +99,14 @@ const OrderTable = ({ orders }: OrderTableProps) => {
   }
 
   const handleCancelStatusChange = () => {
-    setIsOpenStatusReCaptchaModal(false)
     setIsOpenConfirmStatusChangeModal(false)
     setIsOpenStatusListModal(false)
     setSelectedStatus(null)
   }
 
-  const getStatusName = (statusValue: number | null): string => {
-    const status = orderStatus.find((s) => s.value === statusValue)
-    return status ? status.title : EOrderStatus.UNKNOWN
+  const getStatusName = (status: number | null): string => {
+    const s = orderStatus.find((s) => s.value === status)
+    return s ? s.title : EOrderStatus.UNKNOWN
   }
 
   return (
@@ -133,7 +128,7 @@ const OrderTable = ({ orders }: OrderTableProps) => {
           {orders.map((or, key) => (
             <tr key={key}>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.id}</h5>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>{or.id}</h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.email}</h5>
@@ -172,7 +167,7 @@ const OrderTable = ({ orders }: OrderTableProps) => {
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                  <OrderStatusBadge status={or.status} onClick={() => handleStatusClick(or)} />
+                  <StatusBadge status={or.status} statusList={orderStatus} onClick={() => handleStatusClick(or)} />
                 </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
@@ -210,10 +205,6 @@ const OrderTable = ({ orders }: OrderTableProps) => {
           onConfirm={handleConfirmDelete}
           onCancel={handleCancelDelete}
         />
-      )}
-
-      {isOpenStatusReCaptchaModal && (
-        <ReCAPCHAModal onChange={handleStatusReCaptchaChange} onCancel={handleCancelStatusChange} />
       )}
 
       {isOpenStatusListModal && currentOrder && (

@@ -1,6 +1,6 @@
-import { IEmployeeTableResponse } from '../interfaces/employee';
+import { IEmployeeListResponse } from '../interfaces/employee';
 
-export const IEmployeeTableResponseData: IEmployeeTableResponse = {
+export const employeeListResponseData: IEmployeeListResponse = {
   status: 200,
   data: {
     employees: [

@@ -13,6 +13,7 @@ import SelectFilter from '@/components/common/SelectFilter'
 import SelectSort from '@/components/common/SelectSort'
 import { EOrderStatus } from '@/models/enums/status'
 import { debounce } from 'lodash'
+import SelectStatusFilter from '@/components/common/SelectStatusFilter'
 
 type Props = {}
 
@@ -26,11 +27,11 @@ const index = ({}: Props) => {
   const [loading, setLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [selectedField, setSelectedField] = useState<EFieldByValue>(EFieldByValue.ID)
-  const [selectedStatus, setSelectedStatus] = useState<string>('')
+  const [selectedStatus, setSelectedStatus] = useState<EOrderStatus | null>(null)
   const [sortBy, setSortBy] = useState<EFieldByValue>(EFieldByValue.CREATED_AT)
   const [sortOrder, setSortOrder] = useState<ESortOrderValue>(ESortOrderValue.ASC)
 
-  const fetchOrders = async (page: number, limit: number) => {
+  const fetchData = async (page: number, limit: number) => {
     setLoading(true)
     try {
       const params = {
@@ -60,7 +61,7 @@ const index = ({}: Props) => {
 
   useEffect(() => {
     console.log('fetching orders...')
-    fetchOrders(pagination.currentPage, 5)
+    fetchData(pagination.currentPage, 5)
   }, [searchQuery, selectedField, selectedStatus, sortBy, sortOrder, pagination.currentPage])
 
   const handlePageChange = (page: number) => {
@@ -72,19 +73,19 @@ const index = ({}: Props) => {
       <Breadcrumb pageName='Order' />
       <div className='flex flex-col gap-10'>
         <div className='rounded-sm border bg-white px-5 pt-6 pb-2.5 shadow-default dark:bg-boxdark'>
-          <div className='flex items-center justify-between mb-6'>
+          <div className='flex items-center justify-start gap-5 mb-6'>
             <Search onSearch={debouncedSearch} />
-            <SelectFilter
-              label='Status'
-              value={selectedStatus}
-              options={orderStatus}
-              onChange={(value) => setSelectedStatus(value as EOrderStatus)}
-            />
             <SelectFilter
               label='Field'
               value={selectedField}
               options={orderFieldOptions}
               onChange={(value) => setSelectedField(value as EFieldByValue)}
+            />
+            <SelectStatusFilter
+              label='Status'
+              value={selectedStatus}
+              options={orderStatus}
+              onChange={(value) => setSelectedStatus(value as EOrderStatus | null)}
             />
             <SelectSort
               sortBy={sortBy}
@@ -97,7 +98,11 @@ const index = ({}: Props) => {
               sortOrderOptions={sortOrderOptions}
             />
           </div>
-          {loading ? <Loader /> : <OrderTable orders={orders} />}
+          {loading ? (
+            <Loader />
+          ) : (
+            <OrderTable orders={orders} onRefresh={() => fetchData(pagination.currentPage, 5)} />
+          )}
           <Pagination
             currentPage={pagination.currentPage}
             totalPages={pagination.totalPages}

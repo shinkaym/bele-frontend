@@ -1,57 +1,133 @@
 import { IEmployee } from '@/models/interfaces/employee'
 import { DeleteIcon, EditIcon } from '@/components/icons'
 import { Link } from 'react-router-dom'
-import { employeeStatus } from '@/constants'
+import { employeeStatus, employeeTableHeaders } from '@/constants'
 import { EEmployeeStatus } from '@/models/enums/status'
 import { formatDate } from '@/utils'
+import { useState } from 'react'
+import employeeApi from '@/apis/modules/employee.api'
+import Swal from 'sweetalert2'
+import ReCAPCHAModal from '../ReCAPCHAModal'
+import ConfirmationModal from '../ConfirmationModal'
+import StatusModal from '../StatusModal'
+import StatusBadge from '../OrderStatusBadge'
 
 type EmployeeTableProps = {
   employees: IEmployee[]
+  onRefresh: () => void
 }
 
-const EmployeeTable = ({ employees }: EmployeeTableProps) => {
+const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
+  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const [selectedStatus, setSelectedStatus] = useState<number | null>(null)
+  const [currentEmployee, setCurrentEmployee] = useState<IEmployee | null>(null)
+  const [isOpenDeleteReCaptchaModal, setIsOpenDeleteReCaptchaModal] = useState(false)
+  const [isOpenConfirmDeleteModal, setIsOpenConfirmDeleteModal] = useState(false)
+  const [isOpenStatusListModal, setIsOpenStatusListModal] = useState(false)
+  const [isOpenConfirmStatusChangeModal, setIsOpenConfirmStatusChangeModal] = useState(false)
+
+  const handleDeleteClick = (employeeId: number) => {
+    setSelectedId(employeeId)
+    setIsOpenDeleteReCaptchaModal(true)
+  }
+
+  const handleDeleteReCaptchaChange = async (token: string | null) => {
+    if (token && selectedId) {
+      setIsOpenConfirmDeleteModal(true)
+      setIsOpenDeleteReCaptchaModal(false)
+    }
+  }
+
+  const handleConfirmDelete = async () => {
+    if (selectedId) {
+      try {
+        const response = await employeeApi.delete({ id: selectedId })
+
+        if (response.status === 200) {
+          onRefresh()
+          Swal.fire('Deleted!', response.message, 'success')
+        } else {
+          Swal.fire('Error!', response.message, 'error')
+        }
+      } catch (error) {
+        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
+      } finally {
+        setIsOpenConfirmDeleteModal(false)
+        setSelectedId(null)
+      }
+    }
+  }
+
+  const handleCancelDelete = () => {
+    setIsOpenDeleteReCaptchaModal(false)
+    setIsOpenConfirmDeleteModal(false)
+    setSelectedId(null)
+  }
+
+  const handleStatusClick = (employee: IEmployee) => {
+    setCurrentEmployee(employee)
+    setIsOpenStatusListModal(true)
+  }
+
+  const handleUpdateStatus = (status: number) => {
+    setSelectedStatus(status)
+    setIsOpenStatusListModal(false)
+    setIsOpenConfirmStatusChangeModal(true)
+  }
+
+  const handleConfirmStatusChange = async () => {
+    if (currentEmployee && selectedStatus !== null) {
+      try {
+        const response = await employeeApi.updateStatus({
+          id: currentEmployee.id,
+          status: selectedStatus
+        })
+        if (response.status === 200) {
+          onRefresh()
+          Swal.fire('Success!', 'Employee status updated successfully', 'success')
+        } else {
+          Swal.fire('Error!', response.message, 'error')
+        }
+      } catch (error) {
+        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
+      } finally {
+        setIsOpenConfirmStatusChangeModal(false)
+        setSelectedStatus(null)
+      }
+    }
+  }
+
+  const handleCancelStatusChange = () => {
+    setIsOpenConfirmStatusChangeModal(false)
+    setIsOpenStatusListModal(false)
+    setSelectedStatus(null)
+  }
+
+  const getStatusName = (status: number | null): string => {
+    const s = employeeStatus.find((s) => s.value === status)
+    return s ? s.title : EEmployeeStatus.UNKNOWN
+  }
+
   return (
     <div className='max-w-full overflow-x-auto mb-6 scrollbar-thin dark:scrollbar-thumb-boxdark dark:scrollbar-track-gray-3 scrollbar-thumb-white scrollbar-track-boxdark'>
       <table className='w-full table-auto'>
         <thead>
           <tr className='bg-gray-2 text-left dark:bg-meta-4'>
-            <th className='min-w-[20px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-              Id
-            </th>
-            <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-              Name
-            </th>
-            <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-              Phone Number
-            </th>
-            <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-              Email
-            </th>
-            <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-              Sex
-            </th>
-            <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-              Role
-            </th>
-            <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-              Status
-            </th>
-            <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-              Created At
-            </th>
-            <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-              Updated At
-            </th>
-            <th className='min-w-[80px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap text-center'>
-              Action
-            </th>
+            {employeeTableHeaders.map((h) => (
+              <th
+                key={h.value}
+                className={`${h.className} py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap`}
+              >
+                {h.title}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
           {employees.map((em, key) => (
             <tr key={key}>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{em.id}</h5>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>{em.id}</h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{em.name}</h5>
@@ -72,7 +148,7 @@ const EmployeeTable = ({ employees }: EmployeeTableProps) => {
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                {employeeStatus.find(s => s.value === em.status)?.title || EEmployeeStatus.UNKNOWN}
+                  <StatusBadge status={em.status} statusList={employeeStatus} onClick={() => handleStatusClick(em)} />
                 </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
@@ -90,7 +166,7 @@ const EmployeeTable = ({ employees }: EmployeeTableProps) => {
                   <Link to={`/tables/employee/edit/${em.id}`} className='hover:text-primary'>
                     <EditIcon width={24} height={24} />
                   </Link>
-                  <button type='button' className='hover:text-primary' onClick={() => {}}>
+                  <button type='button' className='hover:text-primary' onClick={() => handleDeleteClick(em.id)}>
                     <DeleteIcon width={24} height={24} />
                   </button>
                 </div>
@@ -99,6 +175,37 @@ const EmployeeTable = ({ employees }: EmployeeTableProps) => {
           ))}
         </tbody>
       </table>
+      {isOpenDeleteReCaptchaModal && (
+        <ReCAPCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
+      )}
+
+      {isOpenConfirmDeleteModal && (
+        <ConfirmationModal
+          title='Are you sure you want to delete this employee?'
+          className='bg-red-500'
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+        />
+      )}
+
+      {isOpenStatusListModal && currentEmployee && (
+        <StatusModal
+          status={currentEmployee.status}
+          onUpdateStatus={handleUpdateStatus}
+          onCancel={handleCancelStatusChange}
+          statusList={employeeStatus}
+          modalTitle='Employee'
+        />
+      )}
+
+      {isOpenConfirmStatusChangeModal && (
+        <ConfirmationModal
+          title={`Are you sure you want to change the status to ${getStatusName(selectedStatus)}?`}
+          className='bg-blue-500'
+          onConfirm={handleConfirmStatusChange}
+          onCancel={handleCancelStatusChange}
+        />
+      )}
     </div>
   )
 }

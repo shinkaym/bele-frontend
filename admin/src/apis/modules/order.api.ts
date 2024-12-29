@@ -5,8 +5,7 @@ import {
   IOrderUpdateStatusResponse
 } from '@/models/interfaces/order'
 import axiosPublic from '../client/public.client'
-import { IApiResponse } from '@/models/interfaces/api'
-import { IOrderListResponseData } from '@/models/data/orderData'
+import { orderListResponseData } from '@/models/data/orderData'
 
 const orderEndpoints = {
   list: 'order',
@@ -20,7 +19,7 @@ const orderApi = {
   list(): IOrderListResponse {
     try {
       // return await axiosPublic.get(orderEndpoints.list)
-      return IOrderListResponseData
+      return orderListResponseData
     } catch (error) {
       throw error
     }

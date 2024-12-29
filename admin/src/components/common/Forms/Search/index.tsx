@@ -50,7 +50,7 @@ const Search: React.FC<SearchProps> = ({ onSearch, size = "md", radius = "md", c
   );
 
   return (
-    <div className="flex items-center w-full max-w-md bg-white rounded-lg shadow-md">
+    <div className="flex items-center w-full max-w-xs bg-white rounded-lg shadow-md">
       {/* Search Input */}
       <input
         type="search"

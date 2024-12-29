@@ -1,6 +1,6 @@
 import { IOrderListResponse } from '../interfaces/order'; // Giả sử bạn đã có interface này
 
-export const IOrderListResponseData: IOrderListResponse = {
+export const orderListResponseData: IOrderListResponse = {
   status: 200,
   data: {
     orders: [

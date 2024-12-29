@@ -1,19 +1,22 @@
-// OrderStatusBadge.tsx
-import { orderStatus } from '@/constants'
+import { IStatus } from '@/models/interfaces'
 
-type OrderStatusBadgeProps = {
+type StatusBadgeProps = {
   status: number
+  statusList: IStatus[]
   onClick: () => void
 }
 
-const OrderStatusBadge = ({ status, onClick }: OrderStatusBadgeProps) => {
-  const statusInfo = orderStatus.find(s => s.value === status)
-  
+const StatusBadge = ({ status, statusList, onClick }: StatusBadgeProps) => {
+  const statusInfo = statusList.find((s) => s.value === status)
+
   return (
-    <button onClick={onClick} className={`inline-block px-3 py-1 text-sm font-semibold rounded-full border ${statusInfo?.className || ''}`}>
+    <button
+      onClick={onClick}
+      className={`inline-block px-3 py-1 text-sm font-semibold rounded-full border ${statusInfo?.className || ''}`}
+    >
       {statusInfo?.title}
     </button>
   )
 }
 
-export default OrderStatusBadge
+export default StatusBadge
