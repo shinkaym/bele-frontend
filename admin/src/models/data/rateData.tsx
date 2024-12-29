@@ -1,6 +1,6 @@
-import { IRateTableResponse } from '../interfaces/rate';
+import { IRateListResponse } from '../interfaces/rate';
 
-export const IRateTableResponseData: IRateTableResponse = {
+export const rateListResponseData: IRateListResponse = {
   status: 200,
   data: {
     rates: [
@@ -11,7 +11,7 @@ export const IRateTableResponseData: IRateTableResponse = {
         name: "John Doe",
         star: 5,
         content: "Excellent product!",
-        reply: "Thank you for your feedback!",
+        reply: "",
         status: 1,
         createdAt: "1734974964.4281",
         updatedAt: "1734974964.4281",
