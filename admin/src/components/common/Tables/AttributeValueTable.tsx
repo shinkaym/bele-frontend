@@ -104,7 +104,7 @@ function AttributeValueTable({ attributeValues, onSearch }: Props) {
                     value={value.id}
                     onClick={handleStatus}
                   >
-                    {value.status === 1 ? EStatus.ACTIVE : EStatus.UNACTIVE}
+                    {value.status === 1 ? EStatus.ACTIVE : EStatus.INACTIVE}
                   </Button>
                 </td>
                 <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
