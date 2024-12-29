@@ -10,7 +10,7 @@ import Swal from 'sweetalert2'
 import ReCAPCHAModal from '../ReCAPCHAModal'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
-import StatusBadge from '../OrderStatusBadge'
+import StatusBadge from '../StatusBadge'
 
 type EmployeeTableProps = {
   employees: IEmployee[]
@@ -20,14 +20,14 @@ type EmployeeTableProps = {
 const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [selectedStatus, setSelectedStatus] = useState<number | null>(null)
-  const [currentEmployee, setCurrentEmployee] = useState<IEmployee | null>(null)
+  const [current, setCurrent] = useState<IEmployee | null>(null)
   const [isOpenDeleteReCaptchaModal, setIsOpenDeleteReCaptchaModal] = useState(false)
   const [isOpenConfirmDeleteModal, setIsOpenConfirmDeleteModal] = useState(false)
   const [isOpenStatusListModal, setIsOpenStatusListModal] = useState(false)
   const [isOpenConfirmStatusChangeModal, setIsOpenConfirmStatusChangeModal] = useState(false)
 
-  const handleDeleteClick = (employeeId: number) => {
-    setSelectedId(employeeId)
+  const handleDeleteClick = (id: number) => {
+    setSelectedId(id)
     setIsOpenDeleteReCaptchaModal(true)
   }
 
@@ -65,7 +65,7 @@ const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
   }
 
   const handleStatusClick = (employee: IEmployee) => {
-    setCurrentEmployee(employee)
+    setCurrent(employee)
     setIsOpenStatusListModal(true)
   }
 
@@ -76,10 +76,10 @@ const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
   }
 
   const handleConfirmStatusChange = async () => {
-    if (currentEmployee && selectedStatus !== null) {
+    if (current && selectedStatus !== null) {
       try {
         const response = await employeeApi.updateStatus({
-          id: currentEmployee.id,
+          id: current.id,
           status: selectedStatus
         })
         if (response.status === 200) {
@@ -93,6 +93,7 @@ const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
       } finally {
         setIsOpenConfirmStatusChangeModal(false)
         setSelectedStatus(null)
+        setCurrent(null)
       }
     }
   }
@@ -101,6 +102,7 @@ const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
     setIsOpenConfirmStatusChangeModal(false)
     setIsOpenStatusListModal(false)
     setSelectedStatus(null)
+    setCurrent(null)
   }
 
   const getStatusName = (status: number | null): string => {
@@ -127,7 +129,9 @@ const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
           {employees.map((em, key) => (
             <tr key={key}>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>{em.id}</h5>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>
+                  {em.id}
+                </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{em.name}</h5>
@@ -188,9 +192,9 @@ const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
         />
       )}
 
-      {isOpenStatusListModal && currentEmployee && (
+      {isOpenStatusListModal && current && (
         <StatusModal
-          status={currentEmployee.status}
+          status={current.status}
           onUpdateStatus={handleUpdateStatus}
           onCancel={handleCancelStatusChange}
           statusList={employeeStatus}

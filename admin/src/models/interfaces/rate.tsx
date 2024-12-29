@@ -1,16 +1,16 @@
-import { IPagination } from './pagination';
+import { IPagination } from './pagination'
 
 export interface IRate {
-  id: number;
-  pImage: string;
-  pName: string;
-  name: string;
-  star: number;
-  content: string;
-  reply: string;
-  status: number;
-  createdAt: string;
-  updatedAt: string;
+  id: number
+  pImage: string
+  pName: string
+  name: string
+  star: number
+  content: string
+  reply: string
+  status: number
+  createdAt: string
+  updatedAt: string
 }
 
 export interface IRateListResponse {
@@ -41,9 +41,19 @@ export interface IRateDeleteResponse {
 export interface IRateUpdateStatusResponse {
   status: number
   data: {
-    id: number,
-    status: number,
+    id: number
+    status: number
     updatedAt: string
   }
+  message: string
+}
+
+export interface IRateReplyResponse {
+  status: number
+  message: string
+}
+
+export interface IRateEditReplyResponse {
+  status: number
   message: string
 }

@@ -5,13 +5,12 @@ import { formatDate } from '@/utils'
 import Swal from 'sweetalert2'
 import { useState } from 'react'
 import orderApi from '@/apis/modules/order.api'
-import OrderStatusBadge from '../OrderStatusBadge'
 import { orderStatus, orderTableHeaders } from '@/constants'
 import ConfirmationModal from '../ConfirmationModal'
 import { EOrderStatus } from '@/models/enums/status'
 import ReCAPCHAModal from '../ReCAPCHAModal'
 import StatusModal from '../StatusModal'
-import StatusBadge from '../OrderStatusBadge'
+import StatusBadge from '../StatusBadge'
 
 type OrderTableProps = {
   orders: IOrder[]
@@ -21,14 +20,14 @@ type OrderTableProps = {
 const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [selectedStatus, setSelectedStatus] = useState<number | null>(null)
-  const [currentOrder, setCurrentOrder] = useState<IOrder | null>(null)
+  const [current, setCurrent] = useState<IOrder | null>(null)
   const [isOpenDeleteReCaptchaModal, setIsOpenDeleteReCaptchaModal] = useState(false)
   const [isOpenConfirmDeleteModal, setIsOpenConfirmDeleteModal] = useState(false)
   const [isOpenStatusListModal, setIsOpenStatusListModal] = useState(false)
   const [isOpenConfirmStatusChangeModal, setIsOpenConfirmStatusChangeModal] = useState(false)
 
-  const handleDeleteClick = (orderId: number) => {
-    setSelectedId(orderId)
+  const handleDeleteClick = (id: number) => {
+    setSelectedId(id)
     setIsOpenDeleteReCaptchaModal(true)
   }
 
@@ -66,7 +65,7 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
   }
 
   const handleStatusClick = (order: IOrder) => {
-    setCurrentOrder(order)
+    setCurrent(order)
     setIsOpenStatusListModal(true)
   }
 
@@ -77,10 +76,10 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
   }
 
   const handleConfirmStatusChange = async () => {
-    if (currentOrder && selectedStatus !== null) {
+    if (current && selectedStatus !== null) {
       try {
         const response = await orderApi.updateStatus({
-          id: currentOrder.id,
+          id: current.id,
           status: selectedStatus
         })
         if (response.status === 200) {
@@ -94,6 +93,7 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
       } finally {
         setIsOpenConfirmStatusChangeModal(false)
         setSelectedStatus(null)
+        setCurrent(null)
       }
     }
   }
@@ -102,6 +102,7 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
     setIsOpenConfirmStatusChangeModal(false)
     setIsOpenStatusListModal(false)
     setSelectedStatus(null)
+    setCurrent(null)
   }
 
   const getStatusName = (status: number | null): string => {
@@ -128,7 +129,9 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
           {orders.map((or, key) => (
             <tr key={key}>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>{or.id}</h5>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>
+                  {or.id}
+                </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.email}</h5>
@@ -207,9 +210,9 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
         />
       )}
 
-      {isOpenStatusListModal && currentOrder && (
+      {isOpenStatusListModal && current && (
         <StatusModal
-          status={currentOrder.status}
+          status={current.status}
           onUpdateStatus={handleUpdateStatus}
           onCancel={handleCancelStatusChange}
           statusList={orderStatus}

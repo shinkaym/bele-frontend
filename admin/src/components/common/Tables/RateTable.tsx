@@ -1,6 +1,5 @@
 import { IRate } from '@/models/interfaces/rate'
 import { AddIcon, DeleteIcon, EditIcon } from '@/components/icons'
-import { Link } from 'react-router-dom'
 import { formatDate } from '@/utils'
 import { useState } from 'react'
 import rateApi from '@/apis/modules/rate.api'
@@ -10,9 +9,10 @@ import { ERateStatus } from '@/models/enums/status'
 import ReCAPCHAModal from '../ReCAPCHAModal'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
-import StatusBadge from '../OrderStatusBadge'
+import StatusBadge from '../StatusBadge'
 import XCircleIcon from '@/components/icons/XCircle'
 import CheckCircle from '@/components/icons/CheckCircle'
+import ReplyModal from '../ReplyModal'
 
 type RateTableProps = {
   rates: IRate[]
@@ -22,11 +22,75 @@ type RateTableProps = {
 const RateTable = ({ rates, onRefresh }: RateTableProps) => {
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [selectedStatus, setSelectedStatus] = useState<number | null>(null)
-  const [currentRate, setCurrentRate] = useState<IRate | null>(null)
+  const [isAddClick, setIsAddClick] = useState<boolean>(false)
+  const [current, setCurrent] = useState<IRate | null>(null)
   const [isOpenDeleteReCaptchaModal, setIsOpenDeleteReCaptchaModal] = useState(false)
   const [isOpenConfirmDeleteModal, setIsOpenConfirmDeleteModal] = useState(false)
   const [isOpenStatusListModal, setIsOpenStatusListModal] = useState(false)
   const [isOpenConfirmStatusChangeModal, setIsOpenConfirmStatusChangeModal] = useState(false)
+  const [isOpenReplyModal, setIsOpenReplyModal] = useState(false)
+
+  const handleAddClick = (rate: IRate) => {
+    setCurrent(rate)
+    setIsAddClick(true)
+    setIsOpenReplyModal(true)
+  }
+
+  const handleConfirmAdd = async (reply: string) => {
+    if (current) {
+      try {
+        const response = await rateApi.reply({
+          id: current.id,
+          reply
+        })
+        if (response.status === 200) {
+          onRefresh()
+          Swal.fire('Success!', 'Reply successfully', 'success')
+        } else {
+          Swal.fire('Error!', response.message, 'error')
+        }
+      } catch (error) {
+        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
+      } finally {
+        setIsOpenReplyModal(false)
+        setCurrent(null)
+      }
+    }
+  }
+
+  const handleEditClick = (rate: IRate) => {
+    setCurrent(rate)
+    setIsAddClick(false)
+    setIsOpenReplyModal(true)
+  }
+
+  const handleConfirmEdit = async (reply: string) => {
+    if (current) {
+      try {
+        const response = await rateApi.editReply({
+          id: current.id,
+          reply
+        })
+        if (response.status === 200) {
+          onRefresh()
+          Swal.fire('Success!', 'Edit reply successfully', 'success')
+        } else {
+          Swal.fire('Error!', response.message, 'error')
+        }
+      } catch (error) {
+        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
+      } finally {
+        setIsOpenReplyModal(false)
+        setCurrent(null)
+      }
+    }
+  }
+
+  const handleCancelAddOrEdit = () => {
+    setIsOpenReplyModal(false)
+    setCurrent(null)
+    setIsAddClick(false)
+  }
 
   const handleDeleteClick = (rateId: number) => {
     setSelectedId(rateId)
@@ -67,7 +131,7 @@ const RateTable = ({ rates, onRefresh }: RateTableProps) => {
   }
 
   const handleStatusClick = (rate: IRate) => {
-    setCurrentRate(rate)
+    setCurrent(rate)
     setIsOpenStatusListModal(true)
   }
 
@@ -78,10 +142,10 @@ const RateTable = ({ rates, onRefresh }: RateTableProps) => {
   }
 
   const handleConfirmStatusChange = async () => {
-    if (currentRate && selectedStatus !== null) {
+    if (current && selectedStatus !== null) {
       try {
         const response = await rateApi.updateStatus({
-          id: currentRate.id,
+          id: current.id,
           status: selectedStatus
         })
         if (response.status === 200) {
@@ -95,6 +159,7 @@ const RateTable = ({ rates, onRefresh }: RateTableProps) => {
       } finally {
         setIsOpenConfirmStatusChangeModal(false)
         setSelectedStatus(null)
+        setCurrent(null)
       }
     }
   }
@@ -103,6 +168,7 @@ const RateTable = ({ rates, onRefresh }: RateTableProps) => {
     setIsOpenConfirmStatusChangeModal(false)
     setIsOpenStatusListModal(false)
     setSelectedStatus(null)
+    setCurrent(null)
   }
 
   const getStatusName = (status: number | null): string => {
@@ -129,7 +195,9 @@ const RateTable = ({ rates, onRefresh }: RateTableProps) => {
           {rates.map((ra, key) => (
             <tr key={key}>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>{ra.id}</h5>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>
+                  {ra.id}
+                </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <div className='flex items-center'>
@@ -143,7 +211,9 @@ const RateTable = ({ rates, onRefresh }: RateTableProps) => {
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{ra.name}</h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>{ra.star}</h5>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>
+                  {ra.star}
+                </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{ra.content}</h5>
@@ -175,11 +245,11 @@ const RateTable = ({ rates, onRefresh }: RateTableProps) => {
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <div className='flex items-center space-x-3.5'>
                   {ra.reply ? (
-                    <button type='button' className='hover:text-primary' onClick={() => {}}>
+                    <button type='button' className='hover:text-primary' onClick={() => handleEditClick(ra)}>
                       <EditIcon width={24} height={24} />
                     </button>
                   ) : (
-                    <button type='button' className='hover:text-primary' onClick={() => {}}>
+                    <button type='button' className='hover:text-primary' onClick={() => handleAddClick(ra)}>
                       <AddIcon width={24} height={24} />
                     </button>
                   )}
@@ -192,6 +262,14 @@ const RateTable = ({ rates, onRefresh }: RateTableProps) => {
           ))}
         </tbody>
       </table>
+      {isOpenReplyModal && (
+        <ReplyModal
+          data={current}
+          onCancel={handleCancelAddOrEdit}
+          onSubmit={isAddClick ? handleConfirmAdd : handleConfirmEdit}
+        />
+      )}
+
       {isOpenDeleteReCaptchaModal && (
         <ReCAPCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
       )}
@@ -205,9 +283,9 @@ const RateTable = ({ rates, onRefresh }: RateTableProps) => {
         />
       )}
 
-      {isOpenStatusListModal && currentRate && (
+      {isOpenStatusListModal && current && (
         <StatusModal
-          status={currentRate.status}
+          status={current.status}
           onUpdateStatus={handleUpdateStatus}
           onCancel={handleCancelStatusChange}
           statusList={rateStatus}

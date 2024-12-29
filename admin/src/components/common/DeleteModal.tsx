@@ -4,7 +4,7 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { createRoot } from 'react-dom/client'
 
-interface DeleteModalProps {
+type DeleteModalProps = {
   itemId: number
   apiCall: (itemId: number) => Promise<any>
   onSuccess: () => void
