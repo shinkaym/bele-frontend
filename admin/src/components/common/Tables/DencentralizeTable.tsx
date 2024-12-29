@@ -43,7 +43,7 @@ function DecentralizeTable({ permissions, roles, onSubmit }: Decentralizes) {
         </Button>
       </div>
       {/* Đảm bảo container bao quanh bảng có overflow */}
-      <div className='max-w-full overflow-x-auto overflow-y-auto max-h-[500px] mb-6 scrollbar-thin dark:scrollbar-thumb-boxdark dark:scrollbar-track-gray-3 scrollbar-thumb-white scrollbar-track-boxdark'>
+      <div className='max-w-full overflow-x-auto overflow-y-auto max-h-[500px] mb-6 scrollbar-thin dark:scrollbar-thumb-boxdark dark:scrollbar-track-gray-3 scrollbar-thumb-white scrollbar-track-boxdark scrollbar-thumb-rounded-full scrollbar-track-rounded-full'>
         <table className='w-full table-auto'>
           <thead>
             <tr className='bg-gray-2 text-left dark:bg-meta-4'>
