@@ -36,6 +36,9 @@ const Variant = Loadable(lazy(() => import('@/pages/Tables/Variant')))
 const AddVariant = Loadable(lazy(() => import('@/pages/Tables/Variant/Add')))
 const EditVariant = Loadable(lazy(() => import('@/pages/Tables/Variant/Edit')))
 const Decentralize = Loadable(lazy(() => import('@/pages/Tables/Decentralize')))
+const Discount = Loadable(lazy(() => import('@/pages/Tables/Discount')))
+const AddDiscount = Loadable(lazy(() => import('@/pages/Tables/Discount/Add')))
+const EditDiscount = Loadable(lazy(() => import('@/pages/Tables/Discount/Edit')))
 
 function AppRouter() {
   const routes = [
@@ -269,6 +272,38 @@ function AppRouter() {
             }
           ]
         },
+        {
+            path: '/tables/discount',
+            children: [
+              {
+                path: '',
+                element: (
+                  <>
+                    <PageTitle title='Discount' />
+                    <Discount />
+                  </>
+                )
+              },
+              {
+                path: 'add',
+                element: (
+                  <>
+                    <PageTitle title='Add Discount' />
+                    <AddDiscount />
+                  </>
+                )
+              },
+              {
+                path: 'edit/:id',
+                element: (
+                  <>
+                    <PageTitle title='Edit Discount' />
+                    <EditDiscount />
+                  </>
+                )
+              }
+            ]
+          },
         {
           path: '/tables/decentralize',
           element: <Decentralize />

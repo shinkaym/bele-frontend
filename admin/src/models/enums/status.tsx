@@ -23,3 +23,10 @@ export enum EEmployeeStatus {
   INACTIVE = 'Inactive',
   BANNED = 'Banned'
 }
+
+export enum EDiscountStatus {
+    UNKNOWN = 'Unknown',
+    ACTIVE = 'Active',
+    INACTIVE = 'Inactive',
+    EXPIRED = 'Expired',
+  }
