@@ -20,23 +20,22 @@ const Setting = Loadable(lazy(() => import('@/pages/Setting')))
 const Category = Loadable(lazy(() => import('@/pages/Tables/Category')))
 const AddCat = Loadable(lazy(() => import('@/pages/Tables/Category/Add')))
 const EditCat = Loadable(lazy(() => import('@/pages/Tables/Category/Edit')))
-const Product = Loadable(lazy(() => import('@/pages/Tables/Product'))) 
-const AddProduct= Loadable(lazy(() => import('@/pages/Tables/Product/Add')))
-const EditProduct= Loadable(lazy(() => import('@/pages/Tables/Product/Edit')))
-const AttributeValue = Loadable(lazy(() => import('@/pages/Tables/AttributeValue'))) 
-const AddAttributeValue= Loadable(lazy(() => import('@/pages/Tables/AttributeValue/Add')))
-const EditAttributeValue= Loadable(lazy(() => import('@/pages/Tables/AttributeValue/Edit')))
-const Employee = Loadable(lazy(() => import('@/pages/Tables/Employee'))) 
-const AddEmployee= Loadable(lazy(() => import('@/pages/Tables/Employee/Add')))
-const EditEmployee= Loadable(lazy(() => import('@/pages/Tables/Employee/Edit')))
-const Rate = Loadable(lazy(() => import('@/pages/Tables/Rate'))) 
-const Order = Loadable(lazy(() => import('@/pages/Tables/Order'))) 
-const EditOrder= Loadable(lazy(() => import('@/pages/Tables/Order/Edit')))
-const Variant = Loadable(lazy(() => import('@/pages/Tables/Variant'))) 
-const AddVariant = Loadable(lazy(() => import('@/pages/Tables/Variant/Add'))) 
-const EditVariant = Loadable(lazy(() => import('@/pages/Tables/Variant/Edit'))) 
-
-
+const Product = Loadable(lazy(() => import('@/pages/Tables/Product')))
+const AddProduct = Loadable(lazy(() => import('@/pages/Tables/Product/Add')))
+const EditProduct = Loadable(lazy(() => import('@/pages/Tables/Product/Edit')))
+const AttributeValue = Loadable(lazy(() => import('@/pages/Tables/AttributeValue')))
+const AddAttributeValue = Loadable(lazy(() => import('@/pages/Tables/AttributeValue/Add')))
+const EditAttributeValue = Loadable(lazy(() => import('@/pages/Tables/AttributeValue/Edit')))
+const Employee = Loadable(lazy(() => import('@/pages/Tables/Employee')))
+const AddEmployee = Loadable(lazy(() => import('@/pages/Tables/Employee/Add')))
+const EditEmployee = Loadable(lazy(() => import('@/pages/Tables/Employee/Edit')))
+const Rate = Loadable(lazy(() => import('@/pages/Tables/Rate')))
+const Order = Loadable(lazy(() => import('@/pages/Tables/Order')))
+const EditOrder = Loadable(lazy(() => import('@/pages/Tables/Order/Edit')))
+const Variant = Loadable(lazy(() => import('@/pages/Tables/Variant')))
+const AddVariant = Loadable(lazy(() => import('@/pages/Tables/Variant/Add')))
+const EditVariant = Loadable(lazy(() => import('@/pages/Tables/Variant/Edit')))
+const Decentralize = Loadable(lazy(() => import('@/pages/Tables/Decentralize')))
 
 function AppRouter() {
   const routes = [
@@ -270,6 +269,10 @@ function AppRouter() {
             }
           ]
         },
+        {
+          path: '/tables/decentralize',
+          element: <Decentralize />
+        }
       ]
     },
     {
