@@ -54,7 +54,7 @@ export const employeeListResponseData: IEmployeeListResponse = {
 };
 
 
-export const accountsData = IEmployeeTableResponseData.data.employees.map((employee) => ({
+export const accountsData = employeeListResponseData.data.employees.map((employee) => ({
   id:employee.id,
   email: employee.email,
   password: "123",

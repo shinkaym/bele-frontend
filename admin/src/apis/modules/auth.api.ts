@@ -1,8 +1,5 @@
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-import { IAttributeValue } from '@/models/interfaces/attribute'
-import axiosPublic from '../client/public.client'
-import { attributeValueData } from '@/models/data/attributeTypeData'
-import { accountsData, IEmployeeTableResponseData } from '@/models/data/employeeData'
+import { accountsData, employeeListResponseData } from '@/models/data/employeeData'
 import { IEmployee } from '@/models/interfaces/employee'
 
 const authEndpoints = {
@@ -14,7 +11,7 @@ const authApi = {
   login(email: string, password: string): IEmployee | undefined {
     const data = accountsData.find((acc) => acc.email === email && acc.password === password)
     if (data) {
-      let user = IEmployeeTableResponseData.data.employees.find((emp) => emp.id === data.id)
+      let user = employeeListResponseData.data.employees.find((emp) => emp.id === data.id)
       if (user)
         return {
           ...user,
@@ -30,7 +27,7 @@ const authApi = {
   },
   getMe(token:string):IEmployee | undefined{
     if(token){
-      return IEmployeeTableResponseData.data.employees.find((emp) => emp.id === 1)
+      return employeeListResponseData.data.employees.find((emp) => emp.id === 1)
     }
     return undefined
   }
