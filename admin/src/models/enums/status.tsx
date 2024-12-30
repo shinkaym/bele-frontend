@@ -25,8 +25,17 @@ export enum EEmployeeStatus {
 }
 
 export enum EDiscountStatus {
-    UNKNOWN = 'Unknown',
-    ACTIVE = 'Active',
+  UNKNOWN = 'Unknown',
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive',
+  EXPIRED = 'Expired'
+}
+
+export enum ECustomerStatus {
+    UNKNOWN = 'Unknown',   
+    ACTIVE = 'Active',   
     INACTIVE = 'Inactive',
-    EXPIRED = 'Expired',
+    EXPIRED = 'Expired',  
+    DELETED = 'Deleted'  
   }
+  

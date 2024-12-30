@@ -1,6 +1,6 @@
 import IconPlay from '@/components/icons/IconPlay';
 import { EFieldByValue, EFieldByTitle, ESortOrderValue, ESortOrderTitle } from '@/models/enums/option';
-import { EOrderStatus, ERateStatus, EEmployeeStatus, EDiscountStatus } from '@/models/enums/status';
+import { EOrderStatus, ERateStatus, EEmployeeStatus, EDiscountStatus, ECustomerStatus } from '@/models/enums/status';
 import { IStatus, ITable } from '@/models/interfaces';
 import { TMenuItem } from '@/models/types/brand';
 
@@ -106,6 +106,29 @@ export const discountStatus: IStatus[] = [
   },
 ];
 
+export const customerStatus: IStatus[] = [
+    {
+      title: ECustomerStatus.UNKNOWN,
+      value: 0,
+      className: 'text-gray-600 border-gray-600 bg-gray-200',
+    },
+    {
+      title: ECustomerStatus.ACTIVE,
+      value: 1,
+      className: 'text-green-600 border-green-600 bg-green-200',
+    },
+    {
+      title: ECustomerStatus.INACTIVE,
+      value: 2,
+      className: 'text-orange-600 border-orange-600 bg-orange-200',
+    },
+    {
+      title: ECustomerStatus.EXPIRED,
+      value: 3,
+      className: 'text-red-600 border-red-600 bg-red-200',
+    },
+  ];
+
 export const orderFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
   {
     title: EFieldByTitle.ID,
@@ -133,6 +156,13 @@ export const discountFieldOptions: { title: EFieldByTitle; value: EFieldByValue 
     value: EFieldByValue.ID,
   },
 ];
+
+export const customerFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+    {
+      title: EFieldByTitle.ID,
+      value: EFieldByValue.ID,
+    },
+  ];
 
 export const orderTableHeaders: ITable[] = [
   { title: 'Id', value: 1, className: 'min-w-[20px] text-center' },
@@ -187,3 +217,19 @@ export const discountTableHeaders: ITable[] = [
   { title: 'Updated At', value: 7, className: 'min-w-[150px]' },
   { title: 'Action', value: 8, className: 'min-w-[80px] text-center' },
 ];
+
+  export const customerTableHeaders: ITable[] = [
+    { title: 'Id', value: 1, className: 'min-w-[20px] text-center' },
+    { title: 'Name', value: 2, className: 'min-w-[150px]' },
+    { title: 'Phone Number', value: 3, className: 'min-w-[150px]' },
+    { title: 'Email', value: 4, className: 'min-w-[150px]' },
+    { title: 'Sex', value: 5, className: 'min-w-[80px] text-center' },
+    { title: 'Birthday', value: 6, className: 'min-w-[150px]' },
+    { title: 'Total Spending', value: 7, className: 'min-w-[150px] text-center' },
+    { title: 'Last Operating Time', value: 8, className: 'min-w-[150px]' },
+    { title: 'Status', value: 9, className: 'min-w-[100px] text-center' },
+    { title: 'Created At', value: 10, className: 'min-w-[150px]' },
+    { title: 'Updated At', value: 11, className: 'min-w-[150px]' },
+    { title: 'Action', value: 12, className: 'min-w-[80px] text-center' },
+  ];
+  
