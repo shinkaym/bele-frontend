@@ -39,6 +39,9 @@ const Decentralize = Loadable(lazy(() => import('@/pages/Tables/Decentralize')))
 const Discount = Loadable(lazy(() => import('@/pages/Tables/Discount')))
 const AddDiscount = Loadable(lazy(() => import('@/pages/Tables/Discount/Add')))
 const EditDiscount = Loadable(lazy(() => import('@/pages/Tables/Discount/Edit')))
+const Customer = Loadable(lazy(() => import('@/pages/Tables/Customer')))
+const AddCustomer = Loadable(lazy(() => import('@/pages/Tables/Customer/Add')))
+const EditCustomer = Loadable(lazy(() => import('@/pages/Tables/Customer/Edit')))
 
 function AppRouter() {
   const routes = [
@@ -303,6 +306,38 @@ function AppRouter() {
                   <>
                     <PageTitle title='Edit Discount' />
                     <EditDiscount />
+                  </>
+                )
+              }
+            ]
+          },
+          {
+            path: '/tables/customer',
+            children: [
+              {
+                path: '',
+                element: (
+                  <>
+                    <PageTitle title='Customer' />
+                    <Customer />
+                  </>
+                )
+              },
+              {
+                path: 'add',
+                element: (
+                  <>
+                    <PageTitle title='Add Customer' />
+                    <AddCustomer />
+                  </>
+                )
+              },
+              {
+                path: 'edit/:id',
+                element: (
+                  <>
+                    <PageTitle title='Edit Customer' />
+                    <EditCustomer />
                   </>
                 )
               }
