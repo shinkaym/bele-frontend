@@ -181,7 +181,7 @@ function Add({}: Props) {
               <Button type='button' className='max-h-12 mr-4'>
                 Add
               </Button>
-              <Button type='link' to='/tables/attribute-value' color='secondary' className='max-h-12'>
+              <Button type='link' to='/tables/attribute-value' color='secondary' className='max-h-12'   >
                 Back
               </Button>
             </div>

@@ -1,8 +1,8 @@
 import Loader from '@/components/common/Loader'
 import PageTitle from '@/components/common/PageTitle'
+import PrivateRoute from '@/components/common/PrivateRoute'
 import DefaultLayout from '@/components/layout/DefaultLayout'
-import SignIn from '@/pages/Authentication/SignIn'
-import SignUp from '@/pages/Authentication/SignUp'
+import SignIn from '@/pages/SignIn'
 import Dashboard from '@/pages/Dashboard'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
@@ -41,7 +41,11 @@ function AppRouter() {
   const routes = [
     {
       path: '/',
-      element: <DefaultLayout />,
+      element: (
+        <PrivateRoute>
+          <DefaultLayout />
+        </PrivateRoute>
+      ),
       children: [
         {
           path: '/',
@@ -284,15 +288,6 @@ function AppRouter() {
         </>
       )
     },
-    {
-      path: '/signup',
-      element: (
-        <>
-          <PageTitle title='Signup' />
-          <SignUp />
-        </>
-      )
-    }
   ]
 
   return useRoutes(routes)

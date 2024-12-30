@@ -2,11 +2,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ClickOutside from '../../../common/ClickOutside';
 
-import UserOne from '@/assets/images/user/user-01.png';
-import UserTwo from '@/assets/images/user/user-02.png';
-import UserThree from '@/assets/images/user/user-03.png';
-import UserFour from '@/assets/images/user/user-04.png';
-
 const DropdownMessage = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(true);
@@ -72,9 +67,6 @@ const DropdownMessage = () => {
                   className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                   to="/messages"
                 >
-                  <div className="h-12.5 w-12.5 rounded-full">
-                    <img src={UserTwo} alt="User" />
-                  </div>
 
                   <div>
                     <h6 className="text-sm font-medium text-black dark:text-white">
@@ -90,9 +82,6 @@ const DropdownMessage = () => {
                   className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                   to="/messages"
                 >
-                  <div className="h-12.5 w-12.5 rounded-full">
-                    <img src={UserOne} alt="User" />
-                  </div>
 
                   <div>
                     <h6 className="text-sm font-medium text-black dark:text-white">
@@ -108,9 +97,6 @@ const DropdownMessage = () => {
                   className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                   to="/messages"
                 >
-                  <div className="h-12.5 w-12.5 rounded-full">
-                    <img src={UserThree} alt="User" />
-                  </div>
 
                   <div>
                     <h6 className="text-sm font-medium text-black dark:text-white">
@@ -126,9 +112,6 @@ const DropdownMessage = () => {
                   className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                   to="/messages"
                 >
-                  <div className="h-12.5 w-12.5 rounded-full">
-                    <img src={UserFour} alt="User" />
-                  </div>
 
                   <div>
                     <h6 className="text-sm font-medium text-black dark:text-white">
@@ -144,9 +127,6 @@ const DropdownMessage = () => {
                   className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                   to="/messages"
                 >
-                  <div className="h-12.5 w-12.5 rounded-full">
-                    <img src={UserTwo} alt="User" />
-                  </div>
 
                   <div>
                     <h6 className="text-sm font-medium text-black dark:text-white">
