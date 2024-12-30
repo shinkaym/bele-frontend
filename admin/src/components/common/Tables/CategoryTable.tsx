@@ -3,7 +3,7 @@ import EditIcon from '@/components/icons/Crud/EditIcon'
 import { EToastOption } from '@/models/enums/option'
 import { EStatus } from '@/models/enums/status'
 import { ICategory } from '@/models/interfaces/category'
-import { UCaptchaAlert, UToast } from '@/utils/swal'
+import { UInputAlert, UToast } from '@/utils/swal'
 import { Link } from 'react-router-dom'
 import Button from '../Button'
 import Search from '../Forms/Search'
@@ -24,7 +24,7 @@ function CategoryTable({ categories, onSearch }: Props) {
   }
   //Call Alert
   const handleDelete = async (id: number | string, captchaCode = 'ABCD') => {
-    await UCaptchaAlert(captchaCode, (value) => {
+    await UInputAlert(captchaCode,'text', (value) => {
       if (value === captchaCode) {
         //call api in here...
 
@@ -102,7 +102,7 @@ function CategoryTable({ categories, onSearch }: Props) {
                     value={cat.id}
                     onClick={handleStatus}
                   >
-                    {cat.status === 1 ? EStatus.ACTIVE : EStatus.UNACTIVE}
+                    {cat.status === 1 ? EStatus.ACTIVE : EStatus.INACTIVE}
                   </Button>
                 </td>
                 <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>

@@ -1,24 +1,26 @@
-import { IPagination } from './pagination';
+import { IPagination } from './pagination'
 
 export interface IEmployee {
-  id: number;
-  name: string;
-  phoneNumber: string;
-  email: string;
-  sex: string;
-  role: string;
-  status: number;
-  createdAt: string;
-  updatedAt: string;
+  id: number
+  name: string
+  phoneNumber: string
+  email: string
+  sex: string
+  role: string
+  status: number
+  createdAt: string
+  updatedAt: string
+  accessToken: string
+  refreshToken: string
 }
 
 export interface IEmployeeListResponse {
-  status: number;
+  status: number
   data: {
-    employees: IEmployee[];
-    pagination: IPagination;
-  };
-  message: string;
+    employees: IEmployee[]
+    pagination: IPagination
+  }
+  message: string
 }
 
 export interface IEmployeeDetailResponse {

@@ -14,6 +14,8 @@ export const employeeListResponseData: IEmployeeListResponse = {
         status: 1,
         createdAt: "1734974964.4281",
         updatedAt: "1734974964.4281",
+        accessToken:'',
+        refreshToken:'',
       },
       {
         id: 2,
@@ -25,6 +27,8 @@ export const employeeListResponseData: IEmployeeListResponse = {
         status: 1,
         createdAt: "1734974964.4281",
         updatedAt: "1734974964.4281",
+        accessToken:'',
+        refreshToken:'',
       },
       {
         id: 3,
@@ -36,6 +40,8 @@ export const employeeListResponseData: IEmployeeListResponse = {
         status: 1,
         createdAt: "1734974964.4281",
         updatedAt: "1734974964.4281",
+        accessToken:'',
+        refreshToken:'',
       },
     ],
     pagination: {
@@ -46,3 +52,10 @@ export const employeeListResponseData: IEmployeeListResponse = {
   },
   message: "Data fetched successfully."
 };
+
+
+export const accountsData = IEmployeeTableResponseData.data.employees.map((employee) => ({
+  id:employee.id,
+  email: employee.email,
+  password: "123",
+}));
