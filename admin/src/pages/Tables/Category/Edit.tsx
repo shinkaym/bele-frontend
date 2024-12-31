@@ -100,7 +100,7 @@ function Edit({}: Props) {
       reset()
     } catch (error) {
       reset()
-      UToast(EToastOption.Error, 'Edit Category Failure!')
+      UToast(EToastOption.ERROR, 'Edit Category Failure!')
     }
     console.log(data) // Dữ liệu khi submit
   }

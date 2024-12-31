@@ -30,7 +30,7 @@ function CategoryTable({ categories, onSearch }: Props) {
 
         UToast(EToastOption.SUCCESS, 'Delete Category Successfully!')
       } else {
-        UToast(EToastOption.Error, 'Captcha is wrong')
+        UToast(EToastOption.ERROR, 'Captcha is wrong')
       }
     })
   }

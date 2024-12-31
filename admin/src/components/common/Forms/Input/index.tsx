@@ -37,7 +37,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           min={1}
           className={`${type === 'color'?'':` py-3 px-5`} w-full rounded-lg border-[1.5px] border-stroke bg-transparent ${isDisabled ? 'opacity-50' : ''} text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-not-allowed disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${className}`}
         />
-        {error && <p className='text-sm text-red-500'>{error}</p>}
+        {error && <p className='text-sm text-red-500 mt-[-20px]'>{error}</p>}
       </>
     )
   }

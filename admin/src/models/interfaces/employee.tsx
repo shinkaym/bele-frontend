@@ -4,14 +4,13 @@ export interface IEmployee {
   id: number
   name: string
   phoneNumber: string
+  password?: string
   email: string
   sex: string
-  role: string
+  role: number
   status: number
-  createdAt: string
-  updatedAt: string
-  accessToken: string
-  refreshToken: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 export interface IEmployeeListResponse {
@@ -25,7 +24,7 @@ export interface IEmployeeListResponse {
 
 export interface IEmployeeDetailResponse {
   status: number
-  data: IEmployee[]
+  data: IEmployee
   message: string
 }
 
@@ -45,6 +44,34 @@ export interface IEmployeeUpdateStatusResponse {
     id: number,
     status: number,
     updatedAt: string
+  }
+  message: string
+}
+
+export interface IEmployeeAddResponse {
+  status: number
+  data: {
+    name: string,
+      phoneNumber: string,
+      email: string,
+      sex: string,
+      role: number,
+      password: string,
+      status: string
+  }
+  message: string
+}
+
+export interface IEmployeeUpdateResponse {
+  status: number
+  data: {
+    name: string,
+      phoneNumber: string,
+      email: string,
+      sex: string,
+      role: number,
+      password: string,
+      status: string
   }
   message: string
 }

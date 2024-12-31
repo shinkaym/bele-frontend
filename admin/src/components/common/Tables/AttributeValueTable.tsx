@@ -33,7 +33,7 @@ function AttributeValueTable({ attributeValues, onSearch }: Props) {
 
           UToast(EToastOption.SUCCESS, 'Delete Variant Successfully!')
         } else {
-          UToast(EToastOption.Error, 'Captcha is wrong')
+          UToast(EToastOption.ERROR, 'Captcha is wrong')
         }
       },
       {
