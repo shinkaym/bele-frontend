@@ -40,7 +40,6 @@ type Props = {}
 
 function Edit({}: Props) {
   const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [roleOptions, setRoleOptions] = useState<IOptions[]>([])
   const [statusOptions, setStatusOptions] = useState<IOptions[]>([])
@@ -108,7 +107,7 @@ function Edit({}: Props) {
         }
       })
       UToast(EToastOption.SUCCESS, 'Update employee successfully!')
-      navigate('/tables/employee')
+      window.location.reload()
     } catch (error) {
       UToast(EToastOption.WARNING, 'Update employee failure!')
     }
