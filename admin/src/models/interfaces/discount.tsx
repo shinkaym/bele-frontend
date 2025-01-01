@@ -1,11 +1,11 @@
 import { IPagination } from './pagination';
 
 export interface IDiscount{
-    id:number | string
+    id:number
     name:string
-    discount: number
+    discount:number
     expireDate:string
-    status:number | string
+    status:number
     createdAt:string
     updatedAt:string
 }
@@ -19,6 +19,12 @@ export interface IDiscountListResponse {
     message: string;
   }
   
+  export interface IDiscountAddResponse {
+    status: number;
+    data: IDiscount;
+    message: string;
+  }
+
   export interface IDiscountDetailResponse {
     status: number;
     data: IDiscount;
@@ -33,9 +39,21 @@ export interface IDiscountListResponse {
   export interface IDiscountUpdateStatusResponse {
     status: number;
     data: {
-      id: number | string;
-      status: number | string;
+      id: number;
+      status: number;
       updatedAt: string;
+    };
+    message: string;
+  }
+
+  export interface IDiscountUpdateResponse {
+    status: number;
+    data: {
+      name:string,
+      discount:number,
+      expireDate:string,
+      status:number,
+      updatedAt:string,
     };
     message: string;
   }

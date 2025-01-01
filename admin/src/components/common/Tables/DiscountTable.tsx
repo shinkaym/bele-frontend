@@ -18,15 +18,15 @@ type DiscountTableProps = {
 };
 
 const DiscountTable = ({ discounts, onRefresh }: DiscountTableProps) => {
-  const [selectedId, setSelectedId] = useState<number | string | null>(null);
-  const [selectedStatus, setSelectedStatus] = useState<number | string | null>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<number | null>(null);
   const [current, setCurrent] = useState<IDiscount | null>(null);
   const [isOpenDeleteReCaptchaModal, setIsOpenDeleteReCaptchaModal] = useState(false);
   const [isOpenConfirmDeleteModal, setIsOpenConfirmDeleteModal] = useState(false);
   const [isOpenStatusListModal, setIsOpenStatusListModal] = useState(false);
   const [isOpenConfirmStatusChangeModal, setIsOpenConfirmStatusChangeModal] = useState(false);
 
-  const handleDeleteClick = (id: number | string) => {
+  const handleDeleteClick = (id: number) => {
     setSelectedId(id);
     setIsOpenDeleteReCaptchaModal(true);
   };
@@ -69,7 +69,7 @@ const DiscountTable = ({ discounts, onRefresh }: DiscountTableProps) => {
     setIsOpenStatusListModal(true);
   };
 
-  const handleUpdateStatus = (status: number | string) => {
+  const handleUpdateStatus = (status: number) => {
     setSelectedStatus(status);
     setIsOpenStatusListModal(false);
     setIsOpenConfirmStatusChangeModal(true);
@@ -106,7 +106,7 @@ const DiscountTable = ({ discounts, onRefresh }: DiscountTableProps) => {
     setCurrent(null);
   };
 
-  const getStatusName = (status: number | string | null): string => {
+  const getStatusName = (status: number | null): string => {
     const s = discountStatus.find((s) => s.value === status);
     return s ? s.title : EDiscountStatus.UNKNOWN;
   };
@@ -144,7 +144,7 @@ const DiscountTable = ({ discounts, onRefresh }: DiscountTableProps) => {
               <td className="border-b border-[#eee] py-4 px-4 dark:border-strokedark">{discount.updatedAt}</td>
               <td className="border-b border-[#eee] py-4 px-4 dark:border-strokedark">
                 <div className="flex justify-center space-x-3.5">
-                  <Link to={`/discounts/edit/${discount.id}`} className="hover:text-primary">
+                  <Link to={`/tables/discount/edit/${discount.id}`} className="hover:text-primary">
                     <EditIcon width={24} height={24} />
                   </Link>
                   <button
