@@ -106,7 +106,7 @@ function CategoryTable({ categories, onSearch }: Props) {
                   </Button>
                 </td>
                 <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <div className='flex items-center space-x-3.5'>
+                  <div className='flex justify-center space-x-3.5'>
                     <Link to={`/tables/category/edit/${cat.id}`} className='hover:text-primary'>
                       <EditIcon width={24} height={24} />
                     </Link>

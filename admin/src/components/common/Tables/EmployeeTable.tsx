@@ -157,16 +157,16 @@ const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                  {formatDate(em.createdAt)}
+                  {em.createdAt ? formatDate(em.createdAt) : 'N/A'}
                 </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                  {formatDate(em.updatedAt)}
+                  {em.updatedAt ? formatDate(em.updatedAt) : 'N/A'}
                 </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <div className='flex items-center space-x-3.5'>
+                <div className='flex justify-center space-x-3.5'>
                   <Link to={`/tables/employee/edit/${em.id}`} className='hover:text-primary'>
                     <EditIcon width={24} height={24} />
                   </Link>

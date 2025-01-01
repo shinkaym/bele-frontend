@@ -42,6 +42,9 @@ const EditDiscount = Loadable(lazy(() => import('@/pages/Tables/Discount/Edit'))
 const Customer = Loadable(lazy(() => import('@/pages/Tables/Customer')))
 const AddCustomer = Loadable(lazy(() => import('@/pages/Tables/Customer/Add')))
 const EditCustomer = Loadable(lazy(() => import('@/pages/Tables/Customer/Edit')))
+const Tag = Loadable(lazy(() => import('@/pages/Tables/Tag')))
+const AddTag = Loadable(lazy(() => import('@/pages/Tables/Tag/Add')))
+const EditTag = Loadable(lazy(() => import('@/pages/Tables/Tag/Edit')))
 
 function AppRouter() {
   const routes = [
@@ -338,6 +341,38 @@ function AppRouter() {
                   <>
                     <PageTitle title='Edit Customer' />
                     <EditCustomer />
+                  </>
+                )
+              }
+            ]
+          },
+          {
+            path: '/tables/tag',
+            children: [
+              {
+                path: '',
+                element: (
+                  <>
+                    <PageTitle title='Tag' />
+                    <Tag />
+                  </>
+                )
+              },
+              {
+                path: 'add',
+                element: (
+                  <>
+                    <PageTitle title='Add Tag' />
+                    <AddTag />
+                  </>
+                )
+              },
+              {
+                path: 'edit/:id',
+                element: (
+                  <>
+                    <PageTitle title='Edit Tag' />
+                    <EditTag />
                   </>
                 )
               }

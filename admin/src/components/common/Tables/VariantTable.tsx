@@ -138,7 +138,7 @@ function VariantTable({ variants, onSearch }: variants) {
                   </Button>
                 </td>
                 <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <div className='flex items-center space-x-3.5'>
+                  <div className='flex justify-center space-x-3.5'>
                     <button type='button' className='hover:text-primary' onClick={() => handleAddStock(variant.id)}>
                       <AddIcon width={24} height={24} />
                     </button>

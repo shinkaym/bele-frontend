@@ -91,7 +91,7 @@ function Add({}: Props) {
 
   return (
     <div className='flex flex-col gap-10'>
-      <Breadcrumb pageName='Add Employee' parentPageName='Employee' parentTo='/tables/Employee' />
+      <Breadcrumb pageName='Add Employee' parentPageName='Employee' parentTo='/tables/employee' />
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className='grid grid-cols-2 gap-4'>
@@ -236,12 +236,12 @@ function Add({}: Props) {
             </div>
           </div>
         </div>
-        <div className='grid grid-cols-2 gap-4'>
-          <Button type='link' to='/tables/employee' color='secondary' className='max-h-12'>
-            Back
-          </Button>
+        <div className='grid grid-cols-6'>
           <Button type='button' className='max-h-12 mr-4'>
             Add
+          </Button>
+          <Button type='link' to='/tables/employee' color='secondary' className='max-h-12'>
+            Back
           </Button>
         </div>
       </form>
