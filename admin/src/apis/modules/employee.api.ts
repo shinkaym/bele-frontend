@@ -17,7 +17,7 @@ const employeeApi = {
   // async list(): Promise<IApiResponse<IEmployeeListResponse>> {
     list(): IEmployeeListResponse {
       try {
-        // return await axiosPublic.get(employeeEndpoints.list)
+        // return await axiosPublic.get(employeeEndpoints.list, { params })
         return employeeListResponseData
       } catch (error) {
         throw error

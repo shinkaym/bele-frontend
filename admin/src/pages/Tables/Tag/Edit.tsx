@@ -2,11 +2,9 @@ import { useEffect } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
 import Input from '@/components/common/Forms/Input'
-import SelectGroup from '@/components/common/Forms/SelectGroup'
-import ForwardedRadioGroup from '@/components/common/Forms/RadioGroup'
 import Button from '@/components/common/Button'
 import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
@@ -22,8 +20,6 @@ type Props = {}
 
 function Edit({}: Props) {
   const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
-
   const {
     control,
     handleSubmit,
@@ -59,7 +55,7 @@ function Edit({}: Props) {
         }
       })
       UToast(EToastOption.SUCCESS, 'Update tag successfully!')
-      navigate('/tables/tag')
+      window.location.reload()
     } catch (error) {
       UToast(EToastOption.WARNING, 'Update tag failure!')
     }

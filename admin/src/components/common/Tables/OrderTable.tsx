@@ -175,12 +175,12 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                  {formatDate(or.createdAt)}
+                  {or.createdAt ? formatDate(or.createdAt) : 'N/A'}
                 </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                  {formatDate(or.updatedAt)}
+                  {or.updatedAt ? formatDate(or.updatedAt) : 'N/A'}
                 </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
