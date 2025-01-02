@@ -16,6 +16,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<IEmployee | null>(null) // Khởi tạo user với giá trị null
   const [loading, setLoading] = useState<boolean>(true) // Trạng thái loading khi gọi API
   const navigate = useNavigate()
+  
 
   // Hàm signin nhận dữ liệu user, accessToken và refreshToken
   const signin = (userData: IEmployee, accessToken: string, refreshToken: string) => {
