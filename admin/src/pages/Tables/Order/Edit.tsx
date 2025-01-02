@@ -118,12 +118,13 @@ const OrderEdit: React.FC = () => {
         const transOrder = {
           ...order,
           note: order.note || '',
-          products: order.products.map((product) => ({
+          products: order.products.map(({ image, name, ...product }) => ({
             ...product,
             color: product.color.id,
             size: product.size.id
           }))
         }
+        console.log('🚀 ~ handleSave ~ transOrder:', transOrder)
         const response = await orderApi.update({ id: order.id, data: transOrder })
         if (response.status === 200) {
           UToast(EToastOption.SUCCESS, 'Update order successfully!')
@@ -138,13 +139,25 @@ const OrderEdit: React.FC = () => {
 
   const handleQuantityChange = (productId: number, quantity: number) => {
     if (order) {
-      const updatedProducts = order.products.map((prod) => (prod.id === productId ? { ...prod, quantity } : prod))
-      const updatedTotal = updatedProducts.reduce((total, prod) => total + prod.quantity * prod.price, 0)
-      setOrder({
-        ...order,
-        products: updatedProducts,
-        totalMoney: updatedTotal
-      })
+      if (quantity === 0) {
+        // Nếu số lượng bằng 0, xoá sản phẩm khỏi danh sách
+        const updatedProducts = order.products.filter((prod) => prod.id !== productId)
+        const updatedTotal = updatedProducts.reduce((total, prod) => total + prod.quantity * prod.price, 0)
+        setOrder({
+          ...order,
+          products: updatedProducts,
+          totalMoney: updatedTotal
+        })
+        setSelectedProducts(selectedProducts.filter((id) => id !== productId))
+      } else {
+        const updatedProducts = order.products.map((prod) => (prod.id === productId ? { ...prod, quantity } : prod))
+        const updatedTotal = updatedProducts.reduce((total, prod) => total + prod.quantity * prod.price, 0)
+        setOrder({
+          ...order,
+          products: updatedProducts,
+          totalMoney: updatedTotal
+        })
+      }
     }
   }
 

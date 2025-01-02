@@ -33,6 +33,27 @@ export interface IOrder {
   }[]
 }
 
+export interface IOrderUpdateRequest {
+  id: number
+  email: string
+  name: string
+  phoneNumber: string
+  address: string
+  note: string
+  payMethod: string | number
+  totalMoney: number
+  shipDate: string
+  receiveDate: string
+  status: number
+  products: {
+    id: number
+    color: number
+    size: number
+    quantity: number
+    price: number
+  }[]
+}
+
 export interface IOrderListResponse {
   status: number
   data: {
