@@ -6,8 +6,8 @@ function Header() {
   const [isSearchClick, setIsSearchClick] = useState(false)
 
   return (
-    <header className='sticky top-0 z-10 bg-black text-white'>
-      <div className='2xl:px-10 mx-auto flex items-center justify-between h-[5rem]'>
+    <header className='sticky top-0 bg-black text-white z-50'>
+      <div className='xl:px-16 md mx-auto flex items-center justify-between h-[5rem]'>
         <div className='flex items-center justify-between lg:hidden'>
           <IconBars className='mx-2 size-7 text-white' />
           <IconSearch className='mx-2 size-7 text-white' onClick={() => setIsSearchClick(true)} />

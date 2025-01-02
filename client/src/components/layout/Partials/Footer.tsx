@@ -3,7 +3,7 @@ import { IconFacebook, IconMail, IconPhone, IconYoutube, IconInstagram } from '@
 function Footer() {
   return (
     <footer className='bg-black text-white hidden lg:block'>
-      <div className='2xl:px-10 mx-auto flex flex-col items-center justify-between'>
+      <div className='2xl:px-16 mx-auto flex flex-col items-center justify-between'>
         <div className='py-5 grid grid-cols-3 w-full border-b-2'>
           <div className='w-full flex items-start justify-center'>
             <img className='w-[300px]' src='/images/logo/logo2.jpg' alt='' />

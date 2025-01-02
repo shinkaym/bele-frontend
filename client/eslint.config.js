@@ -34,7 +34,6 @@ export default tseslint.config(
           tabWidth: 2,
           endOfLine: 'auto',
           useTabs: false,
-          singleQuote: true,
           printWidth: 120,
           jsxSingleQuote: true,
         },
@@ -47,7 +46,6 @@ export default tseslint.config(
       '@stylistic/ts/space-before-blocks': [2, 'always'],
       '@stylistic/ts/object-curly-spacing': [1, 'always'],
       '@stylistic/ts/indent': ['warn', 2],
-      '@stylistic/ts/quotes': [2, 'single'],
       '@stylistic/ts/keyword-spacing': 1,
       '@stylistic/ts/comma-dangle': 1,
       '@stylistic/ts/comma-spacing': 1
