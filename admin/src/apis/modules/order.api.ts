@@ -3,6 +3,7 @@ import {
   IOrderDeleteResponse,
   IOrderDetailResponse,
   IOrderListResponse,
+  IOrderUpdateRequest,
   IOrderUpdateResponse,
   IOrderUpdateStatusResponse
 } from '@/models/interfaces/order'
@@ -54,7 +55,7 @@ const orderApi = {
     }
   },
 
-  async update({ id, data }: { id: number; data: IOrder }): Promise<IOrderUpdateResponse> {
+  async update({ id, data }: { id: number; data: IOrderUpdateRequest }): Promise<IOrderUpdateResponse> {
     try {
       return await axiosPublic.put(orderEndpoints.update({ id }), data)
     } catch (error) {
