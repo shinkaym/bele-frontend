@@ -39,8 +39,8 @@ export interface ICustomerDeleteResponse {
 export interface ICustomerUpdateStatusResponse {
   status: number
   data: {
-    id: number | string
-    status: number | string
+    id: number
+    status: number
     updatedAt: string
   }
   message: string

@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react'
-import { useForm, SubmitHandler, Controller } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { useParams, useNavigate } from 'react-router-dom'
-import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
-import Input from '@/components/common/Forms/Input'
-import SelectGroup from '@/components/common/Forms/SelectGroup'
-import { IOptions } from '@/models/interfaces/options'
-import ForwardedRadioGroup from '@/components/common/Forms/RadioGroup'
-import Button from '@/components/common/Button'
-import { UToast } from '@/utils/swal'
-import { EToastOption } from '@/models/enums/option'
-import discountApi from '@/apis/modules/discount.api'
+import { useEffect, useState } from 'react';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useParams, useNavigate } from 'react-router-dom';
+import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb';
+import Input from '@/components/common/Forms/Input';
+import SelectGroup from '@/components/common/Forms/SelectGroup';
+import { IOptions } from '@/models/interfaces/options';
+import ForwardedRadioGroup from '@/components/common/Forms/RadioGroup';
+import Button from '@/components/common/Button';
+import { UToast } from '@/utils/swal';
+import { EToastOption } from '@/models/enums/option';
+import discountApi from '@/apis/modules/discount.api';
 
 const schema = z.object({
   name: z.string().min(1, 'Name is required'),
