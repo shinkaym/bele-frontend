@@ -7,13 +7,14 @@ import { IOrder, IOrderListResponse } from '@/models/interfaces/order'
 import { IPagination } from '@/models/interfaces/pagination'
 import { useEffect, useState } from 'react'
 import { orderFieldOptions, orderStatus, sortByOptions, sortOrderOptions } from '@/constants'
-import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
+import { EFieldByValue, ESortOrderValue, EToastOption } from '@/models/enums/option'
 import Pagination from '@/components/common/Pagination'
 import SelectFilter from '@/components/common/SelectFilter'
 import SelectSort from '@/components/common/SelectSort'
 import { EOrderStatus } from '@/models/enums/status'
 import { debounce } from 'lodash'
 import SelectStatusFilter from '@/components/common/SelectStatusFilter'
+import { UToast } from '@/utils/swal'
 
 type Props = {}
 
@@ -44,12 +45,17 @@ const index = ({}: Props) => {
         order: sortOrder
       }
 
-      // const data: IOrderListResponse = await orderApi.getAll(params)
-      const data: IOrderListResponse = orderApi.list()
-      setOrders(data.data.orders)
-      setPagination(data.data.pagination)
+      // const res: IOrderListResponse = await orderApi.list(params)
+      const res: IOrderListResponse = orderApi.list()
+      if (res.status === 200) {
+        setOrders(res.data.orders)
+        setPagination(res.data.pagination)
+        UToast(EToastOption.SUCCESS, res.message)
+      } else {
+        UToast(EToastOption.ERROR, res.message)
+      }
     } catch (error) {
-      console.error('Error fetching orders:', error)
+      UToast(EToastOption.ERROR, 'An unexpected error occurred.')
     } finally {
       setLoading(false)
     }
@@ -60,7 +66,6 @@ const index = ({}: Props) => {
   }, 500)
 
   useEffect(() => {
-    console.log('fetching orders...')
     fetchData(pagination.currentPage, 5)
   }, [searchQuery, selectedField, selectedStatus, sortBy, sortOrder, pagination.currentPage])
 
@@ -98,11 +103,7 @@ const index = ({}: Props) => {
               sortOrderOptions={sortOrderOptions}
             />
           </div>
-          {loading ? (
-            <Loader />
-          ) : (
-            <OrderTable orders={orders} onRefresh={() => fetchData(pagination.currentPage, 5)} />
-          )}
+          {loading ? <Loader /> : <OrderTable orders={orders} onRefresh={() => fetchData(pagination.currentPage, 5)} />}
           <Pagination
             currentPage={pagination.currentPage}
             totalPages={pagination.totalPages}

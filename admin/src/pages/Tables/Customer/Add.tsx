@@ -61,7 +61,7 @@ function AddCustomer({}: Props) {
       UToast(EToastOption.SUCCESS, 'Customer added successfully!');
       reset(); // Reset form
     } catch (error) {
-      UToast(EToastOption.WARNING, 'Failed to add customer!');
+      UToast(EToastOption.ERROR, 'An unexpected error occurred.')
     }
   };
 

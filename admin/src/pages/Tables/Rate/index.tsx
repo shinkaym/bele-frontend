@@ -4,7 +4,7 @@ import Loader from '@/components/common/Loader'
 import { IPagination } from '@/models/interfaces/pagination'
 import { useEffect, useState } from 'react'
 import { rateFieldOptions, rateStatus, sortByOptions, sortOrderOptions } from '@/constants'
-import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
+import { EFieldByValue, ESortOrderValue, EToastOption } from '@/models/enums/option'
 import Pagination from '@/components/common/Pagination'
 import SelectFilter from '@/components/common/SelectFilter'
 import SelectSort from '@/components/common/SelectSort'
@@ -14,6 +14,7 @@ import SelectStatusFilter from '@/components/common/SelectStatusFilter'
 import { IRate, IRateListResponse } from '@/models/interfaces/rate'
 import rateApi from '@/apis/modules/rate.api'
 import RateTable from '@/components/common/Tables/RateTable'
+import { UToast } from '@/utils/swal'
 
 type Props = {}
 
@@ -44,12 +45,17 @@ const index = ({}: Props) => {
         order: sortOrder
       }
 
-      // const data: IRateListResponse = await rateApi.getAll(params)
-      const data: IRateListResponse = rateApi.list()
-      setRates(data.data.rates)
-      setPagination(data.data.pagination)
+      // const data: IRateListResponse = await rateApi.list(params)
+      const res: IRateListResponse = rateApi.list()
+      if (res.status === 200) {
+        setRates(res.data.rates)
+        setPagination(res.data.pagination)
+        UToast(EToastOption.SUCCESS, res.message)
+      } else {
+        UToast(EToastOption.ERROR, res.message)
+      }
     } catch (error) {
-      console.error('Error fetching rates:', error)
+      UToast(EToastOption.ERROR, 'An unexpected error occurred.')
     } finally {
       setLoading(false)
     }
@@ -60,7 +66,6 @@ const index = ({}: Props) => {
   }, 500)
 
   useEffect(() => {
-    console.log('fetching rates...')
     fetchData(pagination.currentPage, 5)
   }, [searchQuery, selectedField, selectedStatus, sortBy, sortOrder, pagination.currentPage])
 

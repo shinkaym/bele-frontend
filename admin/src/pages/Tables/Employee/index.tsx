@@ -9,10 +9,11 @@ import SelectSort from '@/components/common/SelectSort'
 import SelectStatusFilter from '@/components/common/SelectStatusFilter'
 import EmployeeTable from '@/components/common/Tables/EmployeeTable'
 import { employeeFieldOptions, employeeStatus, sortByOptions, sortOrderOptions } from '@/constants'
-import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
+import { EFieldByValue, ESortOrderValue, EToastOption } from '@/models/enums/option'
 import { EEmployeeStatus } from '@/models/enums/status'
 import { IEmployee, IEmployeeListResponse } from '@/models/interfaces/employee'
 import { IPagination } from '@/models/interfaces/pagination'
+import { UToast } from '@/utils/swal'
 import { debounce } from 'lodash'
 import { useEffect, useState } from 'react'
 
@@ -45,12 +46,17 @@ const index = ({}: Props) => {
         order: sortOrder
       }
 
-      // const data: IEmployeeListResponse = await orderApi.getAll(params)
-      const data: IEmployeeListResponse = employeeApi.list()
-      setEmployees(data.data.employees)
-      setPagination(data.data.pagination)
+      // const data: IEmployeeListResponse = await employeeApi.list(params)
+      const res: IEmployeeListResponse = employeeApi.list()
+      if (res.status === 200) {
+        setEmployees(res.data.employees)
+        setPagination(res.data.pagination)
+        UToast(EToastOption.SUCCESS, res.message)
+      } else {
+        UToast(EToastOption.ERROR, res.message)
+      }
     } catch (error) {
-      console.error('Error fetching employees:', error)
+      UToast(EToastOption.ERROR, 'An unexpected error occurred.')
     } finally {
       setLoading(false)
     }
@@ -61,7 +67,6 @@ const index = ({}: Props) => {
   }, 500)
 
   useEffect(() => {
-    console.log('fetching employees...')
     fetchData(pagination.currentPage, 5)
   }, [searchQuery, selectedField, selectedStatus, sortBy, sortOrder, pagination.currentPage])
 

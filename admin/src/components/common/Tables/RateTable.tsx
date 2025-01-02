@@ -13,6 +13,8 @@ import StatusBadge from '../StatusBadge'
 import XCircleIcon from '@/components/icons/XCircle'
 import CheckCircle from '@/components/icons/CheckCircle'
 import ReplyModal from '../ReplyModal'
+import { EToastOption } from '@/models/enums/option'
+import { UToast } from '@/utils/swal'
 
 type RateTableProps = {
   rates: IRate[]
@@ -38,22 +40,27 @@ const RateTable = ({ rates, onRefresh }: RateTableProps) => {
 
   const handleConfirmAdd = async (reply: string) => {
     if (current) {
-      try {
-        const response = await rateApi.reply({
-          id: current.id,
-          reply
-        })
-        if (response.status === 200) {
-          onRefresh()
-          Swal.fire('Success!', 'Reply successfully', 'success')
-        } else {
-          Swal.fire('Error!', response.message, 'error')
+      if (reply.trim() === '') {
+        UToast(EToastOption.ERROR, 'Reply cannot be empty.')
+        return
+      } else {
+        try {
+          const res = await rateApi.reply({
+            id: current.id,
+            reply
+          })
+          if (res.status === 200) {
+            onRefresh()
+            UToast(EToastOption.SUCCESS, res.message)
+          } else {
+            UToast(EToastOption.ERROR, res.message)
+          }
+        } catch (error) {
+          UToast(EToastOption.ERROR, 'An unexpected error occurred.')
+        } finally {
+          setIsOpenReplyModal(false)
+          setCurrent(null)
         }
-      } catch (error) {
-        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
-      } finally {
-        setIsOpenReplyModal(false)
-        setCurrent(null)
       }
     }
   }
@@ -66,22 +73,27 @@ const RateTable = ({ rates, onRefresh }: RateTableProps) => {
 
   const handleConfirmEdit = async (reply: string) => {
     if (current) {
-      try {
-        const response = await rateApi.editReply({
-          id: current.id,
-          reply
-        })
-        if (response.status === 200) {
-          onRefresh()
-          Swal.fire('Success!', 'Edit reply successfully', 'success')
-        } else {
-          Swal.fire('Error!', response.message, 'error')
+      if (reply.trim() === '') {
+        UToast(EToastOption.ERROR, 'Reply cannot be empty.')
+        return
+      } else {
+        try {
+          const res = await rateApi.editReply({
+            id: current.id,
+            reply
+          })
+          if (res.status === 200) {
+            onRefresh()
+            UToast(EToastOption.SUCCESS, res.message)
+          } else {
+            UToast(EToastOption.ERROR, res.message)
+          }
+        } catch (error) {
+          UToast(EToastOption.ERROR, 'An unexpected error occurred.')
+        } finally {
+          setIsOpenReplyModal(false)
+          setCurrent(null)
         }
-      } catch (error) {
-        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
-      } finally {
-        setIsOpenReplyModal(false)
-        setCurrent(null)
       }
     }
   }
@@ -107,16 +119,16 @@ const RateTable = ({ rates, onRefresh }: RateTableProps) => {
   const handleConfirmDelete = async () => {
     if (selectedId) {
       try {
-        const response = await rateApi.delete({ id: selectedId })
+        const res = await rateApi.delete({ id: selectedId })
 
-        if (response.status === 200) {
+        if (res.status === 200) {
           onRefresh()
-          Swal.fire('Deleted!', response.message, 'success')
+          UToast(EToastOption.SUCCESS, res.message)
         } else {
-          Swal.fire('Error!', response.message, 'error')
+          UToast(EToastOption.ERROR, 'An unexpected error occurred.')
         }
       } catch (error) {
-        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
       } finally {
         setIsOpenConfirmDeleteModal(false)
         setSelectedId(null)
@@ -144,18 +156,18 @@ const RateTable = ({ rates, onRefresh }: RateTableProps) => {
   const handleConfirmStatusChange = async () => {
     if (current && selectedStatus !== null) {
       try {
-        const response = await rateApi.updateStatus({
+        const res = await rateApi.updateStatus({
           id: current.id,
           status: selectedStatus
         })
-        if (response.status === 200) {
+        if (res.status === 200) {
           onRefresh()
-          Swal.fire('Success!', 'Order status updated successfully', 'success')
+          UToast(EToastOption.SUCCESS, res.message)
         } else {
-          Swal.fire('Error!', response.message, 'error')
+          UToast(EToastOption.ERROR, res.message)
         }
       } catch (error) {
-        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
       } finally {
         setIsOpenConfirmStatusChangeModal(false)
         setSelectedStatus(null)

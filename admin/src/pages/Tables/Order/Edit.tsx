@@ -82,13 +82,22 @@ const OrderEdit: React.FC = () => {
 
   useEffect(() => {
     const fetchOrder = async () => {
-      if (id) {
-        const response = await orderApi.detail({ id: parseInt(id) })
-        const order = response.data
-        setOrder(order)
-        reset(order)
-      } else {
-        console.error('Order ID is undefined')
+      try {
+        if (id) {
+          const res = await orderApi.detail({ id: parseInt(id) })
+          if (res.status === 200) {
+            const order = res.data
+            setOrder(order)
+            reset(order)
+            UToast(EToastOption.SUCCESS, res.message)
+          } else {
+            UToast(EToastOption.ERROR, res.message)
+          }
+        } else {
+          UToast(EToastOption.ERROR, 'Order ID is undefined.')
+        }
+      } catch (error) {
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
       }
     }
     fetchOrder()
@@ -109,7 +118,7 @@ const OrderEdit: React.FC = () => {
 
   const handleSave = async () => {
     if (order && order.products.length === 0) {
-      alert('Products list cannot be empty')
+      UToast(EToastOption.ERROR, 'Products list cannot be empty.')
       return
     }
 
@@ -124,23 +133,21 @@ const OrderEdit: React.FC = () => {
             size: product.size.id
           }))
         }
-        console.log('🚀 ~ handleSave ~ transOrder:', transOrder)
-        const response = await orderApi.update({ id: order.id, data: transOrder })
-        if (response.status === 200) {
-          UToast(EToastOption.SUCCESS, 'Update order successfully!')
+        const res = await orderApi.update({ id: order.id, data: transOrder })
+        if (res.status === 200) {
+          UToast(EToastOption.SUCCESS, res.message)
           window.location.reload()
-        } else UToast(EToastOption.WARNING, 'Update order failure!')
+        } else UToast(EToastOption.ERROR, res.message)
       }
       setIsEditing(false)
     } catch (error) {
-      UToast(EToastOption.WARNING, 'Update order failure!')
+      UToast(EToastOption.ERROR, 'An unexpected error occurred.')
     }
   }
 
   const handleQuantityChange = (productId: number, quantity: number) => {
     if (order) {
       if (quantity === 0) {
-        // Nếu số lượng bằng 0, xoá sản phẩm khỏi danh sách
         const updatedProducts = order.products.filter((prod) => prod.id !== productId)
         const updatedTotal = updatedProducts.reduce((total, prod) => total + prod.quantity * prod.price, 0)
         setOrder({

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
 import Input from '@/components/common/Forms/Input'
 import SelectGroup from '@/components/common/Forms/SelectGroup'
@@ -71,20 +71,25 @@ function Edit({}: Props) {
 
     const fetchEmployee = async () => {
       try {
-        const response = await employeeApi.detail({ id: Number(id) })
-        const employee = response.data
-        reset({
-          name: employee.name,
-          phoneNumber: employee.phoneNumber,
-          email: employee.email,
-          password: employee.password,
-          rePassword: employee.password,
-          sex: employee.sex as 'Male' | 'Female',
-          role: employee.role,
-          status: employee.status
-        })
+        const res = await employeeApi.detail({ id: Number(id) })
+        if (res.status === 200) {
+          const employee = res.data
+          reset({
+            name: employee.name,
+            phoneNumber: employee.phoneNumber,
+            email: employee.email,
+            password: employee.password,
+            rePassword: employee.password,
+            sex: employee.sex as 'Male' | 'Female',
+            role: employee.role,
+            status: employee.status
+          })
+          UToast(EToastOption.SUCCESS, res.message)
+        } else {
+          UToast(EToastOption.ERROR, res.message)
+        }
       } catch (error) {
-        console.error('Failed to fetch employee data:', error)
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
       }
     }
 
@@ -93,7 +98,7 @@ function Edit({}: Props) {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      await employeeApi.update({
+      const req = {
         id: Number(id),
         data: {
           name: data.name,
@@ -105,11 +110,16 @@ function Edit({}: Props) {
           role: data.role as number,
           status: data.status as number
         }
-      })
-      UToast(EToastOption.SUCCESS, 'Update employee successfully!')
-      window.location.reload()
+      }
+      const res = await employeeApi.update(req)
+      if (res.status === 200) {
+        UToast(EToastOption.SUCCESS, res.message)
+        window.location.reload()
+      } else {
+        UToast(EToastOption.ERROR, res.message)
+      }
     } catch (error) {
-      UToast(EToastOption.WARNING, 'Update employee failure!')
+      UToast(EToastOption.ERROR, 'An unexpected error occurred.')
     }
   }
 

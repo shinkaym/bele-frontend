@@ -6,7 +6,8 @@ import { DeleteIcon, EditIcon } from '@/components/icons'
 import { Link } from 'react-router-dom'
 import { tagTableHeaders } from '@/constants'
 import tagApi from '@/apis/modules/tag.api'
-import Swal from 'sweetalert2'
+import { UToast } from '@/utils/swal'
+import { EToastOption } from '@/models/enums/option'
 
 type TagTableProps = {
   tags: ITag[]
@@ -33,16 +34,16 @@ const TagTable = ({ tags, onRefresh }: TagTableProps) => {
   const handleConfirmDelete = async () => {
     if (selectedId) {
       try {
-        const response = await tagApi.delete({ id: selectedId })
+        const res = await tagApi.delete({ id: selectedId })
 
-        if (response.status === 200) {
+        if (res.status === 200) {
           onRefresh()
-          Swal.fire('Deleted!', response.message, 'success')
+          UToast(EToastOption.SUCCESS, res.message)
         } else {
-          Swal.fire('Error!', response.message, 'error')
+          UToast(EToastOption.ERROR, res.message)
         }
       } catch (error) {
-        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
       } finally {
         setIsOpenConfirmDeleteModal(false)
         setSelectedId(null)

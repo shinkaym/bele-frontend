@@ -70,9 +70,8 @@ function Add({}: Props) {
   })
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log('🚀 ~ Add ~ data:', data)
     try {
-      await employeeApi.add({
+      const res = await employeeApi.add({
         name: data.name,
         phoneNumber: data.phoneNumber,
         email: data.email,
@@ -82,10 +81,14 @@ function Add({}: Props) {
         role: data.role as number,
         status: data.status as number
       })
-      UToast(EToastOption.SUCCESS, 'Add employee successfully!')
-      reset()
+      if (res.status === 200) {
+        UToast(EToastOption.SUCCESS, res.message)
+        reset()
+      } else {
+        UToast(EToastOption.ERROR, res.message)
+      }
     } catch (error) {
-      UToast(EToastOption.WARNING, 'Add employee failure!')
+      UToast(EToastOption.ERROR, 'An unexpected error occurred.')
     }
   }
 

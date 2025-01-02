@@ -5,11 +5,12 @@ import Search from '@/components/common/Forms/Search'
 import Loader from '@/components/common/Loader'
 import Pagination from '@/components/common/Pagination'
 import TagTable from '@/components/common/Tables/TagTable'
+import { EToastOption } from '@/models/enums/option'
 import { IPagination } from '@/models/interfaces/pagination'
 import { ITag, ITagListResponse } from '@/models/interfaces/tag'
+import { UToast } from '@/utils/swal'
 import { debounce } from 'lodash'
 import { useEffect, useState } from 'react'
-
 
 type Props = {}
 
@@ -29,15 +30,20 @@ const index = ({}: Props) => {
       const params = {
         page,
         limit,
-        query: searchQuery,
+        query: searchQuery
       }
 
-      // const data: ITagListResponse = await orderApi.getAll(params)
-      const data: ITagListResponse = tagApi.list()
-      setTags(data.data.tags)
-      setPagination(data.data.pagination)
+      // const res: ITagListResponse = await orderApi.list(params)
+      const res: ITagListResponse = tagApi.list()
+      if (res.status === 200) {
+        setTags(res.data.tags)
+        setPagination(res.data.pagination)
+        UToast(EToastOption.SUCCESS, res.message)
+      } else {
+        UToast(EToastOption.ERROR, res.message)
+      }
     } catch (error) {
-      console.error('Error fetching tags:', error)
+      UToast(EToastOption.ERROR, 'An unexpected error occurred.')
     } finally {
       setLoading(false)
     }
@@ -48,7 +54,6 @@ const index = ({}: Props) => {
   }, 500)
 
   useEffect(() => {
-    console.log('fetching tags...')
     fetchData(pagination.currentPage, 5)
   }, [searchQuery, pagination.currentPage])
 
@@ -63,17 +68,12 @@ const index = ({}: Props) => {
         <div className='rounded-sm border bg-white px-5 pt-6 pb-2.5 shadow-default dark:bg-boxdark'>
           <div className='flex items-center justify-between gap-5 mb-6'>
             <Search onSearch={debouncedSearch} />
-            <div className='flex items-center justify-between gap-5'>
-            </div>
+            <div className='flex items-center justify-between gap-5'></div>
             <Button type='link' to='/tables/tag/add' size='sm'>
               Add
             </Button>
           </div>
-          {loading ? (
-            <Loader />
-          ) : (
-            <TagTable tags={tags} onRefresh={() => fetchData(pagination.currentPage, 5)} />
-          )}
+          {loading ? <Loader /> : <TagTable tags={tags} onRefresh={() => fetchData(pagination.currentPage, 5)} />}
           <Pagination
             currentPage={pagination.currentPage}
             totalPages={pagination.totalPages}

@@ -9,10 +9,11 @@ import SelectSort from '@/components/common/SelectSort';
 import SelectStatusFilter from '@/components/common/SelectStatusFilter';
 import CustomerTable from '@/components/common/Tables/CustomerTable';
 import { customerFieldOptions, customerStatus, sortByOptions, sortOrderOptions } from '@/constants';
-import { EFieldByValue, ESortOrderValue } from '@/models/enums/option';
+import { EFieldByValue, ESortOrderValue, EToastOption } from '@/models/enums/option';
 import { ECustomerStatus } from '@/models/enums/status';
 import { ICustomer, ICustomerListResponse } from '@/models/interfaces/customer';
 import { IPagination } from '@/models/interfaces/pagination';
+import { UToast } from '@/utils/swal';
 import { debounce } from 'lodash';
 import { useEffect, useState } from 'react';
 
@@ -45,12 +46,12 @@ const index = ({}: Props) => {
         order: sortOrder,
       };
 
-      // const data: ICustomerListResponse = await customerApi.getAll(params)
+      // const data: ICustomerListResponse = await customerApi.list(params)
       const data: ICustomerListResponse = customerApi.list();
       setCustomers(data.data.customers);
       setPagination(data.data.pagination);
     } catch (error) {
-      console.error('Error fetching customers:', error);
+      UToast(EToastOption.ERROR, 'An unexpected error occurred.')
     } finally {
       setLoading(false);
     }
@@ -61,7 +62,6 @@ const index = ({}: Props) => {
   }, 500);
 
   useEffect(() => {
-    console.log('fetching customers...');
     fetchData(pagination.currentPage, 5);
   }, [searchQuery, selectedField, selectedStatus, sortBy, sortOrder, pagination.currentPage]);
 

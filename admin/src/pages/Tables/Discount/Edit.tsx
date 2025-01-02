@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useParams, useNavigate } from 'react-router-dom';
-import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb';
-import Input from '@/components/common/Forms/Input';
-import SelectGroup from '@/components/common/Forms/SelectGroup';
-import { IOptions } from '@/models/interfaces/options';
-import ForwardedRadioGroup from '@/components/common/Forms/RadioGroup';
-import Button from '@/components/common/Button';
-import { UToast } from '@/utils/swal';
-import { EToastOption } from '@/models/enums/option';
-import discountApi from '@/apis/modules/discount.api';
+import { useEffect, useState } from 'react'
+import { useForm, SubmitHandler, Controller } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { useParams, useNavigate } from 'react-router-dom'
+import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
+import Input from '@/components/common/Forms/Input'
+import SelectGroup from '@/components/common/Forms/SelectGroup'
+import { IOptions } from '@/models/interfaces/options'
+import ForwardedRadioGroup from '@/components/common/Forms/RadioGroup'
+import Button from '@/components/common/Button'
+import { UToast } from '@/utils/swal'
+import { EToastOption } from '@/models/enums/option'
+import discountApi from '@/apis/modules/discount.api'
 
 const schema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -47,18 +47,21 @@ function EditDiscount({}: Props) {
 
     const fetchDiscount = async () => {
       try {
-        const response = await discountApi.detail({ id: Number(id) })
-        const discount = response.data
-        reset({
-          name: discount.name,
-          discount: discount.discount,
-          expireDate: discount.expireDate,
-          status: discount.status
-        })
+        const res = await discountApi.detail({ id: Number(id) })
+        if (res.status === 200) {
+          const discount = res.data
+          reset({
+            name: discount.name,
+            discount: discount.discount,
+            expireDate: discount.expireDate,
+            status: discount.status
+          })
+          UToast(EToastOption.SUCCESS, res.message)
+        } else {
+          UToast(EToastOption.ERROR, res.message)
+        }
       } catch (error) {
-        console.error('Failed to fetch discount data:', error)
-        UToast(EToastOption.WARNING, 'Failed to load discount data')
-        navigate('/tables/discount')
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
       }
     }
 
@@ -67,7 +70,7 @@ function EditDiscount({}: Props) {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      await discountApi.update({
+      const res = await discountApi.update({
         id: Number(id),
         data: {
           name: data.name,
@@ -76,10 +79,14 @@ function EditDiscount({}: Props) {
           status: data.status as number
         }
       })
-      UToast(EToastOption.SUCCESS, 'Updated discount successfully!')
-      navigate('/tables/discount')
+      if (res.status === 200) {
+        UToast(EToastOption.SUCCESS, res.message)
+        navigate('/tables/discount')
+      } else {
+        UToast(EToastOption.ERROR, res.message)
+      }
     } catch (error) {
-      UToast(EToastOption.WARNING, 'Failed to update discount')
+      UToast(EToastOption.ERROR, 'An unexpected error occurred.')
     }
   }
   return (

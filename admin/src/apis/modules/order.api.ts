@@ -22,7 +22,7 @@ const orderApi = {
   // async list(): Promise<IApiResponse<IOrderListResponse>> {
   list(): IOrderListResponse {
     try {
-      // return await axiosPublic.get(orderEndpoints.list)
+      // return await axiosPublic.get(orderEndpoints.list, { params })
       return orderListResponseData
     } catch (error) {
       throw error

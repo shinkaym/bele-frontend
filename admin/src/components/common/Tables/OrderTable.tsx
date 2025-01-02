@@ -11,6 +11,8 @@ import { EOrderStatus } from '@/models/enums/status'
 import ReCAPCHAModal from '../ReCAPCHAModal'
 import StatusModal from '../StatusModal'
 import StatusBadge from '../StatusBadge'
+import { EToastOption } from '@/models/enums/option'
+import { UToast } from '@/utils/swal'
 
 type OrderTableProps = {
   orders: IOrder[]
@@ -41,16 +43,16 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
   const handleConfirmDelete = async () => {
     if (selectedId) {
       try {
-        const response = await orderApi.delete({ id: selectedId })
+        const res = await orderApi.delete({ id: selectedId })
 
-        if (response.status === 200) {
+        if (res.status === 200) {
           onRefresh()
-          Swal.fire('Deleted!', response.message, 'success')
+          UToast(EToastOption.SUCCESS, res.message)
         } else {
-          Swal.fire('Error!', response.message, 'error')
+          UToast(EToastOption.ERROR, res.message)
         }
       } catch (error) {
-        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
       } finally {
         setIsOpenConfirmDeleteModal(false)
         setSelectedId(null)
@@ -78,18 +80,18 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
   const handleConfirmStatusChange = async () => {
     if (current && selectedStatus !== null) {
       try {
-        const response = await orderApi.updateStatus({
+        const res = await orderApi.updateStatus({
           id: current.id,
           status: selectedStatus
         })
-        if (response.status === 200) {
+        if (res.status === 200) {
           onRefresh()
-          Swal.fire('Success!', 'Order status updated successfully', 'success')
+          UToast(EToastOption.SUCCESS, res.message)
         } else {
-          Swal.fire('Error!', response.message, 'error')
+          UToast(EToastOption.ERROR, res.message)
         }
       } catch (error) {
-        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
       } finally {
         setIsOpenConfirmStatusChangeModal(false)
         setSelectedStatus(null)

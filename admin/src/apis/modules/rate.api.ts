@@ -16,7 +16,7 @@ const rateApi = {
   // async list(): Promise<IApiResponse<IRateListResponse>> {
     list(): IRateListResponse {
       try {
-        // return await axiosPublic.get(rateEndpoints.list)
+        // return await axiosPublic.get(rateEndpoints.list, { params })
         return rateListResponseData
       } catch (error) {
         throw error
@@ -49,7 +49,7 @@ const rateApi = {
 
     async reply({ id, reply }: { id: number; reply: string }): Promise<IRateReplyResponse> {
       try {
-        return await axiosPublic.patch(rateEndpoints.reply({ id }), { id, reply })
+        return await axiosPublic.patch(rateEndpoints.reply({ id }), { reply })
       } catch (error) {
         throw error
       }
@@ -57,7 +57,7 @@ const rateApi = {
 
     async editReply({ id, reply }: { id: number; reply: string }): Promise<IRateEditReplyResponse> {
       try {
-        return await axiosPublic.patch(rateEndpoints.editReply({ id }), { id, reply })
+        return await axiosPublic.patch(rateEndpoints.editReply({ id }), { reply })
       } catch (error) {
         throw error
       }

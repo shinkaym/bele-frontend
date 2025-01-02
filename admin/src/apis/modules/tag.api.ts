@@ -16,7 +16,7 @@ const tagApi = {
   // async list(): Promise<IApiResponse<ITagListResponse>> {
   list(): ITagListResponse {
     try {
-      // return await axiosPublic.get(tagEndpoints.list)
+      // return await axiosPublic.get(tagEndpoints.list, { params })
       return tagListResponseData
     } catch (error) {
       throw error

@@ -32,15 +32,18 @@ function Add({}: Props) {
   })
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log('🚀 ~ Add ~ data:', data)
     try {
-      await tagApi.add({
+      const res = await tagApi.add({
         name: data.name
       })
-      UToast(EToastOption.SUCCESS, 'Add tag successfully!')
-      reset()
+      if (res.status === 200) {
+        UToast(EToastOption.SUCCESS, res.message)
+        reset()
+      } else {
+        UToast(EToastOption.ERROR, res.message)
+      }
     } catch (error) {
-      UToast(EToastOption.WARNING, 'Add tag failure!')
+      UToast(EToastOption.ERROR, 'An unexpected error occurred.')
     }
   }
 

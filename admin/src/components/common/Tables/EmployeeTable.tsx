@@ -11,6 +11,8 @@ import ReCAPCHAModal from '../ReCAPCHAModal'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
 import StatusBadge from '../StatusBadge'
+import { UToast } from '@/utils/swal'
+import { EToastOption } from '@/models/enums/option'
 
 type EmployeeTableProps = {
   employees: IEmployee[]
@@ -41,16 +43,16 @@ const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
   const handleConfirmDelete = async () => {
     if (selectedId) {
       try {
-        const response = await employeeApi.delete({ id: selectedId })
+        const res = await employeeApi.delete({ id: selectedId })
 
-        if (response.status === 200) {
+        if (res.status === 200) {
           onRefresh()
-          Swal.fire('Deleted!', response.message, 'success')
+          UToast(EToastOption.SUCCESS, res.message)
         } else {
-          Swal.fire('Error!', response.message, 'error')
+          UToast(EToastOption.ERROR, res.message)
         }
       } catch (error) {
-        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
       } finally {
         setIsOpenConfirmDeleteModal(false)
         setSelectedId(null)
@@ -78,18 +80,18 @@ const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
   const handleConfirmStatusChange = async () => {
     if (current && selectedStatus !== null) {
       try {
-        const response = await employeeApi.updateStatus({
+        const res = await employeeApi.updateStatus({
           id: current.id,
           status: selectedStatus
         })
-        if (response.status === 200) {
+        if (res.status === 200) {
           onRefresh()
-          Swal.fire('Success!', 'Employee status updated successfully', 'success')
+          UToast(EToastOption.SUCCESS, res.message)
         } else {
-          Swal.fire('Error!', response.message, 'error')
+          UToast(EToastOption.ERROR, res.message)
         }
       } catch (error) {
-        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
       } finally {
         setIsOpenConfirmStatusChangeModal(false)
         setSelectedStatus(null)

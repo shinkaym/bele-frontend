@@ -33,13 +33,18 @@ function Edit({}: Props) {
   useEffect(() => {
     const fetchTag = async () => {
       try {
-        const response = await tagApi.detail({ id: Number(id) })
-        const tag = response.data
-        reset({
-          name: tag.name
-        })
+        const res = await tagApi.detail({ id: Number(id) })
+        if (res.status === 200) {
+          const tag = res.data
+          reset({
+            name: tag.name
+          })
+          UToast(EToastOption.SUCCESS, res.message)
+        } else {
+          UToast(EToastOption.ERROR, res.message)
+        }
       } catch (error) {
-        console.error('Failed to fetch tag data:', error)
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
       }
     }
 
@@ -48,16 +53,20 @@ function Edit({}: Props) {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      await tagApi.update({
+      const res = await tagApi.update({
         id: Number(id),
         data: {
           name: data.name
         }
       })
-      UToast(EToastOption.SUCCESS, 'Update tag successfully!')
-      window.location.reload()
+      if (res.status === 200) {
+        UToast(EToastOption.SUCCESS, res.message)
+        window.location.reload()
+      } else {
+        UToast(EToastOption.ERROR, res.message)
+      }
     } catch (error) {
-      UToast(EToastOption.WARNING, 'Update tag failure!')
+      UToast(EToastOption.ERROR, 'An unexpected error occurred.')
     }
   }
 
