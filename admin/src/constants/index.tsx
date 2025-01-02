@@ -1,6 +1,6 @@
 import IconPlay from '@/components/icons/IconPlay'
 import { EFieldByValue, EFieldByTitle, ESortOrderValue, ESortOrderTitle } from '@/models/enums/option'
-import { EOrderStatus, ERateStatus, EEmployeeStatus, EDiscountStatus, ECustomerStatus } from '@/models/enums/status'
+import { EOrderStatus, ERateStatus, EEmployeeStatus, EDiscountStatus, ECustomerStatus, EContactStatus } from '@/models/enums/status'
 import { IStatus, ITable } from '@/models/interfaces'
 import { TMenuItem } from '@/models/types/brand'
 
@@ -129,6 +129,19 @@ export const customerStatus: IStatus[] = [
   }
 ]
 
+export const contactStatus: IStatus[] = [
+  {
+    title: EContactStatus.INACTIVE,
+    value: 0,
+    className: 'text-orange-600 border-orange-600 bg-orange-200'
+  },
+  {
+    title: EContactStatus.ACTIVE,
+    value: 1,
+    className: 'text-green-600 border-green-600 bg-green-200'
+  }
+]
+
 export const orderFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
   {
     title: EFieldByTitle.ID,
@@ -158,6 +171,13 @@ export const discountFieldOptions: { title: EFieldByTitle; value: EFieldByValue 
 ]
 
 export const customerFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+    title: EFieldByTitle.ID,
+    value: EFieldByValue.ID
+  }
+]
+
+export const contactFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
   {
     title: EFieldByTitle.ID,
     value: EFieldByValue.ID
@@ -237,4 +257,16 @@ export const tagTableHeaders: ITable[] = [
   { title: 'Id', value: 1, className: 'min-w-[20px] text-center' },
   { title: 'Name', value: 2, className: 'min-w-[150px]' },
   { title: 'Action', value: 3, className: 'min-w-[80px] text-center' }
+]
+
+export const contactTableHeaders: ITable[] = [
+  { title: 'Id', value: 1, className: 'min-w-[20px] text-center' },
+  { title: 'Title', value: 2, className: 'min-w-[150px]' },
+  { title: 'Message', value: 3, className: 'min-w-[200px]' },
+  { title: 'Full Name', value: 4, className: 'min-w-[150px]' },
+  { title: 'Email', value: 5, className: 'min-w-[150px]' },
+  { title: 'Phone Number', value: 6, className: 'min-w-[150px]' },
+  { title: 'Status', value: 7, className: 'min-w-[100px] text-center' },
+  { title: 'Created At', value: 8, className: 'min-w-[150px]' },
+  { title: 'Action', value: 9, className: 'min-w-[80px] text-center' }
 ]

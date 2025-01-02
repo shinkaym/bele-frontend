@@ -32,10 +32,15 @@ export enum EDiscountStatus {
 }
 
 export enum ECustomerStatus {
-    UNKNOWN = 'Unknown',   
-    ACTIVE = 'Active',   
-    INACTIVE = 'Inactive',
-    EXPIRED = 'Expired',  
-    DELETED = 'Deleted'  
-  }
-  
+  UNKNOWN = 'Unknown',
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive',
+  EXPIRED = 'Expired',
+  DELETED = 'Deleted'
+}
+
+export enum EContactStatus {
+  UNKNOWN = 'Unknown',
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive'
+}
