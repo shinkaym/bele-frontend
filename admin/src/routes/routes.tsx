@@ -45,6 +45,7 @@ const Tag = Loadable(lazy(() => import('@/pages/Tables/Tag')))
 const AddTag = Loadable(lazy(() => import('@/pages/Tables/Tag/Add')))
 const EditTag = Loadable(lazy(() => import('@/pages/Tables/Tag/Edit')))
 const Contact = Loadable(lazy(() => import('@/pages/Tables/Contact')))
+const Chat = Loadable(lazy(() => import('@/pages/Tables/Chat')))
 
 function AppRouter() {
   const routes = [
@@ -376,8 +377,22 @@ function AppRouter() {
                 path: '',
                 element: (
                   <>
-                    <PageTitle title='contact' />
+                    <PageTitle title='contact' /> 
                     <Contact />
+                  </>
+                )
+              }
+            ]
+          },
+          {
+            path: '/tables/chat',
+            children: [
+              {
+                path: '',
+                element: (
+                  <>
+                    <PageTitle title='Chat' />
+                    <Chat />
                   </>
                 )
               }

@@ -1,7 +1,7 @@
 import { IContact } from '@/models/interfaces/contact';
 import { DeleteIcon } from '@/components/icons';
 import { Link } from 'react-router-dom';
-import XCircleIcon from '@/components/icons/XCircle'
+import XCircleIcon from '@/components/icons/XCircleIcon'
 import CheckCircle from '@/components/icons/CheckCircle'
 import { contactStatus, contactTableHeaders } from '@/constants';
 import Swal from 'sweetalert2';
