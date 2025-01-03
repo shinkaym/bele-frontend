@@ -23,14 +23,14 @@ const RadioColorGroup = (
   }
 
   return (
-    <div className={className}>
-      <div ref={ref} className='space-x-4'>
+    <div className={`${className} py-2`}>
+      <div ref={ref} className='flex flex-wrap items-center gap-2'>
         {options.map((option) => (
           <label
             key={name + option?.id}
             htmlFor={name + option?.id.toString()}
-            className={`relative w-10 h-5 inline-block z-50 cursor-pointer rounded-xl 
-                ${selected === option?.id ? "before:content-[''] before:block before:absolute before:-inset-1 before:rounded-xl before:border-2 before:border-black before:p-2" : ''} 
+            className={`relative inline-block cursor-pointer rounded-xl 
+                ${selected === option?.id ? "before:content-[''] before:block before:absolute before:-inset-0.75 before:rounded-xl before:border before:border-gray-600" : ''} 
                 ${classNameItems}`}
             style={{ backgroundColor: option.value }}
           >

@@ -2,6 +2,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html,
+body {
+  @apply scrollbar-thin scrollbar-thumb-blue-primary scrollbar-track-gray-100;
+}
+
 /* ... */
 
 @layer base {

@@ -56,13 +56,24 @@ export interface IListVariantAttributeValue {
   size: ISize[]
 }
 
+export interface IRateProduct {
+  starAvg: number
+  count: number
+}
+
+export interface ITag {
+  id: number
+  name: string
+}
 export interface IProduct {
   id: number // ID của sản phẩm
   name: string // Tên sản phẩm
   category: ICategory
   thumbnail: string
   description: string
-  discount: IDiscount
+  discount: IDiscount | null
+  rate: IRateProduct | null
+  tag: ITag[]
   basePrice: number // Giá sản phẩm
   slug: string // URL slug của sản phẩm
   view: number // Số lượt xem sản phẩm
@@ -73,4 +84,3 @@ export interface IProduct {
   variant: IVariant[]
   variantAttributeTypes: IListVariantAttributeValue | null
 }
-

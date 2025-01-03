@@ -1,22 +1,42 @@
-import mainBanner from '@/assets/images/banner/main_banner.webp'
-import subBanner from '@/assets/images/banner/sub_banner.webp'
-import thirdBanner from '@/assets/images/banner/third_banner.webp'
+import mainBanner from '@/assets/images/banner/main_banner.png'
+import subBanner1 from '@/assets/images/banner/sub_banner_1.png'
+import subBanner2 from '@/assets/images/banner/sub_banner_2.png'
 import variantBlackThumbnail from '@/assets/images/product/shirt_black.webp'
 import variantMossGreenThumbnail from '@/assets/images/product/shirt_mossgreen.webp'
 import variantWhiteThumbnail from '@/assets/images/product/shirt_white.webp'
+import SSItem1 from '@/assets/images/slideshow/1.webp'
+import SSItem2 from '@/assets/images/slideshow/2.webp'
+import SSItem3 from '@/assets/images/slideshow/3.webp'
 import IconPlay from '@/components/icons/IconPlay'
 import { TMenuItem } from '@/models/types'
 
 import { IProduct } from '@/models/interfaces'
 
-export const SM_LIMIT = 2
-export const MD_LIMIT = 3
-export const LG_LIMIT = 4
-export const XL_LIMIT = 5
+export const XS_LIMIT = 2
+export const SM_LIMIT = 3
+export const MD_LIMIT = 4
+export const LG_LIMIT = 5
 
+export const SM_BP = 480
 export const MD_BP = 768
 export const LG_BP = 1024
-export const XL_BP = 1280
+
+export const bannerList = {
+  mainBanner: {
+    name: 'Main Banner',
+    url: mainBanner
+  },
+  subBanner: [
+    {
+      name: 'Sub Banner 1',
+      url: subBanner1
+    },
+    {
+      name: 'Sub Banner 2',
+      url: subBanner2
+    }
+  ]
+}
 
 export const menuItems: TMenuItem[] = [
   {
@@ -28,23 +48,23 @@ export const menuItems: TMenuItem[] = [
 
 export const slideImages = [
   {
-    url: mainBanner,
-    name: 'Main Banner'
+    url: SSItem1,
+    name: 'SlideShow Item 1'
   },
   {
-    url: subBanner,
-    name: 'Sub Banner'
+    url: SSItem2,
+    name: 'SlideShow Item 2'
   },
   {
-    url: thirdBanner,
-    name: 'Third Banner'
+    url: SSItem3,
+    name: 'SlideShow Item 3'
   }
 ]
 
 export const productData: IProduct[] = [
   {
     id: 1,
-    name: '100% Cotton Long-Sleeve Shirt, Relax Fit',
+    name: 'Áo dài tay 100% Cotton Relax fit',
     category: {
       id: 2,
       name: 'Polo Shirt',
@@ -63,8 +83,26 @@ export const productData: IProduct[] = [
       updatedAt: '2023-01-15T00:00:00Z'
     },
     description: '<ul><li>hello</li><li>c&ocirc;&nbsp;</li><li>ba</li><li>s&agrave;i</li><li>g&ograve;n</li></ul>',
+    rate: {
+      starAvg: 4.5,
+      count: 5
+    },
+    tag: [
+      {
+        id: 1,
+        name: 'New'
+      },
+      {
+        id: 2,
+        name: 'Đáng mua'
+      },
+      {
+        id: 3,
+        name: 'Outlet'
+      }
+    ],
     thumbnail: variantBlackThumbnail,
-    basePrice: 100000,
+    basePrice: 269000,
     slug: '100-cotton-long-sleeve-shirt-relax-fit',
     view: 100,
     like: 100,
@@ -83,7 +121,7 @@ export const productData: IProduct[] = [
     variant: [
       {
         id: 1,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -95,7 +133,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 2,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -107,7 +145,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 3,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -119,7 +157,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 4,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -131,7 +169,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 5,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -143,7 +181,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 6,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -155,7 +193,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 7,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -179,7 +217,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 9,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -233,7 +271,7 @@ export const productData: IProduct[] = [
   },
   {
     id: 2,
-    name: '100% Cotton Long-Sleeve Shirt, Relax Fit',
+    name: 'Áo dài tay 100% Cotton Relax fit',
     category: {
       id: 2,
       name: 'Polo Shirt',
@@ -252,8 +290,26 @@ export const productData: IProduct[] = [
       updatedAt: '2023-01-15T00:00:00Z'
     },
     description: '<ul><li>hello</li><li>c&ocirc;&nbsp;</li><li>ba</li><li>s&agrave;i</li><li>g&ograve;n</li></ul>',
+    rate: {
+      starAvg: 4.5,
+      count: 5
+    },
+    tag: [
+      {
+        id: 1,
+        name: 'New'
+      },
+      {
+        id: 2,
+        name: 'Đáng mua'
+      },
+      {
+        id: 3,
+        name: 'Outlet'
+      }
+    ],
     thumbnail: variantBlackThumbnail,
-    basePrice: 100000,
+    basePrice: 269000,
     slug: '100-cotton-long-sleeve-shirt-relax-fit',
     view: 100,
     like: 100,
@@ -272,7 +328,7 @@ export const productData: IProduct[] = [
     variant: [
       {
         id: 1,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -284,7 +340,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 2,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -296,7 +352,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 3,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -308,7 +364,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 4,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -320,7 +376,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 5,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -332,7 +388,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 6,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -344,7 +400,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 7,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -368,7 +424,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 9,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -422,7 +478,7 @@ export const productData: IProduct[] = [
   },
   {
     id: 3,
-    name: '100% Cotton Long-Sleeve Shirt, Relax Fit',
+    name: 'Áo dài tay 100% Cotton Relax fit',
     category: {
       id: 2,
       name: 'Polo Shirt',
@@ -441,8 +497,26 @@ export const productData: IProduct[] = [
       updatedAt: '2023-01-15T00:00:00Z'
     },
     description: '<ul><li>hello</li><li>c&ocirc;&nbsp;</li><li>ba</li><li>s&agrave;i</li><li>g&ograve;n</li></ul>',
+    rate: {
+      starAvg: 4.5,
+      count: 5
+    },
+    tag: [
+      {
+        id: 1,
+        name: 'New'
+      },
+      {
+        id: 2,
+        name: 'Đáng mua'
+      },
+      {
+        id: 3,
+        name: 'Outlet'
+      }
+    ],
     thumbnail: variantBlackThumbnail,
-    basePrice: 100000,
+    basePrice: 269000,
     slug: '100-cotton-long-sleeve-shirt-relax-fit',
     view: 100,
     like: 100,
@@ -461,7 +535,7 @@ export const productData: IProduct[] = [
     variant: [
       {
         id: 1,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -473,7 +547,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 2,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -485,7 +559,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 3,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -497,7 +571,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 4,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -509,7 +583,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 5,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -521,7 +595,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 6,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -533,7 +607,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 7,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -557,7 +631,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 9,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -611,7 +685,7 @@ export const productData: IProduct[] = [
   },
   {
     id: 4,
-    name: '100% Cotton Long-Sleeve Shirt, Relax Fit',
+    name: 'Áo dài tay 100% Cotton Relax fit',
     category: {
       id: 2,
       name: 'Polo Shirt',
@@ -630,8 +704,26 @@ export const productData: IProduct[] = [
       updatedAt: '2023-01-15T00:00:00Z'
     },
     description: '<ul><li>hello</li><li>c&ocirc;&nbsp;</li><li>ba</li><li>s&agrave;i</li><li>g&ograve;n</li></ul>',
+    rate: {
+      starAvg: 4.5,
+      count: 5
+    },
+    tag: [
+      {
+        id: 1,
+        name: 'New'
+      },
+      {
+        id: 2,
+        name: 'Đáng mua'
+      },
+      {
+        id: 3,
+        name: 'Outlet'
+      }
+    ],
     thumbnail: variantBlackThumbnail,
-    basePrice: 100000,
+    basePrice: 269000,
     slug: '100-cotton-long-sleeve-shirt-relax-fit',
     view: 100,
     like: 100,
@@ -650,7 +742,7 @@ export const productData: IProduct[] = [
     variant: [
       {
         id: 1,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -662,7 +754,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 2,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -674,7 +766,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 3,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -686,7 +778,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 4,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -698,7 +790,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 5,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -710,7 +802,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 6,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -722,7 +814,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 7,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -746,7 +838,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 9,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -800,7 +892,7 @@ export const productData: IProduct[] = [
   },
   {
     id: 5,
-    name: '100% Cotton Long-Sleeve Shirt, Relax Fit',
+    name: 'Áo dài tay 100% Cotton Relax fit',
     category: {
       id: 2,
       name: 'Polo Shirt',
@@ -819,8 +911,26 @@ export const productData: IProduct[] = [
       updatedAt: '2023-01-15T00:00:00Z'
     },
     description: '<ul><li>hello</li><li>c&ocirc;&nbsp;</li><li>ba</li><li>s&agrave;i</li><li>g&ograve;n</li></ul>',
+    rate: {
+      starAvg: 4.5,
+      count: 5
+    },
+    tag: [
+      {
+        id: 1,
+        name: 'New'
+      },
+      {
+        id: 2,
+        name: 'Đáng mua'
+      },
+      {
+        id: 3,
+        name: 'Outlet'
+      }
+    ],
     thumbnail: variantBlackThumbnail,
-    basePrice: 100000,
+    basePrice: 269000,
     slug: '100-cotton-long-sleeve-shirt-relax-fit',
     view: 100,
     like: 100,
@@ -839,7 +949,7 @@ export const productData: IProduct[] = [
     variant: [
       {
         id: 1,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -851,7 +961,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 2,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -863,7 +973,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 3,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -875,7 +985,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 4,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -887,7 +997,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 5,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -899,7 +1009,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 6,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -911,7 +1021,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 7,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -935,7 +1045,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 9,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -989,7 +1099,7 @@ export const productData: IProduct[] = [
   },
   {
     id: 6,
-    name: '100% Cotton Long-Sleeve Shirt, Relax Fit',
+    name: 'Áo dài tay 100% Cotton Relax fit',
     category: {
       id: 2,
       name: 'Polo Shirt',
@@ -1008,8 +1118,26 @@ export const productData: IProduct[] = [
       updatedAt: '2023-01-15T00:00:00Z'
     },
     description: '<ul><li>hello</li><li>c&ocirc;&nbsp;</li><li>ba</li><li>s&agrave;i</li><li>g&ograve;n</li></ul>',
+    rate: {
+      starAvg: 4.5,
+      count: 5
+    },
+    tag: [
+      {
+        id: 1,
+        name: 'New'
+      },
+      {
+        id: 2,
+        name: 'Đáng mua'
+      },
+      {
+        id: 3,
+        name: 'Outlet'
+      }
+    ],
     thumbnail: variantBlackThumbnail,
-    basePrice: 100000,
+    basePrice: 269000,
     slug: '100-cotton-long-sleeve-shirt-relax-fit',
     view: 100,
     like: 100,
@@ -1028,7 +1156,7 @@ export const productData: IProduct[] = [
     variant: [
       {
         id: 1,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1040,7 +1168,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 2,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1052,7 +1180,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 3,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1064,7 +1192,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 4,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1076,7 +1204,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 5,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1088,7 +1216,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 6,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1100,7 +1228,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 7,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1124,7 +1252,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 9,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1178,7 +1306,7 @@ export const productData: IProduct[] = [
   },
   {
     id: 7,
-    name: '100% Cotton Long-Sleeve Shirt, Relax Fit',
+    name: 'Áo dài tay 100% Cotton Relax fit',
     category: {
       id: 2,
       name: 'Polo Shirt',
@@ -1197,8 +1325,26 @@ export const productData: IProduct[] = [
       updatedAt: '2023-01-15T00:00:00Z'
     },
     description: '<ul><li>hello</li><li>c&ocirc;&nbsp;</li><li>ba</li><li>s&agrave;i</li><li>g&ograve;n</li></ul>',
+    rate: {
+      starAvg: 4.5,
+      count: 5
+    },
+    tag: [
+      {
+        id: 1,
+        name: 'New'
+      },
+      {
+        id: 2,
+        name: 'Đáng mua'
+      },
+      {
+        id: 3,
+        name: 'Outlet'
+      }
+    ],
     thumbnail: variantBlackThumbnail,
-    basePrice: 100000,
+    basePrice: 269000,
     slug: '100-cotton-long-sleeve-shirt-relax-fit',
     view: 100,
     like: 100,
@@ -1217,7 +1363,7 @@ export const productData: IProduct[] = [
     variant: [
       {
         id: 1,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1229,7 +1375,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 2,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1241,7 +1387,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 3,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1253,7 +1399,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 4,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1265,7 +1411,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 5,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1277,7 +1423,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 6,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1289,7 +1435,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 7,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1313,7 +1459,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 9,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1367,7 +1513,7 @@ export const productData: IProduct[] = [
   },
   {
     id: 8,
-    name: '100% Cotton Long-Sleeve Shirt, Relax Fit',
+    name: 'Áo dài tay 100% Cotton Relax fit',
     category: {
       id: 2,
       name: 'Polo Shirt',
@@ -1386,8 +1532,26 @@ export const productData: IProduct[] = [
       updatedAt: '2023-01-15T00:00:00Z'
     },
     description: '<ul><li>hello</li><li>c&ocirc;&nbsp;</li><li>ba</li><li>s&agrave;i</li><li>g&ograve;n</li></ul>',
+    rate: {
+      starAvg: 4.5,
+      count: 5
+    },
+    tag: [
+      {
+        id: 1,
+        name: 'New'
+      },
+      {
+        id: 2,
+        name: 'Đáng mua'
+      },
+      {
+        id: 3,
+        name: 'Outlet'
+      }
+    ],
     thumbnail: variantBlackThumbnail,
-    basePrice: 100000,
+    basePrice: 269000,
     slug: '100-cotton-long-sleeve-shirt-relax-fit',
     view: 100,
     like: 100,
@@ -1406,7 +1570,7 @@ export const productData: IProduct[] = [
     variant: [
       {
         id: 1,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1418,7 +1582,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 2,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1430,7 +1594,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 3,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1442,7 +1606,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 4,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1454,7 +1618,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 5,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1466,7 +1630,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 6,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1478,7 +1642,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 7,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1502,7 +1666,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 9,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1556,7 +1720,7 @@ export const productData: IProduct[] = [
   },
   {
     id: 9,
-    name: '100% Cotton Long-Sleeve Shirt, Relax Fit',
+    name: 'Áo dài tay 100% Cotton Relax fit',
     category: {
       id: 2,
       name: 'Polo Shirt',
@@ -1575,8 +1739,26 @@ export const productData: IProduct[] = [
       updatedAt: '2023-01-15T00:00:00Z'
     },
     description: '<ul><li>hello</li><li>c&ocirc;&nbsp;</li><li>ba</li><li>s&agrave;i</li><li>g&ograve;n</li></ul>',
+    rate: {
+      starAvg: 4.5,
+      count: 5
+    },
+    tag: [
+      {
+        id: 1,
+        name: 'New'
+      },
+      {
+        id: 2,
+        name: 'Đáng mua'
+      },
+      {
+        id: 3,
+        name: 'Outlet'
+      }
+    ],
     thumbnail: variantBlackThumbnail,
-    basePrice: 100000,
+    basePrice: 269000,
     slug: '100-cotton-long-sleeve-shirt-relax-fit',
     view: 100,
     like: 100,
@@ -1595,7 +1777,7 @@ export const productData: IProduct[] = [
     variant: [
       {
         id: 1,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1607,7 +1789,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 2,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1619,7 +1801,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 3,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1631,7 +1813,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 4,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1643,7 +1825,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 5,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1655,7 +1837,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 6,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1667,7 +1849,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 7,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1691,7 +1873,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 9,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1745,7 +1927,7 @@ export const productData: IProduct[] = [
   },
   {
     id: 10,
-    name: '100% Cotton Long-Sleeve Shirt, Relax Fit',
+    name: 'Áo dài tay 100% Cotton Relax fit',
     category: {
       id: 2,
       name: 'Polo Shirt',
@@ -1764,8 +1946,26 @@ export const productData: IProduct[] = [
       updatedAt: '2023-01-15T00:00:00Z'
     },
     description: '<ul><li>hello</li><li>c&ocirc;&nbsp;</li><li>ba</li><li>s&agrave;i</li><li>g&ograve;n</li></ul>',
+    rate: {
+      starAvg: 4.5,
+      count: 5
+    },
+    tag: [
+      {
+        id: 1,
+        name: 'New'
+      },
+      {
+        id: 2,
+        name: 'Đáng mua'
+      },
+      {
+        id: 3,
+        name: 'Outlet'
+      }
+    ],
     thumbnail: variantBlackThumbnail,
-    basePrice: 100000,
+    basePrice: 269000,
     slug: '100-cotton-long-sleeve-shirt-relax-fit',
     view: 100,
     like: 100,
@@ -1784,7 +1984,7 @@ export const productData: IProduct[] = [
     variant: [
       {
         id: 1,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1796,7 +1996,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 2,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1808,7 +2008,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 3,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1820,7 +2020,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 4,
-        price: 150000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1832,7 +2032,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 5,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1844,7 +2044,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 6,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1856,7 +2056,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 7,
-        price: 200000,
+        price: 269000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
@@ -1880,7 +2080,7 @@ export const productData: IProduct[] = [
       },
       {
         id: 9,
-        price: 200000,
+        price: 300000,
         status: 1,
         stock: 100,
         updatedAt: '2023-01-15T00:00:00Z',
