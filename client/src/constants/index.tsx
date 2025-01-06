@@ -8,9 +8,17 @@ import SSItem1 from '@/assets/images/slideshow/1.webp'
 import SSItem2 from '@/assets/images/slideshow/2.webp'
 import SSItem3 from '@/assets/images/slideshow/3.webp'
 import IconPlay from '@/components/icons/IconPlay'
+import MainLogo from '@/assets/images/logo/logo.png'
 import { TMenuItem } from '@/models/types'
 
 import { IProduct } from '@/models/interfaces'
+
+export const logoList = {
+  mainLogo: {
+    name: 'Main Logo',
+    url: MainLogo
+  }
+}
 
 export const XS_LIMIT = 2
 export const SM_LIMIT = 3

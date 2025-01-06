@@ -10,6 +10,9 @@ module.exports = {
       xl: '1280px' // Desktop lớn
     },
     extend: {
+      fontFamily: {
+        montserrat: ['Montserrat', 'sans-serif']
+      },
       container: {
         padding: {
           DEFAULT: '1rem', // Padding x mặc định
@@ -27,6 +30,9 @@ module.exports = {
       },
       colors: {
         // 'black': '#212121'
+        hover: '#444',
+        active: '#333',
+        bgSearch: '#E8E8E8',
         gray: '#3c3c3c',
         blue: {
           primary: '#2335B8',
@@ -34,7 +40,8 @@ module.exports = {
         },
         gray: {
           primary: '#E3E3E3',
-          text: '#c4c4c4'
+          text: '#c4c4c4',
+          bg: '#525252'
         },
         underline: '#231f20'
       },
@@ -53,9 +60,30 @@ module.exports = {
         8.5: '2.125rem' // 34px
       },
       height: {
+        0.5: '0.125rem',
         3.5: '0.875rem', // 14px
-        4.5: '1.125rem' // 18px
-      }
+        4.5: '1.125rem', // 18px
+        18: '4.5rem' // 72px
+      },
+      spacing: {
+        21: '5.25rem', // 84px
+        22: '5.5rem', // 22 = 5.5rem
+        23: '5.75rem', // 23 = 5.75rem
+        25: '6.25rem', // 100px
+        26: '6.5rem', // 104px
+        27: '6.75rem', // 108px
+        '1/5': '20%'
+      },
+      animation: {
+        'spin-once': 'spin 1s linear alternate',
+       'rotate-90': 'rotate-90 0.5s ease-in-out forwards', // Tên animation
+      },
+      keyframes: {
+        'rotate-90': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(90deg)' },
+        },
+      },
     }
   },
   safelist: [
@@ -66,11 +94,8 @@ module.exports = {
     'bg-black',
     'text-white',
     'text-black',
-    'text-primary',
-    'bg-secondary',
-    'text-secondary',
-    'hover:bg-opacity-90',
-    'hover:bg-opacity-10'
+    'grid-cols-4',
+    'grid-cols-3'
   ],
   plugins: [require('tailwindcss-animate'), require('tailwind-scrollbar')]
 }
