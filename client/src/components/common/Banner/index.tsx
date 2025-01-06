@@ -27,7 +27,7 @@ const Banner: React.FunctionComponent<IBannerProps> = ({
   return (
     <div className={`relative ${className}`}>
       <img src={url} alt={title} className='w-full h-full object-cover' />
-      <div className='absolute inset-y-0 z-40 flex flex-col justify-center xl:left-10 lg:left-8 md:left-6 sm:left-4 left-2'>
+      <div className='absolute inset-y-0 z-10 flex flex-col justify-center xl:left-10 lg:left-8 md:left-6 sm:left-4 left-2'>
         <h1 className='text-white font-semibold uppercase xl:text-6xl lg:text-5xl md:text-4xl sm:text-3xl text-xl'>
           {title}
         </h1>

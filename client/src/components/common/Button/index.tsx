@@ -31,8 +31,8 @@ const Button: React.FC<ButtonProps> = ({
 
   // Lớp variant
   const variantStyles = clsx({
-    [`border-2 border-transparent bg-${color} text-${textColor}`]: variant === 'primary',
-    [`border-2 border-solid border-${color} text-${textColor}`]: variant === 'outline'
+    [`border border-transparent bg-${color} text-${textColor}`]: variant === 'primary',
+    [`border border-solid border-${color} text-${textColor}`]: variant === 'outline'
   })
 
   // Kết hợp các lớp CSS
