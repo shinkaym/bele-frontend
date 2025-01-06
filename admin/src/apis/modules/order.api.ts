@@ -3,8 +3,6 @@ import {
   IOrderDeleteResponse,
   IOrderDetailResponse,
   IOrderListResponse,
-  IOrderUpdateRequest,
-  IOrderUpdateResponse,
   IOrderUpdateStatusResponse
 } from '@/models/interfaces/order'
 import axiosPublic from '../client/public.client'
@@ -14,8 +12,7 @@ const orderEndpoints = {
   list: 'order',
   detail: ({ id }: { id: number }) => `order/${id}`,
   delete: ({ id }: { id: number }) => `order/delete/${id}`,
-  updateStatus: ({ id }: { id: number }) => `order/update/status/${id}`,
-  update: ({ id }: { id: number }) => `order/update/${id}`
+  updateStatus: ({ id }: { id: number }) => `order/update/status/${id}`
 }
 
 const orderApi = {
@@ -50,14 +47,6 @@ const orderApi = {
   async updateStatus({ id, status }: { id: number; status: number }): Promise<IOrderUpdateStatusResponse> {
     try {
       return await axiosPublic.patch(orderEndpoints.updateStatus({ id }), { status })
-    } catch (error) {
-      throw error
-    }
-  },
-
-  async update({ id, data }: { id: number; data: IOrderUpdateRequest }): Promise<IOrderUpdateResponse> {
-    try {
-      return await axiosPublic.put(orderEndpoints.update({ id }), data)
     } catch (error) {
       throw error
     }

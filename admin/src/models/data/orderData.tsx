@@ -78,8 +78,8 @@ export const orderDetailResponseData: IOrderDetailResponse = {
         id: 1,
         name: 'T-Shirt',
         image: 'http://localhost:5173/src/assets/images/product/shirt.webp',
-        color: { id: 1, name: 'Red', value: 'red' },
-        size: { id: 1, name: 'Large', value: 'L' },
+        color: 'Red',
+        size: 'Large',
         quantity: 2,
         price: 50.0
       },
@@ -87,8 +87,8 @@ export const orderDetailResponseData: IOrderDetailResponse = {
         id: 2,
         name: 'Jeans',
         image: 'http://localhost:5173/src/assets/images/product/shirt.webp',
-        color: { id: 2, name: 'Blue', value: 'blue' },
-        size: { id: 2, name: '32', value: '32' },
+        color: 'Red',
+        size: 'Large',
         quantity: 1,
         price: 100.0
       }

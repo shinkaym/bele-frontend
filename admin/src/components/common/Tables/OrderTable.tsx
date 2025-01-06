@@ -1,8 +1,7 @@
 import { IOrder } from '@/models/interfaces/order'
-import { DeleteIcon, EditIcon } from '@/components/icons'
+import { DeleteIcon, EditIcon, EyeIcon } from '@/components/icons'
 import { Link } from 'react-router-dom'
 import { formatDate } from '@/utils'
-import Swal from 'sweetalert2'
 import { useState } from 'react'
 import orderApi from '@/apis/modules/order.api'
 import { orderStatus, orderTableHeaders } from '@/constants'
@@ -13,6 +12,7 @@ import StatusModal from '../StatusModal'
 import StatusBadge from '../StatusBadge'
 import { EToastOption } from '@/models/enums/option'
 import { UToast } from '@/utils/swal'
+import OrderDetailModal from '../OrderDetailModal'
 
 type OrderTableProps = {
   orders: IOrder[]
@@ -27,6 +27,32 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
   const [isOpenConfirmDeleteModal, setIsOpenConfirmDeleteModal] = useState(false)
   const [isOpenStatusListModal, setIsOpenStatusListModal] = useState(false)
   const [isOpenConfirmStatusChangeModal, setIsOpenConfirmStatusChangeModal] = useState(false)
+  const [isOpenViewModal, setIsOpenViewModal] = useState(false)
+
+  const handleViewClick = (id: number) => {
+    fetchDetail(id)
+    setIsOpenViewModal(true)
+  }
+
+  const fetchDetail = async (id: number) => {
+    try {
+      if (id) {
+        const res = await orderApi.detail({ id })
+        if (res.status === 200) {
+          setCurrent(res.data)
+          UToast(EToastOption.SUCCESS, res.message)
+        } else {
+          UToast(EToastOption.ERROR, res.message)
+        }
+      } else {
+        UToast(EToastOption.ERROR, 'Order ID is undefined.')
+      }
+    } catch (error) {
+      UToast(EToastOption.ERROR, 'An unexpected error occurred.')
+    } finally {
+      // setIsOpenViewModal(false)
+    }
+  }
 
   const handleDeleteClick = (id: number) => {
     setSelectedId(id)
@@ -187,6 +213,9 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <div className='flex justify-center space-x-3.5'>
+                  <button type='button' className='hover:text-primary' onClick={() => handleViewClick(or.id)}>
+                    <EyeIcon width={24} height={24} />
+                  </button>
                   <Link to={`/tables/order/edit/${or.id}`} className='hover:text-primary'>
                     <EditIcon width={24} height={24} />
                   </Link>
@@ -229,6 +258,10 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
           onConfirm={handleConfirmStatusChange}
           onCancel={handleCancelStatusChange}
         />
+      )}
+
+      {isOpenViewModal && current && (
+        <OrderDetailModal current={current} onCancel={() => setIsOpenViewModal(false)} />
       )}
     </div>
   )
