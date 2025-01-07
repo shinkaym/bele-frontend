@@ -47,53 +47,38 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     const fetchApi = async () => {
-      if (!account) {
-        try {
-          const accessToken = Cookies.get('accessToken')
-          const refreshToken = Cookies.get('refreshToken')
-          if (accessToken) {
-            console.log('accessToken');
-            const dataAccount: IAccountResponse = await authApi.getMe()
-            if (dataAccount.status === 200 && dataAccount.data) {
-              setAccount(dataAccount.data.account) // Cập nhật thông tin người dùng khi có token
-              setIsAuthenticated(true)
-            }
-          } else if (refreshToken) {
-            console.log('refreshToken');
-
-            // Yêu cầu refresh token
-            const { jwt }: { jwt: IJwt } = await axiosPrivate.post(`Auth/RefreshToken`, {
-              refreshToken: refreshToken
-            })
-            const expireRefreshToken = Cookies.get('expireRefreshToken')
-            if (expireRefreshToken) {
-            console.log('expireRefreshToken');
-
-              // Cập nhật token mới
-              Cookies.set('accessToken', jwt.accessToken, { expires: new Date(jwt.expireAccessToken) })
-              Cookies.set('expireAccessToken', jwt.expireAccessToken)
-              Cookies.set('refreshToken', jwt.refreshToken, { expires: new Date(expireRefreshToken) })
-              const dataAccount: IAccountResponse = await authApi.getMe()
-              if (dataAccount.status === 200 && dataAccount.data) {
-                setAccount(dataAccount.data.account) // Cập nhật thông tin người dùng khi có token
-                setIsAuthenticated(true)
-              }
-            } else {
-              console.log('Khong co ve login');
-              navigate('/login')
-            }
+      try {
+        const accessToken = Cookies.get('accessToken')
+        const refreshToken = Cookies.get('refreshToken')
+        if (accessToken) {
+          const dataAccount = await authApi.getMe()
+          if (dataAccount.status === 200) {
+            setAccount(dataAccount.data.account)
+            setIsAuthenticated(true)
+            return
           }
-        } catch (error) {
-          console.log('Lỗi về login');
-          console.error('Error fetching user data:', error)
-          navigate('/login') // Điều hướng đến trang đăng nhập nếu có lỗi API
-        } finally {
-          setLoading(false) // Đặt trạng thái loading về false khi đã kiểm tra xong
         }
+        if (refreshToken) {
+          const { jwt }: { jwt: IJwt } = await axiosPrivate.post(`Auth/RefreshToken`, { refreshToken })
+          Cookies.set('accessToken', jwt.accessToken, { expires: new Date(jwt.expireAccessToken) })
+          const dataAccount = await authApi.getMe()
+          if (dataAccount.status === 200) {
+            setAccount(dataAccount.data.account)
+            setIsAuthenticated(true)
+            return
+          }
+        }
+        navigate('/login') // Only navigate if no valid tokens
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+        navigate('/login')
+      } finally {
+        setLoading(false)
       }
     }
-    fetchApi()
-  }, [navigate])
+
+    if (!account) fetchApi()
+  }, [account, navigate])
 
   if (loading) {
     return <Loader /> // Hiển thị loading trong khi đang kiểm tra token

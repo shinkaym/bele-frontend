@@ -409,7 +409,7 @@ function AppRouter() {
       path: '/login',
       element: (
         <>
-          <PageTitle title='login' />
+          <PageTitle title='Login' />
           <PublicRoute>
             <Login />
           </PublicRoute>

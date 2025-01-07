@@ -46,6 +46,7 @@ const Login: React.FC = () => {
       setLoading(false)
     }
   }
+  console.log('login');
   return (
     <>
       <div className='h-screen w-screen'>
