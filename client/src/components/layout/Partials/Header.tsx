@@ -198,9 +198,10 @@ function Header() {
               className='md:text-2xl sm:text-xl text-lg text-white lg:hidden'
               onClick={() => setIsShowSearchModal(true)}
             />
-            <div className='hidden lg:flex h-12 xl:px-4 lg:px-2 rounded-full bg-zinc-200 overflow-hidden max-w-md mx-auto items-center xl:gap-2 lg:gap-1'>
-              <FontAwesomeIcon icon={faSearch} className='lg:text-2xl text-black ' />
+            <div className='hidden lg:flex h-12 xl:px-4 lg:px-3 rounded-full bg-zinc-200 overflow-hidden max-w-md mx-auto items-center xl:gap-2 lg:gap-1'>
+              <FontAwesomeIcon icon={faSearch} className='xl:text-xl lg:text-lg text-zinc-500 ' />
               <input
+                value=''
                 type='search'
                 placeholder='Tìm kiếm sản phẩm...'
                 className='w-full outline-none bg-transparent text-black text-sm'
@@ -339,12 +340,12 @@ function Header() {
             <img src={logoList.mainLogo.url} alt={logoList.mainLogo.name} className='w-full object-cover ' />
             <div className='text-white'>
               <Link
-                className='md:px-10 sm:px-8 px-6 w-full inline-block py-3 hover:bg-zinc-500 transition-all duration-200 ease-linear md:text-base sm:text-sm md:text-sm text-xs'
+                className='md:px-10 sm:px-8 px-6 w-full inline-block py-3 hover:bg-zinc-500 transition-all duration-200 ease-linear md:text-base sm:text-sm text-xs'
                 to={'/'}
               >
                 Trang chủ
               </Link>
-              <div className='transition-all duration-200 ease-linear md:text-base sm:text-sm md:text-sm text-xs'>
+              <div className='transition-all duration-200 ease-linear md:text-base sm:text-sm text-xs'>
                 <input type='checkbox' id='product' className='peer hidden' />
 
                 {/* Label đầu tiên */}
@@ -438,19 +439,19 @@ function Header() {
                 </div>
               </div>
               <Link
-                className='md:px-10 sm:px-8 px-6 w-full inline-block py-3 hover:bg-zinc-500 transition-all duration-200 ease-linear md:text-base sm:text-sm md:text-sm text-xs'
+                className='md:px-10 sm:px-8 px-6 w-full inline-block py-3 hover:bg-zinc-500 transition-all duration-200 ease-linear md:text-base sm:text-sm text-xs'
                 to={'/about'}
               >
                 Giới thiệu
               </Link>
               <Link
-                className='md:px-10 sm:px-8 px-6 w-full inline-block py-3 hover:bg-zinc-500 transition-all duration-200 ease-linear md:text-base sm:text-sm md:text-sm text-xs'
+                className='md:px-10 sm:px-8 px-6 w-full inline-block py-3 hover:bg-zinc-500 transition-all duration-200 ease-linear md:text-base sm:text-sm text-xs'
                 to={'/contact'}
               >
                 Liên hệ
               </Link>
               <Link
-                className='md:px-10 sm:px-8 px-6 w-full inline-block py-3 hover:bg-zinc-500 transition-all duration-200 ease-linear md:text-base sm:text-sm md:text-sm text-xs'
+                className='md:px-10 sm:px-8 px-6 w-full inline-block py-3 hover:bg-zinc-500 transition-all duration-200 ease-linear md:text-base sm:text-sm text-xs'
                 to={'/blog'}
               >
                 Blog
