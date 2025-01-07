@@ -76,7 +76,7 @@ function Header() {
             <NavLink
               to={'/'}
               className={({ isActive }) =>
-                `xl:text-sm lg:md:text-sm text-xs md:text-2xs sm:text-3xs text-4xs uppercase lg:px-4 h-full flex items-center justify-center hover:bg-hover text-white ease-linear transition-all duration-200 font-medium ${
+                `xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs uppercase lg:px-4 h-full flex items-center justify-center hover:bg-hover text-white ease-linear transition-all duration-200 font-medium ${
                   isActive ? 'bg-hover' : ''
                 }`
               }
@@ -87,7 +87,7 @@ function Header() {
             <NavLink
               to={'/product'}
               className={({ isActive }) =>
-                `xl:text-sm lg:md:text-sm text-xs md:text-2xs sm:text-3xs text-4xs lg:px-5 h-full flex items-center justify-center hover:bg-hover text-white ease-linear transition-all duration-200 font-medium group ${
+                `xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs lg:px-5 h-full flex items-center justify-center hover:bg-hover text-white ease-linear transition-all duration-200 font-medium group ${
                   isActive ? 'bg-hover' : ''
                 }`
               }
@@ -96,11 +96,11 @@ function Header() {
               {/* Menu con */}
               <ul className='absolute z-40 inset-x-0 top-full bg-white p-6 ease-linear transition-all duration-200 hidden group-hover:flex  justify-between shadow-md rounded-b-md'>
                 <li className='text-sm'>
-                  <h3 className='lg:text-base md:text-sm sm:md:text-sm text-xs text-2xs font-semibold text-black uppercase'>
+                  <h3 className='lg:text-base md:text-sm sm:text-xs text-2xs font-semibold text-black uppercase'>
                     Áo Nam
                   </h3>
                   <div className='mt-2 mb-5 h-0.5 w-1/2 bg-black'></div>
-                  <ul className='text-gray-500 xl:text-sm lg:md:text-sm text-xs md:text-2xs sm:text-3xs text-4xs space-y-2'>
+                  <ul className='text-gray-500 xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs space-y-2'>
                     <li className='hover:text-blue-primary'>
                       <Link to={'/'}>Tất cả Áo Nam</Link>
                     </li>
@@ -116,11 +116,11 @@ function Header() {
                   </ul>
                 </li>
                 <li className='text-sm'>
-                  <h3 className='lg:text-base md:text-sm sm:md:text-sm text-xs text-2xs font-semibold text-black uppercase'>
+                  <h3 className='lg:text-base md:text-sm sm:text-xs text-2xs font-semibold text-black uppercase'>
                     Quần nam
                   </h3>
                   <div className='mt-2 mb-5 h-0.5 w-1/2 bg-black'></div>
-                  <ul className='text-gray-500 xl:text-sm lg:md:text-sm text-xs md:text-2xs sm:text-3xs text-4xs space-y-2'>
+                  <ul className='text-gray-500 xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs space-y-2'>
                     <li className='hover:text-blue-primary'>
                       <Link to={'/'}>Tất cả Quần Nam</Link>
                     </li>
@@ -139,11 +139,11 @@ function Header() {
                   </ul>
                 </li>
                 <li className='text-sm'>
-                  <h3 className='lg:text-base md:text-sm sm:md:text-sm text-xs text-2xs font-semibold text-black uppercase'>
+                  <h3 className='lg:text-base md:text-sm sm:text-xs text-2xs font-semibold text-black uppercase'>
                     Phụ kiện Nam
                   </h3>
                   <div className='mt-2 mb-5 h-0.5 w-1/2 bg-black'></div>
-                  <ul className='text-gray-500 xl:text-sm lg:md:text-sm text-xs md:text-2xs sm:text-3xs text-4xs space-y-2'>
+                  <ul className='text-gray-500 xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs space-y-2'>
                     <li className='hover:text-blue-primary'>
                       <Link to={'/'}>Tất cả Phụ Kiện</Link>
                     </li>
@@ -161,7 +161,7 @@ function Header() {
             <NavLink
               to={'/about'}
               className={({ isActive }) =>
-                `xl:text-sm lg:md:text-sm text-xs md:text-2xs sm:text-3xs text-4xs uppercase lg:px-5 h-full flex items-center justify-center hover:bg-hover text-white ease-linear transition-all duration-200 font-medium ${
+                `xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs uppercase lg:px-5 h-full flex items-center justify-center hover:bg-hover text-white ease-linear transition-all duration-200 font-medium ${
                   isActive ? 'bg-hover' : ''
                 }`
               }
@@ -172,7 +172,7 @@ function Header() {
             <NavLink
               to={'/contact'}
               className={({ isActive }) =>
-                `xl:text-sm lg:md:text-sm text-xs md:text-2xs sm:text-3xs text-4xs uppercase lg:px-5 h-full flex items-center justify-center hover:bg-hover text-white ease-linear transition-all duration-200 font-medium ${
+                `xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs uppercase lg:px-5 h-full flex items-center justify-center hover:bg-hover text-white ease-linear transition-all duration-200 font-medium ${
                   isActive ? 'bg-hover' : ''
                 }`
               }
@@ -183,7 +183,7 @@ function Header() {
             <NavLink
               to={'/blog'}
               className={({ isActive }) =>
-                `xl:text-sm lg:md:text-sm text-xs md:text-2xs sm:text-3xs text-4xs uppercase lg:px-5 h-full flex items-center justify-center hover:bg-hover text-white ease-linear transition-all duration-200 font-medium ${
+                `xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs uppercase lg:px-5 h-full flex items-center justify-center hover:bg-hover text-white ease-linear transition-all duration-200 font-medium ${
                   isActive ? 'bg-hover' : ''
                 }`
               }
