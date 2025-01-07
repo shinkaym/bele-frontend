@@ -1,6 +1,8 @@
 import mainBanner from '@/assets/images/banner/main_banner.png'
 import subBanner1 from '@/assets/images/banner/sub_banner_1.png'
 import subBanner2 from '@/assets/images/banner/sub_banner_2.png'
+import MainLogo from '@/assets/images/logo/logo.png'
+import SloganLogo from '@/assets/images/logo/logo_slogan.png'
 import variantBlackThumbnail from '@/assets/images/product/shirt_black.webp'
 import variantMossGreenThumbnail from '@/assets/images/product/shirt_mossgreen.webp'
 import variantWhiteThumbnail from '@/assets/images/product/shirt_white.webp'
@@ -8,7 +10,6 @@ import SSItem1 from '@/assets/images/slideshow/1.webp'
 import SSItem2 from '@/assets/images/slideshow/2.webp'
 import SSItem3 from '@/assets/images/slideshow/3.webp'
 import IconPlay from '@/components/icons/IconPlay'
-import MainLogo from '@/assets/images/logo/logo.png'
 import { TMenuItem } from '@/models/types'
 
 import { IProduct } from '@/models/interfaces'
@@ -17,6 +18,10 @@ export const logoList = {
   mainLogo: {
     name: 'Main Logo',
     url: MainLogo
+  },
+  sloganLogo: {
+    name: 'Slogan Logo',
+    url: SloganLogo
   }
 }
 

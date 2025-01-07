@@ -62,7 +62,7 @@ function Header() {
   return (
     <>
       <header className='sticky top-0 bg-black text-white z-20'>
-        <div className='text-center lg:py-3 md:py-2.5 sm:py-2 py-1.5 xl:text-sm lg:md:text-sm text-xs md:text-2xs sm:text-3xs text-4xs bg-gray-bg'>
+        <div className='text-center lg:py-3 md:py-2.5 sm:py-2 py-1.5 xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs bg-gray-bg'>
           <span>Fall Winter Collection: Đông Ấm Chất Chill</span>
           <Link to={'/'} className='ml-1 underline'>
             <span>Khám phá</span> <FontAwesomeIcon icon={faArrowRight} />
