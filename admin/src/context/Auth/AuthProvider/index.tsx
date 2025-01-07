@@ -52,17 +52,18 @@ function AuthProvider({ children }: AuthProviderProps) {
         const refreshToken = Cookies.get('refreshToken')
         if (accessToken) {
           const dataAccount = await authApi.getMe()
-          if (dataAccount.status === 200) {
-            setAccount(dataAccount.data.account)
-            setIsAuthenticated(true)
-            return
-          }
+          setAccount(dataAccount.data.account)
+          setIsAuthenticated(true)
+          return
         }
         if (refreshToken) {
           const { jwt }: { jwt: IJwt } = await axiosPrivate.post(`Auth/RefreshToken`, { refreshToken })
-          Cookies.set('accessToken', jwt.accessToken, { expires: new Date(jwt.expireAccessToken) })
-          const dataAccount = await authApi.getMe()
-          if (dataAccount.status === 200) {
+          const expireRefreshToken = Cookies.get('expireRefreshToken')
+          if (expireRefreshToken) {
+            Cookies.set('accessToken', jwt.accessToken, { expires: new Date(jwt.expireAccessToken) })
+            Cookies.set('expireAccessToken', jwt.expireAccessToken)
+            Cookies.set('refreshToken', jwt.refreshToken, { expires: new Date(expireRefreshToken) })
+            const dataAccount = await authApi.getMe()
             setAccount(dataAccount.data.account)
             setIsAuthenticated(true)
             return
