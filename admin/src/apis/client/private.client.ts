@@ -5,10 +5,11 @@ import Cookies from 'js-cookie'
 // Tạo instance axios
 const axiosPrivate = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 10000,
+  timeout: 1000000,
   headers: {
     Accept: 'application/json',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
   }
 })
 

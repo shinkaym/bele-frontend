@@ -6,6 +6,7 @@ import Login from '@/pages/Login'
 import Dashboard from '@/pages/Dashboard'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
+import PublicRoute from '@/components/common/PublicRoute'
 
 const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> => {
   return (props: P): ReactNode => (
@@ -284,120 +285,120 @@ function AppRouter() {
           ]
         },
         {
-            path: '/tables/discount',
-            children: [
-              {
-                path: '',
-                element: (
-                  <>
-                    <PageTitle title='Discount' />
-                    <Discount />
-                  </>
-                )
-              },
-              {
-                path: 'add',
-                element: (
-                  <>
-                    <PageTitle title='Add Discount' />
-                    <AddDiscount />
-                  </>
-                )
-              },
-              {
-                path: 'edit/:id',
-                element: (
-                  <>
-                    <PageTitle title='Edit Discount' />
-                    <EditDiscount />
-                  </>
-                )
-              }
-            ]
-          },
-          {
-            path: '/tables/customer',
-            children: [
-              {
-                path: '',
-                element: (
-                  <>
-                    <PageTitle title='Customer' />
-                    <Customer />
-                  </>
-                )
-              },
-              {
-                path: 'add',
-                element: (
-                  <>
-                    <PageTitle title='Add Customer' />
-                    <AddCustomer />
-                  </>
-                )
-              }
-            ]
-          },
-          {
-            path: '/tables/tag',
-            children: [
-              {
-                path: '',
-                element: (
-                  <>
-                    <PageTitle title='Tag' />
-                    <Tag />
-                  </>
-                )
-              },
-              {
-                path: 'add',
-                element: (
-                  <>
-                    <PageTitle title='Add Tag' />
-                    <AddTag />
-                  </>
-                )
-              },
-              {
-                path: 'edit/:id',
-                element: (
-                  <>
-                    <PageTitle title='Edit Tag' />
-                    <EditTag />
-                  </>
-                )
-              }
-            ]
-          },
-          {
-            path: '/tables/contact',
-            children: [
-              {
-                path: '',
-                element: (
-                  <>
-                    <PageTitle title='contact' /> 
-                    <Contact />
-                  </>
-                )
-              }
-            ]
-          },
-          {
-            path: '/tables/chat',
-            children: [
-              {
-                path: '',
-                element: (
-                  <>
-                    <PageTitle title='Chat' />
-                    <Chat />
-                  </>
-                )
-              }
-            ]
-          },
+          path: '/tables/discount',
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='Discount' />
+                  <Discount />
+                </>
+              )
+            },
+            {
+              path: 'add',
+              element: (
+                <>
+                  <PageTitle title='Add Discount' />
+                  <AddDiscount />
+                </>
+              )
+            },
+            {
+              path: 'edit/:id',
+              element: (
+                <>
+                  <PageTitle title='Edit Discount' />
+                  <EditDiscount />
+                </>
+              )
+            }
+          ]
+        },
+        {
+          path: '/tables/customer',
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='Customer' />
+                  <Customer />
+                </>
+              )
+            },
+            {
+              path: 'add',
+              element: (
+                <>
+                  <PageTitle title='Add Customer' />
+                  <AddCustomer />
+                </>
+              )
+            }
+          ]
+        },
+        {
+          path: '/tables/tag',
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='Tag' />
+                  <Tag />
+                </>
+              )
+            },
+            {
+              path: 'add',
+              element: (
+                <>
+                  <PageTitle title='Add Tag' />
+                  <AddTag />
+                </>
+              )
+            },
+            {
+              path: 'edit/:id',
+              element: (
+                <>
+                  <PageTitle title='Edit Tag' />
+                  <EditTag />
+                </>
+              )
+            }
+          ]
+        },
+        {
+          path: '/tables/contact',
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='contact' />
+                  <Contact />
+                </>
+              )
+            }
+          ]
+        },
+        {
+          path: '/tables/chat',
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='Chat' />
+                  <Chat />
+                </>
+              )
+            }
+          ]
+        },
         {
           path: '/tables/decentralize',
           element: <Decentralize />
@@ -409,10 +410,12 @@ function AppRouter() {
       element: (
         <>
           <PageTitle title='login' />
-          <Login />
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
         </>
       )
-    },
+    }
   ]
 
   return useRoutes(routes)

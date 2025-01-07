@@ -44,3 +44,9 @@ export enum EContactStatus {
   ACTIVE = 'Active',
   INACTIVE = 'Inactive'
 }
+
+export enum ECategoryStatus {
+  UNKNOWN = 'Unknown',
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive'
+}

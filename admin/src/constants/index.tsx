@@ -1,6 +1,6 @@
 import IconPlay from '@/components/icons/IconPlay'
 import { EFieldByValue, EFieldByTitle, ESortOrderValue, ESortOrderTitle } from '@/models/enums/option'
-import { EOrderStatus, ERateStatus, EEmployeeStatus, EDiscountStatus, ECustomerStatus, EContactStatus } from '@/models/enums/status'
+import { EOrderStatus, ERateStatus, EEmployeeStatus, EDiscountStatus, ECustomerStatus, EContactStatus, ECategoryStatus } from '@/models/enums/status'
 import { IStatus, ITable } from '@/models/interfaces'
 import { TMenuItem } from '@/models/types/brand'
 
@@ -31,6 +31,19 @@ export const sortOrderOptions: { title: ESortOrderTitle; value: ESortOrderValue 
   {
     title: ESortOrderTitle.DESC,
     value: ESortOrderValue.DESC
+  }
+]
+
+export const categoryStatus: IStatus[] = [
+  {
+    title: ECategoryStatus.INACTIVE,
+    value: 0,
+    className: 'text-orange-600 border-orange-600 bg-orange-200'
+  },
+  {
+    title: ECategoryStatus.ACTIVE,
+    value: 1,
+    className: 'text-green-600 border-green-600 bg-green-200'
   }
 ]
 
@@ -143,6 +156,13 @@ export const contactStatus: IStatus[] = [
 ]
 
 export const orderFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+    title: EFieldByTitle.ID,
+    value: EFieldByValue.ID
+  }
+]
+
+export const categoryFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
   {
     title: EFieldByTitle.ID,
     value: EFieldByValue.ID
