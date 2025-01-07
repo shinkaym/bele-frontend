@@ -2,7 +2,7 @@ import Loader from '@/components/common/Loader'
 import PageTitle from '@/components/common/PageTitle'
 import PrivateRoute from '@/components/common/PrivateRoute'
 import DefaultLayout from '@/components/layout/DefaultLayout'
-import SignIn from '@/pages/SignIn'
+import Login from '@/pages/Login'
 import Dashboard from '@/pages/Dashboard'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
@@ -405,11 +405,11 @@ function AppRouter() {
       ]
     },
     {
-      path: '/signin',
+      path: '/login',
       element: (
         <>
-          <PageTitle title='Signin' />
-          <SignIn />
+          <PageTitle title='login' />
+          <Login />
         </>
       )
     },

@@ -1,35 +1,20 @@
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-import { accountsData, employeeListResponseData } from '@/models/data/employeeData'
-import { IEmployee } from '@/models/interfaces/employee'
+import { IAccountLogin, IAccountResponse } from '@/models/interfaces/account'
+import axiosPrivate from '../client/private.client'
+import axiosPublic from '../client/public.client'
 
 const authEndpoints = {
-  list: 'attribute-value',
-  detail: (id: string | number) => `attribute-value/${id}`
+  login: 'Auth/Login',
+  getMe: 'Auth/GetMe',
+  refresh: `Auth/RefreshToken`
 }
 
 const authApi = {
-  login(email: string, password: string): IEmployee | undefined {
-    const data = accountsData.find((acc) => acc.email === email && acc.password === password)
-    if (data) {
-      let user = employeeListResponseData.data.employees.find((emp) => emp.id === data.id)
-      if (user)
-        return {
-          ...user,
-          accessToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
-          refreshToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gTWlhIiwiaWF0IjoxNTE2MjM5MDIyfQ.51rDAnPfmtVRHYrhHtoO1G2Yqop73dKmCoZgk_9OzX0'
-        }
-      return undefined
-    }
-    return undefined
-    // return axiosPublic.get(attributeValueEndpoints.list)
+  login(email: string, password: string): Promise<IAccountLogin> {
+    return axiosPublic.post(authEndpoints.login, { email, password })
   },
-  getMe(token:string):IEmployee | undefined{
-    if(token){
-      return employeeListResponseData.data.employees.find((emp) => emp.id === 1)
-    }
-    return undefined
+  getMe(): Promise<IAccountResponse> {
+      return axiosPrivate.get(authEndpoints.getMe)
   }
 }
 

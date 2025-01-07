@@ -19,6 +19,7 @@ function Category({}: Props) {
       setLoading(true) // Bật trạng thái loading
       try {
         const data = await categoryApi.getList();
+        console.log(data);
         setCategoryList(data)
         setLoading(false)
       } catch (error) {
