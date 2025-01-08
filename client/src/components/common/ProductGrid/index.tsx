@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import Tag from '../Tag'
 
-interface IProductGirdProps {
+interface IProductGridProps {
   product: IProduct
   className?: string
   tag?: number
@@ -17,14 +17,14 @@ interface IProductGirdProps {
   isShowAddCart?: boolean
 }
 
-export const ProductGird = ({
+const ProductGrid = ({
   product,
   tag,
   className,
   isShowColor = true,
   isShowPrice = true,
   isShowAddCart = true
-}: IProductGirdProps) => {
+}: IProductGridProps) => {
   const [colorData, setColorData] = useState<IColor>(product.variantAttributeTypes?.color?.[0] ?? Object)
   const variantDataByColor = product.variant.find((v) => v.variantAttributeValue?.colorId === colorData.id)
 
@@ -138,3 +138,5 @@ export const ProductGird = ({
     </>
   )
 }
+
+export default ProductGrid

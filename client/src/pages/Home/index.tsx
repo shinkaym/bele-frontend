@@ -1,7 +1,7 @@
 import Banner from '@/components/common/Banner'
 import Button from '@/components/common/Button'
 import Collection from '@/components/common/Collection'
-import { ProductGird } from '@/components/common/ProductGrid'
+import ProductGrid from '@/components/common/ProductGrid'
 import Services from '@/components/common/Services'
 import SlideShow from '@/components/common/SlideShow'
 import {
@@ -25,10 +25,10 @@ import 'react-slideshow-image/dist/styles.css'
 function Home() {
   const [limit, setLimit] = useState<number>(5)
   const [tag, setTag] = useState<number>(1)
-  const handleChangeTag = (value?: number) => {
+  const handleChangeTag = (value?: string) => {
     if (value) {
       console.log(value)
-      setTag(value)
+      setTag(Number(value))
     }
   }
   const bannerArrowProperty = {
@@ -100,7 +100,7 @@ function Home() {
           variant={`${tag === 1 ? 'primary' : 'outline'}`}
           className={`lg:min-w-48 md:min-w-44 sm:min-w-40 min-w-36 lg:text-lg md:text-base sm:text-sm text-xs py-2 rounded-full ${tag === 1 ? '' : 'hover:bg-black hover:text-white'}`}
           onClick={handleChangeTag}
-          value={1}
+          value={'1'}
         >
           <span>Sản phẩm mới</span> {tag === 1 && <FontAwesomeIcon icon={faStar} className='ml-2' />}
         </Button>
@@ -111,7 +111,7 @@ function Home() {
           className={`lg:min-w-48 md:min-w-44 sm:min-w-40 min-w-36 lg:text-lg md:text-base sm:text-sm text-xs py-2 rounded-full ${tag === 2 ? '' : 'hover:bg-black hover:text-white'}`}
           variant={`${tag === 2 ? 'primary' : 'outline'}`}
           onClick={handleChangeTag}
-          value={2}
+          value={'2'}
         >
           <span>Bán chạy nhất</span> {tag === 2 && <FontAwesomeIcon icon={faStar} className='ml-2' />}
         </Button>
@@ -119,7 +119,7 @@ function Home() {
       <div className='lg:px-14 md:px-12 sm:px-10 px-6 mb-10'>
         <SlideShow slidesToScroll={limit} slidesToShow={limit} properties={productArrowProperty} duration={1000000}>
           {productData.map((p) => (
-            <ProductGird className='mx-2' key={p.id} product={p} tag={tag} />
+            <ProductGrid className='mx-2' key={p.id} product={p} tag={tag} />
           ))}
         </SlideShow>
       </div>
@@ -140,7 +140,7 @@ function Home() {
       >
         <SlideShow slidesToScroll={limit} slidesToShow={limit} properties={productArrowProperty} duration={1000000}>
           {productData.map((p) => (
-            <ProductGird className='mx-2' key={p.id} product={p} tag={3} />
+            <ProductGrid className='mx-2' key={p.id} product={p} tag={3} />
           ))}
         </SlideShow>
       </Collection>

@@ -10,8 +10,8 @@ interface ButtonProps {
   textColor?: string
   children: React.ReactNode // Nội dung của button
   className?: string // Lớp CSS tùy chỉnh
-  onClick?: (value?: number) => void // Hàm sự kiện click
-  value?: number
+  onClick?: (value?: string) => void // Hàm sự kiện click
+  value?: string
 }
 
 const Button: React.FC<ButtonProps> = ({

@@ -1,26 +1,15 @@
-import Button from '@/components/common/Button'
+import ModalSearch from '@/components/common/ModalSearch'
 import Overlay from '@/components/common/Overlay'
-import { ProductGird } from '@/components/common/ProductGrid'
-import { logoList, MD_BP, productData } from '@/constants'
-import {
-  faArrowRight,
-  faBagShopping,
-  faBars,
-  faChevronDown,
-  faChevronLeft,
-  faClose,
-  faSearch,
-  faUser
-} from '@fortawesome/free-solid-svg-icons'
+import { logoList } from '@/constants'
+import { faArrowRight, faBagShopping, faBars, faChevronDown, faSearch, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
 function Header() {
   const [isShowSearchModal, setIsShowSearchModal] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(false)
 
-  const [limit, setLimit] = useState<number>(4)
   const handleSearchModalClose = () => {
     setIsShowSearchModal(false)
   }
@@ -37,27 +26,7 @@ function Header() {
     setIsShowMenu(true)
   }
 
-  const updateLimit = () => {
-    const width = window.innerWidth
-    if (width >= MD_BP) {
-      setLimit(4)
-    } else {
-      setLimit(3)
-    }
-  }
-  console.log(limit)
 
-  useEffect(() => {
-    updateLimit()
-
-    // Lắng nghe sự thay đổi kích thước màn hình
-    window.addEventListener('resize', updateLimit)
-
-    // Cleanup khi component unmount
-    return () => {
-      window.removeEventListener('resize', updateLimit)
-    }
-  }, [])
 
   return (
     <>
@@ -203,6 +172,7 @@ function Header() {
               <input
                 value=''
                 type='search'
+                readOnly={true}
                 placeholder='Tìm kiếm sản phẩm...'
                 className='w-full outline-none bg-transparent text-black text-sm'
                 onClick={handleSearchModalOpen}
@@ -226,113 +196,7 @@ function Header() {
           </div>
         </div>
       </header>
-      {isShowSearchModal && (
-        <>
-          <div className='fixed inset-0 z-40'>
-            <div className='w-full lg:h-24 md:h-23 sm:h-22 h-21 z-50 bg-white flex items-center justify-center gap-8'>
-              <FontAwesomeIcon
-                className=' text-zinc-500 lg:hidden lg:text-2xl md:text-xl sm:text-lg text-base font-normal cursor-pointer'
-                onClick={handleSearchModalClose}
-                icon={faChevronLeft}
-              />
-              <form className='relative flex py-3 px-5 rounded-full bg-zinc-200 overflow-hidden lg:w-[500px] md:w-[450px] sm:w-[400px] w-3/4'>
-                <input
-                  type='search'
-                  placeholder='Tìm kiếm sản phẩm'
-                  className='w-full outline-none bg-transparent text-zinc-500 text-sm'
-                />
-                <FontAwesomeIcon
-                  className='text-zinc-500 lg:text-2xl md:text-xl sm:text-lg text-base font-normal cursor-pointer'
-                  icon={faSearch}
-                />
-              </form>
-              <span className='absolute xl:right-1/4 lg:right-1/5 lg: lg:block hidden'>
-                <FontAwesomeIcon
-                  className=' text-zinc-500 lg:text-2xl md:text-xl sm:text-lg text-base font-normal cursor-pointer'
-                  onClick={handleSearchModalClose}
-                  icon={faClose}
-                />
-              </span>
-            </div>
-            <Overlay onClose={handleSearchModalClose} className=' h-screen' position='relative' />
-            <div className='absolute lg:top-28 md:top-27 sm:top-26 top-25 lg:w-[1000px] w-full  left-1/2 transform -translate-x-1/2 z-50 bg-white px-5 py-10 lg:px-20 lg:py-12  text-black rounded-lg overflow-y-auto scrollbar-thin scrollbar-thumb-blue-primary scrollbar-track-gray-100'>
-              <div>
-                <span className='md:text-base text-sm font-medium'>Từ khoá nổi bật ngày hôm nay</span>
-                <div className='flex flex-wrap items-start gap-2 mt-2'>
-                  <Button
-                    type='link'
-                    to='/'
-                    variant='outline'
-                    color='slate-500'
-                    textColor='black'
-                    className='px-3 py-2 rounded-full md:text-sm text-xs font-medium'
-                  >
-                    Tập Gym
-                  </Button>
-                  <Button
-                    type='link'
-                    to='/'
-                    variant='outline'
-                    color='slate-500'
-                    textColor='black'
-                    className='px-3 py-2 rounded-full md:text-sm text-xs font-medium'
-                  >
-                    Tập Gym
-                  </Button>
-                  <Button
-                    type='link'
-                    to='/'
-                    variant='outline'
-                    color='slate-500'
-                    textColor='black'
-                    className='px-3 py-2 rounded-full md:text-sm text-xs font-medium'
-                  >
-                    Tập Gym
-                  </Button>
-                  <Button
-                    type='link'
-                    to='/'
-                    variant='outline'
-                    color='slate-500'
-                    textColor='black'
-                    className='px-3 py-2 rounded-full md:text-sm text-xs font-medium'
-                  >
-                    Tập Gym
-                  </Button>
-                  <Button
-                    type='link'
-                    to='/'
-                    variant='outline'
-                    color='slate-500'
-                    textColor='black'
-                    className='px-3 py-2 rounded-full md:text-sm text-xs font-medium'
-                  >
-                    Tập Gym
-                  </Button>
-                </div>
-              </div>
-              <div className='mt-10'>
-                <span className='text-sm font-medium'>Sản phẩm đã xem gần đây</span>
-                <div className={`grid grid-cols-${limit} gap-2 mt-2`}>
-                  {productData.map((p, i) => {
-                    if (i < limit) {
-                      return (
-                        <ProductGird
-                          key={p.id}
-                          product={p}
-                          isShowColor={false}
-                          isShowPrice={false}
-                          isShowAddCart={false}
-                        />
-                      )
-                    }
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
+      {isShowSearchModal && <ModalSearch onSearchClose={handleSearchModalClose} />}
       {isShowMenu && (
         <>
           <Overlay onClose={handleMenuClose} className='z-50' />

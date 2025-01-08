@@ -1,6 +1,7 @@
 import LoadingScreen from '@/components/common/LoadingScreen'
+import PageTitle from '@/components/common/PageTitle'
 import DefaultLayout from '@/components/layout/DefaultLayout'
-import Profile from '@/pages/Profile'
+import Home from '@/pages/Home'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
 
@@ -12,7 +13,9 @@ const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> =>
   )
 }
 
-const Home = Loadable(lazy(() => import('@/pages/Home')))
+const Profile = Loadable(lazy(() => import('@/pages/Profile')))
+const Search = Loadable(lazy(() => import('@/pages/Search')))
+
 
 const AppRouter = () => {
   return useRoutes([
@@ -23,11 +26,20 @@ const AppRouter = () => {
         {
           index: true,
           path: '',
-          element: <Home />
+          element: (
+            <>
+              <PageTitle title='Trang chủ' />
+              <Home />
+            </>
+          )
         },
         {
           path: 'profile',
           element: <Profile />
+        },
+        {
+          path: 'search',
+          element: <Search />
         }
       ]
     }
