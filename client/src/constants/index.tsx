@@ -10,9 +10,11 @@ import SSItem1 from '@/assets/images/slideshow/1.webp'
 import SSItem2 from '@/assets/images/slideshow/2.webp'
 import SSItem3 from '@/assets/images/slideshow/3.webp'
 import IconPlay from '@/components/icons/IconPlay'
-import { TMenuItem } from '@/models/types'
+import { TMenuItem, TMenuProfileItem } from '@/models/types'
 
 import { IProduct } from '@/models/interfaces'
+import { IconBag, IconGlobe, IconHeart, IconStar, IconUser } from '@/components/icons'
+import { EMenuProfileItemId } from '@/models/enum'
 
 export const logoList = {
   mainLogo: {
@@ -2144,5 +2146,33 @@ export const productData: IProduct[] = [
         }
       ]
     }
+  }
+]
+
+export const menuProfileItems: TMenuProfileItem[] = [
+  {
+    id: EMenuProfileItemId.AccountInfo,
+    title: 'Thông tin tài khoản',
+    icon: IconUser
+  },
+  {
+    id: EMenuProfileItemId.OrderHistory,
+    title: 'Lịch sử đơn hàng',
+    icon: IconBag
+  },
+  {
+    id: EMenuProfileItemId.AddressNotes,
+    title: 'Sổ địa chỉ',
+    icon: IconGlobe
+  },
+  {
+    id: EMenuProfileItemId.Wishlist,
+    title: 'Danh sách yêu thích',
+    icon: IconHeart
+  },
+  {
+    id: EMenuProfileItemId.RatingProducts,
+    title: 'Đánh giá và phản hồi',
+    icon: IconStar
   }
 ]

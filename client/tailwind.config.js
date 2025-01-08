@@ -7,7 +7,8 @@ module.exports = {
       sm: '480px', // Regular Mobile (Small - S)
       md: '768px', // Tablet Portrait (Medium - M)
       lg: '1024px', // Laptop/Desktop nhỏ
-      xl: '1280px' // Desktop lớn
+      xl: '1280px', // Desktop lớn
+      '2xl': '1536px' // Desktop siu lớn
     },
     extend: {
       fontFamily: {
@@ -76,14 +77,14 @@ module.exports = {
       },
       animation: {
         'spin-once': 'spin 1s linear alternate',
-       'rotate-90': 'rotate-90 0.5s ease-in-out forwards', // Tên animation
+        'rotate-90': 'rotate-90 0.5s ease-in-out forwards' // Tên animation
       },
       keyframes: {
         'rotate-90': {
           '0%': { transform: 'rotate(0deg)' },
-          '100%': { transform: 'rotate(90deg)' },
-        },
-      },
+          '100%': { transform: 'rotate(90deg)' }
+        }
+      }
     }
   },
   safelist: [
