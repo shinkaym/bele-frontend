@@ -2,21 +2,21 @@ import React from 'react'
 
 type PaginationProps = {
   currentPage: number
-  totalPages: number
+  totalPage: number
   onPageChange: (page: number) => void
 }
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
+const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPage, onPageChange }) => {
   const maxPagesToShow = 5
   const pages: number[] = []
 
-  if (totalPages <= maxPagesToShow) {
-    for (let i = 1; i <= totalPages; i++) {
+  if (totalPage <= maxPagesToShow) {
+    for (let i = 1; i <= totalPage; i++) {
       pages.push(i)
     }
   } else {
     const leftSide = Math.max(1, currentPage - 2)
-    const rightSide = Math.min(totalPages, currentPage + 2)
+    const rightSide = Math.min(totalPage, currentPage + 2)
 
     if (leftSide > 1) {
       pages.push(1)
@@ -25,9 +25,9 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
     for (let i = leftSide; i <= rightSide; i++) {
       pages.push(i)
     }
-    if (rightSide < totalPages) {
-      if (rightSide < totalPages - 1) pages.push(-1)
-      pages.push(totalPages)
+    if (rightSide < totalPage) {
+      if (rightSide < totalPage - 1) pages.push(-1)
+      pages.push(totalPage)
     }
   }
 
@@ -61,8 +61,8 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
 
       <button
         className='px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-sm'
-        onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        onClick={() => currentPage < totalPage && onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPage}
       >
         Next
       </button>

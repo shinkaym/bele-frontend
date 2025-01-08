@@ -6,9 +6,11 @@ import RadioGroup from '@/components/common/Forms/RadioGroup'
 import SelectGroup from '@/components/common/Forms/SelectGroup'
 import Loader from '@/components/common/Loader'
 import { statusData } from '@/models/data/statusData'
-import { EToastOption } from '@/models/enums/option'
-import { ICategoryFormData, ICategory } from '@/models/interfaces/category'
+import { EFieldByValue, EToastOption } from '@/models/enums/option'
+import { IApiResponse } from '@/models/interfaces/api'
+import { ICategory } from '@/models/interfaces/category'
 import { IOptions } from '@/models/interfaces/options'
+import { IPagination } from '@/models/interfaces/pagination'
 import { UToast } from '@/utils/swal'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
@@ -23,26 +25,30 @@ function Add({}: Props) {
   const [categoryData, setCategoryData] = useState<ICategory[]>([])
 
   useEffect(() => {
-    const handleGetData = async()=>{
+    const handleGetData = async () => {
       setLoading(true)
       try {
-        const data = await categoryApi.getList()
-        setCategoryData(data)
-        //set Option Category Parent
-        // let newData: IOptions[] = data
-        //   .filter((cat) => !cat.parentName) // Lọc các phần tử không có parentName
-        //   .map((cat) => ({
-        //     value: cat.id,
-        //     label: cat.name
-        //   }))
-        // newData = [
-        //   {
-        //     value: 0,
-        //     label: '---Select Category---'
-        //   },
-        //   ...newData
-        // ]
-        // setOptions(newData) // Cập nhật dữ liệu
+        //Get List
+        const res: IApiResponse<{ categories: ICategory[]; pagination: IPagination }> = await categoryApi.list()
+        setCategoryData(res.data.categories)
+        //Get Options
+        const resParent: IApiResponse<{ categories: ICategory[]; pagination: IPagination }> = await categoryApi.list({
+          field: EFieldByValue.REFERENCE_CATEGORY_Id,
+          query: '0'
+        })
+        const data = resParent.data.categories
+        let newData: IOptions[] = data.map((cat) => ({
+          value: cat.id,
+          label: cat.name
+        }))
+        newData = [
+          {
+            value: 0,
+            label: '---Select Category---'
+          },
+          ...newData
+        ]
+        setOptions(newData) // Cập nhật dữ liệu
         setLoading(false) // Tắt trạng thái loading
       } catch (error) {
         console.error('Error fetching categories:', error)
@@ -75,14 +81,14 @@ function Add({}: Props) {
     resolver: zodResolver(categorySchema)
   })
 
-  const onSubmit = (data: categoryFormData) => {
+  const onSubmit = async (data: categoryFormData) => {
     try {
       //call api in here...
-
-      UToast(EToastOption.SUCCESS, 'Add Category Successfully!')
+      const res: IApiResponse<{ category: ICategory }> = await categoryApi.add(data)
+      if (res.status === 200) UToast(EToastOption.SUCCESS, 'Add Category Successfully!')
       reset()
     } catch (error) {
-      UToast(EToastOption.SUCCESS, 'Add Category Failure!')
+      UToast(EToastOption.ERROR, 'Add Category Failure!')
       reset()
     }
     console.log(data) // Dữ liệu khi submit

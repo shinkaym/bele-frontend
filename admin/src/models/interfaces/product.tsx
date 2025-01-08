@@ -16,5 +16,5 @@ export interface IProduct {
   status: number // Trạng thái sản phẩm (1: hoạt động, 0: không hoạt động)
   updatedAt: string // Trạng thái xóa (0: chưa xóa, 1: đã xóa)
   createdAt: string // Thời gian tạo sản phẩm
-  attributeType:IAttributeType[]  
+  attributeTypes:IAttributeType[]  
 }

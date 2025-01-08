@@ -12,26 +12,32 @@ const categoryEndpoints = {
 }
 
 const categoryApi = {
-  list(params: {
-    page: number
-    limit: number
-    query: string
-    field: EFieldByValue
-    status: any
-    sort: EFieldByValue
-    order: ESortOrderValue
+  list(params?: {
+    page?: number
+    limit?: number
+    query?: string
+    field?: EFieldByValue
+    status?: any
+    sort?: EFieldByValue
+    order?: ESortOrderValue
   }): Promise<IApiResponse<{ categories: ICategory[] , pagination: IPagination }>> {
     return axiosPrivate.get('Category', { params })
   },
   detail(id: number): Promise<IApiResponse<{ categorie: ICategory }>> {
-    return axiosPublic.get(`category/${id}`)
+    return axiosPublic.get(`Category/${id}`)
   },
-  delete(id: number): Promise<IApiResponse<{ categorie: ICategory }>> {
-    return axiosPublic.delete(`category/${id}`)
+  delete(id: number): Promise<IApiResponse<{ category: ICategory }>> {
+    return axiosPublic.delete(`Category/${id}`)
   },
-  updateStatus(id: number, status: number): Promise<IApiResponse<{ categorie: ICategory }>> {
-    return axiosPublic.patch(`category/${id}`, { status })
-  }
+  updateStatus(id: number, status: number): Promise<IApiResponse<{ category: ICategory }>> {
+    return axiosPublic.patch(`Category/${id}`, { status })
+  },
+  add(data:{name:string,referenceCategoryId:number,status:number}): Promise<IApiResponse<{ category: ICategory }>>{
+    return axiosPublic.post(`Category`, { ...data })
+  },
+  edit(id:number,data:{name:string,referenceCategoryId:number,status:number}): Promise<IApiResponse<{ category: ICategory }>>{
+    return axiosPublic.put(`Category/${id}`, { ...data })
+  },
 }
 
 export default categoryApi

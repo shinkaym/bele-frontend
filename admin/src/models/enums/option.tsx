@@ -17,6 +17,7 @@ export enum EFieldByValue {
     STATUS = "status",
     CREATED_AT = "createdAt",
     UPDATED_AT = "updatedAt",
+    REFERENCE_CATEGORY_Id = "ReferenceCategoryId"
   }
   
   export enum ESortOrderValue {
@@ -37,6 +38,7 @@ export enum EFieldByTitle {
     STATUS = "Status",
     CREATED_AT = "Created At",
     UPDATED_AT = "Updated At",
+    REFERENCE_CATEGORY_Id = "Reference Category Id"
   }
   
   export enum ESortOrderTitle {

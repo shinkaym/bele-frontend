@@ -1,5 +1,6 @@
 import categoryApi from '@/apis/modules/categoy.api'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
+import Button from '@/components/common/Button'
 import Search from '@/components/common/Forms/Search'
 import Loader from '@/components/common/Loader'
 import Pagination from '@/components/common/Pagination'
@@ -23,8 +24,7 @@ function Category({}: Props) {
   const [categories, setCategories] = useState<ICategory[]>([])
   const [pagination, setPagination] = useState<IPagination>({
     currentPage: 1,
-    totalPages: 0,
-    totalRecords: 0
+    totalPage: 0,
   })
   const [loading, setLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState<string>('')
@@ -64,7 +64,6 @@ function Category({}: Props) {
   const debouncedSearch = debounce((query: string) => {
     setSearchQuery(query)
   }, 500)
-  console.log(searchQuery);
 
   useEffect(() => {
     fetchData(pagination.currentPage, 5)
@@ -80,33 +79,40 @@ function Category({}: Props) {
         <Loader />
       ) : (
         <>
-          <Breadcrumb pageName='Order' />
+          <Breadcrumb pageName='Category' />
           <div className='flex flex-col gap-10'>
             <div className='rounded-sm border bg-white px-5 pt-6 pb-2.5 shadow-default dark:bg-boxdark'>
-              <div className='flex items-center justify-start gap-5 mb-6'>
+              <div className='flex items-center justify-between gap-5 mb-6'>
                 <Search onSearch={debouncedSearch} />
-                <SelectFilter
-                  label='Field'
-                  value={selectedField}
-                  options={categoryFieldOptions}
-                  onChange={(value) => setSelectedField(value as EFieldByValue)}
-                />
-                <SelectStatusFilter
-                  label='Status'
-                  value={selectedStatus}
-                  options={categoryStatus}
-                  onChange={(value) => setSelectedStatus(value as ECategoryStatus | null)}
-                />
-                <SelectSort
-                  sortBy={sortBy}
-                  sortOrder={sortOrder}
-                  onSortChange={(by, order) => {
-                    setSortBy(by)
-                    setSortOrder(order)
-                  }}
-                  sortByOptions={sortByOptions}
-                  sortOrderOptions={sortOrderOptions}
-                />
+                <div className='flex items-center justify-between gap-5'>
+                  {' '}
+                  <SelectFilter
+                    label='Field'
+                    value={selectedField}
+                    options={categoryFieldOptions}
+                    onChange={(value) => setSelectedField(value as EFieldByValue)}
+                  />
+                  <SelectStatusFilter
+                    label='Status'
+                    value={selectedStatus}
+                    options={categoryStatus}
+                    onChange={(value) => setSelectedStatus(value as ECategoryStatus | null)}
+                  />
+                  <SelectSort
+                    sortBy={sortBy}
+                    sortOrder={sortOrder}
+                    onSortChange={(by, order) => {
+                      setSortBy(by)
+                      setSortOrder(order)
+                    }}
+                    sortByOptions={sortByOptions}
+                    sortOrderOptions={sortOrderOptions}
+                  />
+                </div>
+
+                <Button type='link' to='/tables/category/add' size='sm'>
+                  Add
+                </Button>
               </div>
               {loading ? (
                 <Loader />
@@ -115,7 +121,7 @@ function Category({}: Props) {
               )}
               <Pagination
                 currentPage={pagination.currentPage}
-                totalPages={pagination.totalPages}
+                totalPage={pagination.totalPage}
                 onPageChange={handlePageChange}
               />
             </div>
