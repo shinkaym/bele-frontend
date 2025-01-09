@@ -6,7 +6,7 @@ import { IPagination } from '@/models/interfaces'
 
 const Wishlist = () => {
   const [pagination, setPagination] = useState<IPagination>({
-    currentPage: 1,
+    currentPage: PAGINATION_CONFIG.DEFAULT_PAGE,
     totalPage: 5,
     totalRecords: 50
   })

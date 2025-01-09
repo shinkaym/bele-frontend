@@ -22,7 +22,7 @@ type Props = {}
 function Category({}: Props) {
   const [categories, setCategories] = useState<ICategory[]>([])
   const [pagination, setPagination] = useState<IPagination>({
-    currentPage: 1,
+    currentPage: PAGINATION_CONFIG.DEFAULT_PAGE,
     totalPage: 0
   })
   const [loading, setLoading] = useState(false)
@@ -61,11 +61,11 @@ function Category({}: Props) {
 
   const search = (query: string) => {
     setSearchQuery(query)
-    fetchData(pagination.currentPage, 5)
+    fetchData(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_LIMIT)
   }
 
   useEffect(() => {
-    fetchData(pagination.currentPage, 5)
+    fetchData(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_LIMIT)
   }, [searchQuery, pagination.currentPage])
 
   const handlePageChange = (page: number) => {
@@ -109,7 +109,7 @@ function Category({}: Props) {
               {loading ? (
                 <Loader />
               ) : (
-                <CategoryTable categories={categories} onRefresh={() => fetchData(pagination.currentPage, 5)} />
+                <CategoryTable categories={categories} onRefresh={() => fetchData(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_LIMIT)} />
               )}
               <Pagination
                 currentPage={pagination.currentPage}

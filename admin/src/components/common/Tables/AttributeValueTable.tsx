@@ -17,7 +17,7 @@ type Props = {
 function AttributeValueTable({ attributeValues, onSearch }: Props) {
   const [currentPage, setCurrentPage] = useState(1)
   const limit = 3
-  const totalPage = Math.ceil(attributeValues.length / limit)
+  const totalPages = Math.ceil(attributeValues.length / limit)
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
@@ -130,10 +130,10 @@ function AttributeValueTable({ attributeValues, onSearch }: Props) {
           </tbody>
         </table>
       </div>
-      {totalPage > 1 && (
+      {totalPages > 1 && (
         <Pagination
           currentPage={currentPage}
-          totalPage={Math.ceil(attributeValues.length / 3)}
+          totalPages={Math.ceil(attributeValues.length / 3)}
           onPageChange={handlePageChange}
           siblingCount={1}
           className='pagination-container flex justify-center items-center mb-6'

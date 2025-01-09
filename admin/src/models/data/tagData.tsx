@@ -18,7 +18,7 @@ export const tagListResponseData: ITagListResponse = {
       }
     ],
     pagination: {
-      currentPage: 1,
+      currentPage: PAGINATION_CONFIG.DEFAULT_PAGE,
       totalPage: 2,
       totalRecords: 5
     }

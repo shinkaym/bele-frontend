@@ -82,6 +82,17 @@ export const rateSortByOptions: { title: EFieldByTitle; value: EFieldByValue }[]
   },
 ]
 
+export const attributeValueSortByOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+    title: EFieldByTitle.CREATED_AT,
+    value: EFieldByValue.CREATED_AT
+  },
+  {
+    title: EFieldByTitle.NAME,
+    value: EFieldByValue.NAME
+  }
+]
+
 export const sortOrderOptions: { title: ESortOrderTitle; value: ESortOrderValue }[] = [
   {
     title: ESortOrderTitle.ASC,
@@ -159,11 +170,11 @@ export const employeeStatus: IStatus[] = [
     value: 1,
     className: 'text-green-600 border-green-600 bg-green-200'
   },
-  // {
-  //   title: EEmployeeStatus.BANNED,
-  //   value: 3,
-  //   className: 'text-red-600 border-red-600 bg-red-200'
-  // }
+ 
+ 
+ 
+ 
+ 
 ]
 
 export const discountStatus: IStatus[] = [
@@ -177,11 +188,11 @@ export const discountStatus: IStatus[] = [
     value: 1,
     className: 'text-green-600 border-green-600 bg-green-200'
   },
-  // {
-  //   title: EDiscountStatus.EXPIRED,
-  //   value: 2,
-  //   className: 'text-red-600 border-red-600 bg-red-200'
-  // }
+ 
+ 
+ 
+ 
+ 
 ]
 
 export const customerStatus: IStatus[] = [
@@ -279,6 +290,13 @@ export const contactFieldOptions: { title: EFieldByTitle; value: EFieldByValue }
   }
 ]
 
+export const attributeValueFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+    title: EFieldByTitle.ID,
+    value: EFieldByValue.ID
+  }
+]
+
 export const orderTableHeaders: ITable[] = [
   { title: 'Id', value: 1, className: 'min-w-[20px] text-center' },
   { title: 'Email', value: 2, className: 'min-w-[80px]' },
@@ -362,3 +380,8 @@ export const contactTableHeaders: ITable[] = [
   { title: 'Created At', value: 8, className: 'min-w-[150px]' },
   { title: 'Action', value: 9, className: 'min-w-[80px] text-center' }
 ]
+
+export const PAGINATION_CONFIG = {
+  DEFAULT_LIMIT: 5,
+  DEFAULT_PAGE: 1,
+};

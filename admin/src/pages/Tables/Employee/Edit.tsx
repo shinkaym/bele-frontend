@@ -14,20 +14,36 @@ import { EToastOption } from '@/models/enums/option'
 import employeeApi from '@/apis/modules/employee.api'
 import { IApiResponse } from '@/models/interfaces/api'
 import { IEmployeeDetailResponse } from '@/models/interfaces/employee'
+import InputPassword from '@/components/common/InputPassword'
 
 const schema = z
   .object({
     name: z.string().min(1, 'Name is required'),
     phoneNumber: z.string().min(1, 'Phone number is required'),
     email: z.string().email('Invalid email address'),
-    password: z.string().min(6, 'Password must be at least 6 characters'),
-    rePassword: z.string().min(6, 'Password confirmation is required'),
+    password: z.string().refine(
+      (value) => !value || value.length >= 6, //
+      {
+        message: 'Password must be at least 6 characters if provided'
+      }
+    ),
+    rePassword: z.string().refine((value) => !value || value.length >= 6, {
+      message: 'Password confirmation must be at least 6 characters if provided'
+    }),
     sex: z.enum(['Male', 'Female']),
     role: z.union([z.number(), z.string()]),
     status: z.union([z.number(), z.string()])
   })
   .superRefine(({ password, rePassword }, ctx) => {
-    if (password !== rePassword) {
+    if (password && !rePassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Password confirmation is required',
+        path: ['rePassword']
+      })
+    }
+
+    if (password && rePassword && password !== rePassword) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'Passwords must match',
@@ -54,7 +70,17 @@ function Edit({}: Props) {
     reset,
     register
   } = useForm<FormValues>({
-    resolver: zodResolver(schema)
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: '',
+      phoneNumber: '',
+      email: '',
+      password: '',
+      rePassword: '',
+      sex: 'Male',
+      role: 0,
+      status: 0
+    }
   })
 
   useEffect(() => {
@@ -81,8 +107,6 @@ function Edit({}: Props) {
               name: employee.fullName,
               phoneNumber: employee.phoneNumber,
               email: employee.email,
-              password: employee.password,
-              rePassword: employee.password,
               sex: employee.sex as 'Male' | 'Female',
               role: employee.role.id,
               status: employee.status
@@ -107,8 +131,8 @@ function Edit({}: Props) {
           fullName: data.name,
           phoneNumber: data.phoneNumber,
           email: data.email,
-          password: data.password,
-          rePassword: data.rePassword,
+          password: data.password || null,
+          rePassword: data.rePassword || null,
           sex: data.sex,
           roleId: data.role as number,
           status: data.status as number
@@ -169,11 +193,11 @@ function Edit({}: Props) {
                 name='password'
                 control={control}
                 render={({ field }) => (
-                  <Input
-                    type='text'
+                  <InputPassword
                     label='Password'
                     error={errors.password?.message}
                     {...field}
+                    value={field.value || ''}
                     {...register('password')}
                     placeholder='Enter password'
                     className='border border-gray-300 mb-6'
@@ -239,11 +263,11 @@ function Edit({}: Props) {
                 name='rePassword'
                 control={control}
                 render={({ field }) => (
-                  <Input
-                    type='text'
+                  <InputPassword
                     label='Confirm Password'
                     error={errors.rePassword?.message}
                     {...field}
+                    value={field.value || ''}
                     {...register('rePassword')}
                     placeholder='Enter confirm password'
                     className='border border-gray-300 mb-6'

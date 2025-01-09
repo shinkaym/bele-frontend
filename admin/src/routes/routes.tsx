@@ -7,6 +7,7 @@ import Dashboard from '@/pages/Dashboard'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
 import PublicRoute from '@/components/common/PublicRoute'
+import PrivateRoute from '@/components/common/PrivateRoute'
 
 const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> => {
   return (props: P): ReactNode => (
@@ -53,10 +54,10 @@ function AppRouter() {
     {
       path: '/',
       element: (
-        // <PrivateRoute>
-        //   <DefaultLayout />
-        // </PrivateRoute>
-        <DefaultLayout />
+        <PrivateRoute>
+          <DefaultLayout />
+        </PrivateRoute>
+        // <DefaultLayout />
       ),
       children: [
         {

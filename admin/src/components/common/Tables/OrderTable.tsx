@@ -193,7 +193,9 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
                 </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{formatDate(or.shipDate)}</h5>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {formatDate(or.shipDate)}
+                </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
@@ -201,8 +203,14 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
                 </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                  <StatusBadge status={or.status} statusList={orderStatus} onClick={() => handleStatusClick(or)} />
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[200px] text-center'>
+                  <StatusBadge
+                    status={or.status}
+                    statusList={orderStatus}
+                    onClick={() => {
+                      or.status !== -1 && or.status !== 4 && handleStatusClick(or)
+                    }}
+                  />
                 </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
@@ -215,9 +223,11 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
                   <button type='button' className='hover:text-primary' onClick={() => handleViewClick(or.id)}>
                     <EyeIcon width={24} height={24} />
                   </button>
-                  <Link to={`/tables/order/edit/${or.id}`} className='hover:text-primary'>
-                    <EditIcon width={24} height={24} />
-                  </Link>
+                  {or.status !== -1 && or.status !== 4 && (
+                    <Link to={`/tables/order/edit/${or.id}`} className='hover:text-primary'>
+                      <EditIcon width={24} height={24} />
+                    </Link>
+                  )}
                   <button type='button' className='hover:text-primary' onClick={() => handleDeleteClick(or.id)}>
                     <DeleteIcon width={24} height={24} />
                   </button>

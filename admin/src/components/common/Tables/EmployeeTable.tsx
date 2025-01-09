@@ -152,7 +152,7 @@ const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{em.role.name}</h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>
                   <StatusBadge status={em.status} statusList={employeeStatus} onClick={() => handleStatusClick(em)} />
                 </h5>
               </td>

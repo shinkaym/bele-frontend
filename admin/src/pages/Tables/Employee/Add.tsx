@@ -12,6 +12,7 @@ import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
 import employeeApi from '@/apis/modules/employee.api'
 import { useNavigate } from 'react-router-dom'
+import InputPassword from '@/components/common/InputPassword'
 
 const schema = z
   .object({
@@ -138,8 +139,7 @@ function Add({}: Props) {
                 name='password'
                 control={control}
                 render={({ field }) => (
-                  <Input
-                    type='text'
+                  <InputPassword
                     label='Password'
                     error={errors.password?.message}
                     {...field}
@@ -208,8 +208,7 @@ function Add({}: Props) {
                 name='rePassword'
                 control={control}
                 render={({ field }) => (
-                  <Input
-                    type='text'
+                  <InputPassword
                     label='Confirm Password'
                     error={errors.rePassword?.message}
                     {...field}

@@ -22,7 +22,7 @@ interface Product {
 
 const RatingProducts = () => {
   const [pagination, setPagination] = useState<IPagination>({
-    currentPage: 1,
+    currentPage: PAGINATION_CONFIG.DEFAULT_PAGE,
     totalPage: 5,
     totalRecords: 50
   })

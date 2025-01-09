@@ -19,7 +19,7 @@ type Props = {}
 const index = ({}: Props) => {
   const [contacts, setContacts] = useState<IContact[]>([])
   const [pagination, setPagination] = useState<IPagination>({
-    currentPage: 1,
+    currentPage: PAGINATION_CONFIG.DEFAULT_PAGE,
     totalPage: 0,
     
   })
@@ -59,7 +59,7 @@ const index = ({}: Props) => {
   }
 
   useEffect(() => {
-    fetchData(pagination.currentPage, 5)
+    fetchData(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_LIMIT)
   }, [searchQuery, pagination.currentPage])
 
   const handlePageChange = (page: number) => {
@@ -104,7 +104,7 @@ const index = ({}: Props) => {
           {loading ? (
             <Loader />
           ) : (
-            <ContactTable contacts={contacts} onRefresh={() => fetchData(pagination.currentPage, 5)} />
+            <ContactTable contacts={contacts} onRefresh={() => fetchData(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_LIMIT)} />
           )}
           <Pagination
             currentPage={pagination.currentPage}

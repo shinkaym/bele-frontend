@@ -49,7 +49,7 @@ export const employeeListResponseData: IEmployeeListResponse = {
     }
   ],
   pagination: {
-    currentPage: 1,
+    currentPage: PAGINATION_CONFIG.DEFAULT_PAGE,
     totalPage: 2
   }
 }

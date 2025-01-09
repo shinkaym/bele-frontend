@@ -85,8 +85,8 @@ const employeeApi = {
       fullName: string
       phoneNumber: string
       email: string
-      password: string
-      rePassword: string
+      password: string | null
+      rePassword: string | null
       sex: string
       roleId: number
       status: number

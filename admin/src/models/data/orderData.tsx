@@ -51,7 +51,7 @@ export const orderListResponseData: IOrderListResponse = {
       }
     ],
     pagination: {
-      currentPage: 1,
+      currentPage: PAGINATION_CONFIG.DEFAULT_PAGE,
       totalPage: 2,
       totalRecords: 5
     }

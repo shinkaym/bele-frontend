@@ -42,7 +42,7 @@ export const rateListResponseData: IRateListResponse = {
       },
     ],
     pagination: {
-      currentPage: 1,
+      currentPage: PAGINATION_CONFIG.DEFAULT_PAGE,
       totalPage: 1,
       totalRecords: 3,
     },

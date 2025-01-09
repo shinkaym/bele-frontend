@@ -1,7 +1,6 @@
 import { ComponentProps } from 'react'
 
-
-const ArrowRightIcon = (props: ComponentProps<"svg">) => {
+const ArrowRightIcon = (props: ComponentProps<'svg'>) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'

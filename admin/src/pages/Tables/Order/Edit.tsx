@@ -10,6 +10,7 @@ import { EToastOption } from '@/models/enums/option'
 import { useParams } from 'react-router-dom'
 import { IOrder } from '@/models/interfaces/order'
 import { formatDate } from '@/utils'
+import { orderStatus } from '@/constants'
 
 const OrderEdit: React.FC = () => {
   const { id } = useParams<{ id: string }>()
@@ -109,6 +110,11 @@ const OrderEdit: React.FC = () => {
               <p>
                 <strong>Receive Date:</strong>
               </p>
+              {(order.status === -1 || order.status === 4) && (
+                <p>
+                  <strong>Status:</strong>
+                </p>
+              )}
             </div>
             <div className='w-1/3 md:w-1/4'>
               <p className='whitespace-nowrap'>{order.email || '\u00A0'}</p>
@@ -119,15 +125,22 @@ const OrderEdit: React.FC = () => {
               <p className='whitespace-nowrap'>{order.payMethod || '\u00A0'}</p>
               <p className='whitespace-nowrap'>{formatDate(order.shipDate) || '\u00A0'}</p>
               <p className='whitespace-nowrap'>{formatDate(order.receiveDate) || '\u00A0'}</p>
+              {(order.status === -1 || order.status === 4) && (
+                <p className='whitespace-nowrap'>
+                  {orderStatus.find((e) => e.value === order.status)?.title || '\u00A0'}
+                </p>
+              )}
             </div>
-            <div className='w-1/3 md:w-2/4'>
-              <SelectGroup
-                className='w-[200px]'
-                options={statusOptions}
-                value={status}
-                onChange={(value) => handleStatusChange(Number(value))}
-              />
-            </div>
+            {order.status !== -1 && order.status !== 4 && (
+              <div className='w-1/3 md:w-2/4'>
+                <SelectGroup
+                  className='w-[200px]'
+                  options={statusOptions}
+                  value={status}
+                  onChange={(value) => handleStatusChange(Number(value))}
+                />
+              </div>
+            )}
           </div>
         </div>
 
@@ -211,9 +224,11 @@ const OrderEdit: React.FC = () => {
           <Button type='link' to='/tables/order' color='secondary' className='max-h-12'>
             Back
           </Button>
-          <Button type='button' className='max-h-12' onClick={handleSave}>
-            Save
-          </Button>
+          {order.status !== -1 && order.status !== 4 && (
+            <Button type='button' className='max-h-12' onClick={handleSave}>
+              Save
+            </Button>
+          )}
         </div>
       </div>
     )
