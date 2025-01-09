@@ -20,7 +20,7 @@ type Props = {
 function ProductTable({ Products, onSearch }: Props) {
   const [currentPage, setCurrentPage] = useState(1)
   const limit = 3
-  const totalPages = Math.ceil(Products.length / limit)
+  const totalPage = Math.ceil(Products.length / limit)
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
@@ -166,10 +166,10 @@ function ProductTable({ Products, onSearch }: Props) {
           </tbody>
         </table>
       </div>
-      {totalPages > 1 && (
+      {totalPage > 1 && (
         <Pagination
           currentPage={currentPage}
-          totalPages={Math.ceil(Products.length / 3)}
+          totalPage={Math.ceil(Products.length / 3)}
           onPageChange={handlePageChange}
           siblingCount={1}
           className='pagination-container flex justify-center items-center mb-6'

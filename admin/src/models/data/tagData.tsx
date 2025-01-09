@@ -19,7 +19,7 @@ export const tagListResponseData: ITagListResponse = {
     ],
     pagination: {
       currentPage: 1,
-      totalPages: 2,
+      totalPage: 2,
       totalRecords: 5
     }
   },

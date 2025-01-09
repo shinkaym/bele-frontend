@@ -50,7 +50,7 @@ export const employeeListResponseData: IEmployeeListResponse = {
   ],
   pagination: {
     currentPage: 1,
-    totalPages: 2
+    totalPage: 2
   }
 }
 

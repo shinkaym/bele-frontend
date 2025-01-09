@@ -22,8 +22,8 @@ const index = ({}: Props) => {
   const [rates, setRates] = useState<IRate[]>([])
   const [pagination, setPagination] = useState<IPagination>({
     currentPage: 1,
-    totalPages: 0,
-    totalRecords: 0
+    totalPage: 0,
+    
   })
   const [loading, setLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState<string>('')
@@ -106,7 +106,7 @@ const index = ({}: Props) => {
           {loading ? <Loader /> : <RateTable rates={rates} onRefresh={() => fetchData(pagination.currentPage, 5)} />}
           <Pagination
             currentPage={pagination.currentPage}
-            totalPages={pagination.totalPages}
+            totalPage={pagination.totalPage}
             onPageChange={handlePageChange}
           />
         </div>

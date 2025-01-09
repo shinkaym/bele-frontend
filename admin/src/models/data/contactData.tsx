@@ -40,7 +40,7 @@ export const contactListResponseData: IContactListResponse = {
     ],
     pagination: {
       currentPage: 1,
-      totalPages: 2,
+      totalPage: 2,
       totalRecords: 5,
     },
   },

@@ -82,7 +82,7 @@ export const customerListResponseData: ICustomerListResponse = {
     ],
     pagination: {
       currentPage: 1,
-      totalPages: 1,
+      totalPage: 1,
       totalRecords: 5,
     },
   },

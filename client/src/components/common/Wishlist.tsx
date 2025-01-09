@@ -7,7 +7,7 @@ import { IPagination } from '@/models/interfaces'
 const Wishlist = () => {
   const [pagination, setPagination] = useState<IPagination>({
     currentPage: 1,
-    totalPages: 5,
+    totalPage: 5,
     totalRecords: 50
   })
 
@@ -26,7 +26,7 @@ const Wishlist = () => {
       </div>
       <Pagination
         currentPage={pagination.currentPage}
-        totalPages={pagination.totalPages}
+        totalPage={pagination.totalPage}
         onPageChange={handlePageChange}
       />
     </div>

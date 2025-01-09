@@ -16,7 +16,7 @@ type variants = {
 function VariantTable({ variants, onSearch }: variants) {
   const [currentPage, setCurrentPage] = useState(1)
   const limit = 3
-  const totalPages = Math.ceil(variants.length / limit)
+  const totalPage = Math.ceil(variants.length / limit)
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
@@ -155,10 +155,10 @@ function VariantTable({ variants, onSearch }: variants) {
           </tbody>
         </table>
       </div>
-      {totalPages > 1 && (
+      {totalPage > 1 && (
         <Pagination
           currentPage={currentPage}
-          totalPages={Math.ceil(variants.length / 3)}
+          totalPage={Math.ceil(variants.length / 3)}
           onPageChange={handlePageChange}
           siblingCount={1}
           className='pagination-container flex justify-center items-center mb-6'

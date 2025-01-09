@@ -22,8 +22,8 @@ const index = ({}: Props) => {
   const [customers, setCustomers] = useState<ICustomer[]>([])
   const [pagination, setPagination] = useState<IPagination>({
     currentPage: 1,
-    totalPages: 0,
-    totalRecords: 0
+    totalPage: 0,
+    
   })
   const [loading, setLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState<string>('')
@@ -116,7 +116,7 @@ const index = ({}: Props) => {
           )}
           <Pagination
             currentPage={pagination.currentPage}
-            totalPages={pagination.totalPages}
+            totalPage={pagination.totalPage}
             onPageChange={handlePageChange}
           />
         </div>
