@@ -11,6 +11,7 @@ import Button from '@/components/common/Button'
 import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
 import employeeApi from '@/apis/modules/employee.api'
+import { useNavigate } from 'react-router-dom'
 
 const schema = z
   .object({
@@ -38,6 +39,7 @@ type FormValues = z.infer<typeof schema>
 type Props = {}
 
 function Add({}: Props) {
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [roleOptions, setRoleOptions] = useState<IOptions[]>([])
   const [statusOptions, setStatusOptions] = useState<IOptions[]>([])
@@ -45,8 +47,8 @@ function Add({}: Props) {
 
   useEffect(() => {
     setRoleOptions([
-      { value: 0, label: 'Admin' },
-      { value: 1, label: 'Employee' }
+      { value: 1, label: 'Admin' },
+      { value: 2, label: 'Product Management' }
     ])
     setStatusOptions([
       { value: 0, label: 'Inactive' },
@@ -72,18 +74,18 @@ function Add({}: Props) {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       const res = await employeeApi.add({
-        name: data.name,
+        fullName: data.name,
         phoneNumber: data.phoneNumber,
         email: data.email,
         password: data.password,
         rePassword: data.rePassword,
         sex: data.sex,
-        role: data.role as number,
+        roleId: data.role as number,
         status: data.status as number
       })
-      if (res.status === 200) {
+      if (res.status === 201) {
         UToast(EToastOption.SUCCESS, res.message)
-        reset()
+        navigate('/tables/employee')
       } else {
         UToast(EToastOption.ERROR, res.message)
       }

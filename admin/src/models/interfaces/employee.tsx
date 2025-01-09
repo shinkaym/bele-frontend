@@ -2,30 +2,28 @@ import { IPagination } from './pagination'
 
 export interface IEmployee {
   id: number
-  name: string
+  fullName: string
   phoneNumber: string
   password?: string
   email: string
   sex: string
-  role: number
+  role: {
+    id: number
+    name: string
+    rolePermissions: null
+  }
   status: number
   createdAt?: string
   updatedAt?: string
 }
 
 export interface IEmployeeListResponse {
-  status: number
-  data: {
-    employees: IEmployee[]
-    pagination: IPagination
-  }
-  message: string
+  accounts: IEmployee[]
+  pagination: IPagination
 }
 
 export interface IEmployeeDetailResponse {
-  status: number
-  data: IEmployee
-  message: string
+  account: IEmployee
 }
 
 export interface IEmployeeDeleteResponse {
@@ -39,39 +37,17 @@ export interface IEmployeeDeleteResponse {
 }
 
 export interface IEmployeeUpdateStatusResponse {
+  id: number
   status: number
-  data: {
-    id: number,
-    status: number,
-    updatedAt: string
-  }
-  message: string
+  updatedAt: string
 }
 
 export interface IEmployeeAddResponse {
-  status: number
-  data: {
-    name: string,
-      phoneNumber: string,
-      email: string,
-      sex: string,
-      role: number,
-      password: string,
-      status: string
-  }
-  message: string
-}
-
-export interface IEmployeeUpdateResponse {
-  status: number
-  data: {
-    name: string,
-      phoneNumber: string,
-      email: string,
-      sex: string,
-      role: number,
-      password: string,
-      status: string
-  }
-  message: string
+  name: string
+  phoneNumber: string
+  email: string
+  sex: string
+  role: number
+  password: string
+  status: string
 }

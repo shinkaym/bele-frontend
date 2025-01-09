@@ -1,16 +1,16 @@
 import { ICustomer } from '@/models/interfaces/customer'
 import { DeleteIcon, EditIcon } from '@/components/icons'
-import { Link } from 'react-router-dom'
 import { customerStatus, customerTableHeaders } from '@/constants'
 import { ECustomerStatus } from '@/models/enums/status'
 import { formatDate } from '@/utils'
 import { useState } from 'react'
 import customerApi from '@/apis/modules/customer.api'
-import Swal from 'sweetalert2'
 import ReCAPCHAModal from '../ReCAPCHAModal'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
 import StatusBadge from '../StatusBadge'
+import { UToast } from '@/utils/swal'
+import { EToastOption } from '@/models/enums/option'
 
 type CustomerTableProps = {
   customers: ICustomer[]
@@ -41,16 +41,16 @@ const CustomerTable = ({ customers, onRefresh }: CustomerTableProps) => {
   const handleConfirmDelete = async () => {
     if (selectedId) {
       try {
-        const response = await customerApi.delete({ id: selectedId })
+        const res = await customerApi.delete({ id: selectedId })
 
-        if (response.status === 200) {
+        if (res.status === 200) {
           onRefresh()
-          Swal.fire('Deleted!', response.message, 'success')
+          UToast(EToastOption.SUCCESS, res.message)
         } else {
-          Swal.fire('Error!', response.message, 'error')
+          UToast(EToastOption.ERROR, res.message)
         }
       } catch (error) {
-        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
       } finally {
         setIsOpenConfirmDeleteModal(false)
         setSelectedId(null)
@@ -78,19 +78,19 @@ const CustomerTable = ({ customers, onRefresh }: CustomerTableProps) => {
   const handleConfirmStatusChange = async () => {
     if (current && selectedStatus !== null) {
       try {
-        const response = await customerApi.updateStatus({
+        const res = await customerApi.updateStatus({
           id: current.id,
           status: selectedStatus
         })
 
-        if (response.status === 200) {
+        if (res.status === 200) {
           onRefresh()
-          Swal.fire('Success!', 'Customer status updated successfully', 'success')
+          UToast(EToastOption.SUCCESS, res.message)
         } else {
-          Swal.fire('Error!', response.message, 'error')
+          UToast(EToastOption.ERROR, res.message)
         }
       } catch (error) {
-        Swal.fire('Error!', 'An unexpected error occurred.', 'error')
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
       } finally {
         setIsOpenConfirmStatusChangeModal(false)
         setSelectedStatus(null)
@@ -129,30 +129,62 @@ const CustomerTable = ({ customers, onRefresh }: CustomerTableProps) => {
         <tbody>
           {customers.map((customer) => (
             <tr key={customer.id}>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark text-center'>{customer.id}</td>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>{customer.fullName}</td>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>{customer.phoneNumber}</td>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>{customer.email}</td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                {customer.sex === 1 ? 'Male' : customer.sex === 0 ? 'Female' : 'Unknown'}
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>
+                  {customer.id}
+                </h5>
               </td>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>{customer.birthday}</td>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>{customer.totalSpending}</td>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>{customer.lastOperatingTime}</td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <StatusBadge
-                  status={Number(customer.status)}
-                  statusList={customerStatus}
-                  onClick={() => handleStatusClick(customer)}
-                />
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {customer.fullName}
+                </h5>
               </td>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>{customer.createdAt}</td>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>{customer.updatedAt}</td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {customer.phoneNumber}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {customer.email}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>
+                  {customer.sex}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {customer.birthday}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>
+                  {customer.totalSpending}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>
+                  <StatusBadge
+                    status={Number(customer.status)}
+                    statusList={customerStatus}
+                    onClick={() => handleStatusClick(customer)}
+                  />
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {customer.createdAt ? formatDate(customer.createdAt) : 'N/A'}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {customer.updatedAt ? formatDate(customer.updatedAt) : 'N/A'}
+                </h5>
+              </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <div className='flex justify-center space-x-3.5'>
-                  <Link to={`/customers/edit/${customer.id}`} className='hover:text-primary'>
-                    <EditIcon width={24} height={24} />
-                  </Link>
                   <button type='button' className='hover:text-primary' onClick={() => handleDeleteClick(customer.id)}>
                     <DeleteIcon width={24} height={24} />
                   </button>

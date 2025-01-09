@@ -5,6 +5,7 @@ export enum EStatus {
 
 export enum EOrderStatus {
   UNKNOWN = 'Unknown',
+  PENDING_CONFIRMATION = 'Pending confirmation',
   PENDING = 'Pending',
   DELIVERED = 'Delivered',
   SHIPPED = 'Shipped',

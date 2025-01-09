@@ -5,18 +5,21 @@ export enum EToastOption {
 }
 
 export enum EFieldByValue {
-    ID = "id",
-    NAME = "name",
-    EMAIL = "email",
-    PHONE_NUMBER = "phoneNumber",
-    ADDRESS = "address",
-    PAY_METHOD = "payMethod",
-    TOTAL_MONEY = "totalMoney",
-    SHIP_DATE = "shipDate",
-    RECEIVE_DATE = "receiveDate",
-    STATUS = "status",
-    CREATED_AT = "createdAt",
-    UPDATED_AT = "updatedAt",
+    ID = "Id",
+    NAME = "Name",
+    FULLNAME = "FullName",
+    EMAIL = "Email",
+    PHONE_NUMBER = "PhoneNumber",
+    ADDRESS = "Address",
+    PAY_METHOD = "PayMethod",
+    TOTAL_MONEY = "TotalMoney",
+    SHIP_DATE = "ShipDate",
+    RECEIVE_DATE = "ReceiveDate",
+    STATUS = "Status",
+    STAR = "Star",
+    DISCOUNT_VALUE = "DiscountValue",
+    CREATED_AT = "CreatedAt",
+    UPDATED_AT = "UpdatedAt",
     REFERENCE_CATEGORY_Id = "ReferenceCategoryId"
   }
   
@@ -28,6 +31,7 @@ export enum EFieldByValue {
 export enum EFieldByTitle {
     ID = "ID",
     NAME = "Name",
+    FULLNAME = "Full Name",
     EMAIL = "Email",
     PHONE_NUMBER = "Phone Number",
     ADDRESS = "Address",
@@ -36,6 +40,8 @@ export enum EFieldByTitle {
     SHIP_DATE = "Ship Date",
     RECEIVE_DATE = "Receive Date",
     STATUS = "Status",
+    STAR = "Star",
+    DISCOUNT_VALUE = "Discount Value",
     CREATED_AT = "Created At",
     UPDATED_AT = "Updated At",
     REFERENCE_CATEGORY_Id = "Reference Category Id"

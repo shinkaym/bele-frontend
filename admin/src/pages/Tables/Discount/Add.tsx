@@ -10,20 +10,67 @@ import Button from '@/components/common/Button'
 import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
 import discountApi from '@/apis/modules/discount.api'
+import { useNavigate } from 'react-router-dom'
 
-const schema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  discount: z.number().min(0, 'Discount must be greater than or equal to 0').max(100, 'Discount cannot exceed 100'),
-  expireDate: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid date format'),
-  status: z.union([z.number(), z.string()]),
-  deleted: z.boolean().default(false) // Default to false
-})
+const schema = z
+  .object({
+    name: z.string().min(1, 'Name is required'),
+    discount: z
+      .number()
+      .min(0, 'Discount must be greater than or equal to 0')
+      .max(100, 'Discount cannot exceed 100'),
+    expireDate: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid date format'),
+    expireTime: z
+      .string()
+      .refine(
+        (time) =>
+          /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/.test(time),
+        'Invalid time format, expected HH:mm'
+      ),
+    status: z.union([z.number(), z.string()])
+  })
+  .superRefine((data, ctx) => {
+    const currentDate = new Date();
+    const [currentYear, currentMonth, currentDay] = [
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      currentDate.getDate(),
+    ];
+
+    const expireDate = new Date(data.expireDate);
+    const [expireYear, expireMonth, expireDay] = [
+      expireDate.getFullYear(),
+      expireDate.getMonth() + 1,
+      expireDate.getDate(),
+    ];
+
+    if (
+      expireYear === currentYear &&
+      expireMonth === currentMonth &&
+      expireDay === currentDay
+    ) {
+      const [currentHours, currentMinutes] = [currentDate.getHours(), currentDate.getMinutes()];
+      const [expireHours, expireMinutes] = data.expireTime.split(':').map(Number);
+
+      const currentTimeInMinutes = currentHours * 60 + currentMinutes;
+      const expireTimeInMinutes = expireHours * 60 + expireMinutes;
+
+      if (expireTimeInMinutes <= currentTimeInMinutes) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['expireTime'],
+          message: 'Expire time must be later than the current time if it is today.',
+        });
+      }
+    }
+  });
 
 type FormValues = z.infer<typeof schema>
 
 type Props = {}
 
 function AddDiscount({}: Props) {
+  const navigate = useNavigate()
   const [statusOptions, setStatusOptions] = useState<IOptions[]>([])
   useEffect(() => {
     setStatusOptions([
@@ -44,14 +91,18 @@ function AddDiscount({}: Props) {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      const payload = {
-        ...data,
-        createdAt: new Date().toISOString()
+      const res = await discountApi.add({
+        name: data.name,
+        discountValue: data.discount,
+        expireDate: `${data.expireDate}T${data.expireTime}:00.000`,
+        status: data.status as number
+      })
+      if (res.status === 201) {
+        UToast(EToastOption.SUCCESS, res.message)
+        navigate('/tables/discount')
+      } else {
+        UToast(EToastOption.ERROR, res.message)
       }
-
-      //await discountApi.add(payload);
-      UToast(EToastOption.SUCCESS, 'Add discount successfully!')
-      reset()
     } catch (error) {
       UToast(EToastOption.ERROR, 'An unexpected error occurred.')
     }
@@ -96,6 +147,20 @@ function AddDiscount({}: Props) {
             />
           </div>
           <div>
+            <Controller
+              name='expireTime'
+              control={control}
+              render={({ field }) => (
+                <Input
+                  type='time'
+                  label='Expire Time'
+                  error={errors.expireTime?.message}
+                  {...field}
+                  {...register('expireTime')}
+                  className='border border-gray-300 mb-6'
+                />
+              )}
+            />
             <Controller
               name='expireDate'
               control={control}

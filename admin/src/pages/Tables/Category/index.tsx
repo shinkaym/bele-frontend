@@ -15,7 +15,6 @@ import { IApiResponse } from '@/models/interfaces/api'
 import { ICategory } from '@/models/interfaces/category'
 import { IPagination } from '@/models/interfaces/pagination'
 import { UToast } from '@/utils/swal'
-import { debounce } from 'lodash'
 import { useEffect, useState } from 'react'
 
 type Props = {}
@@ -24,7 +23,7 @@ function Category({}: Props) {
   const [categories, setCategories] = useState<ICategory[]>([])
   const [pagination, setPagination] = useState<IPagination>({
     currentPage: 1,
-    totalPage: 0,
+    totalPage: 0
   })
   const [loading, setLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState<string>('')
@@ -50,7 +49,6 @@ function Category({}: Props) {
       if (res.status === 200) {
         setCategories(res.data.categories)
         setPagination(res.data.pagination)
-        UToast(EToastOption.SUCCESS, res.message)
       } else {
         UToast(EToastOption.ERROR, res.message)
       }
@@ -61,13 +59,14 @@ function Category({}: Props) {
     }
   }
 
-  const debouncedSearch = debounce((query: string) => {
+  const search = (query: string) => {
     setSearchQuery(query)
-  }, 500)
+    fetchData(pagination.currentPage, 5)
+  }
 
   useEffect(() => {
     fetchData(pagination.currentPage, 5)
-  }, [searchQuery, selectedField, selectedStatus, sortBy, sortOrder, pagination.currentPage])
+  }, [searchQuery, pagination.currentPage])
 
   const handlePageChange = (page: number) => {
     setPagination((prev) => ({ ...prev, currentPage: page }))
@@ -82,37 +81,30 @@ function Category({}: Props) {
           <Breadcrumb pageName='Category' />
           <div className='flex flex-col gap-10'>
             <div className='rounded-sm border bg-white px-5 pt-6 pb-2.5 shadow-default dark:bg-boxdark'>
-              <div className='flex items-center justify-between gap-5 mb-6'>
-                <Search onSearch={debouncedSearch} />
-                <div className='flex items-center justify-between gap-5'>
-                  {' '}
-                  <SelectFilter
-                    label='Field'
-                    value={selectedField}
-                    options={categoryFieldOptions}
-                    onChange={(value) => setSelectedField(value as EFieldByValue)}
-                  />
-                  <SelectStatusFilter
-                    label='Status'
-                    value={selectedStatus}
-                    options={categoryStatus}
-                    onChange={(value) => setSelectedStatus(value as ECategoryStatus | null)}
-                  />
-                  <SelectSort
-                    sortBy={sortBy}
-                    sortOrder={sortOrder}
-                    onSortChange={(by, order) => {
-                      setSortBy(by)
-                      setSortOrder(order)
-                    }}
-                    sortByOptions={sortByOptions}
-                    sortOrderOptions={sortOrderOptions}
-                  />
-                </div>
-
-                <Button type='link' to='/tables/category/add' size='sm'>
-                  Add
-                </Button>
+              <div className='flex items-center justify-start gap-5 mb-6'>
+                <Search onSearch={search} />
+                <SelectFilter
+                  label='Field'
+                  value={selectedField}
+                  options={categoryFieldOptions}
+                  onChange={(value) => setSelectedField(value as EFieldByValue)}
+                />
+                <SelectStatusFilter
+                  label='Status'
+                  value={selectedStatus}
+                  options={categoryStatus}
+                  onChange={(value) => setSelectedStatus(value as ECategoryStatus | null)}
+                />
+                <SelectSort
+                  sortBy={sortBy}
+                  sortOrder={sortOrder}
+                  onSortChange={(by, order) => {
+                    setSortBy(by)
+                    setSortOrder(order)
+                  }}
+                  sortByOptions={sortByOptions}
+                  sortOrderOptions={sortOrderOptions}
+                />
               </div>
               {loading ? (
                 <Loader />
