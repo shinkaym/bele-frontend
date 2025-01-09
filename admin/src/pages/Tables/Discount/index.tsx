@@ -17,7 +17,7 @@ import { IPagination } from '@/models/interfaces/pagination'
 import { UToast } from '@/utils/swal'
 import { useEffect, useState } from 'react'
 
-const DiscountPage: React.FC = () => {
+const index: React.FC = () => {
   const [discounts, setDiscounts] = useState<IDiscount[]>([])
   const [pagination, setPagination] = useState<IPagination>({ currentPage: PAGINATION_CONFIG.DEFAULT_PAGE, totalPage: 0 })
   const [loading, setLoading] = useState(false)
@@ -119,4 +119,4 @@ const DiscountPage: React.FC = () => {
   )
 }
 
-export default DiscountPage
+export default index
