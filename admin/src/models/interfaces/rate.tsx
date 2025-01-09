@@ -5,21 +5,18 @@ export interface IRate {
   pImage: string
   pName: string
   name: string
+  rName: string | null
   star: number
   content: string
-  reply: string
+  reply: string | null
   status: number
   createdAt: string
   updatedAt: string
 }
 
 export interface IRateListResponse {
-  status: number
-  data: {
-    rates: IRate[]
-    pagination: IPagination
-  }
-  message: string
+  rates: IRate[]
+  pagination: IPagination
 }
 
 export interface IRateDetailResponse {

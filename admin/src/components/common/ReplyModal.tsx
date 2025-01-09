@@ -6,9 +6,10 @@ type ReplyModalProps = {
   data: IRate | null
   onCancel: () => void
   onSubmit: (reply: string) => void
+  view?: boolean
 }
 
-const ReplyModal: React.FC<ReplyModalProps> = ({ data, onCancel, onSubmit }) => {
+const ReplyModal: React.FC<ReplyModalProps> = ({ data, onCancel, onSubmit, view = false }) => {
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
       <div className='bg-white rounded-lg shadow-lg w-full max-w-md'>
@@ -38,19 +39,28 @@ const ReplyModal: React.FC<ReplyModalProps> = ({ data, onCancel, onSubmit }) => 
             </div>
 
             <div className='space-y-4'>
-              <textarea
-                id='replyTextarea'
-                placeholder='Write your reply...'
-                className='w-full p-2 border rounded min-h-[100px]'
-                defaultValue={data.reply}
-              />
-              <button
-                type='button'
-                className='w-full bg-green-500 text-white px-4 py-2 rounded'
-                onClick={() => onSubmit((document.getElementById('replyTextarea') as HTMLTextAreaElement).value)}
-              >
-                Submit reply
-              </button>
+              {view ? (
+                <>
+                  <h5 className='font-medium'>Rep Name: {data.rName}</h5>
+                  <p>{data.reply}</p>
+                </>
+              ) : (
+                <>
+                  <textarea
+                    id='replyTextarea'
+                    placeholder='Write your reply...'
+                    className='w-full p-2 border rounded min-h-[100px]'
+                    defaultValue={data.reply ?? ''}
+                  />
+                  <button
+                    type='button'
+                    className='w-full bg-green-500 text-white px-4 py-2 rounded'
+                    onClick={() => onSubmit((document.getElementById('replyTextarea') as HTMLTextAreaElement).value)}
+                  >
+                    Submit reply
+                  </button>
+                </>
+              )}
             </div>
           </div>
         )}

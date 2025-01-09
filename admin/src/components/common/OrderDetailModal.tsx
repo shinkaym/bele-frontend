@@ -1,5 +1,6 @@
 import { orderStatus } from '@/constants'
 import { IOrder } from '@/models/interfaces/order'
+import { formatDate } from '@/utils'
 
 type OrderDetailModalProps = {
   current: IOrder | null
@@ -52,15 +53,17 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ current, onCancel }
             <div className='w-1/3 md:w-1/4'>
               {current ? (
                 <>
-                  <p>{current.email}</p>
-                  <p>{current.name}</p>
-                  <p>{current.phoneNumber}</p>
-                  <p>{current.address}</p>
-                  <p>{current.note}</p>
-                  <p>{current.payMethod}</p>
-                  <p>{current.shipDate}</p>
-                  <p>{current.receiveDate}</p>
-                  <p>{orderStatus.find(e => e.value === current.status)?.title}</p>
+                  <p className='whitespace-nowrap'>{current.email || '\u00A0'}</p>
+                  <p className='whitespace-nowrap'>{current.name || '\u00A0'}</p>
+                  <p className='whitespace-nowrap'>{current.phoneNumber || '\u00A0'}</p>
+                  <p className='whitespace-nowrap'>{current.address || '\u00A0'}</p>
+                  <p className='whitespace-nowrap'>{current.note || '\u00A0'}</p>
+                  <p className='whitespace-nowrap'>{current.payMethod || '\u00A0'}</p>
+                  <p className='whitespace-nowrap'>{formatDate(current.shipDate) || '\u00A0'}</p>
+                  <p className='whitespace-nowrap'>{formatDate(current.receiveDate) || '\u00A0'}</p>
+                  <p className='whitespace-nowrap'>
+                    {orderStatus.find((e) => e.value === current.status)?.title || '\u00A0'}
+                  </p>
                 </>
               ) : (
                 <p>No order details available.</p>
@@ -87,15 +90,15 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ current, onCancel }
             </div>
           </div>
           <div className='bg-gray-100 p-4 rounded shadow overflow-y-auto max-h-64'>
-            {current?.products &&
-              current.products.map((product: any) => (
+            {current?.variants &&
+              current.variants.map((product: any) => (
                 <div key={product.id} className='flex items-center justify-between p-2 mb-2 border-b'>
                   <div className='w-2/4 md:w-1/3 flex items-center gap-3'>
-                    <img src={product.image} alt={product.name} className='bg-boxdark object-cover w-18' />
+                    <img src={product.thumbnail} alt={product.name} className='bg-boxdark object-cover w-18' />
                     <div>
-                      <p className='font-bold text-black'>{product.name}</p>
+                      <p className='font-bold text-black truncate max-w-50'>{product.name}</p>
                       <p className='italic'>
-                        {product.color}/{product.size}
+                        {product.attribute[0].Color}/{product.attribute[1].Size}
                       </p>
                     </div>
                   </div>

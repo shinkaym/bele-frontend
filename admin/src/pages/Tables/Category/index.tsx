@@ -14,7 +14,6 @@ import { IApiResponse } from '@/models/interfaces/api'
 import { ICategory } from '@/models/interfaces/category'
 import { IPagination } from '@/models/interfaces/pagination'
 import { UToast } from '@/utils/swal'
-import { debounce } from 'lodash'
 import { useEffect, useState } from 'react'
 
 type Props = {}
@@ -50,7 +49,6 @@ function Category({}: Props) {
       if (res.status === 200) {
         setCategories(res.data.categories)
         setPagination(res.data.pagination)
-        UToast(EToastOption.SUCCESS, res.message)
       } else {
         UToast(EToastOption.ERROR, res.message)
       }
@@ -61,14 +59,13 @@ function Category({}: Props) {
     }
   }
 
-  const debouncedSearch = debounce((query: string) => {
+  const search = (query: string) => {
     setSearchQuery(query)
-  }, 500)
-  console.log(searchQuery);
+  }
 
   useEffect(() => {
     fetchData(pagination.currentPage, 5)
-  }, [searchQuery, selectedField, selectedStatus, sortBy, sortOrder, pagination.currentPage])
+  }, [searchQuery, pagination.currentPage])
 
   const handlePageChange = (page: number) => {
     setPagination((prev) => ({ ...prev, currentPage: page }))
@@ -84,7 +81,7 @@ function Category({}: Props) {
           <div className='flex flex-col gap-10'>
             <div className='rounded-sm border bg-white px-5 pt-6 pb-2.5 shadow-default dark:bg-boxdark'>
               <div className='flex items-center justify-start gap-5 mb-6'>
-                <Search onSearch={debouncedSearch} />
+                <Search onSearch={search} />
                 <SelectFilter
                   label='Field'
                   value={selectedField}

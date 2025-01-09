@@ -5,30 +5,22 @@ export interface ICustomer {
   fullName: string
   phoneNumber: string
   email: string
-  sex: number // 1: Male, 0: Female
+  sex: number
   birthday: string
-  password: string
+  password?: string
   totalSpending: number
-  lastOperatingTime: string
-  status: number // 1: Active, 0: Inactive
-  deleted: number // 0: Not Deleted, 1: Deleted
+  status: number
   createdAt: string
   updatedAt: string
 }
 
 export interface ICustomerListResponse {
-  status: number
-  data: {
-    customers: ICustomer[]
-    pagination: IPagination
-  }
-  message: string
+  accounts: ICustomer[]
+  pagination: IPagination
 }
 
 export interface ICustomerDetailResponse {
-  status: number
   data: ICustomer
-  message: string
 }
 
 export interface ICustomerDeleteResponse {
@@ -37,11 +29,7 @@ export interface ICustomerDeleteResponse {
 }
 
 export interface ICustomerUpdateStatusResponse {
+  id: number
   status: number
-  data: {
-    id: number
-    status: number
-    updatedAt: string
-  }
-  message: string
+  updatedAt: string
 }

@@ -9,7 +9,6 @@ import { EToastOption } from '@/models/enums/option'
 import { IPagination } from '@/models/interfaces/pagination'
 import { ITag, ITagListResponse } from '@/models/interfaces/tag'
 import { UToast } from '@/utils/swal'
-import { debounce } from 'lodash'
 import { useEffect, useState } from 'react'
 
 type Props = {}
@@ -49,9 +48,9 @@ const index = ({}: Props) => {
     }
   }
 
-  const debouncedSearch = debounce((query: string) => {
+  const search = (query: string) => {
     setSearchQuery(query)
-  }, 500)
+  }
 
   useEffect(() => {
     fetchData(pagination.currentPage, 5)
@@ -67,7 +66,7 @@ const index = ({}: Props) => {
       <div className='flex flex-col gap-10'>
         <div className='rounded-sm border bg-white px-5 pt-6 pb-2.5 shadow-default dark:bg-boxdark'>
           <div className='flex items-center justify-between gap-5 mb-6'>
-            <Search onSearch={debouncedSearch} />
+            <Search onSearch={search} />
             <div className='flex items-center justify-between gap-5'></div>
             <Button type='link' to='/tables/tag/add' size='sm'>
               Add

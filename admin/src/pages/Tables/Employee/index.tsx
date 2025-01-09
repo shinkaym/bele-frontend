@@ -8,13 +8,13 @@ import SelectFilter from '@/components/common/SelectFilter'
 import SelectSort from '@/components/common/SelectSort'
 import SelectStatusFilter from '@/components/common/SelectStatusFilter'
 import EmployeeTable from '@/components/common/Tables/EmployeeTable'
-import { employeeFieldOptions, employeeStatus, sortByOptions, sortOrderOptions } from '@/constants'
+import { employeeFieldOptions, employeeSortByOptions, employeeStatus, sortOrderOptions } from '@/constants'
 import { EFieldByValue, ESortOrderValue, EToastOption } from '@/models/enums/option'
 import { EEmployeeStatus } from '@/models/enums/status'
+import { IApiResponse } from '@/models/interfaces/api'
 import { IEmployee, IEmployeeListResponse } from '@/models/interfaces/employee'
 import { IPagination } from '@/models/interfaces/pagination'
 import { UToast } from '@/utils/swal'
-import { debounce } from 'lodash'
 import { useEffect, useState } from 'react'
 
 type Props = {}
@@ -28,7 +28,7 @@ const index = ({}: Props) => {
   })
   const [loading, setLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState<string>('')
-  const [selectedField, setSelectedField] = useState<EFieldByValue>(EFieldByValue.ID)
+  const [selectedField, setSelectedField] = useState<EFieldByValue>(EFieldByValue.FULLNAME)
   const [selectedStatus, setSelectedStatus] = useState<EEmployeeStatus | null>(null)
   const [sortBy, setSortBy] = useState<EFieldByValue>(EFieldByValue.CREATED_AT)
   const [sortOrder, setSortOrder] = useState<ESortOrderValue>(ESortOrderValue.ASC)
@@ -46,12 +46,12 @@ const index = ({}: Props) => {
         order: sortOrder
       }
 
-      // const data: IEmployeeListResponse = await employeeApi.list(params)
-      const res: IEmployeeListResponse = employeeApi.list()
+      const res: IApiResponse<IEmployeeListResponse> = await employeeApi.list(params)
       if (res.status === 200) {
-        setEmployees(res.data.employees)
-        setPagination(res.data.pagination)
-        UToast(EToastOption.SUCCESS, res.message)
+        if (res.data) {
+          setEmployees(res.data.accounts)
+          setPagination(res.data.pagination)
+        }
       } else {
         UToast(EToastOption.ERROR, res.message)
       }
@@ -62,13 +62,14 @@ const index = ({}: Props) => {
     }
   }
 
-  const debouncedSearch = debounce((query: string) => {
+  const search = (query: string) => {
     setSearchQuery(query)
-  }, 500)
+    fetchData(pagination.currentPage, 5)
+  }
 
   useEffect(() => {
     fetchData(pagination.currentPage, 5)
-  }, [searchQuery, selectedField, selectedStatus, sortBy, sortOrder, pagination.currentPage])
+  }, [pagination.currentPage])
 
   const handlePageChange = (page: number) => {
     setPagination((prev) => ({ ...prev, currentPage: page }))
@@ -80,7 +81,7 @@ const index = ({}: Props) => {
       <div className='flex flex-col gap-10'>
         <div className='rounded-sm border bg-white px-5 pt-6 pb-2.5 shadow-default dark:bg-boxdark'>
           <div className='flex items-center justify-between gap-5 mb-6'>
-            <Search onSearch={debouncedSearch} />
+            <Search onSearch={search} />
             <div className='flex items-center justify-between gap-5'>
               <SelectFilter
                 label='Field'
@@ -101,7 +102,7 @@ const index = ({}: Props) => {
                   setSortBy(by)
                   setSortOrder(order)
                 }}
-                sortByOptions={sortByOptions}
+                sortByOptions={employeeSortByOptions}
                 sortOrderOptions={sortOrderOptions}
               />
             </div>

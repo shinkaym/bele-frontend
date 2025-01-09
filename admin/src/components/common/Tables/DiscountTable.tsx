@@ -6,7 +6,6 @@ import { EDiscountStatus } from '@/models/enums/status'
 import { formatDate } from '@/utils'
 import { useState } from 'react'
 import discountApi from '@/apis/modules/discount.api'
-import Swal from 'sweetalert2'
 import ReCAPCHAModal from '../ReCAPCHAModal'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
@@ -131,19 +130,45 @@ const DiscountTable = ({ discounts, onRefresh }: DiscountTableProps) => {
         <tbody>
           {discounts.map((discount) => (
             <tr key={discount.id}>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark text-center'>{discount.id}</td>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>{discount.name}</td>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>{discount.discount}%</td>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>{discount.expireDate}</td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <StatusBadge
-                  status={Number(discount.status)}
-                  statusList={discountStatus}
-                  onClick={() => handleStatusClick(discount)}
-                />
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>
+                  {discount.id}
+                </h5>
               </td>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>{discount.createdAt}</td>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>{discount.updatedAt}</td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] '>
+                  {discount.name}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>
+                  {discount.discountValue}%
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {formatDate(discount.expireDate)}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[150px] text-center'>
+                  <StatusBadge
+                    status={Number(discount.status)}
+                    statusList={discountStatus}
+                    onClick={() => handleStatusClick(discount)}
+                  />
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {formatDate(discount.createdAt)}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {formatDate(discount.updatedAt)}
+                </h5>
+              </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <div className='flex justify-center space-x-3.5'>
                   <Link to={`/tables/discount/edit/${discount.id}`} className='hover:text-primary'>

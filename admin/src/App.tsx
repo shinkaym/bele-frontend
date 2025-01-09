@@ -3,9 +3,10 @@ import AppRouter from './routes/routes'
 
 function App() {
   return (
-    <AuthProvider>
+    // <AuthProvider>
+    //   <AppRouter />
+    // </AuthProvider>
       <AppRouter />
-    </AuthProvider>
   )
 }
 

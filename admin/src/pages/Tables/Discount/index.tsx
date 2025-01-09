@@ -8,13 +8,13 @@ import SelectFilter from '@/components/common/SelectFilter'
 import SelectSort from '@/components/common/SelectSort'
 import SelectStatusFilter from '@/components/common/SelectStatusFilter'
 import DiscountTable from '@/components/common/Tables/DiscountTable'
-import { discountFieldOptions, discountStatus, sortByOptions, sortOrderOptions } from '@/constants'
+import { discountFieldOptions, discountSortByOptions, discountStatus, sortOrderOptions } from '@/constants'
 import { EFieldByValue, ESortOrderValue, EToastOption } from '@/models/enums/option'
 import { EDiscountStatus } from '@/models/enums/status'
-import { IDiscount } from '@/models/interfaces/discount'
+import { IApiResponse } from '@/models/interfaces/api'
+import { IDiscount, IDiscountListResponse } from '@/models/interfaces/discount'
 import { IPagination } from '@/models/interfaces/pagination'
 import { UToast } from '@/utils/swal'
-import { debounce } from 'lodash'
 import { useEffect, useState } from 'react'
 
 type Props = {}
@@ -28,7 +28,7 @@ const DiscountPage = ({}: Props) => {
   })
   const [loading, setLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState<string>('')
-  const [selectedField, setSelectedField] = useState<EFieldByValue>(EFieldByValue.ID)
+  const [selectedField, setSelectedField] = useState<EFieldByValue>(EFieldByValue.NAME)
   const [selectedStatus, setSelectedStatus] = useState<EDiscountStatus | null>(null)
   const [sortBy, setSortBy] = useState<EFieldByValue>(EFieldByValue.CREATED_AT)
   const [sortOrder, setSortOrder] = useState<ESortOrderValue>(ESortOrderValue.ASC)
@@ -46,16 +46,12 @@ const DiscountPage = ({}: Props) => {
         order: sortOrder
       }
 
-      // Fetch discount data
-      const res = discountApi.getList()
+      const res: IApiResponse<IDiscountListResponse> = await discountApi.list(params)
       if (res.status === 200) {
-        setDiscounts(res.data.discounts)
-        setPagination({
-          currentPage: page,
-          totalPages: res.data.pagination.totalPages,
-          totalRecords: res.data.pagination.totalRecords
-        })
-        UToast(EToastOption.SUCCESS, res.message)
+        if (res.data) {
+          setDiscounts(res.data.discounts)
+          setPagination(res.data.pagination)
+        }
       } else {
         UToast(EToastOption.ERROR, res.message)
       }
@@ -66,13 +62,14 @@ const DiscountPage = ({}: Props) => {
     }
   }
 
-  const debouncedSearch = debounce((query: string) => {
+  const search = (query: string) => {
     setSearchQuery(query)
-  }, 500)
+    fetchData(pagination.currentPage, 5)
+  }
 
   useEffect(() => {
     fetchData(pagination.currentPage, 5)
-  }, [searchQuery, selectedField, selectedStatus, sortBy, sortOrder, pagination.currentPage])
+  }, [pagination.currentPage])
 
   const handlePageChange = (page: number) => {
     setPagination((prev) => ({ ...prev, currentPage: page }))
@@ -84,7 +81,7 @@ const DiscountPage = ({}: Props) => {
       <div className='flex flex-col gap-10'>
         <div className='rounded-sm border bg-white px-5 pt-6 pb-2.5 shadow-default dark:bg-boxdark'>
           <div className='flex items-center justify-between gap-5 mb-6'>
-            <Search onSearch={debouncedSearch} />
+            <Search onSearch={search} />
             <div className='flex items-center justify-between gap-5'>
               <SelectFilter
                 label='Field'
@@ -105,7 +102,7 @@ const DiscountPage = ({}: Props) => {
                   setSortBy(by)
                   setSortOrder(order)
                 }}
-                sortByOptions={sortByOptions}
+                sortByOptions={discountSortByOptions}
                 sortOrderOptions={sortOrderOptions}
               />
             </div>

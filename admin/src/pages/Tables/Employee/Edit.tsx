@@ -12,6 +12,8 @@ import Button from '@/components/common/Button'
 import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
 import employeeApi from '@/apis/modules/employee.api'
+import { IApiResponse } from '@/models/interfaces/api'
+import { IEmployeeDetailResponse } from '@/models/interfaces/employee'
 
 const schema = z
   .object({
@@ -57,8 +59,8 @@ function Edit({}: Props) {
 
   useEffect(() => {
     setRoleOptions([
-      { value: 0, label: 'Admin' },
-      { value: 1, label: 'Employee' }
+      { value: 1, label: 'Admin' },
+      { value: 2, label: 'Product Management' }
     ])
     setStatusOptions([
       { value: 0, label: 'Inactive' },
@@ -71,20 +73,21 @@ function Edit({}: Props) {
 
     const fetchEmployee = async () => {
       try {
-        const res = await employeeApi.detail({ id: Number(id) })
+        const res: IApiResponse<IEmployeeDetailResponse> = await employeeApi.detail({ id: Number(id) })
         if (res.status === 200) {
-          const employee = res.data
-          reset({
-            name: employee.name,
-            phoneNumber: employee.phoneNumber,
-            email: employee.email,
-            password: employee.password,
-            rePassword: employee.password,
-            sex: employee.sex as 'Male' | 'Female',
-            role: employee.role,
-            status: employee.status
-          })
-          UToast(EToastOption.SUCCESS, res.message)
+          const employee = res?.data?.account
+          if (employee) {
+            reset({
+              name: employee.fullName,
+              phoneNumber: employee.phoneNumber,
+              email: employee.email,
+              password: employee.password,
+              rePassword: employee.password,
+              sex: employee.sex as 'Male' | 'Female',
+              role: employee.role.id,
+              status: employee.status
+            })
+          }
         } else {
           UToast(EToastOption.ERROR, res.message)
         }
@@ -101,20 +104,19 @@ function Edit({}: Props) {
       const req = {
         id: Number(id),
         data: {
-          name: data.name,
+          fullName: data.name,
           phoneNumber: data.phoneNumber,
           email: data.email,
           password: data.password,
           rePassword: data.rePassword,
           sex: data.sex,
-          role: data.role as number,
+          roleId: data.role as number,
           status: data.status as number
         }
       }
       const res = await employeeApi.update(req)
       if (res.status === 200) {
         UToast(EToastOption.SUCCESS, res.message)
-        window.location.reload()
       } else {
         UToast(EToastOption.ERROR, res.message)
       }
