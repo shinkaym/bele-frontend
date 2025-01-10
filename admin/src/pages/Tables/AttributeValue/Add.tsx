@@ -1,14 +1,14 @@
-import attributeValueApi from '@/apis/modules/attribute.api'
+import attributeApi from '@/apis/modules/attribute.api'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
 import Button from '@/components/common/Button'
 import Input from '@/components/common/Forms/Input'
 import RadioGroup from '@/components/common/Forms/RadioGroup'
 import SelectGroup from '@/components/common/Forms/SelectGroup'
 import Loader from '@/components/common/Loader'
-import { attributeTypeOptions } from '@/models/data/attributeTypeData'
 import { statusData } from '@/models/data/statusData'
 import { EToastOption } from '@/models/enums/option'
-import { IAttributeValue } from '@/models/interfaces/attribute'
+import { IApiResponse } from '@/models/interfaces/api'
+import { IAttributeType, IAttributeValue, IAttributeValueDetailResponse } from '@/models/interfaces/attribute'
 import { IOptions } from '@/models/interfaces/options'
 import { UToast } from '@/utils/swal'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -20,43 +20,43 @@ type Props = {}
 
 function Add({}: Props) {
   const [loading, setLoading] = useState(false)
-  const [attributeValueData, setAttributeValueData] = useState<IAttributeValue[]>([])
-  const [attrTypeOptions, setAttrTypeOptions] = useState<IOptions[]>([])
-
+  const [attributeTypeOptions, setAttributeTypeOptions] = useState<IOptions[]>([])
+  //Get attrtypes
   useEffect(() => {
-    const handleGetData = async () => {
-      setLoading(true)
+    const fetchApi = async () => {
+      setLoading(true) // Bật trạng thái loading
       try {
-        const data = await attributeValueApi.getList()
-        setAttributeValueData(data)
-        setAttrTypeOptions([
-          {
-            value: 0,
-            label: '---Select Attribute Type'
-          },
-          ...attributeTypeOptions
-        ])
+        const res: IApiResponse<{ attributeTypes: IAttributeType[] }> = await attributeApi.listAttributeTypes()
+        if (res.data && res.status === 200) {
+          const data = res.data!.attributeTypes
+          let newData: IOptions[] = data.map((cat) => ({
+            value: cat.id,
+            label: cat.name
+          }))
+          newData = [
+            {
+              value: 0,
+              label: '---Select Attribute Types---'
+            },
+            ...newData
+          ]
+          console.log(newData)
+          setAttributeTypeOptions(newData) // Cập nhật dữ liệu
+        }
         setLoading(false) // Tắt trạng thái loading
       } catch (error) {
-        console.error('Error fetching categories:', error)
+        console.error('Error fetching images:', error)
         setLoading(false)
       }
     }
-    handleGetData()
+    fetchApi()
   }, [])
 
   // Cấu hình Zod schema
   const attributeValueSchema = z.object({
     name: z
       .string()
-      .min(1, { message: 'attributeValue name is required' })
-      .refine(
-        (name) =>
-          !attributeValueData.some((attributeValue) => attributeValue.name.toLowerCase() === name.toLowerCase()),
-        {
-          message: 'attributeValue name must be unique'
-        }
-      ), // Bắt buộc nhập tên
+      .min(1, { message: 'attributeValue name is required' }), // Bắt buộc nhập tên
     value: z.string().optional(),
     status: z.number(),
     attributeTypeId: z.union([z.number(), z.string()]).refine((value) => Number(value) !== 0, {
@@ -84,14 +84,19 @@ function Add({}: Props) {
     resetField('value', { defaultValue: '' }) // Reset trường 'value' về giá trị mặc định
   }, [attributeTypeId])
 
-  const onSubmit = (data: attributeValueFormData) => {
+  const onSubmit = async (data: attributeValueFormData) => {
     try {
       //call api in here...
-
-      UToast(EToastOption.SUCCESS, 'Add attributeValue Successfully!')
-      reset()
+      const res: IApiResponse<IAttributeValueDetailResponse> = await attributeApi.add(1, data)
+      if (res.status === 200) {
+        UToast(EToastOption.SUCCESS, 'Add attributeValue Successfully!')
+        reset()
+      } else {
+        UToast(EToastOption.ERROR, 'Add attributeValue Failure!')
+        reset()
+      }
     } catch (error) {
-      UToast(EToastOption.SUCCESS, 'Add attributeValue Failure!')
+      UToast(EToastOption.ERROR, 'Add attributeValue Failure!')
       reset()
     }
     console.log(data) // Dữ liệu khi submit
@@ -120,7 +125,7 @@ function Add({}: Props) {
                   <SelectGroup
                     value={field.value} // Đồng bộ hóa giá trị
                     onChange={(value) => field.onChange(parseInt(value))} // Chuyển giá trị từ string thành số
-                    options={attrTypeOptions} // Danh sách tùy chọn
+                    options={attributeTypeOptions} // Danh sách tùy chọn
                     error={errors.attributeTypeId?.message} // Hiển thị lỗi (nếu có)
                     className='mb-6'
                   />
@@ -181,7 +186,7 @@ function Add({}: Props) {
               <Button type='button' className='max-h-12 mr-4'>
                 Add
               </Button>
-              <Button type='link' to='/tables/attribute-value' color='secondary' className='max-h-12'   >
+              <Button type='link' to='/tables/attribute-value' color='secondary' className='max-h-12'>
                 Back
               </Button>
             </div>

@@ -47,7 +47,26 @@ const attributeApi = {
       throw error
     }
   },
-
+  async add(
+    id: number,
+    data: { status: number; name: string; attributeTypeId: string | number; value?: string | undefined }
+  ): Promise<IApiResponse<IAttributeValueDetailResponse>> {
+    try {
+      return await axiosPublic.post(`Attribute/value/${id}`, { ...data })
+    } catch (error) {
+      throw error
+    }
+  },
+  async edit(
+    id: number,
+    data: { status: number | string; name: string; attributeTypeId: string | number; value?: string | undefined }
+  ): Promise<IApiResponse<IAttributeValueDetailResponse>> {
+    try {
+      return await axiosPublic.put(`Attribute/value/${id}`, { ...data })
+    } catch (error) {
+      throw error
+    }
+  },
   async updateStatus({ id, status }: { id: number; status: number }): Promise<IApiResponse> {
     try {
       return await axiosPublic.patch(`Attribute/value/${id}`, status)

@@ -1,14 +1,15 @@
-import attributeValueApi from '@/apis/modules/attribute.api'
+import { default as attributeApi, default as attributeValueApi } from '@/apis/modules/attribute.api'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
 import Button from '@/components/common/Button'
 import Input from '@/components/common/Forms/Input'
 import RadioGroup from '@/components/common/Forms/RadioGroup'
 import SelectGroup from '@/components/common/Forms/SelectGroup'
 import Loader from '@/components/common/Loader'
-import { attributeTypeOptions } from '@/models/data/attributeTypeData'
 import { statusData } from '@/models/data/statusData'
 import { EToastOption } from '@/models/enums/option'
-import { IAttributeValue } from '@/models/interfaces/attribute'
+import { IApiResponse } from '@/models/interfaces/api'
+import { IAttributeType, IAttributeValue, IAttributeValueDetailResponse } from '@/models/interfaces/attribute'
+import { IOptions } from '@/models/interfaces/options'
 import { UToast } from '@/utils/swal'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
@@ -21,22 +22,43 @@ type Props = {}
 function Edit({}: Props) {
   const [loading, setLoading] = useState<boolean>(false)
   const [attrValueById, setAttrValueById] = useState<IAttributeValue>(Object)
-  const [attributeValueData, setAttributeValueData] = useState<IAttributeValue[]>([])
+  const [attributeTypeOptions, setAttributeTypeOptions] = useState<IOptions[]>([])
   const params = useParams()
   const attributeValueId: number = Number(params.id)
 
+  useEffect(() => {
+    const fetchApi = async () => {
+      setLoading(true) // Bật trạng thái loading
+      try {
+        const res: IApiResponse<{ attributeTypes: IAttributeType[] }> = await attributeApi.listAttributeTypes()
+        if (res.data && res.status === 200) {
+          const data = res.data!.attributeTypes
+          let newData: IOptions[] = data.map((cat) => ({
+            value: cat.id,
+            label: cat.name
+          }))
+          newData = [
+            {
+              value: 0,
+              label: '---Select Attribute Types---'
+            },
+            ...newData
+          ]
+          console.log(newData)
+          setAttributeTypeOptions(newData) // Cập nhật dữ liệu
+        }
+        setLoading(false) // Tắt trạng thái loading
+      } catch (error) {
+        console.error('Error fetching images:', error)
+        setLoading(false)
+      }
+    }
+    fetchApi()
+  }, [])
+
   // Cấu hình Zod schema
   const attributeValueSchema = z.object({
-    name: z
-      .string()
-      .min(1, { message: 'attributeValue name is required' })
-      .refine(
-        (name) =>
-          !attributeValueData.some((attributeValue) => attributeValue.name.toLowerCase() === name.toLowerCase()),
-        {
-          message: 'attributeValue name must be unique'
-        }
-      ), // Bắt buộc nhập tên
+    name: z.string().min(1, { message: 'attributeValue name is required' }), // Bắt buộc nhập tên
     value: z.string().optional(),
     status: z.union([z.number(), z.string()]),
     attributeTypeId: z.union([z.number(), z.string()]).refine((value) => Number(value) !== 0, {
@@ -65,18 +87,16 @@ function Edit({}: Props) {
     const handleGetData = async () => {
       setLoading(true)
       try {
-        const data = await attributeValueApi.getList()
-        setAttributeValueData(data)
-        const attrValue = attributeValueApi.getAttrValue(attributeValueId)
-        console.log(attrValue)
-        if (attrValue) {
+        const res = await attributeValueApi.detail({ id: attributeValueId })
+        if (res.data && res.status === 200) {
+          const attrValue = res.data.attributeValue
           setAttrValueById(attrValue)
-          console.log(attrValue.status)
+          console.log(attributeTypeOptions.find((attr) => attr.label === attrValue.name)?.value)
           reset({
             name: attrValue.name,
             value: attrValue.value,
             status: attrValue.status,
-            attributeTypeId: attrValue.attributeType.id
+            attributeTypeId: attrValue.attributeTypeId
           })
         }
         setLoading(false)
@@ -98,14 +118,19 @@ function Edit({}: Props) {
     }
   }, [status])
 
-  const onSubmit = (data: attributeValueFormData) => {
+  const onSubmit = async (data: attributeValueFormData) => {
     try {
       //call api in here...
-
-      UToast(EToastOption.SUCCESS, 'Edit attributeValue Successfully!')
-      reset()
+      const res: IApiResponse<IAttributeValueDetailResponse> = await attributeApi.edit(attributeValueId, data)
+      if (res.status === 200) {
+        UToast(EToastOption.SUCCESS, 'Edit attributeValue Successfully!')
+        reset()
+      } else {
+        UToast(EToastOption.ERROR, 'Edit attributeValue Failure!')
+        reset()
+      }
     } catch (error) {
-      UToast(EToastOption.SUCCESS, 'Edit attributeValue Failure!')
+      UToast(EToastOption.ERROR, 'Edit attributeValue Failure!')
       reset()
     }
     console.log(data) // Dữ liệu khi submit
