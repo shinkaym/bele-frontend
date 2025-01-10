@@ -13,15 +13,14 @@ import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
 import { IContact, IContactListResponse } from '@/models/interfaces/contact'
 import { IPagination } from '@/models/interfaces/pagination'
 import { useEffect, useState } from 'react'
+import { UToast } from '@/utils/swal'
+import { EToastOption } from '@/models/enums/option'
 
-type Props = {}
-
-const index = ({}: Props) => {
+const index: React.FC = () => {
   const [contacts, setContacts] = useState<IContact[]>([])
   const [pagination, setPagination] = useState<IPagination>({
     currentPage: PAGINATION_CONFIG.DEFAULT_PAGE,
     totalPage: 0,
-    
   })
   const [loading, setLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState<string>('')
@@ -40,31 +39,36 @@ const index = ({}: Props) => {
         field: selectedField,
         status: selectedStatus,
         sort: sortBy,
-        order: sortOrder
+        order: sortOrder,
       }
 
-      // const data: IContactListResponse = await contactApi.getAll(params)
-      const data: IContactListResponse = contactApi.list()
-      setContacts(data.data.contacts)
-      setPagination(data.data.pagination)
+      const res = await contactApi.list(params)
+      if (res.status === 200 && res.data) {
+        setContacts(res.data.contacts)
+        setPagination(res.data.pagination)
+      } else {
+        UToast(EToastOption.ERROR, res.message)
+      }
     } catch (error) {
-      console.error('Error fetching contacts:', error)
+      UToast(EToastOption.ERROR, 'An unexpected error occurred.')
     } finally {
       setLoading(false)
     }
   }
 
-  const search = (query: string) => {
-    setSearchQuery(query)
+  const handleSearchSubmit = () => {
+    setPagination((prev) => ({ ...prev, currentPage: PAGINATION_CONFIG.DEFAULT_PAGE }))
+    fetchData(PAGINATION_CONFIG.DEFAULT_PAGE, PAGINATION_CONFIG.DEFAULT_LIMIT)
+  }
+
+  const handlePageChange = (page: number) => {
+    setPagination((prev) => ({ ...prev, currentPage: page }))
+    fetchData(page, PAGINATION_CONFIG.DEFAULT_LIMIT)
   }
 
   useEffect(() => {
     fetchData(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_LIMIT)
-  }, [searchQuery, pagination.currentPage])
-
-  const handlePageChange = (page: number) => {
-    setPagination((prev) => ({ ...prev, currentPage: page }))
-  }
+  }, [])
 
   return (
     <>
@@ -72,7 +76,7 @@ const index = ({}: Props) => {
       <div className='flex flex-col gap-10'>
         <div className='rounded-sm border bg-white px-5 pt-6 pb-2.5 shadow-default dark:bg-boxdark'>
           <div className='flex items-center justify-between gap-5 mb-6'>
-            <Search onSearch={search} />
+            <Search onSearch={setSearchQuery} onSubmit={handleSearchSubmit} />
             <div className='flex items-center justify-between gap-5'>
               <SelectFilter
                 label='Field'

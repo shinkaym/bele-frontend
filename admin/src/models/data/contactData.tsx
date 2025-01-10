@@ -1,4 +1,5 @@
 import { IContactListResponse, IContactDetailResponse } from '../interfaces/contact';
+import { PAGINATION_CONFIG } from '@/constants';
 
 export const contactListResponseData: IContactListResponse = {
   status: 200,
