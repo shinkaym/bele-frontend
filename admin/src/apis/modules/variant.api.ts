@@ -7,7 +7,6 @@ const variantApi = {
   async list(params: {
     page: number
     limit: number
-    query: string
     field: EFieldByValue
     status: any
     productId: number
@@ -16,6 +15,7 @@ const variantApi = {
   }): Promise<IApiResponse<IVariantListResponse>> {
     try {
       const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value !== null))
+      console.log('🚀 ~ filteredParams:', filteredParams)
       return await axiosPublic.get('Variant', { params: filteredParams })
     } catch (error) {
       throw error

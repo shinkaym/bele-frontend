@@ -5,7 +5,6 @@ import { useState } from 'react'
 import rateApi from '@/apis/modules/rate.api'
 import { rateStatus, rateTableHeaders } from '@/constants'
 import { ERateStatus } from '@/models/enums/status'
-import ReCAPCHAModal from '../ReCAPCHAModal'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
 import StatusBadge from '../StatusBadge'
@@ -14,6 +13,7 @@ import CheckCircle from '@/components/icons/CheckCircle'
 import ReplyModal from '../ReplyModal'
 import { EToastOption } from '@/models/enums/option'
 import { UToast } from '@/utils/swal'
+import ReCAPTCHAModal from '../ReCAPTCHAModal'
 
 type RateTableProps = {
   rates: IRate[]
@@ -254,7 +254,7 @@ const RateTable = ({ rates, onRefresh }: RateTableProps) => {
       )}
 
       {isOpenDeleteReCaptchaModal && (
-        <ReCAPCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
+        <ReCAPTCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
       )}
 
       {isOpenConfirmDeleteModal && (

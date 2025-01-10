@@ -5,12 +5,12 @@ import { ECustomerStatus } from '@/models/enums/status'
 import { formatDate } from '@/utils'
 import { useState } from 'react'
 import customerApi from '@/apis/modules/customer.api'
-import ReCAPCHAModal from '../ReCAPCHAModal'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
 import StatusBadge from '../StatusBadge'
 import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
+import ReCAPTCHAModal from '../ReCAPTCHAModal'
 
 type CustomerTableProps = {
   customers: ICustomer[]
@@ -196,7 +196,7 @@ const CustomerTable = ({ customers, onRefresh }: CustomerTableProps) => {
       </table>
 
       {isOpenDeleteReCaptchaModal && (
-        <ReCAPCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
+        <ReCAPTCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
       )}
 
       {isOpenConfirmDeleteModal && (

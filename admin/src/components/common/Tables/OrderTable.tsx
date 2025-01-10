@@ -7,13 +7,13 @@ import orderApi from '@/apis/modules/order.api'
 import { orderStatus, orderTableHeaders } from '@/constants'
 import ConfirmationModal from '../ConfirmationModal'
 import { EOrderStatus } from '@/models/enums/status'
-import ReCAPCHAModal from '../ReCAPCHAModal'
 import StatusModal from '../StatusModal'
 import StatusBadge from '../StatusBadge'
 import { EToastOption } from '@/models/enums/option'
 import { UToast } from '@/utils/swal'
 import OrderDetailModal from '../OrderDetailModal'
 import { IApiResponse } from '@/models/interfaces/api'
+import ReCAPTCHAModal from '../ReCAPTCHAModal'
 
 type OrderTableProps = {
   orders: IOrder[]
@@ -238,7 +238,7 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
         </tbody>
       </table>
       {isOpenDeleteReCaptchaModal && (
-        <ReCAPCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
+        <ReCAPTCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
       )}
 
       {isOpenConfirmDeleteModal && (

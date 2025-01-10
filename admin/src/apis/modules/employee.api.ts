@@ -93,6 +93,7 @@ const employeeApi = {
     }
   }): Promise<IApiResponse<IEmployee>> {
     try {
+      console.log('🚀 ~ data:', data)
       return await axiosPublic.put(`Account/${id}`, data)
     } catch (error) {
       throw error

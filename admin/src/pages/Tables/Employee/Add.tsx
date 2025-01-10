@@ -41,7 +41,6 @@ type Props = {}
 
 function Add({}: Props) {
   const navigate = useNavigate()
-  const [showPassword, setShowPassword] = useState(false)
   const [roleOptions, setRoleOptions] = useState<IOptions[]>([])
   const [statusOptions, setStatusOptions] = useState<IOptions[]>([])
   const [sexOptions, setSexOptions] = useState<IOptions[]>([])

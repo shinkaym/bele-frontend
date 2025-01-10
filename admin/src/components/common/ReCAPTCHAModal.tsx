@@ -10,11 +10,11 @@ interface ConfirmationModalProps {
   onCancel: () => void
 }
 
-const ReCAPCHAModal: React.FC<ConfirmationModalProps> = ({ onChange, onCancel }) => {
+const ReCAPTCHAModal: React.FC<ConfirmationModalProps> = ({ onChange, onCancel }) => {
   const handleRecaptchaChange = async (token: string | null) => {
     if (token) {
       try {
-        const res = await axiosPublic.post('/api/verify-recaptcha', { token })
+        const res = await axiosPublic.post(`Google/verify-recaptcha?recaptchaResponse=${token}`);
 
         if (res.status === 200) {
           onChange(token)
@@ -23,9 +23,7 @@ const ReCAPCHAModal: React.FC<ConfirmationModalProps> = ({ onChange, onCancel })
         }
       } catch (error) {
         UToast(EToastOption.ERROR, 'Error verifying reCAPTCHA.')
-      } finally {
-        onCancel()
-      }
+      } 
     }
   }
 
@@ -43,4 +41,4 @@ const ReCAPCHAModal: React.FC<ConfirmationModalProps> = ({ onChange, onCancel })
   )
 }
 
-export default ReCAPCHAModal
+export default ReCAPTCHAModal

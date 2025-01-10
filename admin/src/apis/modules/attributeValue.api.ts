@@ -1,11 +1,8 @@
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import {
-  IAttributeValue,
   IAttributeValueDetailResponse,
   IAttributeValueListResponse
 } from '@/models/interfaces/attribute'
 import axiosPublic from '../client/public.client'
-import { attributeValueData } from '@/models/data/attributeTypeData'
 import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
 import { IApiResponse } from '@/models/interfaces/api'
 
@@ -29,7 +26,7 @@ const attributeValueApi = {
 
   async detail({ id }: { id: number }): Promise<IApiResponse<IAttributeValueDetailResponse>> {
     try {
-      return await axiosPublic.get(`Attribute/${id}`)
+      return await axiosPublic.get(`Attribute/value/${id}`)
     } catch (error) {
       throw error
     }
@@ -37,7 +34,7 @@ const attributeValueApi = {
 
   async delete({ id }: { id: number }): Promise<IApiResponse> {
     try {
-      return await axiosPublic.delete(`Attribute/${id}`)
+      return await axiosPublic.delete(`Attribute/value/${id}`)
     } catch (error) {
       throw error
     }
@@ -45,7 +42,7 @@ const attributeValueApi = {
 
   async updateStatus({ id, status }: { id: number; status: number }): Promise<IApiResponse> {
     try {
-      return await axiosPublic.patch(`Attribute/${id}`, status)
+      return await axiosPublic.patch(`Attribute/value/${id}`, status)
     } catch (error) {
       throw error
     }

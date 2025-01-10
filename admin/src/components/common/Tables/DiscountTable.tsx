@@ -6,12 +6,12 @@ import { EDiscountStatus } from '@/models/enums/status'
 import { formatDate } from '@/utils'
 import { useState } from 'react'
 import discountApi from '@/apis/modules/discount.api'
-import ReCAPCHAModal from '../ReCAPCHAModal'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
 import StatusBadge from '../StatusBadge'
 import { EToastOption } from '@/models/enums/option'
 import { UToast } from '@/utils/swal'
+import ReCAPTCHAModal from '../ReCAPTCHAModal'
 
 type DiscountTableProps = {
   discounts: IDiscount[]
@@ -185,7 +185,7 @@ const DiscountTable = ({ discounts, onRefresh }: DiscountTableProps) => {
       </table>
 
       {isOpenDeleteReCaptchaModal && (
-        <ReCAPCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
+        <ReCAPTCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
       )}
 
       {isOpenConfirmDeleteModal && (

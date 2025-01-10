@@ -10,7 +10,7 @@ import {
   ECategoryStatus,
   EProductStatus,
   EVariantStatus,
-  EAttributeValueStatus,
+  EAttributeValueStatus
 } from '@/models/enums/status'
 import { IStatus, ITable } from '@/models/interfaces'
 import { TMenuItem } from '@/models/types/brand'
@@ -409,8 +409,12 @@ export const attributeFieldOptions: { title: EFieldByTitle; value: EFieldByValue
 
 export const variantFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
   {
-    title: EFieldByTitle.STOCK,
-    value: EFieldByValue.STOCK
+    title: EFieldByTitle.IN_STOCK,
+    value: EFieldByValue.IN_STOCK
+  },
+  {
+    title: EFieldByTitle.OUT_STOCK,
+    value: EFieldByValue.OUT_STOCK
   }
 ]
 
@@ -481,7 +485,7 @@ export const attributeValueTableHeaders: ITable[] = [
   { title: 'Created At', value: 5, className: 'min-w-[20px]' },
   { title: 'Status', value: 6, className: 'min-w-[20px]' },
   { title: 'Actions', value: 7, className: 'min-w-[20px] text-center' }
-];
+]
 
 export const productTableHeaders: ITable[] = [
   { title: 'Id', value: 1, className: 'min-w-[20px] text-center' },
@@ -494,7 +498,7 @@ export const productTableHeaders: ITable[] = [
   { title: 'Created At', value: 8, className: 'min-w-[80px]' },
   { title: 'Status', value: 9, className: 'min-w-[80px]' },
   { title: 'Actions', value: 10, className: 'min-w-[80px] text-center' }
-];
+]
 
 export const rateTableHeaders: ITable[] = [
   { title: 'Id', value: 1, className: 'min-w-[20px] text-center' },
@@ -562,7 +566,7 @@ export const variantTableHeaders: ITable[] = [
   { title: 'Created At', value: 8, className: 'min-w-[80px]' },
   { title: 'Status', value: 9, className: 'min-w-[80px]' },
   { title: 'Actions', value: 10, className: 'min-w-[80px] text-center' }
-];
+]
 
 export const PAGINATION_CONFIG = {
   DEFAULT_LIMIT: 5,

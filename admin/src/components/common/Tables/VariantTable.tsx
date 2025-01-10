@@ -5,13 +5,13 @@ import { EVariantStatus } from '@/models/enums/status'
 import { formatDate } from '@/utils'
 import { useState } from 'react'
 import variantApi from '@/apis/modules/variant.api'
-import ReCAPCHAModal from '../ReCAPCHAModal'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
 import StatusBadge from '../StatusBadge'
 import { UInputAlert, UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
 import { IVariant } from '@/models/interfaces/variant'
+import ReCAPTCHAModal from '../ReCAPTCHAModal'
 
 type VariantTableProps = {
   variants: IVariant[]
@@ -77,26 +77,26 @@ const VariantTable = ({ variants, onRefresh }: VariantTableProps) => {
   }
 
   const handleConfirmStatusChange = async () => {
-    // if (current && selectedStatus !== null) {
-    //   try {
-    //     const res = await variantApi.updateStatus({
-    //       id: current.id,
-    //       status: selectedStatus
-    //     })
-    //     if (res.status === 200) {
-    //       onRefresh()
-    //       UToast(EToastOption.SUCCESS, res.message)
-    //     } else {
-    //       UToast(EToastOption.ERROR, res.message)
-    //     }
-    //   } catch (error) {
-    //     UToast(EToastOption.ERROR, 'An unexpected error occurred.')
-    //   } finally {
-    //     setIsOpenConfirmStatusChangeModal(false)
-    //     setSelectedStatus(null)
-    //     setCurrent(null)
-    //   }
-    // }
+    if (current && selectedStatus !== null) {
+      try {
+        const res = await variantApi.updateStatus({
+          id: current.id,
+          status: selectedStatus
+        })
+        if (res.status === 200) {
+          onRefresh()
+          UToast(EToastOption.SUCCESS, res.message)
+        } else {
+          UToast(EToastOption.ERROR, res.message)
+        }
+      } catch (error) {
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
+      } finally {
+        setIsOpenConfirmStatusChangeModal(false)
+        setSelectedStatus(null)
+        setCurrent(null)
+      }
+    }
   }
 
   const handleCancelStatusChange = () => {
@@ -198,7 +198,7 @@ const VariantTable = ({ variants, onRefresh }: VariantTableProps) => {
         </tbody>
       </table>
       {isOpenDeleteReCaptchaModal && (
-        <ReCAPCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
+        <ReCAPTCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
       )}
 
       {isOpenConfirmDeleteModal && (

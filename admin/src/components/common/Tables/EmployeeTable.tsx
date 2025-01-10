@@ -6,12 +6,12 @@ import { EEmployeeStatus } from '@/models/enums/status'
 import { formatDate } from '@/utils'
 import { useState } from 'react'
 import employeeApi from '@/apis/modules/employee.api'
-import ReCAPCHAModal from '../ReCAPCHAModal'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
 import StatusBadge from '../StatusBadge'
 import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
+import ReCAPTCHAModal from '../ReCAPTCHAModal'
 
 type EmployeeTableProps = {
   employees: IEmployee[]
@@ -34,8 +34,8 @@ const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
 
   const handleDeleteReCaptchaChange = async (token: string | null) => {
     if (token && selectedId) {
-      setIsOpenConfirmDeleteModal(true)
       setIsOpenDeleteReCaptchaModal(false)
+      setIsOpenConfirmDeleteModal(true)
     }
   }
 
@@ -181,7 +181,7 @@ const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
         </tbody>
       </table>
       {isOpenDeleteReCaptchaModal && (
-        <ReCAPCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
+        <ReCAPTCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
       )}
 
       {isOpenConfirmDeleteModal && (

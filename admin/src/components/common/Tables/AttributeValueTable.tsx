@@ -5,13 +5,13 @@ import { EAttributeValueStatus } from '@/models/enums/status'
 import { formatDate } from '@/utils'
 import { useState } from 'react'
 import attributeValueApi from '@/apis/modules/attributeValue.api'
-import ReCAPCHAModal from '../ReCAPCHAModal'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
 import StatusBadge from '../StatusBadge'
 import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
 import { IAttributeValue } from '@/models/interfaces/attribute'
+import ReCAPTCHAModal from '../ReCAPTCHAModal'
 
 type AttributeValueTableProps = {
   attributeValues: IAttributeValue[]
@@ -174,7 +174,7 @@ const AttributeValueTable = ({ attributeValues, onRefresh }: AttributeValueTable
         </tbody>
       </table>
       {isOpenDeleteReCaptchaModal && (
-        <ReCAPCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
+        <ReCAPTCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
       )}
 
       {isOpenConfirmDeleteModal && (

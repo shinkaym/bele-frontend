@@ -1,7 +1,6 @@
 import variantApi from '@/apis/modules/variant.api'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
 import Button from '@/components/common/Button'
-import Search from '@/components/common/Forms/Search'
 import Loader from '@/components/common/Loader'
 import Pagination from '@/components/common/Pagination'
 import SelectFilter from '@/components/common/SelectFilter'
@@ -23,8 +22,7 @@ const index: React.FC = () => {
   const [products, setProducts] = useState<IProduct[]>([])
   const [pagination, setPagination] = useState<IPagination>({ currentPage: PAGINATION_CONFIG.DEFAULT_PAGE, totalPage: 0 })
   const [loading, setLoading] = useState(false)
-  const [searchQuery, setSearchQuery] = useState<string>('')
-  const [selectedField, setSelectedField] = useState<EFieldByValue>(EFieldByValue.STOCK)
+  const [selectedField, setSelectedField] = useState<EFieldByValue>(EFieldByValue.IN_STOCK)
   const [selectedStatus, setSelectedStatus] = useState<EVariantStatus | null>(null)
   const [sortBy, setSortBy] = useState<EFieldByValue>(EFieldByValue.CREATED_AT)
   const [sortOrder, setSortOrder] = useState<ESortOrderValue>(ESortOrderValue.ASC)
@@ -35,7 +33,6 @@ const index: React.FC = () => {
       const params = {
         page,
         limit,
-        query: searchQuery,
         field: selectedField,
         status: selectedStatus,
         productId: 1,
@@ -103,7 +100,6 @@ const index: React.FC = () => {
       <div className='flex flex-col gap-10'>
         <div className='rounded-sm border bg-white px-5 pt-6 pb-2.5 shadow-default dark:bg-boxdark'>
           <div className='flex items-center justify-between gap-5 mb-6'>
-            <Search onSearch={setSearchQuery} onSubmit={handleSearchSubmit} />
             <div className='flex items-center justify-between gap-5'>
               <SelectFilter
                 label='Field'

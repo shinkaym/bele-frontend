@@ -7,7 +7,6 @@ import { formatDate } from '@/utils'
 import ReactDOM from 'react-dom/client'
 import { useState } from 'react'
 import productApi from '@/apis/modules/product.api'
-import ReCAPCHAModal from '../ReCAPCHAModal'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
 import StatusBadge from '../StatusBadge'
@@ -15,6 +14,7 @@ import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
 import TinyMCEEditor from '../TinyMCEEditor'
 import Swal from 'sweetalert2'
+import ReCAPTCHAModal from '../ReCAPTCHAModal'
 
 type ProductTableProps = {
   products: IProduct[]
@@ -202,7 +202,7 @@ const ProductTable = ({ products, onRefresh }: ProductTableProps) => {
         </tbody>
       </table>
       {isOpenDeleteReCaptchaModal && (
-        <ReCAPCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
+        <ReCAPTCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
       )}
 
       {isOpenConfirmDeleteModal && (

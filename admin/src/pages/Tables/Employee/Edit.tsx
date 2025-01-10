@@ -58,7 +58,6 @@ type Props = {}
 
 function Edit({}: Props) {
   const { id } = useParams<{ id: string }>()
-  const [showPassword, setShowPassword] = useState(false)
   const [roleOptions, setRoleOptions] = useState<IOptions[]>([])
   const [statusOptions, setStatusOptions] = useState<IOptions[]>([])
   const [sexOptions, setSexOptions] = useState<IOptions[]>([])

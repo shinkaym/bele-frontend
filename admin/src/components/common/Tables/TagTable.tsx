@@ -1,6 +1,5 @@
 import { ITag } from '@/models/interfaces/tag'
 import { useState } from 'react'
-import ReCAPCHAModal from '../ReCAPCHAModal'
 import ConfirmationModal from '../ConfirmationModal'
 import { DeleteIcon, EditIcon } from '@/components/icons'
 import { Link } from 'react-router-dom'
@@ -8,6 +7,7 @@ import { tagTableHeaders } from '@/constants'
 import tagApi from '@/apis/modules/tag.api'
 import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
+import ReCAPTCHAModal from '../ReCAPTCHAModal'
 
 type TagTableProps = {
   tags: ITag[]
@@ -98,7 +98,7 @@ const TagTable = ({ tags, onRefresh }: TagTableProps) => {
         </tbody>
       </table>
       {isOpenDeleteReCaptchaModal && (
-        <ReCAPCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
+        <ReCAPTCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
       )}
 
       {isOpenConfirmDeleteModal && (

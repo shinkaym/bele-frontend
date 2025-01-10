@@ -3,13 +3,13 @@ import { DeleteIcon } from '@/components/icons'
 import contactApi from '@/apis/modules/contact.api'
 import { contactStatus, contactTableHeaders } from '@/constants'
 import { EContactStatus } from '@/models/enums/status'
-import ReCAPCHAModal from '../ReCAPCHAModal'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
 import StatusBadge from '../StatusBadge'
 import { useState } from 'react'
 import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
+import ReCAPTCHAModal from '../ReCAPTCHAModal'
 
 type ContactTableProps = {
   contacts: IContact[]
@@ -184,7 +184,7 @@ const ContactTable = ({ contacts, onRefresh }: ContactTableProps) => {
         </tbody>
       </table>
       {isOpenDeleteReCaptchaModal && (
-        <ReCAPCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
+        <ReCAPTCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
       )}
 
       {isOpenConfirmDeleteModal && (

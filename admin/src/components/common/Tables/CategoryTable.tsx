@@ -10,8 +10,8 @@ import categoryApi from '@/apis/modules/categoy.api'
 import { categoryStatus } from '@/constants'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
-import ReCAPCHAModal from '../ReCAPCHAModal'
 import StatusBadge from '../StatusBadge'
+import ReCAPTCHAModal from '../ReCAPTCHAModal'
 type Props = {
   categories: ICategory[]
   onRefresh: () => void
@@ -178,7 +178,7 @@ function CategoryTable({ categories, onRefresh }: Props) {
         </tbody>
       </table>
       {isOpenDeleteReCaptchaModal && (
-        <ReCAPCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
+        <ReCAPTCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
       )}
 
       {isOpenConfirmDeleteModal && (
