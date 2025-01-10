@@ -32,17 +32,17 @@ function Edit({}: Props) {
       setLoading(true)
       try {
         const res: IApiResponse<{ categories: ICategory[]; pagination: IPagination }> = await categoryApi.list()
-        setCategoryData(res.data.categories)
+        setCategoryData(res.data!.categories)
 
         const resDetail: IApiResponse<{ categorie: ICategory }> = await categoryApi.detail(categoryId)
         // console.log(resDetail);
-        const dataDetail = resDetail.data.categorie
-        console.log(dataDetail);
+        const dataDetail = resDetail.data!.categorie
+        console.log(dataDetail)
         const resParent: IApiResponse<{ categories: ICategory[]; pagination: IPagination }> = await categoryApi.list({
           field: EFieldByValue.REFERENCE_CATEGORY_Id,
           query: '0'
         })
-        const data = resParent.data.categories
+        const data = resParent.data!.categories
         setCategoryData(data)
         let newData: IOptions[] = data.map((cat) => ({
           value: cat.id,
@@ -98,13 +98,12 @@ function Edit({}: Props) {
     resolver: zodResolver(categorySchema)
   })
 
-  const onSubmit = async(data: categoryFormData) => {
+  const onSubmit = async (data: categoryFormData) => {
     try {
       //call api in here...
-      const res: IApiResponse<{ category: ICategory }> = await categoryApi.edit(categoryId,data)
-      if (res.status === 200) UToast(EToastOption.SUCCESS, 'Add Category Successfully!')
-      UToast(EToastOption.SUCCESS, 'Edit Category Successfully!')
-      reset()
+      const res: IApiResponse<{ category: ICategory }> = await categoryApi.edit(categoryId, data)
+      if (res.status === 200) UToast(EToastOption.SUCCESS, 'Edit Category Successfully!')
+      reset(data)
     } catch (error) {
       reset()
       UToast(EToastOption.ERROR, 'Edit Category Failure!')
