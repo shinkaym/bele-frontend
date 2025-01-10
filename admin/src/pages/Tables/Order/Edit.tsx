@@ -66,10 +66,11 @@ const OrderEdit: React.FC = () => {
   }
 
   const statusOptions = [
-    { value: 1, label: EOrderStatus.PENDING },
-    { value: 2, label: EOrderStatus.DELIVERED },
-    { value: 3, label: EOrderStatus.SHIPPED },
-    { value: 4, label: EOrderStatus.CANCELED }
+    { value: -1, label: EOrderStatus.CANCELED },
+    { value: 1, label: EOrderStatus.PENDING_CONFIRMATION },
+    { value: 2, label: EOrderStatus.PENDING },
+    { value: 3, label: EOrderStatus.DELIVERED },
+    { value: 4, label: EOrderStatus.SHIPPED }
   ]
 
   if (isLoading) {

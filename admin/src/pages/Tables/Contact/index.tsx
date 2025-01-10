@@ -43,6 +43,7 @@ const index: React.FC = () => {
       }
 
       const res = await contactApi.list(params)
+      console.log('🚀 ~ fetchData ~ res:', res)
       if (res.status === 200 && res.data) {
         setContacts(res.data.contacts)
         setPagination(res.data.pagination)
