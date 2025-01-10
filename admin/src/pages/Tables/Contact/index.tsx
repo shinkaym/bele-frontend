@@ -1,6 +1,6 @@
+import { useEffect, useState, useCallback } from 'react'
 import contactApi from '@/apis/modules/contact.api'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
-import Button from '@/components/common/Button'
 import Search from '@/components/common/Forms/Search'
 import Loader from '@/components/common/Loader'
 import Pagination from '@/components/common/Pagination'
@@ -12,64 +12,78 @@ import { contactFieldOptions, contactStatus, PAGINATION_CONFIG, sortByOptions, s
 import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
 import { IContact, IContactListResponse } from '@/models/interfaces/contact'
 import { IPagination } from '@/models/interfaces/pagination'
-import { useEffect, useState } from 'react'
 import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
 
-const index: React.FC = () => {
+const ContactPage: React.FC = () => {
   const [contacts, setContacts] = useState<IContact[]>([])
   const [pagination, setPagination] = useState<IPagination>({
     currentPage: PAGINATION_CONFIG.DEFAULT_PAGE,
-    totalPage: 0,
+    totalPage: 0
   })
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [selectedField, setSelectedField] = useState<EFieldByValue>(EFieldByValue.ID)
   const [selectedStatus, setSelectedStatus] = useState<number | null>(null)
   const [sortBy, setSortBy] = useState<EFieldByValue>(EFieldByValue.CREATED_AT)
   const [sortOrder, setSortOrder] = useState<ESortOrderValue>(ESortOrderValue.ASC)
 
-  const fetchData = async (page: number, limit: number) => {
-    setLoading(true)
-    try {
-      const params = {
-        page,
-        limit,
-        query: searchQuery,
-        field: selectedField,
-        status: selectedStatus,
-        sort: sortBy,
-        order: sortOrder,
+  const fetchData = useCallback(
+    async (page: number, limit: number) => {
+      setLoading(true);
+      try {
+        const params = {
+          page,
+          limit,
+          query: searchQuery,
+          field: selectedField,
+          status: selectedStatus,
+          sort: 'id',
+          order: sortOrder,
+        };
+        const res = await contactApi.list(params);
+        if (res && res.contacts && res.pagination) {
+          const { contacts, pagination } = res;
+        //   console.log('🚀 ~ fetchData ~ contacts:', contacts);
+        //   console.log('🚀 ~ fetchData ~ pagination:', pagination);
+  
+          if (Array.isArray(contacts) && pagination) {
+            setContacts(contacts);
+            setPagination(pagination);
+          } else {
+            throw new Error('Invalid data structure in API response.');
+          }
+        } else {
+          throw new Error('Unexpected response structure.');
+        }
+      } catch (error: any) {
+        // console.error('🚀 ~ fetchData ~ API Error:', error);
+        const errorMessage = error.message || 'Failed to fetch data.';
+        UToast(EToastOption.ERROR, errorMessage);
+      } finally {
+        setLoading(false);
       }
+    },
+    [searchQuery, selectedField, selectedStatus, sortBy, sortOrder]
+  );
+  
 
-      const res = await contactApi.list(params)
-      console.log('🚀 ~ fetchData ~ res:', res)
-      if (res.status === 200 && res.data) {
-        setContacts(res.data.contacts)
-        setPagination(res.data.pagination)
-      } else {
-        UToast(EToastOption.ERROR, res.message)
-      }
-    } catch (error) {
-      UToast(EToastOption.ERROR, 'An unexpected error occurred.')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = useCallback(() => {
     setPagination((prev) => ({ ...prev, currentPage: PAGINATION_CONFIG.DEFAULT_PAGE }))
     fetchData(PAGINATION_CONFIG.DEFAULT_PAGE, PAGINATION_CONFIG.DEFAULT_LIMIT)
-  }
+  }, [fetchData])
 
-  const handlePageChange = (page: number) => {
-    setPagination((prev) => ({ ...prev, currentPage: page }))
-    fetchData(page, PAGINATION_CONFIG.DEFAULT_LIMIT)
-  }
+  const handlePageChange = useCallback(
+    (page: number) => {
+      setPagination((prev) => ({ ...prev, currentPage: page }))
+      fetchData(page, PAGINATION_CONFIG.DEFAULT_LIMIT)
+    },
+    [fetchData]
+  )
 
   useEffect(() => {
     fetchData(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_LIMIT)
-  }, [])
+  }, [fetchData, pagination.currentPage])
 
   return (
     <>
@@ -102,14 +116,14 @@ const index: React.FC = () => {
                 sortOrderOptions={sortOrderOptions}
               />
             </div>
-            <Button type='link' to='/tables/contact/add' size='sm'>
-              Add
-            </Button>
           </div>
           {loading ? (
             <Loader />
           ) : (
-            <ContactTable contacts={contacts} onRefresh={() => fetchData(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_LIMIT)} />
+            <ContactTable
+              contacts={contacts}
+              onRefresh={() => fetchData(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_LIMIT)}
+            />
           )}
           <Pagination
             currentPage={pagination.currentPage}
@@ -122,4 +136,4 @@ const index: React.FC = () => {
   )
 }
 
-export default index
+export default ContactPage

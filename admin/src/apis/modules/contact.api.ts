@@ -33,12 +33,16 @@ const contactApi = {
     order: string
   }): Promise<IContactListResponse> {
     try {
-      const response = await axiosPublic.get(contactEndpoints.list, { params })
-      return response.data
-    } catch (error) {
-      throw error
+      console.log('🚀 ~ list ~ params:', params); // Log tham số truyền vào API
+      const response = await axiosPublic.get(contactEndpoints.list, { params });
+      console.log('🚀 ~ list ~ response:', response); // Log toàn bộ phản hồi từ axios
+      return response.data; // Chỉ trả về `data`
+    } catch (error: any) {
+      console.error('🚀 ~ list ~ error:', error.response || error.message || error);
+      throw error.response?.data || error.message || error;
     }
-  },
+  }, 
+  
 
   // Lấy thông tin chi tiết của một contact
   detail({ id }: { id: number }): IContactDetailResponse {
