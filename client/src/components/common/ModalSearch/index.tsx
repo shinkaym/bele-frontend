@@ -1,10 +1,11 @@
 import Overlay from '@/components/common/Overlay'
 import ProductGrid from '@/components/common/ProductGrid'
 import { MD_BP, productData } from '@/constants'
+import useDebounce from '@/hooks/useDebounce'
+import executeAOS from '@/utils/executeAOS'
 import { faChevronLeft, faClose, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useState } from 'react'
-import useDebounce from '@/hooks/useDebounce'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../Button'
 
@@ -17,6 +18,14 @@ const ModalSearch: React.FunctionComponent<ISearchProps> = ({ onSearchClose }) =
   const debouncedSearchValue = useDebounce(searchValue, 500)
   const [limit, setLimit] = useState<number>(4)
   const navigate = useNavigate()
+
+  const callBackAos = useCallback(() => {
+    executeAOS({})
+  }, [])
+
+  useEffect(() => {
+    callBackAos()
+  }, [callBackAos])
 
   const updateLimit = () => {
     const width = window.innerWidth
@@ -86,7 +95,7 @@ const ModalSearch: React.FunctionComponent<ISearchProps> = ({ onSearchClose }) =
 
   return (
     <>
-      <div className='fixed inset-0 z-40'>
+      <div className='fixed inset-0 z-40' data-aos='fade-down'>
         <div className='w-full lg:h-24 md:h-23 sm:h-22 h-21 z-50 bg-white flex items-center justify-center gap-8'>
           <FontAwesomeIcon
             className='text-zinc-500 lg:hidden lg:text-2xl md:text-xl sm:text-lg text-base font-normal cursor-pointe'
