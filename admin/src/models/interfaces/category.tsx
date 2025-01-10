@@ -1,10 +1,10 @@
 export interface ICategory {
   id: number
   name: string
-  parentName?: string
-  referenceCategory: ICategory | null
+  referenceCategory?: ICategory
+  referenceCategoryId?:number 
   status: number
   slug: string
   createdAt: string
-  updatedAt:string
+  updatedAt: string
 }

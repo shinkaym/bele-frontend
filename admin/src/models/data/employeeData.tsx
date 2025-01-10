@@ -1,69 +1,70 @@
-import { IEmployeeDetailResponse, IEmployeeListResponse } from '../interfaces/employee'
+import { IEmployee, IEmployeeListResponse } from '../interfaces/employee'
 
 export const employeeListResponseData: IEmployeeListResponse = {
-  status: 200,
-  data: {
-    employees: [
-      {
+  accounts: [
+    {
+      id: 1,
+      fullName: 'John Doe',
+      phoneNumber: '123-456-7890',
+      email: 'johndoe@example.com',
+      sex: 'Male',
+      role: {
         id: 1,
-        name: 'John Doe',
-        phoneNumber: '123-456-7890',
-        email: 'johndoe@example.com',
-        sex: 'Male',
-        role: 1,
-        status: 1,
-        createdAt: '1734974964.4281',
-        updatedAt: '1734974964.4281'
+        name: 'Admin',
+        rolePermissions: null
       },
-      {
-        id: 2,
-        name: 'Jane Smith',
-        phoneNumber: '234-567-8901',
-        email: 'janesmith@example.com',
-        sex: 'Female',
-        role: 1,
-        status: 1,
-        createdAt: '1734974964.4281',
-        updatedAt: '1734974964.4281'
+      status: 1,
+      createdAt: '1734974964.4281',
+      updatedAt: '1734974964.4281'
+    },
+    {
+      id: 2,
+      fullName: 'Jane Smith',
+      phoneNumber: '234-567-8901',
+      email: 'janesmith@example.com',
+      sex: 'Female',
+      role: {
+        id: 1,
+        name: 'Admin',
+        rolePermissions: null
       },
-      {
-        id: 3,
-        name: 'Alice Brown',
-        phoneNumber: '345-678-9012',
-        email: 'alicebrown@example.com',
-        sex: 'Female',
-        role: 1,
-        status: 1,
-        createdAt: '1734974964.4281',
-        updatedAt: '1734974964.4281'
-      }
-    ],
-    pagination: {
-      currentPage: 1,
-      totalPages: 2,
-      totalRecords: 5
+      status: 1,
+      createdAt: '1734974964.4281',
+      updatedAt: '1734974964.4281'
+    },
+    {
+      id: 3,
+      fullName: 'Alice Brown',
+      phoneNumber: '345-678-9012',
+      email: 'alicebrown@example.com',
+      sex: 'Female',
+      role: {
+        id: 1,
+        name: 'Admin',
+        rolePermissions: null
+      },
+      status: 1,
+      createdAt: '1734974964.4281',
+      updatedAt: '1734974964.4281'
     }
-  },
-  message: 'Data fetched successfully.'
+  ],
+  pagination: {
+    currentPage: PAGINATION_CONFIG.DEFAULT_PAGE,
+    totalPage: 2
+  }
 }
 
-export const employeeResponseData: IEmployeeDetailResponse = {
-  status: 200,
-  data: {
+export const employeeResponseData: IEmployee = {
+  id: 1,
+  fullName: 'John Doe',
+  phoneNumber: '123-456-7890',
+  password: '1234567',
+  email: 'johndoe@example.com',
+  sex: 'Male',
+  role: {
     id: 1,
-    name: 'John Doe',
-    phoneNumber: '123-456-7890',
-    password: '1234567',
-    email: 'johndoe@example.com',
-    sex: 'Male',
-    role: 1,
-    status: 1
+    name: 'Admin',
+    rolePermissions: null
   },
-  message: 'Data fetched successfully.'
+  status: 1
 }
-
-export const accountsData = employeeListResponseData.data.employees.map((employee) => ({
-  id: employee.id,
-  email: employee.email,
-  password: '123'
-}))

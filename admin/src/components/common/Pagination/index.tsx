@@ -5,7 +5,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@/components/icons/Arrow'
 
 const Pagination: React.FC<IPagination> = ({
   currentPage,
-  totalPages,
+  totalPage,
   onPageChange,
   siblingCount = 1,
   className,
@@ -15,21 +15,21 @@ const Pagination: React.FC<IPagination> = ({
   const getPaginationRange = (): (number | string)[] => {
     const totalPageNumbers = siblingCount * 2 + 5
 
-    if (totalPages <= totalPageNumbers) {
-      return Array.from({ length: totalPages }, (_, index) => index + 1)
+    if (totalPage <= totalPageNumbers) {
+      return Array.from({ length: totalPage }, (_, index) => index + 1)
     }
 
     const startPage = Math.max(currentPage - siblingCount, 1)
-    const endPage = Math.min(currentPage + siblingCount, totalPages)
+    const endPage = Math.min(currentPage + siblingCount, totalPage)
 
     const hasLeftEllipsis = startPage > 2
-    const hasRightEllipsis = endPage < totalPages - 1
+    const hasRightEllipsis = endPage < totalPage - 1
 
     let pages: (number | string)[] = []
 
     if (hasLeftEllipsis) pages.push(1, '...')
     pages = pages.concat(Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index))
-    if (hasRightEllipsis) pages.push('...', totalPages)
+    if (hasRightEllipsis) pages.push('...', totalPage)
 
     return pages
   }
@@ -75,10 +75,10 @@ const Pagination: React.FC<IPagination> = ({
       <li>
         <button
           className={clsx('px-3 py-1 flex items-center', {
-            'cursor-not-allowed text-gray-400': currentPage === totalPages
+            'cursor-not-allowed text-gray-400': currentPage === totalPage
           })}
-          onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
+          onClick={() => currentPage < totalPage && onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPage}
         >
           <span className='mr-2'>Next</span>
           <ArrowRightIcon width={16} height={16}/>

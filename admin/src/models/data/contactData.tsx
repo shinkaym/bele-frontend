@@ -1,4 +1,5 @@
 import { IContactListResponse, IContactDetailResponse } from '../interfaces/contact';
+import { PAGINATION_CONFIG } from '@/constants';
 
 export const contactListResponseData: IContactListResponse = {
   status: 200,
@@ -39,8 +40,8 @@ export const contactListResponseData: IContactListResponse = {
       },
     ],
     pagination: {
-      currentPage: 1,
-      totalPages: 2,
+      currentPage: PAGINATION_CONFIG.DEFAULT_PAGE,
+      totalPage: 2,
       totalRecords: 5,
     },
   },

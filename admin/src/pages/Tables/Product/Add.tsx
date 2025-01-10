@@ -18,7 +18,7 @@ import { UToast } from '@/utils/swal'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { date, z } from 'zod'
 
 type Props = {}
 
@@ -58,7 +58,7 @@ function Add({}: Props) {
     }),
     discountId: z.union([z.number(), z.string()]), // Giá trị mặc định là 0
     status: z.union([z.number(), z.string()]),
-    thumbnail: z
+    productFile: z
       .instanceof(File) // Kiểm tra xem trường này có phải là một instance của File hay không
       .refine((file) => file.type.startsWith('image/'), { message: 'File must be an image' }) // Kiểm tra định dạng file ảnh
       .refine((file) => file.size <= 5 * 1024 * 1024, { message: 'Image size must be less than 5MB' }), // Kiểm tra kích thước file
@@ -78,18 +78,33 @@ function Add({}: Props) {
     resolver: zodResolver(productSchema)
   })
 
-  const imgUrl = watch('thumbnail')
+  const imgUrl = watch('productFile')
 
   useEffect(() => {
     if (!imgUrl) {
-      console.log(imgUrl);
       setInitialImageUrl('')
     }
   }, [imgUrl])
-  const onSubmit = (data: productFormData) => {
+  const onSubmit = async (data: productFormData) => {
     try {
-      //call api in here...
+      const formData = new FormData()
 
+      // Thêm từng trường vào FormData
+      formData.append('name', data.name)
+      formData.append('basePrice', data.basePrice.toString())
+      formData.append('categoryId', data.categoryId.toString())
+      if (data.discountId) formData.append('discountId', data.discountId.toString())
+      formData.append('status', data.status.toString())
+      if (data.productFile) formData.append('productFile', data.productFile) // File
+      if (Array.isArray(data.attributeType)) {
+        data.attributeType.forEach((attr) => {
+          formData.append('attributeType[]', attr); // Thêm từng phần tử của mảng
+        });
+      }
+      formData.append('description', data.description)
+      //call api in here...
+      const status = await productApi.addProduct(formData)
+      console.log(status)
       UToast(EToastOption.SUCCESS, 'Add Product Successfully!')
       reset()
     } catch (error) {
@@ -107,7 +122,7 @@ function Add({}: Props) {
         <div className='flex flex-col gap-10'>
           <Breadcrumb pageName='Add Product' parentPageName='Product' parentTo='/tables/product' />
 
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} encType='multipart/form-data'>
             <div className='grid grid-cols-2 gap-4'>
               <div>
                 {/* Name */}
@@ -141,13 +156,13 @@ function Add({}: Props) {
                 />
                 {/* Image Upload */}
                 <Controller
-                  name='thumbnail'
+                  name='productFile'
                   control={control}
                   render={({ field }) => (
                     <ImageUpload
                       {...field} // Truyền các props của field vào ImageUpload
                       label='Upload Image'
-                      error={errors.thumbnail?.message} // Hiển thị lỗi nếu có
+                      error={errors.productFile?.message} // Hiển thị lỗi nếu có
                       onChange={(file) => field.onChange(file)} // Cập nhật giá trị khi file thay đổi
                       initialImageUrl={initialImageUrl}
                       setInitialImageUrl={setInitialImageUrl}

@@ -1,7 +1,9 @@
 import LoadingScreen from '@/components/common/LoadingScreen'
+import PageTitle from '@/components/common/PageTitle'
 import DefaultLayout from '@/components/layout/DefaultLayout'
+import Home from '@/pages/Home'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { useRoutes } from 'react-router-dom'
 
 const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> => {
   return (props: P): ReactNode => (
@@ -11,22 +13,37 @@ const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> =>
   )
 }
 
-const Home = Loadable(lazy(() => import('@/pages/Home')))
+const Profile = Loadable(lazy(() => import('@/pages/Profile')))
+const Search = Loadable(lazy(() => import('@/pages/Search')))
 
-const routes = createBrowserRouter([
-  {
-    path: '/',
-    element: <DefaultLayout />,
-    children: [
-      {
-        index: true,
-        path: '/',
-        element: <Home />
-      }
-    ]
-  }
-])
 
-export default function AppRouter() {
-  return <RouterProvider router={routes} />
+const AppRouter = () => {
+  return useRoutes([
+    {
+      path: '/',
+      element: <DefaultLayout />,
+      children: [
+        {
+          index: true,
+          path: '',
+          element: (
+            <>
+              <PageTitle title='Trang chủ' />
+              <Home />
+            </>
+          )
+        },
+        {
+          path: 'profile',
+          element: <Profile />
+        },
+        {
+          path: 'search',
+          element: <Search />
+        }
+      ]
+    }
+  ])
 }
+
+export default AppRouter

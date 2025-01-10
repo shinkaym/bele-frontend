@@ -1,139 +1,140 @@
-import { IconFacebook, IconMail, IconPhone, IconYoutube, IconInstagram } from '@/components/icons'
+import { logoList } from '@/constants'
+import { faFacebook, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons'
+import { faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Link } from 'react-router-dom'
 
 function Footer() {
   return (
     <footer className='bg-black text-white hidden lg:block'>
-      <div className='2xl:px-10 mx-auto flex flex-col items-center justify-between'>
-        <div className='py-5 grid grid-cols-3 w-full border-b-2'>
-          <div className='w-full flex items-start justify-center'>
-            <img className='w-[300px]' src='/images/logo/logo2.jpg' alt='' />
-          </div>
+      <div className='lg:px-14 md:px-12 sm:px-10 px-6 mx-auto flex flex-col items-center justify-between'>
+        <div className='py-5 grid grid-cols-5 w-full border-b-2'>
+          <img className='object-cover w-full' src={logoList.sloganLogo.url} alt={logoList.sloganLogo.name} />
+          <div></div>
           <div className='flex items-center justify-center'>
             <div className='flex flex-col items-start justify-center gap-3'>
               <div className='flex items-center gap-4'>
-                <IconPhone className='size-10' />
+                <FontAwesomeIcon icon={faPhone} className='text-3xl' />
                 <div className='flex flex-col justify-between'>
                   <span>Hotline</span>
-                  <span className='font-bold'>0909691405</span>
+                  <span className='font-semibold'>0909691405</span>
                 </div>
               </div>
               <div className='flex items-center gap-4'>
-                <IconMail className='size-10' />
+                <FontAwesomeIcon icon={faEnvelope} className='text-3xl' />
                 <div className='flex flex-col justify-between'>
                   <span>Email</span>
-                  <span className='font-bold'>bele@gmail.com</span>
+                  <span className='font-semibold'>bele@gmail.com</span>
                 </div>
               </div>
             </div>
           </div>
+          <div></div>
           <div className='flex items-center justify-center gap-10'>
-            <a href='/'>
-              <IconFacebook className='size-10 text-white' />
-            </a>
-            <a href='/'>
-              <IconYoutube className='size-10 text-white' />
-            </a>
-            <a href='/'>
-              <IconInstagram className='size-10 text-white' />
-            </a>
-            <a href='/'>
-              <IconFacebook className='size-10 text-white' />
-            </a>
+            <Link to={'/'}>
+              <FontAwesomeIcon icon={faFacebook} className='text-5xl' />
+            </Link>
+            <Link to={'/'}>
+              <FontAwesomeIcon icon={faYoutube} className='text-5xl' />
+            </Link>
+            <Link to={'/'}>
+              <FontAwesomeIcon icon={faInstagram} className='text-5xl' />
+            </Link>
           </div>
         </div>
 
-        <div className='py-10 grid grid-cols-5 gap-3 w-full'>
-          <div>
-            <h3 className='mb-3 text-xl'>BELE</h3>
+        <div className='py-10 flex justify-between xl:gap-10 lg:gap-5 w-full'>
+          <div className='xl:max-w-80 max-w-64 '>
+            <h3 className='mb-3 xl:text-lg text-base'>BELE</h3>
             <div>
-              <p className='text-sm'>
-                Bele is a pioneer fashion brand that offers high-quality, modern, and stylish men fashion products.
-                Founded five [year of establishment], Bele quickly became the top choice for fashions who love
-                simplicity, convenience, and sophistication.
+              <p className='xl:text-sm lg:text-xs'>
+                Bele là thương hiệu thời trang tiên phong, cung cấp các sản phẩm thời trang nam chất lượng cao, hiện đại
+                và phong cách. Được thành lập từ [năm thành lập], Bele nhanh chóng trở thành lựa chọn hàng đầu cho những
+                tín đồ thời trang yêu thích sự đơn giản, tiện lợi và tinh tế.
               </p>
             </div>
           </div>
           <div>
-            <h3 className='mb-3 text-xl'>Policy</h3>
+            <h3 className='mb-3 xl:text-lg text-base'>Chính sách</h3>
             <div>
               <ul className='flex flex-col gap-1'>
                 <li>
-                  <a href='/' className='text-sm'>
-                    60 day return
-                  </a>
+                  <Link to={'/'} className='xl:text-sm lg:text-xs'>
+                    Hoàn trả trong 60 ngày
+                  </Link>
                 </li>
                 <li>
-                  <a href='/' className='text-sm'>
-                    Promotion
-                  </a>
+                  <Link to={'/'} className='xl:text-sm lg:text-xs'>
+                    Khuyến mãi
+                  </Link>
                 </li>
                 <li>
-                  <a href='/' className='text-sm'>
-                    Privacy
-                  </a>
+                  <Link to={'/'} className='xl:text-sm lg:text-xs'>
+                    Bảo mật
+                  </Link>
                 </li>
                 <li>
-                  <a href='/' className='text-sm'>
-                    Delivery
-                  </a>
+                  <Link to={'/'} className='xl:text-sm lg:text-xs'>
+                    Giao hàng
+                  </Link>
                 </li>
               </ul>
             </div>
           </div>
           <div>
-            <h3 className='mb-3 text-xl'>Quick Links</h3>
+            <h3 className='mb-3 xl:text-lg text-base'>Liên kết nhanh</h3>
             <div>
               <ul className='flex flex-col gap-1'>
                 <li>
-                  <a href='/' className='text-sm'>
-                    About
-                  </a>
+                  <Link to={'/'} className='xl:text-sm lg:text-xs'>
+                    Giới thiệu
+                  </Link>
                 </li>
                 <li>
-                  <a href='/' className='text-sm'>
-                    Products
-                  </a>
+                  <Link to={'/'} className='xl:text-sm lg:text-xs'>
+                    Sản phẩm
+                  </Link>
                 </li>
                 <li>
-                  <a href='/' className='text-sm'>
-                    Contact
-                  </a>
+                  <Link to={'/'} className='xl:text-sm lg:text-xs'>
+                    Liên hệ
+                  </Link>
                 </li>
                 <li>
-                  <a href='/' className='text-sm'>
+                  <Link to={'/'} className='xl:text-sm lg:text-xs'>
                     Blog
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
           </div>
           <div>
-            <h3 className='mb-3 text-xl'>Customer Care</h3>
+            <h3 className='mb-3 xl:text-lg text-base'>Chăm sóc khách hàng</h3>
             <div>
               <ul className='flex flex-col gap-1'>
                 <li>
-                  <p className='text-sm'>100% satisfied shopping experience</p>
+                  <p className='xl:text-sm lg:text-xs'>Trải nghiệm mua sắm hài lòng 100%</p>
                 </li>
                 <li>
-                  <p className='text-sm'>Q&A</p>
+                  <p className='xl:text-sm lg:text-xs'>Hỏi đáp</p>
                 </li>
               </ul>
             </div>
           </div>
-          <div>
-            <h3 className='mb-3 text-xl'>Address</h3>
+          <div className='xl:max-w-80 max-w-64'>
+            <h3 className='mb-3 xl:text-lg text-base'>Địa chỉ</h3>
             <div>
               <ul className='flex flex-col gap-1'>
                 <li>
-                  <p className='text-sm'>
-                    Hanoi Office: 3rd Floor, BMM Building, KM2,Phung Hung Street, Phuc La Ward, Ha Dong District, Hanoi
-                    City
+                  <p className='xl:text-sm lg:text-xs'>
+                    Văn phòng Hà Nội: Tầng 3, Tòa nhà BMM, KM2, Đường Phùng Hưng, Phường Phúc La, Quận Hà Đông, Thành
+                    phố Hà Nội
                   </p>
                 </li>
                 <li>
-                  <p className='text-sm'>
-                    Hanoi Operation Center: Lot C8, Lai Yen Industrial Park, Lai Yen Commune, Hoai Duc District, Hanoi
-                    City
+                  <p className='xl:text-sm lg:text-xs'>
+                    Trung tâm vận hành Hà Nội: Lô C8, Khu Công nghiệp Lai Yên, Xã Lai Yên, Huyện Hoài Đức, Thành phố Hà
+                    Nội
                   </p>
                 </li>
               </ul>

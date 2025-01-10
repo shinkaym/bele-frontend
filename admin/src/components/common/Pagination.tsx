@@ -1,73 +1,124 @@
 import React from 'react'
+import { ArrowLeftIcon, ArrowRightIcon } from '../icons/Arrow'
 
-type PaginationProps = {
+interface PaginationProps {
   currentPage: number
-  totalPages: number
+  totalPage: number
   onPageChange: (page: number) => void
 }
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
-  // Giới hạn số trang cần hiển thị
-  const maxPagesToShow = 5
-  const pages: number[] = []
-
-  // Các trang để hiển thị
-  if (totalPages <= maxPagesToShow) {
-    // Nếu tổng số trang nhỏ hơn hoặc bằng số trang muốn hiển thị, hiển thị tất cả
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(i)
-    }
-  } else {
-    // Nếu số trang lớn hơn số trang muốn hiển thị, chỉ hiển thị một phần
-    const leftSide = Math.max(1, currentPage - 2)
-    const rightSide = Math.min(totalPages, currentPage + 2)
-
-    // Thêm trang đầu tiên và cuối cùng nếu không có trong dãy
-    if (leftSide > 1) {
-      pages.push(1)
-      if (leftSide > 2) pages.push(-1) // dấu ba chấm
-    }
-    for (let i = leftSide; i <= rightSide; i++) {
-      pages.push(i)
-    }
-    if (rightSide < totalPages) {
-      if (rightSide < totalPages - 1) pages.push(-1) // dấu ba chấm
-      pages.push(totalPages)
+const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPage, onPageChange }) => {
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      onPageChange(currentPage - 1)
     }
   }
 
-  return (
-    <div className="flex justify-center items-center gap-2">
-      <button
-        className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-sm"
-        onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-      >
-        Prev
-      </button>
+  const handleNext = () => {
+    if (currentPage < totalPage) {
+      onPageChange(currentPage + 1)
+    }
+  }
 
-      {pages.map((page, index) =>
-        page === -1 ? (
-          <span key={index} className="px-4 py-2 rounded-lg text-sm">
+  const handlePageClick = (page: number) => {
+    onPageChange(page)
+  }
+
+  const renderPageNumbers = () => {
+    const pages = []
+    const maxPagesToShow = 5
+    let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2))
+    let endPage = Math.min(totalPage, startPage + maxPagesToShow - 1)
+
+    if (endPage - startPage + 1 < maxPagesToShow) {
+      startPage = Math.max(1, endPage - maxPagesToShow + 1)
+    }
+
+    if (startPage > 1) {
+      pages.push(
+        <button
+          key={1}
+          onClick={() => handlePageClick(1)}
+          className={`px-3 py-1 mx-1 rounded ${
+            currentPage === 1 ? 'bg-black text-white' : 'bg-white text-black hover:bg-blue-100'
+          }`}
+        >
+          1
+        </button>
+      )
+      if (startPage > 2) {
+        pages.push(
+          <span key='start-ellipsis' className='px-3 py-1 mx-1'>
             ...
           </span>
-        ) : (
-          <button
-            key={page}
-            className={`px-4 py-2 rounded-lg text-sm ${page === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}
-            onClick={() => onPageChange(page)}
-          >
-            {page}
-          </button>
         )
-      )}
+      }
+    }
 
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(
+        <button
+          key={i}
+          onClick={() => handlePageClick(i)}
+          className={`px-3 py-1 mx-1 rounded ${
+            currentPage === i ? 'bg-black text-white' : 'bg-white text-black hover:bg-blue-100'
+          }`}
+        >
+          {i}
+        </button>
+      )
+    }
+
+    if (endPage < totalPage) {
+      if (endPage < totalPage - 1) {
+        pages.push(
+          <span key='end-ellipsis' className='px-3 py-1 mx-1'>
+            ...
+          </span>
+        )
+      }
+      pages.push(
+        <button
+          key={totalPage}
+          onClick={() => handlePageClick(totalPage)}
+          className={`px-3 py-1 mx-1 rounded ${
+            currentPage === totalPage ? 'bg-black text-white' : 'bg-white text-black hover:bg-blue-100'
+          }`}
+        >
+          {totalPage}
+        </button>
+      )
+    }
+
+    return pages
+  }
+
+  return (
+    <div className='flex items-center justify-center my-4 text-gray-300 font-medium'>
       <button
-        className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-sm"
-        onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        onClick={handlePrevious}
+        disabled={currentPage === 1}
+        className={`px-3 py-1 mx-1 flex items-center gap-2 ${
+          currentPage === 1
+            ? 'cursor-not-allowed'
+            : 'hover:text-black dark:hover:text-white'
+        }`}
+      >
+        <ArrowLeftIcon className='w-4 h-4'/>
+        Previous
+      </button>
+      {renderPageNumbers()}
+      <button
+        onClick={handleNext}
+        disabled={currentPage === totalPage}
+        className={`px-3 py-1 mx-1 flex items-center gap-2 ${
+          currentPage === totalPage
+            ? 'cursor-not-allowed'
+            : 'hover:text-black dark:hover:text-white'
+        }`}
       >
         Next
+        <ArrowRightIcon className='w-4 h-4'/>
       </button>
     </div>
   )

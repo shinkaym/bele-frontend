@@ -7,28 +7,28 @@ export interface IOrder {
   phoneNumber: string
   address: string
   note: string
-  payMethod: string | number
+  payMethod: string
   totalMoney: number
   shipDate: string
   receiveDate: string
   status: number
-  createdAt: string
-  updatedAt: string
+  createdAt?: string
+  variants: {
+    id: number
+    name: string
+    thumbnail: string
+    attribute: [
+      Color: any,
+      Size: any
+    ]
+    quantity: number
+    price: number
+  }[]
 }
 
 export interface IOrderListResponse {
-  status: number
-  data: {
-    orders: IOrder[]
-    pagination: IPagination
-  }
-  message: string
-}
-
-export interface IOrderDetailResponse {
-  status: number
-  data: IOrder[]
-  message: string
+  orders: IOrder[]
+  pagination: IPagination
 }
 
 export interface IOrderDeleteResponse {
@@ -44,8 +44,8 @@ export interface IOrderDeleteResponse {
 export interface IOrderUpdateStatusResponse {
   status: number
   data: {
-    id: number,
-    status: number,
+    id: number
+    status: number
     updatedAt: string
   }
   message: string

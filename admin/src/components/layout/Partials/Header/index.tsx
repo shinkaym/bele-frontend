@@ -117,7 +117,7 @@ const Header = (props: {
           </ul>
 
           {/* <!-- User Area --> */}
-          <DropdownUser user={authMethod?.user} signout={authMethod?.signout}/>
+          <DropdownUser account={authMethod?.account} logout={authMethod?.logout}/>
           {/* <!-- User Area --> */}
         </div>
       </div>

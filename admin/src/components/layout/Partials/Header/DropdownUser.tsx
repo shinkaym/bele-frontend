@@ -1,28 +1,27 @@
+import { IAccount } from '@/models/interfaces/account'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ClickOutside from '../../../common/ClickOutside'
-import { IEmployee } from '@/models/interfaces/employee'
 
 interface Props {
-  user: IEmployee | null | undefined
-  signout: (() => void) | undefined
+  account: IAccount | null | undefined
+  logout: (() => void) | undefined
 }
 
-const DropdownUser = ({ user, signout }: Props) => {
+const DropdownUser = ({ account, logout }: Props) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
-  const handleSignout = () => {
-    if (signout) {
-      signout()
+  const handleLogout = () => {
+    if (logout) {
+      logout()
     }
   }
-  console.log(user)
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className='relative'>
       <Link onClick={() => setDropdownOpen(!dropdownOpen)} className='flex items-center gap-4' to='#'>
         <span className='hidden text-right lg:block'>
-          <span className='block text-sm font-medium text-black dark:text-white'>{user?.name}</span>
-          <span className='block text-xs'>{user?.role}</span>
+          <span className='block text-sm font-medium text-black dark:text-white'>{account?.fullName}</span>
+          <span className='block text-xs'>{account?.role.name}</span>
         </span>
 
         <svg
@@ -121,7 +120,7 @@ const DropdownUser = ({ user, signout }: Props) => {
             </li>
           </ul>
           <button
-            onClick={handleSignout}
+            onClick={handleLogout}
             className='flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base'
           >
             <svg

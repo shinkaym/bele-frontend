@@ -4,8 +4,7 @@ import { Navigate } from 'react-router-dom';
 
 const PrivateRoute: React.FC<PropsWithChildren> = ({ children }) => {
   const authMethod = useContext(AuthContext)
-
-  return authMethod?.isAuthenticated ? <>{children}</> : <Navigate to="/signin" />;
+  return authMethod?.isAuthenticated || false ? <>{children}</> : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;

@@ -1,11 +1,13 @@
 import Loader from '@/components/common/Loader'
 import PageTitle from '@/components/common/PageTitle'
-import PrivateRoute from '@/components/common/PrivateRoute'
+// import PrivateRoute from '@/components/common/PrivateRoute'
 import DefaultLayout from '@/components/layout/DefaultLayout'
-import SignIn from '@/pages/SignIn'
+import Login from '@/pages/Login'
 import Dashboard from '@/pages/Dashboard'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
+import PublicRoute from '@/components/common/PublicRoute'
+import PrivateRoute from '@/components/common/PrivateRoute'
 
 const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> => {
   return (props: P): ReactNode => (
@@ -41,10 +43,8 @@ const AddDiscount = Loadable(lazy(() => import('@/pages/Tables/Discount/Add')))
 const EditDiscount = Loadable(lazy(() => import('@/pages/Tables/Discount/Edit')))
 const Customer = Loadable(lazy(() => import('@/pages/Tables/Customer')))
 const AddCustomer = Loadable(lazy(() => import('@/pages/Tables/Customer/Add')))
-const Tag = Loadable(lazy(() => import('@/pages/Tables/Tag')))
-const AddTag = Loadable(lazy(() => import('@/pages/Tables/Tag/Add')))
-const EditTag = Loadable(lazy(() => import('@/pages/Tables/Tag/Edit')))
 const Contact = Loadable(lazy(() => import('@/pages/Tables/Contact')))
+const Chat = Loadable(lazy(() => import('@/pages/Tables/Chat')))
 
 function AppRouter() {
   const routes = [
@@ -54,6 +54,7 @@ function AppRouter() {
         <PrivateRoute>
           <DefaultLayout />
         </PrivateRoute>
+        // <DefaultLayout />
       ),
       children: [
         {
@@ -283,106 +284,88 @@ function AppRouter() {
           ]
         },
         {
-            path: '/tables/discount',
-            children: [
-              {
-                path: '',
-                element: (
-                  <>
-                    <PageTitle title='Discount' />
-                    <Discount />
-                  </>
-                )
-              },
-              {
-                path: 'add',
-                element: (
-                  <>
-                    <PageTitle title='Add Discount' />
-                    <AddDiscount />
-                  </>
-                )
-              },
-              {
-                path: 'edit/:id',
-                element: (
-                  <>
-                    <PageTitle title='Edit Discount' />
-                    <EditDiscount />
-                  </>
-                )
-              }
-            ]
-          },
-          {
-            path: '/tables/customer',
-            children: [
-              {
-                path: '',
-                element: (
-                  <>
-                    <PageTitle title='Customer' />
-                    <Customer />
-                  </>
-                )
-              },
-              {
-                path: 'add',
-                element: (
-                  <>
-                    <PageTitle title='Add Customer' />
-                    <AddCustomer />
-                  </>
-                )
-              }
-            ]
-          },
-          {
-            path: '/tables/tag',
-            children: [
-              {
-                path: '',
-                element: (
-                  <>
-                    <PageTitle title='Tag' />
-                    <Tag />
-                  </>
-                )
-              },
-              {
-                path: 'add',
-                element: (
-                  <>
-                    <PageTitle title='Add Tag' />
-                    <AddTag />
-                  </>
-                )
-              },
-              {
-                path: 'edit/:id',
-                element: (
-                  <>
-                    <PageTitle title='Edit Tag' />
-                    <EditTag />
-                  </>
-                )
-              }
-            ]
-          },
-          {
-            path: '/tables/contact',
-            children: [
-              {
-                path: '',
-                element: (
-                  <>
-                    <PageTitle title='contact' />
-                    <Contact />
-                  </>
-                )
-              }
-            ]
-          },
+          path: '/tables/discount',
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='Discount' />
+                  <Discount />
+                </>
+              )
+            },
+            {
+              path: 'add',
+              element: (
+                <>
+                  <PageTitle title='Add Discount' />
+                  <AddDiscount />
+                </>
+              )
+            },
+            {
+              path: 'edit/:id',
+              element: (
+                <>
+                  <PageTitle title='Edit Discount' />
+                  <EditDiscount />
+                </>
+              )
+            }
+          ]
+        },
+        {
+          path: '/tables/customer',
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='Customer' />
+                  <Customer />
+                </>
+              )
+            },
+            {
+              path: 'add',
+              element: (
+                <>
+                  <PageTitle title='Add Customer' />
+                  <AddCustomer />
+                </>
+              )
+            }
+          ]
+        },
+        {
+          path: '/tables/contact',
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='contact' />
+                  <Contact />
+                </>
+              )
+            }
+          ]
+        },
+        {
+          path: '/tables/chat',
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='Chat' />
+                  <Chat />
+                </>
+              )
+            }
+          ]
+        },
         {
           path: '/tables/decentralize',
           element: <Decentralize />
@@ -390,14 +373,16 @@ function AppRouter() {
       ]
     },
     {
-      path: '/signin',
+      path: '/login',
       element: (
         <>
-          <PageTitle title='Signin' />
-          <SignIn />
+          <PageTitle title='Login' />
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
         </>
       )
-    },
+    }
   ]
 
   return useRoutes(routes)

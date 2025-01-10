@@ -6,9 +6,11 @@ import RadioGroup from '@/components/common/Forms/RadioGroup'
 import SelectGroup from '@/components/common/Forms/SelectGroup'
 import Loader from '@/components/common/Loader'
 import { statusData } from '@/models/data/statusData'
-import { EToastOption } from '@/models/enums/option'
-import { ICategoryFormData, ICategory } from '@/models/interfaces/category'
+import { EFieldByValue, EToastOption } from '@/models/enums/option'
+import { IApiResponse } from '@/models/interfaces/api'
+import { ICategory } from '@/models/interfaces/category'
 import { IOptions } from '@/models/interfaces/options'
+import { IPagination } from '@/models/interfaces/pagination'
 import { UToast } from '@/utils/swal'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
@@ -26,27 +28,26 @@ function Edit({}: Props) {
   const categoryId: number = Number(params.id)
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout
-    try {
-      setLoading(true) // Bật trạng thái loading
-      // Giả lập fetch từ backend (thay bằng axios hoặc fetch nếu cần)
-      timeoutId = setTimeout(() => {
-        const data = categoryApi.getAll()
+    const handleGetData = async () => {
+      setLoading(true)
+      try {
+        const res: IApiResponse<{ categories: ICategory[]; pagination: IPagination }> = await categoryApi.list()
+        setCategoryData(res.data!.categories)
+
+        const resDetail: IApiResponse<{ categorie: ICategory }> = await categoryApi.detail(categoryId)
+        // console.log(resDetail);
+        const dataDetail = resDetail.data!.categorie
+        console.log(dataDetail)
+        const resParent: IApiResponse<{ categories: ICategory[]; pagination: IPagination }> = await categoryApi.list({
+          field: EFieldByValue.REFERENCE_CATEGORY_Id,
+          query: '0'
+        })
+        const data = resParent.data!.categories
         setCategoryData(data)
-        const category = categoryApi.getCat(categoryId)
-        if (category) {
-          reset({
-            name: category.name,
-            parentId: category.parentId,
-            status: category.status
-          })
-        }
-        let newData: IOptions[] = data
-          .filter((cat) => !cat.parentName) // Lọc các phần tử không có parentName
-          .map((cat) => ({
-            value: cat.id,
-            label: cat.name
-          }))
+        let newData: IOptions[] = data.map((cat) => ({
+          value: cat.id,
+          label: cat.name
+        }))
         newData = [
           {
             value: 0,
@@ -55,15 +56,19 @@ function Edit({}: Props) {
           ...newData
         ]
         setOptions(newData) // Cập nhật dữ liệu
+        reset({
+          name: dataDetail.name,
+          referenceCategoryId: dataDetail.referenceCategoryId || 0,
+          status: dataDetail.status
+        })
+
         setLoading(false) // Tắt trạng thái loading
-      }, 1000)
-    } catch (error) {
-      console.error('Error fetching categories:', error)
-      setLoading(false)
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+        setLoading(false)
+      }
     }
-    return () => {
-      clearTimeout(timeoutId) // Dọn dẹp timeout khi unmount
-    }
+    handleGetData()
   }, [])
   // Cấu hình Zod schema
   const categorySchema = z.object({
@@ -79,25 +84,26 @@ function Edit({}: Props) {
           message: 'Category name must be unique'
         }
       ), // Bắt buộc nhập tên
-    parentId: z.number(),
+    referenceCategoryId: z.number(),
     status: z.number()
   })
 
+  type categoryFormData = z.infer<typeof categorySchema>
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm<ICategoryFormData>({
+  } = useForm<categoryFormData>({
     resolver: zodResolver(categorySchema)
   })
 
-  const onSubmit = (data: ICategoryFormData) => {
+  const onSubmit = async (data: categoryFormData) => {
     try {
       //call api in here...
-      
-      UToast(EToastOption.SUCCESS, 'Edit Category Successfully!')
-      reset()
+      const res: IApiResponse<{ category: ICategory }> = await categoryApi.edit(categoryId, data)
+      if (res.status === 200) UToast(EToastOption.SUCCESS, 'Edit Category Successfully!')
+      reset(data)
     } catch (error) {
       reset()
       UToast(EToastOption.ERROR, 'Edit Category Failure!')
@@ -144,7 +150,7 @@ function Edit({}: Props) {
                 />
               </div>
               <Controller
-                name='parentId'
+                name='referenceCategoryId'
                 control={control}
                 render={({ field }) => (
                   <SelectGroup
@@ -152,7 +158,7 @@ function Edit({}: Props) {
                     onChange={(value) => field.onChange(parseInt(value))} // Chuyển giá trị từ string thành số
                     options={options} // Danh sách tùy chọn
                     label='Category'
-                    error={errors.parentId?.message} // Hiển thị lỗi (nếu có)
+                    error={errors.referenceCategoryId?.message} // Hiển thị lỗi (nếu có)
                   />
                 )}
               />

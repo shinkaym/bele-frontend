@@ -208,7 +208,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               AttributeValue
                             </NavLink>
                           </li>
-                           {/* Variant */}
+                        {/* Variant */}
                            <li>
                             <NavLink
                               to='/tables/variant'
@@ -219,7 +219,91 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             >
                               Variant
                             </NavLink>
-                          </li>
+                          </li>   
+                        {/* Discount */}
+                           <li>
+                            <NavLink
+                              to='/tables/discount'
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Discount  
+                            </NavLink>
+                          </li>   
+                        {/* Employee */}
+                           <li>
+                            <NavLink
+                              to='/tables/employee'
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Employee  
+                            </NavLink>
+                          </li>   
+                        {/* Order */}
+                           <li>
+                            <NavLink
+                              to='/tables/order'
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Order  
+                            </NavLink>
+                          </li>   
+                        {/* Customer */}
+                           <li>
+                            <NavLink
+                              to='/tables/customer'
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Customer  
+                            </NavLink>
+                          </li>   
+                        {/* Rate */}
+                           <li>
+                            <NavLink
+                              to='/tables/rate'
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Rate  
+                            </NavLink>
+                          </li>   
+                        {/* Chat */}
+                           <li>
+                            <NavLink
+                              to='/tables/chat'
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Chat  
+                            </NavLink>
+                          </li>   
+                        {/* Contact */}
+                           <li>
+                            <NavLink
+                              to='/tables/contact'
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Contact  
+                            </NavLink>
+                          </li>   
                            {/* Decentralize */}
                            <li>
                             <NavLink
