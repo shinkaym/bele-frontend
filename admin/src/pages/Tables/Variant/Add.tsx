@@ -9,7 +9,7 @@ import SelectGroup from '@/components/common/Forms/SelectGroup'
 import ImageUpload from '@/components/common/ImageUpload'
 import Loader from '@/components/common/Loader'
 import { statusData } from '@/models/data/statusData'
-import { EToastOption } from '@/models/enums/option'
+import { EFieldByValue, EToastOption } from '@/models/enums/option'
 import { IOptions } from '@/models/interfaces/options'
 import { IProduct } from '@/models/interfaces/product'
 import { UToast } from '@/utils/swal'
@@ -34,7 +34,7 @@ function Add({}: Props) {
     const handleGetData = async () => {
       setLoading(true) // Bật trạng thái loading
       try {
-        const res = await attributeApi.listAttributeValues({ query: '1', field: 'AttributeTypeId' })
+        const res = await attributeApi.listAttributeValues({ query: '1', field: EFieldByValue.ATTRIBUTE_TYPE_ID })
         if (res.data && res.status === 200) {
           const data = res.data!.attributeValues
           let newData: IOptions[] = data.map((attr) => ({
@@ -63,7 +63,7 @@ function Add({}: Props) {
     const handleGetData = async () => {
       setLoading(true) // Bật trạng thái loading
       try {
-        const res = await attributeApi.listAttributeValues({ query: '2', field: 'AttributeTypeId' })
+        const res = await attributeApi.listAttributeValues({ query: '2', field: EFieldByValue.ATTRIBUTE_TYPE_ID })
         if (res.data && res.status === 200) {
           const data = res.data!.attributeValues
           let newData: IOptions[] = data.map((attr) => ({
@@ -146,35 +146,35 @@ function Add({}: Props) {
   }, [imgUrl])
   const onSubmit = async (data: variantFormData) => {
     try {
-      const formData = new FormData();
+      const formData = new FormData()
 
       // Tạo mảng AttributeValueId từ sizeId và colorId
-      const attributeValueId = [Number(data.sizeId), Number(data.colorId)];
-  
+      const attributeValueId = [Number(data.sizeId), Number(data.colorId)]
+
       // Xóa sizeId và colorId khỏi dữ liệu ban đầu
-      const { sizeId, colorId, ...restData } = data;
-  
+      const { sizeId, colorId, ...restData } = data
+
       // Thêm dữ liệu còn lại vào formData
       Object.entries(restData).forEach(([key, value]) => {
         if (Array.isArray(value)) {
           // Nếu là mảng, thêm từng phần tử với cùng tên trường
-          value.forEach((item) => formData.append(key, item.toString()));
+          value.forEach((item) => formData.append(key, item.toString()))
         } else if (key === 'variantFile' && value instanceof File) {
           // Kiểm tra và thêm file nếu tồn tại
-          formData.append(key, value);
+          formData.append(key, value)
         } else {
-          formData.append(key, value as string | Blob);
+          formData.append(key, value as string | Blob)
         }
-      });
-  
+      })
+
       // Thêm từng phần tử trong mảng AttributeValueId vào formData
       attributeValueId.forEach((id) => {
-        formData.append('AttributeValueId', id.toString());
-      });
-  
-      console.log('FormData to submit:', Array.from(formData.entries())); // Debug log
+        formData.append('AttributeValueId', id.toString())
+      })
 
-      const response = await variantApi.add(formData);
+      console.log('FormData to submit:', Array.from(formData.entries())) // Debug log
+
+      const response = await variantApi.add(formData)
 
       if (response && response.status === 200) {
         UToast(EToastOption.SUCCESS, 'Add Variant Successfully!')

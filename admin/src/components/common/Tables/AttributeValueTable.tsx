@@ -4,7 +4,7 @@ import { attributeValueStatus, attributeValueTableHeaders } from '@/constants'
 import { EAttributeValueStatus } from '@/models/enums/status'
 import { formatDate } from '@/utils'
 import { useState } from 'react'
-import attributeValueApi from '@/apis/modules/attributeValue.api'
+import attributeValueApi from '@/apis/modules/attribute.api'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
 import StatusBadge from '../StatusBadge'
@@ -80,7 +80,7 @@ const AttributeValueTable = ({ attributeValues, onRefresh }: AttributeValueTable
     if (current && selectedStatus !== null) {
       try {
         const res = await attributeValueApi.updateStatus({
-          id: current.id,
+          id: Number(current.id),
           status: selectedStatus
         })
         if (res.status === 200) {
@@ -161,10 +161,10 @@ const AttributeValueTable = ({ attributeValues, onRefresh }: AttributeValueTable
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <div className='flex justify-center space-x-3.5'>
-                  <Link to={`/tables/attributeValue/edit/${em.id}`} className='hover:text-primary'>
+                  <Link to={`/tables/attribute-value/edit/${em.id}`} className='hover:text-primary'>
                     <EditIcon width={24} height={24} />
                   </Link>
-                  <button type='button' className='hover:text-primary' onClick={() => handleDeleteClick(em.id)}>
+                  <button type='button' className='hover:text-primary' onClick={() => handleDeleteClick(Number(em.id))}>
                     <DeleteIcon width={24} height={24} />
                   </button>
                 </div>

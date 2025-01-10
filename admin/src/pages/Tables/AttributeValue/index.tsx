@@ -1,4 +1,4 @@
-import AttributeValueApi from '@/apis/modules/attribute.api'
+import attributeApi from '@/apis/modules/attribute.api'
 import React, { useState, useEffect } from 'react'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
 import Button from '@/components/common/Button'
@@ -49,7 +49,7 @@ const index: React.FC = () => {
         order: sortOrder
       }
 
-      const res: IApiResponse<IAttributeValueListResponse> = await AttributeValueApi.list(params)
+      const res: IApiResponse<IAttributeValueListResponse> = await attributeApi.listAttributeValues(params)
       if (res.status === 200 && res.data) {
         setAttributeValues(res.data.attributeValues)
         setPagination(res.data.pagination)
@@ -108,7 +108,7 @@ const index: React.FC = () => {
                 sortOrderOptions={sortOrderOptions}
               />
             </div>
-            <Button type='link' to='/tables/attributeValue/add' size='sm'>
+            <Button type='link' to='/tables/attribute-value/add' size='sm'>
               Add
             </Button>
           </div>

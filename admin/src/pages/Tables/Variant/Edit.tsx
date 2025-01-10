@@ -9,7 +9,7 @@ import SelectGroup from '@/components/common/Forms/SelectGroup'
 import ImageUpload from '@/components/common/ImageUpload'
 import Loader from '@/components/common/Loader'
 import { statusData } from '@/models/data/statusData'
-import { EToastOption } from '@/models/enums/option'
+import { EFieldByValue, EToastOption } from '@/models/enums/option'
 import { IApiResponse } from '@/models/interfaces/api'
 import { IOptions } from '@/models/interfaces/options'
 import { IProduct } from '@/models/interfaces/product'
@@ -39,7 +39,7 @@ function Edit({}: Props) {
     const handleGetData = async () => {
       setLoading(true) // Bật trạng thái loading
       try {
-        const res = await attributeApi.listAttributeValues({ query: '1', field: 'AttributeTypeId' })
+        const res = await attributeApi.listAttributeValues({ query: '1', field: EFieldByValue.ATTRIBUTE_TYPE_ID })
         if (res.data && res.status === 200) {
           const data = res.data!.attributeValues
           let newData: IOptions[] = data.map((attr) => ({
@@ -68,7 +68,7 @@ function Edit({}: Props) {
     const handleGetData = async () => {
       setLoading(true) // Bật trạng thái loading
       try {
-        const res = await attributeApi.listAttributeValues({ query: '2', field: 'AttributeTypeId' })
+        const res = await attributeApi.listAttributeValues({ query: '2',field: EFieldByValue.ATTRIBUTE_TYPE_ID })
         if (res.data && res.status === 200) {
           const data = res.data!.attributeValues
           let newData: IOptions[] = data.map((attr) => ({

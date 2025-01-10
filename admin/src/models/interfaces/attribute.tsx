@@ -11,12 +11,15 @@ export interface IAttributeType {
 
 export interface IAttributeValue {
   id: number | string
+  attributeTypeId?: number,
+  attributeType?: IAttributeType,
   attributeTypeName: string
   name: string
   value: string
   status: number
   createdAt: string
   updatedAt: string
+  variantAttributeValues: null
 }
 
 export interface IAttributeValueListResponse {
