@@ -1,7 +1,12 @@
+import SettingProvider from './context/Setting/SettingProvider'
 import AppRouter from './routes/routes'
 
 function App() {
-  return <AppRouter />
+  return (
+    <SettingProvider>
+      <AppRouter />
+    </SettingProvider>
+  )
 }
 
 export default App

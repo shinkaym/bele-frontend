@@ -2,6 +2,7 @@ import Button from '@/components/common/Button'
 import Overlay from '@/components/common/Overlay'
 import { ProductGird } from '@/components/common/ProductGrid'
 import { logoList, MD_BP, productData } from '@/constants'
+import SettingContext from '@/context/Setting/SettingContext'
 import {
   faArrowRight,
   faBagShopping,
@@ -13,12 +14,13 @@ import {
   faUser
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
 function Header() {
   const [isShowSearchModal, setIsShowSearchModal] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(false)
+  const setting = useContext(SettingContext)
 
   const [limit, setLimit] = useState<number>(4)
   const handleSearchModalClose = () => {
@@ -70,7 +72,7 @@ function Header() {
         </div>
         <div className='lg:px-14 md:px-12 sm:px-10 px-6 md mx-auto flex items-center justify-between lg:h-20 md:h-18 sm:h-16 h-14'>
           <Link to={'/'} className='h-full'>
-            <img className='h-full w-full object-cover' src={logoList.mainLogo.url} alt={logoList.mainLogo.name} />
+            <img className='h-full w-full object-cover' src={setting?.logo.mainLogo} alt={'Main Logo'} />
           </Link>
           <div className='items-center justify-between h-full hidden lg:flex relative'>
             <NavLink
