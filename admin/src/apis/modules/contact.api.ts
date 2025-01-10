@@ -11,6 +11,7 @@ import { contactListResponseData, contactDetailResponseData } from '@/models/dat
 import axiosPublic from '../client/public.client'
 import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
 import { IApiResponse } from '@/models/interfaces/api'
+import { EContactStatus } from '@/models/enums/status'
 
 const contactEndpoints = {
   list: 'contact',
@@ -28,7 +29,7 @@ const contactApi = {
     limit: number
     query: string
     field: string
-    status: number | null
+    status: EContactStatus | null
     sort: string
     order: string
   }): Promise<IContactListResponse> {
@@ -64,9 +65,17 @@ const contactApi = {
   },
 
   // Sửa trạng thái của contact
-  async updateStatus({ id, status }: { id: number; status: number }): Promise<IContactUpdateStatusResponse> {
+  async updateStatus({
+    id,
+    status
+  }: {
+    id: number
+    status: number
+  }): Promise<IApiResponse<IContactUpdateStatusResponse>> {
     try {
-      return await axiosPublic.patch(contactEndpoints.updateStatus({ id }), { status })
+      return await axiosPublic.patch(`Contact/${id}`, {
+        status
+      })
     } catch (error) {
       throw error
     }

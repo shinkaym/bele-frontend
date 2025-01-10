@@ -31,13 +31,9 @@ export interface IContactDeleteResponse {
 }
 
 export interface IContactUpdateStatusResponse {
-  status: number
-  data: {
     id: number
     status: number
   }
-  message: string
-}
 
 export interface IContactAddResponse {
   status: number
