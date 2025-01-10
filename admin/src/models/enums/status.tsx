@@ -18,6 +18,24 @@ export enum ERateStatus {
   INACTIVE = 'Inactive'
 }
 
+export enum EProductStatus {
+  UNKNOWN = 'Unknown',
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive'
+}
+
+export enum EVariantStatus {
+  UNKNOWN = 'Unknown',
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive'
+}
+
+export enum EAttributeStatus {
+  UNKNOWN = 'Unknown',
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive'
+}
+
 export enum EEmployeeStatus {
   UNKNOWN = 'Unknown',
   ACTIVE = 'Active',

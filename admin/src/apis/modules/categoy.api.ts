@@ -12,7 +12,7 @@ const categoryEndpoints = {
 }
 
 const categoryApi = {
-  list(params?: {
+  list(params: {
     page?: number
     limit?: number
     query?: string
@@ -21,7 +21,8 @@ const categoryApi = {
     sort?: EFieldByValue
     order?: ESortOrderValue
   }): Promise<IApiResponse<{ categories: ICategory[] , pagination: IPagination }>> {
-    return axiosPrivate.get('Category', { params })
+    const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value !== null))
+    return axiosPrivate.get('Category', { params: filteredParams })
   },
   detail(id: number): Promise<IApiResponse<{ categorie: ICategory }>> {
     return axiosPublic.get(`Category/${id}`)

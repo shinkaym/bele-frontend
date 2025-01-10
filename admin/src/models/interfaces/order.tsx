@@ -22,7 +22,9 @@ export interface IOrder {
       Size: any
     ]
     quantity: number
-    price: number
+    originalPrice: number
+    finalPrice: number
+    discountValue: number
   }[]
 }
 

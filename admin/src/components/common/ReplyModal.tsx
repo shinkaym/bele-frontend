@@ -1,6 +1,7 @@
 import { IRate } from '@/models/interfaces/rate'
 import { formatDate } from '@/utils'
 import StarIcon from '../icons/StarIcon'
+import Overlay from './Overlay'
 
 type ReplyModalProps = {
   data: IRate | null
@@ -11,8 +12,9 @@ type ReplyModalProps = {
 
 const ReplyModal: React.FC<ReplyModalProps> = ({ data, onCancel, onSubmit, view = false }) => {
   return (
-    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
-      <div className='bg-white rounded-lg shadow-lg w-full max-w-md'>
+    <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50'>
+      <Overlay onClose={onCancel} className='z-40' />
+      <div className='bg-white rounded-lg shadow-lg w-full max-w-md z-50'>
         <div className='flex justify-between items-center p-4 border-b'>
           <h2 className='text-xl font-semibold'>Reply to Comment</h2>
           <button onClick={onCancel} className='text-3xl text-gray-500 hover:text-gray-700'>
