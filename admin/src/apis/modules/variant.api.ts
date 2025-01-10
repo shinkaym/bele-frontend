@@ -1,8 +1,7 @@
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import axiosPublic from '../client/public.client'
 import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
 import { IApiResponse } from '@/models/interfaces/api'
-import { IVariant } from '@/models/interfaces/variant'
+import { IVariantDetailResponse, IVariantListResponse } from '@/models/interfaces/variant'
 
 const variantApi = {
   async list(params: {
@@ -11,9 +10,10 @@ const variantApi = {
     query: string
     field: EFieldByValue
     status: any
+    productId: number
     sort: EFieldByValue
     order: ESortOrderValue
-  }): Promise<IApiResponse<VariantListResponse>> {
+  }): Promise<IApiResponse<IVariantListResponse>> {
     try {
       const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value !== null))
       return await axiosPublic.get('Variant', { params: filteredParams })
@@ -24,6 +24,31 @@ const variantApi = {
   async detail({ id }: { id: number }): Promise<IApiResponse<IVariantDetailResponse>> {
     try {
       return await axiosPublic.get(`Variant/${id}`)
+    } catch (error) {
+      throw error
+    }
+  },
+
+  async delete({ id }: { id: number }): Promise<IApiResponse> {
+    try {
+      return await axiosPublic.delete(`Variant/${id}`)
+    } catch (error) {
+      throw error
+    }
+  },
+
+  async updateStatus({
+    id,
+    status
+  }: {
+    id: number
+    status: number
+  }): Promise<IApiResponse> {
+    try {
+      return await axiosPublic.patch(`Variant/${id}`, { 
+        modifyField: 'Status',
+        modifyValue: status.toString()
+       })
     } catch (error) {
       throw error
     }

@@ -31,11 +31,6 @@ export interface IEmployeeDeleteResponse {
   message: string
 }
 
-export interface IEmployeeDeleteResponse {
-  status: number
-  message: string
-}
-
 export interface IEmployeeUpdateStatusResponse {
   id: number
   status: number

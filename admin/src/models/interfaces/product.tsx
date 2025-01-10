@@ -1,20 +1,41 @@
-import { IAttributeType } from "./attribute"
-import { ICategory } from "./category"
-import { IDiscount } from "./discount"
+import { IAttributeType } from './attribute';
+import { ICategory } from './category';
+import { IPagination } from './pagination';
+
+export interface ITag {
+  id: number;
+  name: string;
+  productTags: null;
+}
 
 export interface IProduct {
-  id: number | string // ID của sản phẩm
-  name: string // Tên sản phẩm
-  category:ICategory
-  thumbnail:string
-  description:string
-  discount:IDiscount
-  basePrice: number // Giá sản phẩm
-  slug: string // URL slug của sản phẩm
-  view: number // Số lượt xem sản phẩm
-  like: number // Số lượt thích sản phẩm
-  status: number // Trạng thái sản phẩm (1: hoạt động, 0: không hoạt động)
-  updatedAt: string // Trạng thái xóa (0: chưa xóa, 1: đã xóa)
-  createdAt: string // Thời gian tạo sản phẩm
-  attributeTypes:IAttributeType[]  
+  id: number;
+  name: string;
+  category: ICategory;
+  description: string;
+  discount: string;
+  basePrice: number;
+  slug: string;
+  thumbnail: string;
+  view: number;
+  like: number;
+  status: number;
+  updatedAt: string;
+  createdAt: string;
+  attributeTypes: IAttributeType[];
+  tags: ITag[];
+}
+
+export interface IProductListResponse {
+  products: IProduct[]
+  pagination: IPagination
+}
+
+export interface IProductDetailResponse {
+  product: IProduct
+}
+
+export interface IProductDeleteResponse {
+  status: number
+  message: string
 }

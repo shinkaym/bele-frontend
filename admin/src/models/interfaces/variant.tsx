@@ -1,25 +1,40 @@
-import { IProduct } from "./product"
+import { IPagination } from './pagination'
 
-export interface IVariantAttributeVale{
-    color?:{
-        id:number | string,
-        name:string,
-        value:string
-    },
-    size?:{
-        id:number | string,
-        name:string
-    }
+export interface IAttributeValue {
+  id: number
+  name: string
+  value: string
+  attributeTypeId: number
+  attributeType: null | any
+  status: number
+  deleted: boolean
+  createdAt: string
+  updatedAt: string
+  variantAttributeValues: null | any
 }
 
 export interface IVariant {
-    id: number // ID của sản phẩm
-    product: IProduct
-    thumbnail:string
-    stock:number
-    price: number // Giá sản phẩm
-    status: number // Trạng thái sản phẩm (1: hoạt động, 0: không hoạt động)
-    updatedAt: string // Trạng thái xóa (0: chưa xóa, 1: đã xóa)
-    createdAt: string // Thời gian tạo sản phẩm
-    variantAttributeValue:IVariantAttributeVale | null
-  }
+  id: number
+  productName: string
+  price: number
+  stock: number
+  thumbnail: string
+  status: number
+  createdAt: string
+  updatedAt: string
+  attributeValues: IAttributeValue[]
+}
+
+export interface IVariantListResponse {
+  variants: IVariant[]
+  pagination: IPagination
+}
+
+export interface IVariantDetailResponse {
+  variant: IVariant
+}
+
+export interface IVariantDeleteResponse {
+  status: number
+  message: string
+}

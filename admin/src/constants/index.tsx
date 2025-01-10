@@ -446,6 +446,19 @@ export const employeeTableHeaders: ITable[] = [
   { title: 'Action', value: 10, className: 'min-w-[80px] text-center' }
 ]
 
+export const productTableHeaders: ITable[] = [
+  { title: 'Id', value: 1, className: 'min-w-[20px] text-center' },
+  { title: 'Product', value: 2, className: 'min-w-[200px]' },
+  { title: 'Category', value: 3, className: 'min-w-[80px]' },
+  { title: 'Base Price', value: 4, className: 'min-w-[80px]' },
+  { title: 'Slug', value: 5, className: 'min-w-[80px]' },
+  { title: 'View', value: 6, className: 'min-w-[60px]' },
+  { title: 'Like', value: 7, className: 'min-w-[60px]' },
+  { title: 'Created At', value: 8, className: 'min-w-[80px]' },
+  { title: 'Status', value: 9, className: 'min-w-[80px]' },
+  { title: 'Actions', value: 10, className: 'min-w-[80px] text-center' }
+];
+
 export const rateTableHeaders: ITable[] = [
   { title: 'Id', value: 1, className: 'min-w-[20px] text-center' },
   { title: 'Product', value: 2, className: 'min-w-[200px]' },

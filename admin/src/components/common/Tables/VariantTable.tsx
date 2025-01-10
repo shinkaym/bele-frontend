@@ -1,4 +1,3 @@
-import { IVariant } from '@/models/interfaces/variant'
 import { AddIcon, DeleteIcon, EditIcon } from '@/components/icons'
 import { Link } from 'react-router-dom'
 import { variantStatus, variantTableHeaders } from '@/constants'
@@ -12,6 +11,7 @@ import StatusModal from '../StatusModal'
 import StatusBadge from '../StatusBadge'
 import { UInputAlert, UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
+import { IVariant } from '@/models/interfaces/variant'
 
 type VariantTableProps = {
   variants: IVariant[]
@@ -77,26 +77,26 @@ const VariantTable = ({ variants, onRefresh }: VariantTableProps) => {
   }
 
   const handleConfirmStatusChange = async () => {
-    if (current && selectedStatus !== null) {
-      try {
-        const res = await variantApi.updateStatus({
-          id: current.id,
-          status: selectedStatus
-        })
-        if (res.status === 200) {
-          onRefresh()
-          UToast(EToastOption.SUCCESS, res.message)
-        } else {
-          UToast(EToastOption.ERROR, res.message)
-        }
-      } catch (error) {
-        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
-      } finally {
-        setIsOpenConfirmStatusChangeModal(false)
-        setSelectedStatus(null)
-        setCurrent(null)
-      }
-    }
+    // if (current && selectedStatus !== null) {
+    //   try {
+    //     const res = await variantApi.updateStatus({
+    //       id: current.id,
+    //       status: selectedStatus
+    //     })
+    //     if (res.status === 200) {
+    //       onRefresh()
+    //       UToast(EToastOption.SUCCESS, res.message)
+    //     } else {
+    //       UToast(EToastOption.ERROR, res.message)
+    //     }
+    //   } catch (error) {
+    //     UToast(EToastOption.ERROR, 'An unexpected error occurred.')
+    //   } finally {
+    //     setIsOpenConfirmStatusChangeModal(false)
+    //     setSelectedStatus(null)
+    //     setCurrent(null)
+    //   }
+    // }
   }
 
   const handleCancelStatusChange = () => {
@@ -142,12 +142,12 @@ const VariantTable = ({ variants, onRefresh }: VariantTableProps) => {
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <div className='flex items-center'>
-                  <img src={variant.thumbnail} alt={variant.product.name} className='bg-boxdark object-cover w-10' />
+                  <img src={variant.thumbnail} alt={variant.productName} className='bg-boxdark object-cover w-10' />
                 </div>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <p className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                  {variant.product.name}
+                  {variant.productName}
                 </p>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
@@ -158,12 +158,12 @@ const VariantTable = ({ variants, onRefresh }: VariantTableProps) => {
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <p className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                  {variant?.variantAttributeValue?.color?.name}
+                  {variant.attributeValues[0].name}
                 </p>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <p className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                  {variant?.variantAttributeValue?.size?.name}
+                  {variant.attributeValues[1].name}
                 </p>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
