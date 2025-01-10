@@ -47,8 +47,8 @@ function Category({}: Props) {
 
       const res: IApiResponse<{ categories: ICategory[]; pagination: IPagination }> = await categoryApi.list(params)
       if (res.status === 200) {
-        setCategories(res.data.categories)
-        setPagination(res.data.pagination)
+        setCategories(res.data!.categories)
+        setPagination(res.data!.pagination)
       } else {
         UToast(EToastOption.ERROR, res.message)
       }
@@ -81,35 +81,44 @@ function Category({}: Props) {
           <Breadcrumb pageName='Category' />
           <div className='flex flex-col gap-10'>
             <div className='rounded-sm border bg-white px-5 pt-6 pb-2.5 shadow-default dark:bg-boxdark'>
-              <div className='flex items-center justify-start gap-5 mb-6'>
+              <div className='flex items-center justify-between gap-5 mb-6'>
                 <Search onSearch={search} />
-                <SelectFilter
-                  label='Field'
-                  value={selectedField}
-                  options={categoryFieldOptions}
-                  onChange={(value) => setSelectedField(value as EFieldByValue)}
-                />
-                <SelectStatusFilter
-                  label='Status'
-                  value={selectedStatus}
-                  options={categoryStatus}
-                  onChange={(value) => setSelectedStatus(value as ECategoryStatus | null)}
-                />
-                <SelectSort
-                  sortBy={sortBy}
-                  sortOrder={sortOrder}
-                  onSortChange={(by, order) => {
-                    setSortBy(by)
-                    setSortOrder(order)
-                  }}
-                  sortByOptions={sortByOptions}
-                  sortOrderOptions={sortOrderOptions}
-                />
+                <div className='flex gap-2'>
+                  {' '}
+                  <SelectFilter
+                    label='Field'
+                    value={selectedField}
+                    options={categoryFieldOptions}
+                    onChange={(value) => setSelectedField(value as EFieldByValue)}
+                  />
+                  <SelectStatusFilter
+                    label='Status'
+                    value={selectedStatus}
+                    options={categoryStatus}
+                    onChange={(value) => setSelectedStatus(value as ECategoryStatus | null)}
+                  />
+                  <SelectSort
+                    sortBy={sortBy}
+                    sortOrder={sortOrder}
+                    onSortChange={(by, order) => {
+                      setSortBy(by)
+                      setSortOrder(order)
+                    }}
+                    sortByOptions={sortByOptions}
+                    sortOrderOptions={sortOrderOptions}
+                  />
+                </div>
+                <Button type='link' to='/tables/cateog/add' size='sm'>
+                  Add
+                </Button>
               </div>
               {loading ? (
                 <Loader />
               ) : (
-                <CategoryTable categories={categories} onRefresh={() => fetchData(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_LIMIT)} />
+                <CategoryTable
+                  categories={categories}
+                  onRefresh={() => fetchData(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_LIMIT)}
+                />
               )}
               <Pagination
                 currentPage={pagination.currentPage}
