@@ -4,6 +4,7 @@ import {
     IContactListResponse,
     IContactDeleteResponse,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     IContactUpdateStatusResponse,
     IContactAddResponse,
   } from '@/models/interfaces/contact';
@@ -78,6 +79,8 @@ import {
   
   export default contactApi;
 =======
+=======
+>>>>>>> Stashed changes
     IContactUpdateStatusResponse
   } from '@/models/interfaces/contact'
   import axiosPublic from '../client/public.client'
@@ -140,5 +143,8 @@ import {
   }
   
   export default contactApi
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   

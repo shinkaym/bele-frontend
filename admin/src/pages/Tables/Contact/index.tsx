@@ -44,22 +44,32 @@ import { IApiResponse } from '@/models/interfaces/api'
 =======
 import contactApi from '@/apis/modules/contact.api'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
-import Button from '@/components/common/Button'
 import Search from '@/components/common/Forms/Search'
 import Loader from '@/components/common/Loader'
-import Pagination from '@/components/common/Pagination'
-import SelectFilter from '@/components/common/SelectFilter'
-import SelectSort from '@/components/common/SelectSort'
-import SelectStatusFilter from '@/components/common/SelectStatusFilter'
 import ContactTable from '@/components/common/Tables/ContactTable'
-import { contactFieldOptions, contactStatus, PAGINATION_CONFIG, sortByOptions, sortOrderOptions } from '@/constants'
-import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
 import { IContact, IContactListResponse } from '@/models/interfaces/contact'
 import { IPagination } from '@/models/interfaces/pagination'
 import { useEffect, useState } from 'react'
+import {
+  contactFieldOptions,
+  contactSortByOptions,
+  contactStatus,
+  PAGINATION_CONFIG,
+  sortOrderOptions
+} from '@/constants'
+import { EFieldByValue, ESortOrderValue, EToastOption } from '@/models/enums/option'
+import Pagination from '@/components/common/Pagination'
+import SelectFilter from '@/components/common/SelectFilter'
+import SelectSort from '@/components/common/SelectSort'
+import { EContactStatus } from '@/models/enums/status'
+import SelectStatusFilter from '@/components/common/SelectStatusFilter'
 import { UToast } from '@/utils/swal'
+<<<<<<< Updated upstream
 import { EToastOption } from '@/models/enums/option'
 >>>>>>> develop
+=======
+import { IApiResponse } from '@/models/interfaces/api'
+>>>>>>> Stashed changes
 
 const index: React.FC = () => {
   const [contacts, setContacts] = useState<IContact[]>([])
@@ -89,12 +99,12 @@ const index: React.FC = () => {
 >>>>>>> Stashed changes
 =======
     currentPage: PAGINATION_CONFIG.DEFAULT_PAGE,
-    totalPage: 0,
+    totalPage: 0
   })
   const [loading, setLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState<string>('')
-  const [selectedField, setSelectedField] = useState<EFieldByValue>(EFieldByValue.ID)
-  const [selectedStatus, setSelectedStatus] = useState<number | null>(null)
+  const [selectedField, setSelectedField] = useState<EFieldByValue>(EFieldByValue.FULLNAME)
+  const [selectedStatus, setSelectedStatus] = useState<EContactStatus | null>(null)
   const [sortBy, setSortBy] = useState<EFieldByValue>(EFieldByValue.CREATED_AT)
   const [sortOrder, setSortOrder] = useState<ESortOrderValue>(ESortOrderValue.ASC)
 >>>>>>> develop
@@ -109,6 +119,7 @@ const index: React.FC = () => {
         field: selectedField,
         status: selectedStatus,
         sort: sortBy,
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         order: sortOrder,
       }
@@ -135,9 +146,17 @@ const index: React.FC = () => {
 =======
       const res = await contactApi.list(params)
       console.log('🚀 ~ fetchData ~ res:', res)
+=======
+        order: sortOrder
+      }
+
+      const res: IApiResponse<IContactListResponse> = await contactApi.list(params)
+
+>>>>>>> Stashed changes
       if (res.status === 200 && res.data) {
-        setContacts(res.data.contacts)
-        setPagination(res.data.pagination)
+        const { contacts, pagination } = res.data.data
+        setContacts(contacts)
+        setPagination(pagination)
       } else {
         UToast(EToastOption.ERROR, res.message)
       }
@@ -177,8 +196,9 @@ const index: React.FC = () => {
       <Breadcrumb pageName='Contact' />
       <div className='flex flex-col gap-10'>
         <div className='rounded-sm border bg-white px-5 pt-6 pb-2.5 shadow-default dark:bg-boxdark'>
-          <div className='flex items-center justify-between gap-5 mb-6'>
+          <div className='flex items-center justify-start gap-5 mb-6'>
             <Search onSearch={setSearchQuery} onSubmit={handleSearchSubmit} />
+<<<<<<< Updated upstream
             <div className='flex items-center justify-between gap-5'>
 >>>>>>> develop
               <SelectFilter
@@ -213,6 +233,8 @@ const index: React.FC = () => {
         <div className='rounded-sm border bg-white px-5 pt-6 pb-2.5 shadow-default dark:bg-boxdark'>
           <div className='flex items-center justify-start gap-5 mb-6'>
             <Search onSearch={setSearchQuery} onSubmit={handleSearchSubmit} />
+=======
+>>>>>>> Stashed changes
             <SelectFilter
               label='Field'
               value={selectedField}
@@ -235,23 +257,32 @@ const index: React.FC = () => {
               sortByOptions={contactSortByOptions}
               sortOrderOptions={sortOrderOptions}
             />
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
           </div>
           {loading ? (
             <Loader />
           ) : (
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< Updated upstream
             <ContactTable contacts={contacts} onRefresh={() => fetchData(pagination.currentPage, 5)} />
 =======
+=======
+>>>>>>> Stashed changes
             <ContactTable
               contacts={contacts}
               onRefresh={() => fetchData(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_LIMIT)}
             />
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 =======
             <ContactTable contacts={contacts} onRefresh={() => fetchData(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_LIMIT)} />
 >>>>>>> develop
+=======
+>>>>>>> Stashed changes
           )}
           <Pagination
             currentPage={pagination.currentPage}
