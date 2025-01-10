@@ -1,5 +1,6 @@
 import { IStatus } from '@/models/interfaces'
 import React from 'react'
+import Overlay from './Overlay'
 
 interface StatusModalProps {
   status: number
@@ -12,7 +13,8 @@ interface StatusModalProps {
 const StatusModal: React.FC<StatusModalProps> = ({ status, statusList, modalTitle, onUpdateStatus, onCancel }) => {
   return (
     <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50'>
-      <div className='bg-white p-6  rounded shadow-lg'>
+      <Overlay onClose={onCancel} className='z-40' />
+      <div className='bg-white p-6  rounded shadow-lg z-50'>
         <h3 className='text-lg font-medium mb-4'>Change {modalTitle} Status</h3>
         <div className='grid grid-cols-2 gap-4'>
           {statusList
@@ -28,16 +30,12 @@ const StatusModal: React.FC<StatusModalProps> = ({ status, statusList, modalTitl
               </button>
             ))}
         </div>
-        <button
-              className='bg-gray-500 text-white w-full py-3 mt-5 rounded'
-              onClick={onCancel}
-            >
-              Cancel
-            </button>
+        <button className='bg-gray-500 text-white w-full py-3 mt-5 rounded' onClick={onCancel}>
+          Cancel
+        </button>
       </div>
     </div>
   )
 }
 
 export default StatusModal
-

@@ -1,6 +1,5 @@
 import Loader from '@/components/common/Loader'
 import PageTitle from '@/components/common/PageTitle'
-// import PrivateRoute from '@/components/common/PrivateRoute'
 import DefaultLayout from '@/components/layout/DefaultLayout'
 import Login from '@/pages/Login'
 import Dashboard from '@/pages/Dashboard'

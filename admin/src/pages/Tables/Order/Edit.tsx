@@ -9,7 +9,7 @@ import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
 import { useParams } from 'react-router-dom'
 import { IOrder } from '@/models/interfaces/order'
-import { formatDate } from '@/utils'
+import { calculateTotalDiscount, formatDate } from '@/utils'
 import { orderStatus } from '@/constants'
 
 const OrderEdit: React.FC = () => {
@@ -26,6 +26,7 @@ const OrderEdit: React.FC = () => {
           const res = await orderApi.detail({ id: parseInt(id) })
           if (res.status === 200) {
             if (res.data) {
+              console.log('🚀 ~ fetchOrder ~ res.data:', res.data)
               setOrder(res.data)
               setStatus(res.data.status)
             }
@@ -185,7 +186,7 @@ const OrderEdit: React.FC = () => {
                   </div>
                   {/* Column 3 */}
                   <div className='w-1/4 md:w-1/3 text-right'>
-                    <p className='mt-1'>{product.price}</p>
+                    <p className='mt-1'>{product.finalPrice}VND <span className='line-through'>{product.originalPrice}VND</span></p>
                   </div>
                 </div>
               ))}
@@ -207,16 +208,16 @@ const OrderEdit: React.FC = () => {
               </p>
             </div>
             <div className='flex flex-col gap-1'>
-              <p className='text-right'>{order.totalMoney}$</p>
-              <p className='text-right'>0$</p>
-              <p className='text-right'>0$</p>
+              <p className='text-right'>{order.totalMoney+calculateTotalDiscount(order)}VND</p>
+              <p className='text-right'>{calculateTotalDiscount(order)}VND</p>
+              <p className='text-right'>0VND</p>
             </div>
           </div>
           <div className='flex justify-between'>
             <p>
               <strong>Total</strong>
             </p>
-            <p className='text-right'>{order.totalMoney}$</p>
+            <p className='text-right'>{order.totalMoney}VND</p>
           </div>
         </div>
 

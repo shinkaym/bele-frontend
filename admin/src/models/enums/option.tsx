@@ -17,7 +17,13 @@ export enum EFieldByValue {
     RECEIVE_DATE = "ReceiveDate",
     STATUS = "Status",
     STAR = "Star",
+    VALUE = "Value",
+    BASE_PRICE = "BasePrice",
+    ATTRIBUTE_TYPE_ID = "AttributeTypeId",
+    REFERENCE_CATEGORY_ID = "ReferenceCategoryId",
     DISCOUNT_VALUE = "DiscountValue",
+    PRICE = "Price",
+    STOCK = "InStock, OutStock",
     CREATED_AT = "CreatedAt",
     UPDATED_AT = "UpdatedAt",
     REFERENCE_CATEGORY_Id = "ReferenceCategoryId"
@@ -41,10 +47,15 @@ export enum EFieldByTitle {
     RECEIVE_DATE = "Receive Date",
     STATUS = "Status",
     STAR = "Star",
+    STOCK = "Stock",
+    BASE_PRICE = "Base Price",
+    PRICE = "Price",
+    VALUE = "Value",
+    ATTRIBUTE_TYPE_ID = "Attribute Type Id",
+    REFERENCE_CATEGORY_ID = "Reference Category ID",
     DISCOUNT_VALUE = "Discount Value",
     CREATED_AT = "Created At",
     UPDATED_AT = "Updated At",
-    REFERENCE_CATEGORY_Id = "Reference Category Id"
   }
   
   export enum ESortOrderTitle {
