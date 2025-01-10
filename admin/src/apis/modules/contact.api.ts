@@ -28,10 +28,10 @@ const contactApi = {
     page: number
     limit: number
     query: string
-    field: string
+    field: EFieldByValue
     status: EContactStatus | null
-    sort: string
-    order: string
+    sort: EFieldByValue
+    order: ESortOrderValue
   }): Promise<IContactListResponse> {
     try {
       console.log('🚀 ~ list ~ params:', params); // Log tham số truyền vào API

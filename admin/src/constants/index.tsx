@@ -156,6 +156,17 @@ export const attributeValueSortByOptions: { title: EFieldByTitle; value: EFieldB
   }
 ]
 
+export const contactSortByOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+    {
+      title: EFieldByTitle.FULLNAME,
+      value: EFieldByValue.FULLNAME
+    },
+    {
+      title: EFieldByTitle.CREATED_AT,
+      value: EFieldByValue.CREATED_AT
+    }
+  ]
+
 export const sortOrderOptions: { title: ESortOrderTitle; value: ESortOrderValue }[] = [
   {
     title: ESortOrderTitle.ASC,
@@ -405,9 +416,17 @@ export const variantFieldOptions: { title: EFieldByTitle; value: EFieldByValue }
 
 export const contactFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
   {
-    title: EFieldByTitle.ID,
-    value: EFieldByValue.ID
-  }
+    title: EFieldByTitle.FULLNAME,
+    value: EFieldByValue.FULLNAME
+  },
+    {
+        title: EFieldByTitle.EMAIL,
+        value: EFieldByValue.EMAIL
+    },
+    {
+        title: EFieldByTitle.PHONE_NUMBER,
+        value: EFieldByValue.PHONE_NUMBER
+    }
 ]
 
 export const attributeValueFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [

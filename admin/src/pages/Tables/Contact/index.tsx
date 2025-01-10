@@ -39,7 +39,7 @@ const ContactPage: React.FC = () => {
           query: searchQuery,
           field: selectedField,
           status: selectedStatus,
-          sort: 'id',
+          sort: sortBy,
           order: sortOrder
         }
         const res = await contactApi.list(params)
