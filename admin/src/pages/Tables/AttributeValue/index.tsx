@@ -1,4 +1,4 @@
-import AttributeValueApi from '@/apis/modules/attributeValue.api'
+import AttributeValueApi from '@/apis/modules/attribute.api'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
 import Loader from '@/components/common/Loader'
 import AttributeValueTable from '@/components/common/Tables/AttributeValueTable'

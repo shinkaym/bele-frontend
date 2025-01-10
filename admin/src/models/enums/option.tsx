@@ -26,7 +26,6 @@ export enum EFieldByValue {
     STOCK = "InStock, OutStock",
     CREATED_AT = "CreatedAt",
     UPDATED_AT = "UpdatedAt",
-    REFERENCE_CATEGORY_Id = "ReferenceCategoryId"
   }
   
   export enum ESortOrderValue {

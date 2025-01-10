@@ -1,11 +1,11 @@
 import { IAttributeType } from './attribute';
 import { ICategory } from './category';
+import { IDiscount } from './discount';
 import { IPagination } from './pagination';
 
 export interface ITag {
   id: number;
   name: string;
-  productTags: null;
 }
 
 export interface IProduct {
@@ -13,7 +13,7 @@ export interface IProduct {
   name: string;
   category: ICategory;
   description: string;
-  discount: string;
+  discount: IDiscount;
   basePrice: number;
   slug: string;
   thumbnail: string;

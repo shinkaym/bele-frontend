@@ -16,9 +16,10 @@ import { IVariant } from '@/models/interfaces/variant'
 type VariantTableProps = {
   variants: IVariant[]
   onRefresh: () => void
+  productId:number
 }
 
-const VariantTable = ({ variants, onRefresh }: VariantTableProps) => {
+const VariantTable = ({ variants, onRefresh,productId  }: VariantTableProps) => {
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [selectedStatus, setSelectedStatus] = useState<number | null>(null)
   const [current, setCurrent] = useState<IVariant | null>(null)
@@ -185,7 +186,7 @@ const VariantTable = ({ variants, onRefresh }: VariantTableProps) => {
                   <button type='button' className='hover:text-primary' onClick={() => handleAddStock(variant.id)}>
                     <AddIcon width={24} height={24} />
                   </button>
-                  <Link to={`/tables/Variant/edit/${variant.id}`} className='hover:text-primary'>
+                  <Link to={`/tables/Variant/edit/${variant.id}?productId=${productId}`} className='hover:text-primary'>
                     <EditIcon width={24} height={24} />
                   </Link>
                   <button type='button' className='hover:text-primary' onClick={() => handleDeleteClick(variant.id)}>

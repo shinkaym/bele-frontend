@@ -1,26 +1,22 @@
-import {
-  IDiscountListResponse,
-  IDiscountDetailResponse,
-  IDiscountDeleteResponse,
-  IDiscountUpdateStatusResponse,
-  IDiscountAddResponse,
-  IDiscountUpdateResponse,
-  IDiscount
-} from '@/models/interfaces/discount'
-import axiosPublic from '../client/public.client'
-import { discountData } from '@/models/data/discountData'
 import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
 import { IApiResponse } from '@/models/interfaces/api'
+import {
+  IDiscount,
+  IDiscountListResponse,
+  IDiscountUpdateResponse,
+  IDiscountUpdateStatusResponse
+} from '@/models/interfaces/discount'
+import axiosPublic from '../client/public.client'
 
 const discountApi = {
   async list(params: {
-    page: number
-    limit: number
-    query: string
-    field: EFieldByValue
-    status: any
-    sort: EFieldByValue
-    order: ESortOrderValue
+    page?: number
+    limit?: number
+    query?: string
+    field?: EFieldByValue
+    status?: any
+    sort?: EFieldByValue
+    order?: ESortOrderValue
   }): Promise<IApiResponse<IDiscountListResponse>> {
     try {
       const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value !== null))

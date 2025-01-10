@@ -29,14 +29,14 @@ function Add({}: Props) {
       setLoading(true)
       try {
         //Get List
-        const res: IApiResponse<{ categories: ICategory[]; pagination: IPagination }> = await categoryApi.list()
-        setCategoryData(res.data.categories)
+        const res: IApiResponse<{ categories: ICategory[]; pagination: IPagination }> = await categoryApi.list({})
+        setCategoryData(res.data!.categories)
         //Get Options
         const resParent: IApiResponse<{ categories: ICategory[]; pagination: IPagination }> = await categoryApi.list({
-          field: EFieldByValue.REFERENCE_CATEGORY_Id,
+          field: EFieldByValue.REFERENCE_CATEGORY_ID,
           query: '0'
         })
-        const data = resParent.data.categories
+        const data = resParent.data!.categories
         let newData: IOptions[] = data.map((cat) => ({
           value: cat.id,
           label: cat.name

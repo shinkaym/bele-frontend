@@ -15,6 +15,7 @@ import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
 import TinyMCEEditor from '../TinyMCEEditor'
 import Swal from 'sweetalert2'
+import PlusIcon from '@/components/icons/PlusIcon'
 
 type ProductTableProps = {
   products: IProduct[]
@@ -189,6 +190,9 @@ const ProductTable = ({ products, onRefresh }: ProductTableProps) => {
                   <button type='button' className='hover:text-primary' onClick={() => handleView(pro.id)}>
                     <EyeIcon width={24} height={24} />
                   </button>
+                  <Link to={`/tables/variant?productId=${pro.id}`} className='hover:text-primary'>
+                    <PlusIcon width={24} height={24} />
+                  </Link>
                   <Link to={`/tables/product/edit/${pro.id}`} className='hover:text-primary'>
                     <EditIcon width={24} height={24} />
                   </Link>

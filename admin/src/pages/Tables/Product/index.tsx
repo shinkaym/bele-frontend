@@ -42,6 +42,7 @@ const index: React.FC = () => {
 
       const res: IApiResponse<IProductListResponse> = await productApi.list(params)
       if (res.status === 200 && res.data) {
+        console.log(res.data);
         setProducts(res.data.products)
         setPagination(res.data.pagination)
       } else {

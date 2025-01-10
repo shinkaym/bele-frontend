@@ -1,4 +1,4 @@
-import attributeValueApi from '@/apis/modules/attributeValue.api'
+import attributeValueApi from '@/apis/modules/attribute.api'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
 import Button from '@/components/common/Button'
 import Input from '@/components/common/Forms/Input'

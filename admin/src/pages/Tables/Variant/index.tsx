@@ -17,6 +17,7 @@ import { IProduct } from '@/models/interfaces/product'
 import { IVariant, IVariantListResponse } from '@/models/interfaces/variant'
 import { UToast } from '@/utils/swal'
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 const index: React.FC = () => {
   const [variants, setVariants] = useState<IVariant[]>([])
@@ -28,6 +29,10 @@ const index: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<EVariantStatus | null>(null)
   const [sortBy, setSortBy] = useState<EFieldByValue>(EFieldByValue.CREATED_AT)
   const [sortOrder, setSortOrder] = useState<ESortOrderValue>(ESortOrderValue.ASC)
+  const [searchParams] = useSearchParams()
+
+  const productId = Number(searchParams.get('productId'))
+  console.log(productId);
 
   const fetchData = async (page: number, limit: number) => {
     setLoading(true)
@@ -38,7 +43,7 @@ const index: React.FC = () => {
         query: searchQuery,
         field: selectedField,
         status: selectedStatus,
-        productId: 1,
+        productId: productId,
         sort: sortBy,
         order: sortOrder
       }
@@ -128,14 +133,14 @@ const index: React.FC = () => {
                 sortOrderOptions={sortOrderOptions}
               />
             </div>
-            <Button type='link' to='/tables/variant/add' size='sm'>
+            <Button type='link' to={`/tables/variant/add?productId=${productId}`} size='sm'>
               Add
             </Button>
           </div>
           {loading ? (
             <Loader />
           ) : (
-            <VariantTable variants={variants} onRefresh={() => fetchData(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_LIMIT)} />
+            <VariantTable productId={productId} variants={variants} onRefresh={() => fetchData(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_LIMIT)} />
           )}
           <Pagination
             currentPage={pagination.currentPage}
