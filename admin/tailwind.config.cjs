@@ -264,6 +264,9 @@ module.exports = {
       },
     },
   },
+  safelist: [
+    'bg-secondary',
+  ],
   plugins: [
     require('tailwind-scrollbar'),
   ],

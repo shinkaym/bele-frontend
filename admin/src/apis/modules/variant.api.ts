@@ -2,6 +2,7 @@ import axiosPublic from '../client/public.client'
 import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
 import { IApiResponse } from '@/models/interfaces/api'
 import { IVariantDetailResponse, IVariantListResponse } from '@/models/interfaces/variant'
+import axiosPrivate from '../client/private.client'
 
 const variantApi = {
   async list(params: {
@@ -53,6 +54,28 @@ const variantApi = {
       throw error
     }
   },
+  async add(data: FormData): Promise<IApiResponse<IVariantDetailResponse>> {
+    try {
+      return await axiosPrivate.post(`Variant`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data' // Đảm bảo header phù hợp với FormData
+        }
+      })
+    } catch (error) {
+      throw error
+    }
+  },
+  async edit(id:number,data: FormData): Promise<IApiResponse<IVariantDetailResponse>> {
+    try {
+      return await axiosPrivate.put(`Variant/${id}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data' // Đảm bảo header phù hợp với FormData
+        }
+      })
+    } catch (error) {
+      throw error
+    }
+  }
 }
 
 export default variantApi

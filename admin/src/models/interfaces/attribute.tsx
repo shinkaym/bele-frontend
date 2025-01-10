@@ -3,24 +3,20 @@ import { IPagination } from './pagination'
 export interface IAttributeType {
   id: number | string
   name: string
-  createdAt: string
-  updatedAt: string
-  attributeValues: IAttributeValue | null
-  productAttributeTypes: null
+  createdAt?: string
+  updatedAt?: string
+  attributeValues?: IAttributeValue | null
+  productAttributeTypes?: null
 }
 
 export interface IAttributeValue {
-  id: number
+  id: number | string
+  attributeTypeName: string
   name: string
   value: string
-  attributeTypeName?: string
-  attributeTypeId?: number
-  attributeType?: null | any
   status: number
-  deleted?: boolean
   createdAt: string
   updatedAt: string
-  variantAttributeValues?: null | any
 }
 
 export interface IAttributeValueListResponse {

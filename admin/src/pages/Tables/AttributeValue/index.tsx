@@ -1,5 +1,5 @@
+import AttributeValueApi from '@/apis/modules/attribute.api'
 import React, { useState, useEffect } from 'react'
-import attributeValueApi from '@/apis/modules/attributeValue.api'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
 import Button from '@/components/common/Button'
 import Search from '@/components/common/Forms/Search'
@@ -49,7 +49,7 @@ const index: React.FC = () => {
         order: sortOrder
       }
 
-      const res: IApiResponse<IAttributeValueListResponse> = await attributeValueApi.list(params)
+      const res: IApiResponse<IAttributeValueListResponse> = await AttributeValueApi.list(params)
       if (res.status === 200 && res.data) {
         setAttributeValues(res.data.attributeValues)
         setPagination(res.data.pagination)
