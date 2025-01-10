@@ -3,9 +3,17 @@ import ModalSearch from '@/components/common/ModalSearch'
 import Overlay from '@/components/common/Overlay'
 import Popup from '@/components/common/Popup'
 import { logoList } from '@/constants'
-import { faArrowRight, faBagShopping, faBars, faChevronDown, faSearch, faUser } from '@fortawesome/free-solid-svg-icons'
+import SettingContext from '@/context/Setting/SettingContext'
+import {
+  faArrowRight,
+  faBagShopping,
+  faBars,
+  faChevronDown,
+  faSearch,
+  faUser
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
 function Header() {
@@ -13,6 +21,7 @@ function Header() {
   const [isShowMenu, setIsShowMenu] = useState(false)
   const [popupOptions, setPopupOptions] = useState<'login' | 'register' | 'forgotPassword'>('login')
   const [isShowPopup, setIsShowPopup] = useState(false)
+  const setting = useContext(SettingContext)
 
   const handleSearchModalClose = () => {
     setIsShowSearchModal(false)
@@ -49,7 +58,7 @@ function Header() {
         </div>
         <div className='lg:px-14 md:px-12 sm:px-10 px-6 md mx-auto flex items-center justify-between lg:h-20 md:h-18 sm:h-16 h-14'>
           <Link to={'/'} className='h-full'>
-            <img className='h-full w-full object-cover' src={logoList.mainLogo.url} alt={logoList.mainLogo.name} />
+            <img className='h-full w-full object-cover' src={setting?.logo.mainLogo} alt={'Main Logo'} />
           </Link>
           <div className='items-center justify-between h-full hidden lg:flex relative'>
             <NavLink
