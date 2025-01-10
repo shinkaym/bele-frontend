@@ -1,17 +1,5 @@
+import { IAttributeValue } from './attribute'
 import { IPagination } from './pagination'
-
-export interface IAttributeValue {
-  id: number
-  name: string
-  value: string
-  attributeTypeId: number
-  attributeType: null | any
-  status: number
-  deleted: boolean
-  createdAt: string
-  updatedAt: string
-  variantAttributeValues: null | any
-}
 
 export interface IVariant {
   id: number

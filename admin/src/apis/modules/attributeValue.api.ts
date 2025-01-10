@@ -1,21 +1,54 @@
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-import { IAttributeValue } from '@/models/interfaces/attribute'
+import {
+  IAttributeValue,
+  IAttributeValueDetailResponse,
+  IAttributeValueListResponse
+} from '@/models/interfaces/attribute'
 import axiosPublic from '../client/public.client'
 import { attributeValueData } from '@/models/data/attributeTypeData'
-
-const attributeValueEndpoints = {
-  list: 'attribute-value',
-  detail: (id: string | number) => `attribute-value/${id}`
-}
+import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
+import { IApiResponse } from '@/models/interfaces/api'
 
 const attributeValueApi = {
-  getList(): IAttributeValue[] {
-    return attributeValueData
-    // return axiosPublic.get(attributeValueEndpoints.list)
+  async list(params: {
+    page: number
+    limit: number
+    query: string
+    field: EFieldByValue
+    status: any
+    sort: EFieldByValue
+    order: ESortOrderValue
+  }): Promise<IApiResponse<IAttributeValueListResponse>> {
+    try {
+      const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value !== null))
+      return await axiosPublic.get('Attribute/value', { params: filteredParams })
+    } catch (error) {
+      throw error
+    }
   },
-  getAttrValue(id: number): IAttributeValue | undefined {
-    return attributeValueData.find((val) => val.id === id)
-    // return axiosPublic.get(attributeValueEndpoints.detail(id))
+
+  async detail({ id }: { id: number }): Promise<IApiResponse<IAttributeValueDetailResponse>> {
+    try {
+      return await axiosPublic.get(`Attribute/${id}`)
+    } catch (error) {
+      throw error
+    }
+  },
+
+  async delete({ id }: { id: number }): Promise<IApiResponse> {
+    try {
+      return await axiosPublic.delete(`Attribute/${id}`)
+    } catch (error) {
+      throw error
+    }
+  },
+
+  async updateStatus({ id, status }: { id: number; status: number }): Promise<IApiResponse> {
+    try {
+      return await axiosPublic.patch(`Attribute/${id}`, status)
+    } catch (error) {
+      throw error
+    }
   }
 }
 

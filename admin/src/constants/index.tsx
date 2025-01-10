@@ -10,7 +10,7 @@ import {
   ECategoryStatus,
   EProductStatus,
   EVariantStatus,
-  EAttributeStatus
+  EAttributeValueStatus,
 } from '@/models/enums/status'
 import { IStatus, ITable } from '@/models/interfaces'
 import { TMenuItem } from '@/models/types/brand'
@@ -286,14 +286,14 @@ export const variantStatus: IStatus[] = [
   }
 ]
 
-export const attributeStatus: IStatus[] = [
+export const attributeValueStatus: IStatus[] = [
   {
-    title: EAttributeStatus.ACTIVE,
+    title: EAttributeValueStatus.ACTIVE,
     value: 1,
     className: 'text-green-600 border-green-600 bg-green-200'
   },
   {
-    title: EAttributeStatus.INACTIVE,
+    title: EAttributeValueStatus.INACTIVE,
     value: 0,
     className: 'text-orange-600 border-orange-600 bg-orange-200'
   }
@@ -412,8 +412,16 @@ export const contactFieldOptions: { title: EFieldByTitle; value: EFieldByValue }
 
 export const attributeValueFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
   {
-    title: EFieldByTitle.ID,
-    value: EFieldByValue.ID
+    title: EFieldByTitle.NAME,
+    value: EFieldByValue.NAME
+  },
+  {
+    title: EFieldByTitle.VALUE,
+    value: EFieldByValue.VALUE
+  },
+  {
+    title: EFieldByTitle.ATTRIBUTE_TYPE_ID,
+    value: EFieldByValue.ATTRIBUTE_TYPE_ID
   }
 ]
 
@@ -445,6 +453,16 @@ export const employeeTableHeaders: ITable[] = [
   { title: 'Updated At', value: 9, className: 'min-w-[80px]' },
   { title: 'Action', value: 10, className: 'min-w-[80px] text-center' }
 ]
+
+export const attributeValueTableHeaders: ITable[] = [
+  { title: 'Id', value: 1, className: 'min-w-[20px] text-center' },
+  { title: 'Name', value: 2, className: 'min-w-[20px]' },
+  { title: 'Value', value: 3, className: 'min-w-[20px]' },
+  { title: 'Attribute Type', value: 4, className: 'min-w-[20px]' },
+  { title: 'Created At', value: 5, className: 'min-w-[20px]' },
+  { title: 'Status', value: 6, className: 'min-w-[20px]' },
+  { title: 'Actions', value: 7, className: 'min-w-[20px] text-center' }
+];
 
 export const productTableHeaders: ITable[] = [
   { title: 'Id', value: 1, className: 'min-w-[20px] text-center' },

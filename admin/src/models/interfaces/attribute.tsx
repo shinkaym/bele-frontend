@@ -1,3 +1,5 @@
+import { IPagination } from './pagination'
+
 export interface IAttributeType {
   id: number | string
   name: string
@@ -8,11 +10,29 @@ export interface IAttributeType {
 }
 
 export interface IAttributeValue {
-  id: number | string
-  attributeType: IAttributeType
+  id: number
   name: string
   value: string
+  attributeTypeName?: string
+  attributeTypeId?: number
+  attributeType?: null | any
   status: number
+  deleted?: boolean
   createdAt: string
   updatedAt: string
+  variantAttributeValues?: null | any
+}
+
+export interface IAttributeValueListResponse {
+  attributeValues: IAttributeValue[]
+  pagination: IPagination
+}
+
+export interface IAttributeValueDetailResponse {
+  attributeValue: IAttributeValue
+}
+
+export interface IAttributeValueDeleteResponse {
+  status: number
+  message: string
 }

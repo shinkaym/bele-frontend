@@ -1,142 +1,207 @@
-import DeleteIcon from '@/components/icons/Crud/DeleteIcon'
-import EditIcon from '@/components/icons/Crud/EditIcon'
-import { EToastOption } from '@/models/enums/option'
-import { EStatus } from '@/models/enums/status'
-import { IAttributeValue } from '@/models/interfaces/attribute'
-import { UInputAlert, UToast } from '@/utils/swal'
-import { useState } from 'react'
+import { DeleteIcon, EditIcon } from '@/components/icons'
 import { Link } from 'react-router-dom'
-import Button from '../Button'
-import Search from '../Forms/Search'
-import Pagination from '../Pagination'
-type Props = {
+import { attributeValueStatus, attributeValueTableHeaders } from '@/constants'
+import { EAttributeValueStatus } from '@/models/enums/status'
+import { formatDate } from '@/utils'
+import { useState } from 'react'
+import attributeValueApi from '@/apis/modules/attributeValue.api'
+import ReCAPCHAModal from '../ReCAPCHAModal'
+import ConfirmationModal from '../ConfirmationModal'
+import StatusModal from '../StatusModal'
+import StatusBadge from '../StatusBadge'
+import { UToast } from '@/utils/swal'
+import { EToastOption } from '@/models/enums/option'
+import { IAttributeValue } from '@/models/interfaces/attribute'
+
+type AttributeValueTableProps = {
   attributeValues: IAttributeValue[]
-  onSearch: (query: string) => void
+  onRefresh: () => void
 }
 
-function AttributeValueTable({ attributeValues, onSearch }: Props) {
-  const [currentPage, setCurrentPage] = useState(1)
-  const limit = 3
-  const totalPages = Math.ceil(attributeValues.length / limit)
+const AttributeValueTable = ({ attributeValues, onRefresh }: AttributeValueTableProps) => {
+  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const [selectedStatus, setSelectedStatus] = useState<number | null>(null)
+  const [current, setCurrent] = useState<IAttributeValue | null>(null)
+  const [isOpenDeleteReCaptchaModal, setIsOpenDeleteReCaptchaModal] = useState(false)
+  const [isOpenConfirmDeleteModal, setIsOpenConfirmDeleteModal] = useState(false)
+  const [isOpenStatusListModal, setIsOpenStatusListModal] = useState(false)
+  const [isOpenConfirmStatusChangeModal, setIsOpenConfirmStatusChangeModal] = useState(false)
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page)
+  const handleDeleteClick = (id: number) => {
+    setSelectedId(id)
+    setIsOpenDeleteReCaptchaModal(true)
   }
-  //Call Alert
-  const handleDelete = async (id: number | string, captchaCode = 'ABCD') => {
-    await UInputAlert(
-      captchaCode,
-      'text',
-      (value) => {
-        if (value === captchaCode) {
-          //call api in here...
 
-          UToast(EToastOption.SUCCESS, 'Delete Variant Successfully!')
+  const handleDeleteReCaptchaChange = async (token: string | null) => {
+    if (token && selectedId) {
+      setIsOpenConfirmDeleteModal(true)
+      setIsOpenDeleteReCaptchaModal(false)
+    }
+  }
+
+  const handleConfirmDelete = async () => {
+    if (selectedId) {
+      try {
+        const res = await attributeValueApi.delete({ id: selectedId })
+
+        if (res.status === 200) {
+          onRefresh()
+          UToast(EToastOption.SUCCESS, res.message)
         } else {
-          UToast(EToastOption.ERROR, 'Captcha is wrong')
+          UToast(EToastOption.ERROR, res.message)
         }
-      },
-      {
-        autocomplete: 'off', // Disable autocomplete
-        maxlength: '4'
+      } catch (error) {
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
+      } finally {
+        setIsOpenConfirmDeleteModal(false)
+        setSelectedId(null)
       }
-    )
+    }
   }
-  const handleStatus = (value?: number | string) => {
-    console.log(value)
+
+  const handleCancelDelete = () => {
+    setIsOpenDeleteReCaptchaModal(false)
+    setIsOpenConfirmDeleteModal(false)
+    setSelectedId(null)
+  }
+
+  const handleStatusClick = (attributeValue: IAttributeValue) => {
+    setCurrent(attributeValue)
+    setIsOpenStatusListModal(true)
+  }
+
+  const handleUpdateStatus = (status: number) => {
+    setSelectedStatus(status)
+    setIsOpenStatusListModal(false)
+    setIsOpenConfirmStatusChangeModal(true)
+  }
+
+  const handleConfirmStatusChange = async () => {
+    if (current && selectedStatus !== null) {
+      try {
+        const res = await attributeValueApi.updateStatus({
+          id: current.id,
+          status: selectedStatus
+        })
+        if (res.status === 200) {
+          onRefresh()
+          UToast(EToastOption.SUCCESS, res.message)
+        } else {
+          UToast(EToastOption.ERROR, res.message)
+        }
+      } catch (error) {
+        UToast(EToastOption.ERROR, 'An unexpected error occurred.')
+      } finally {
+        setIsOpenConfirmStatusChangeModal(false)
+        setSelectedStatus(null)
+        setCurrent(null)
+      }
+    }
+  }
+
+  const handleCancelStatusChange = () => {
+    setIsOpenConfirmStatusChangeModal(false)
+    setIsOpenStatusListModal(false)
+    setSelectedStatus(null)
+    setCurrent(null)
+  }
+
+  const getStatusName = (status: number | null): string => {
+    const s = attributeValueStatus.find((s) => s.value === status)
+    return s ? s.title : EAttributeValueStatus.UNKNOWN
   }
 
   return (
-    <div className='rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1'>
-      <div className='flex items-center justify-between mb-6'>
-        <Search onSearch={(query: string) => onSearch(query)} />
-        <Button type='link' to='/tables/attribute-value/add' size='sm'>
-          Add
-        </Button>
-      </div>
-      <div className='max-w-full overflow-x-auto mb-6'>
-        <table className='w-full table-auto'>
-          <thead>
-            <tr className='bg-gray-2 text-left dark:bg-meta-4'>
-              <th className='min-w-[20px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Id
+    <div className='max-w-full overflow-x-auto mb-6 scrollbar-thin dark:scrollbar-thumb-boxdark dark:scrollbar-track-gray-3 scrollbar-thumb-white scrollbar-track-boxdark'>
+      <table className='w-full table-auto'>
+        <thead>
+          <tr className='bg-gray-2 text-left dark:bg-meta-4'>
+            {attributeValueTableHeaders.map((h) => (
+              <th
+                key={h.value}
+                className={`${h.className} py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap`}
+              >
+                {h.title}
               </th>
-              <th className='min-w-[20px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Name
-              </th>
-              <th className='min-w-[20px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Value
-              </th>
-              <th className='min-w-[20px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                AttributeType
-              </th>
-              <th className='min-w-[20px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Created At
-              </th>
-              <th className='min-w-[20px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Status
-              </th>
-              <th className='min-w-[20px] py-4 px-4 font-medium text-black dark:text-white text-sm whitespace-nowrap'>
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {attributeValues.map((value, key) => (
-              <tr key={key}>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{value.id}</h5>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                    {value.name}
-                  </h5>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <p className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{value.value}</p>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <p className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                    {value.attributeType.name}
-                  </p>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <p className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                    {new Date(value.createdAt).toLocaleDateString()}
-                  </p>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <Button
-                    type='button'
-                    color={value.status === 1 ? 'success' : 'danger'}
-                    value={value.id}
-                    onClick={handleStatus}
-                  >
-                    {value.status === 1 ? EStatus.ACTIVE : EStatus.INACTIVE}
-                  </Button>
-                </td>
-                <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                  <div className='flex justify-center space-x-3.5'>
-                    <Link to={`/tables/attribute-value/edit/${value.id}`} className='hover:text-primary'>
-                      <EditIcon width={24} height={24} />
-                    </Link>
-                    <button type='button' className='hover:text-primary' onClick={() => handleDelete(value.id)}>
-                      <DeleteIcon width={24} height={24} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
             ))}
-          </tbody>
-        </table>
-      </div>
-      {totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(attributeValues.length / 3)}
-          onPageChange={handlePageChange}
-          siblingCount={1}
-          className='pagination-container flex justify-center items-center mb-6'
+          </tr>
+        </thead>
+        <tbody>
+          {attributeValues.map((em, key) => (
+            <tr key={key}>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>
+                  {em.id}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{em.name}</h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{em.value}</h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {em.attributeTypeName}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {formatDate(em.createdAt)}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>
+                  <StatusBadge
+                    status={em.status}
+                    statusList={attributeValueStatus}
+                    onClick={() => handleStatusClick(em)}
+                  />
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <div className='flex justify-center space-x-3.5'>
+                  <Link to={`/tables/attributeValue/edit/${em.id}`} className='hover:text-primary'>
+                    <EditIcon width={24} height={24} />
+                  </Link>
+                  <button type='button' className='hover:text-primary' onClick={() => handleDeleteClick(em.id)}>
+                    <DeleteIcon width={24} height={24} />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {isOpenDeleteReCaptchaModal && (
+        <ReCAPCHAModal onChange={handleDeleteReCaptchaChange} onCancel={handleCancelDelete} />
+      )}
+
+      {isOpenConfirmDeleteModal && (
+        <ConfirmationModal
+          title='Are you sure you want to delete this attributeValue?'
+          className='bg-red-500'
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+        />
+      )}
+
+      {isOpenStatusListModal && current && (
+        <StatusModal
+          status={current.status}
+          onUpdateStatus={handleUpdateStatus}
+          onCancel={handleCancelStatusChange}
+          statusList={attributeValueStatus}
+          modalTitle='AttributeValue'
+        />
+      )}
+
+      {isOpenConfirmStatusChangeModal && (
+        <ConfirmationModal
+          title={`Are you sure you want to change the status to ${getStatusName(selectedStatus)}?`}
+          className='bg-blue-500'
+          onConfirm={handleConfirmStatusChange}
+          onCancel={handleCancelStatusChange}
         />
       )}
     </div>

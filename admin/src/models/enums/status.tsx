@@ -30,7 +30,7 @@ export enum EVariantStatus {
   INACTIVE = 'Inactive'
 }
 
-export enum EAttributeStatus {
+export enum EAttributeValueStatus {
   UNKNOWN = 'Unknown',
   ACTIVE = 'Active',
   INACTIVE = 'Inactive'
