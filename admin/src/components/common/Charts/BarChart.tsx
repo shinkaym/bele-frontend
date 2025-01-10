@@ -1,5 +1,5 @@
 import { ApexOptions } from 'apexcharts';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 const options: ApexOptions = {
@@ -16,7 +16,6 @@ const options: ApexOptions = {
       enabled: false,
     },
   },
-
   responsive: [
     {
       breakpoint: 1536,
@@ -42,9 +41,8 @@ const options: ApexOptions = {
   dataLabels: {
     enabled: false,
   },
-
   xaxis: {
-    categories: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+    categories: [], // categories will be dynamic
   },
   legend: {
     position: 'top',
@@ -52,7 +50,6 @@ const options: ApexOptions = {
     fontFamily: 'Satoshi',
     fontWeight: 500,
     fontSize: '14px',
-
     markers: {
       radius: 99,
     },
@@ -62,51 +59,60 @@ const options: ApexOptions = {
   },
 };
 
-interface ChartTwoState {
-  series: {
-    name: string;
-    data: number[];
-  }[];
+interface BarChartProps {
+  name: string; // The name of the product or metric
+  data: number[]; // The data for the chart
+  onClick:(value:string)=>void
 }
 
-const ChartTwo: React.FC = () => {
-  const [state, setState] = useState<ChartTwoState>({
-    series: [
-      {
-        name: 'Sales',
-        data: [44, 55, 41, 67, 22, 43, 65],
-      },
-      {
-        name: 'Revenue',
-        data: [13, 23, 20, 8, 13, 27, 15],
-      },
-    ],
-  });
-  
-  const handleReset = () => {
-    setState((prevState) => ({
-      ...prevState,
-    }));
+const BarChart: React.FC<BarChartProps> = ({ name, data , onClick }) => {
+  const [timePeriod, setTimePeriod] = useState<string>('year'); // Time period selection
+
+  // Function to calculate categories based on the selected time period
+  const getCategories = (period: string) => {
+    switch (period) {
+      case 'week':
+        return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']; // 7 days in a week
+      case 'month':
+        return ['W1', 'W2', 'W3', 'W4']; // 4 weeks in a month
+      case 'year':
+        return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']; // 12 months in a year
+      default:
+        return [];
+    }
   };
-  handleReset;  
+
+
+  // Get categories and data based on the selected time period
+  const categories = useMemo(() => getCategories(timePeriod), [timePeriod]);
+
+  const handleTimePeriodChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTimePeriod(e.target.value);
+    onClick(e.target.value)
+  };
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
       <div className="mb-4 justify-between gap-4 sm:flex">
         <div>
-          <h4 className="text-xl font-semibold text-black dark:text-white">
-            Profit this week
-          </h4>
+          <h4 className="text-xl font-semibold text-black dark:text-white">{name}</h4>
         </div>
         <div>
           <div className="relative z-20 inline-block">
             <select
-              name="#"
-              id="#"
+              value={timePeriod}
+              onChange={handleTimePeriodChange}
               className="relative z-20 inline-flex appearance-none bg-transparent py-1 pl-3 pr-8 text-sm font-medium outline-none"
             >
-              <option value="" className='dark:bg-boxdark'>This Week</option>
-              <option value="" className='dark:bg-boxdark'>Last Week</option>
+              <option value="week" className="dark:bg-boxdark">
+                This Week
+              </option>
+              <option value="month" className="dark:bg-boxdark">
+                This Month
+              </option>
+              <option value="year" className="dark:bg-boxdark">
+                This Year
+              </option>
             </select>
             <span className="absolute top-1/2 right-3 z-10 -translate-y-1/2">
               <svg
@@ -133,10 +139,13 @@ const ChartTwo: React.FC = () => {
       </div>
 
       <div>
-        <div id="chartTwo" className="-ml-5 -mb-9">
+        <div id="BarChart" className="-ml-5 -mb-9">
           <ReactApexChart
-            options={options}
-            series={state.series}
+            options={{
+              ...options,
+              xaxis: { ...options.xaxis, categories },
+            }}
+            series={[{ name, data }]}
             type="bar"
             height={350}
           />
@@ -146,4 +155,4 @@ const ChartTwo: React.FC = () => {
   );
 };
 
-export default ChartTwo;
+export default BarChart;

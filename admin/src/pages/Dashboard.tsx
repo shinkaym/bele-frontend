@@ -1,13 +1,26 @@
-import React from 'react'
 import CardDataStats from '@/components/common/CardDataStats'
-import ChartOne from '@/components/common/Charts/ChartOne'
-import ChartThree from '@/components/common/Charts/ChartThree'
-import ChartTwo from '@/components/common/Charts/ChartTwo'
-import ChatCard from '@/components/common/Chat/ChatCard'
-import MapOne from '@/components/common/Maps/MapOne'
-import TableOne from '@/components/common/Tables/TableOne'
+import AreaChart from '@/components/common/Charts/AreaChart'
+import BarChart from '@/components/common/Charts/BarChart'
+import React from 'react'
 
 const Dashboard: React.FC = () => {
+  const areaChart = {
+    year: 2022,
+    name: 'Total Revenue',
+    figures: [20, 30, 10, 40, 50, 35, 25, 45, 55, 65, 70, 80] // dữ liệu qua 12 tháng
+  }
+
+  const handleClickBarChart = (value: string) => {
+    console.log(value)
+  }
+
+  const handleClickAreaChart = (value: string) => {
+    console.log(value)
+  }
+  const weekData = [44, 55, 41, 67, 22, 43, 65] // Dữ liệu cho tuần (7 ngày)
+  const monthData = [150, 130, 200, 175] // Dữ liệu cho tháng (4 tuần)
+  const yearData = [1200, 1400, 1600, 1300, 1800, 2100, 1900, 1600, 1500, 1700, 1800, 2000] // Dữ liệu cho năm (12 tháng)
+
   return (
     <>
       <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5'>
@@ -98,10 +111,8 @@ const Dashboard: React.FC = () => {
       </div>
 
       <div className='mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5'>
-        <ChartOne />
-        <ChartTwo />
-        <ChartOne />
-        <ChartTwo />
+        <AreaChart data={areaChart} onClick={handleClickAreaChart}/>
+        <BarChart name='Profit' data={yearData} onClick={handleClickBarChart} />
       </div>
     </>
   )
