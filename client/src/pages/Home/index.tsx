@@ -4,33 +4,25 @@ import Collection from '@/components/common/Collection'
 import ProductGrid from '@/components/common/ProductGrid'
 import Services from '@/components/common/Services'
 import SlideShow from '@/components/common/SlideShow'
-import {
-  bannerList,
-  LG_BP,
-  LG_LIMIT,
-  MD_BP,
-  MD_LIMIT,
-  productData,
-  slideImages,
-  SM_BP,
-  SM_LIMIT,
-  XS_LIMIT
-} from '@/constants'
+import { LG_BP, LG_LIMIT, MD_BP, MD_LIMIT, productData, SM_BP, SM_LIMIT, XS_LIMIT } from '@/constants'
+import SettingContext from '@/context/Setting/SettingContext'
 import { faArrowLeft, faArrowRight, faStar } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import 'react-slideshow-image/dist/styles.css'
 
 function Home() {
   const [limit, setLimit] = useState<number>(5)
   const [tag, setTag] = useState<number>(1)
+  const setting = useContext(SettingContext)
   const handleChangeTag = (value?: string) => {
     if (value) {
       console.log(value)
       setTag(Number(value))
     }
   }
+
   const bannerArrowProperty = {
     prevArrow: (
       <button className='lg:ml-8 md:ml-6 sm:ml-4 ml-2 '>
@@ -85,13 +77,20 @@ function Home() {
   return (
     <>
       <SlideShow properties={bannerArrowProperty} duration={5000}>
-        {slideImages.map((img, i) => (
-          <Link key={i} to=''>
-            <img src={img.url} alt={img.name} />
-          </Link>
-        ))}
+        <Link to=''>
+          <img src={setting?.slideShow.slideshowBanner1} alt={'slideshowBanner1'} />
+        </Link>
+        <Link to=''>
+          <img src={setting?.slideShow.slideshowBanner2} alt={'slideshowBanner2'} />
+        </Link>
+        <Link to=''>
+          <img src={setting?.slideShow.slideshowBanner3} alt={'slideshowBanner3'} />
+        </Link>
       </SlideShow>
-      <Services className='bg-gray-primary lg:py-8 md:py-6 sm:py-4 py-2 lg:px-14 md:px-12 sm:px-10 px-6 mb-10' />
+      <Services
+        service={setting!.service}
+        className='bg-gray-primary lg:py-8 md:py-6 sm:py-4 py-2 lg:px-14 md:px-12 sm:px-10 px-6 mb-10'
+      />
       <div className='lg:px-14 md:px-12 sm:px-10 px-6 mb-10 space-x-4'>
         <Button
           type='button'
@@ -126,7 +125,7 @@ function Home() {
       <Banner
         title='Đồ thu đông'
         subTitle='Giữ ấm cơ thể bạn'
-        url={bannerList.mainBanner.url}
+        url={setting!.banner.mainBanner}
         to='/'
         btnColor='blue-primary'
         btnTextColor='white'
@@ -146,10 +145,10 @@ function Home() {
       </Collection>
       <div className='grid grid-cols-2 gap-5 mb-10'>
         <Link to={'/'}>
-          <img src={bannerList.subBanner[0].url} alt={bannerList.subBanner[0].name} className='w-full object-cover' />
+          <img src={setting?.banner.subBanner1} alt={'subBanner1'} className='w-full object-cover' />
         </Link>
         <Link to={'/'}>
-          <img src={bannerList.subBanner[1].url} alt={bannerList.subBanner[1].name} className='w-full object-cover' />
+          <img src={setting?.banner.subBanner2} alt={'subBanner2'} className='w-full object-cover' />
         </Link>
       </div>
     </>

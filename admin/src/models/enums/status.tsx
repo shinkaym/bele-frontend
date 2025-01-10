@@ -5,6 +5,7 @@ export enum EStatus {
 
 export enum EOrderStatus {
   UNKNOWN = 'Unknown',
+  PENDING_CONFIRMATION = 'Pending confirmation',
   PENDING = 'Pending',
   DELIVERED = 'Delivered',
   SHIPPED = 'Shipped',
@@ -12,6 +13,24 @@ export enum EOrderStatus {
 }
 
 export enum ERateStatus {
+  UNKNOWN = 'Unknown',
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive'
+}
+
+export enum EProductStatus {
+  UNKNOWN = 'Unknown',
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive'
+}
+
+export enum EVariantStatus {
+  UNKNOWN = 'Unknown',
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive'
+}
+
+export enum EAttributeStatus {
   UNKNOWN = 'Unknown',
   ACTIVE = 'Active',
   INACTIVE = 'Inactive'

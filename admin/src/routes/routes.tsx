@@ -1,12 +1,12 @@
 import Loader from '@/components/common/Loader'
 import PageTitle from '@/components/common/PageTitle'
-import PrivateRoute from '@/components/common/PrivateRoute'
 import DefaultLayout from '@/components/layout/DefaultLayout'
 import Login from '@/pages/Login'
 import Dashboard from '@/pages/Dashboard'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
 import PublicRoute from '@/components/common/PublicRoute'
+import PrivateRoute from '@/components/common/PrivateRoute'
 
 const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> => {
   return (props: P): ReactNode => (
@@ -42,9 +42,6 @@ const AddDiscount = Loadable(lazy(() => import('@/pages/Tables/Discount/Add')))
 const EditDiscount = Loadable(lazy(() => import('@/pages/Tables/Discount/Edit')))
 const Customer = Loadable(lazy(() => import('@/pages/Tables/Customer')))
 const AddCustomer = Loadable(lazy(() => import('@/pages/Tables/Customer/Add')))
-const Tag = Loadable(lazy(() => import('@/pages/Tables/Tag')))
-const AddTag = Loadable(lazy(() => import('@/pages/Tables/Tag/Add')))
-const EditTag = Loadable(lazy(() => import('@/pages/Tables/Tag/Edit')))
 const Contact = Loadable(lazy(() => import('@/pages/Tables/Contact')))
 const Chat = Loadable(lazy(() => import('@/pages/Tables/Chat')))
 
@@ -56,6 +53,7 @@ function AppRouter() {
         <PrivateRoute>
           <DefaultLayout />
         </PrivateRoute>
+        // <DefaultLayout />
       ),
       children: [
         {
@@ -334,38 +332,6 @@ function AppRouter() {
                 <>
                   <PageTitle title='Add Customer' />
                   <AddCustomer />
-                </>
-              )
-            }
-          ]
-        },
-        {
-          path: '/tables/tag',
-          children: [
-            {
-              path: '',
-              element: (
-                <>
-                  <PageTitle title='Tag' />
-                  <Tag />
-                </>
-              )
-            },
-            {
-              path: 'add',
-              element: (
-                <>
-                  <PageTitle title='Add Tag' />
-                  <AddTag />
-                </>
-              )
-            },
-            {
-              path: 'edit/:id',
-              element: (
-                <>
-                  <PageTitle title='Edit Tag' />
-                  <EditTag />
                 </>
               )
             }

@@ -7,58 +7,30 @@ export interface IOrder {
   phoneNumber: string
   address: string
   note: string
-  payMethod: string | number
+  payMethod: string
   totalMoney: number
   shipDate: string
   receiveDate: string
   status: number
   createdAt?: string
-  updatedAt?: string
-  products?: {
+  variants: {
     id: number
     name: string
-    image: string
-    color: string
-    size: string
+    thumbnail: string
+    attribute: [
+      Color: any,
+      Size: any
+    ]
     quantity: number
-    price: number
+    originalPrice: number
+    finalPrice: number
+    discountValue: number
   }[]
 }
 
 export interface IOrderListResponse {
-  status: number
-  data: {
-    orders: IOrder[]
-    pagination: IPagination
-  }
-  message: string
-}
-
-export interface IOrderDetailResponse {
-  status: number
-  data: {
-    id: number
-    email: string
-    name: string
-    phoneNumber: string
-    address: string
-    note: string
-    payMethod: string
-    totalMoney: number
-    shipDate: string
-    receiveDate: string
-    status: number
-    products: {
-      id: number
-      name: string
-      image: string
-      color: string
-      size: string
-      quantity: number
-      price: number
-    }[]
-  }
-  message: string
+  orders: IOrder[]
+  pagination: IPagination
 }
 
 export interface IOrderDeleteResponse {

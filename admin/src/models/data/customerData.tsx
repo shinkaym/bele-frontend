@@ -81,8 +81,8 @@ export const customerListResponseData: ICustomerListResponse = {
       },
     ],
     pagination: {
-      currentPage: 1,
-      totalPages: 1,
+      currentPage: PAGINATION_CONFIG.DEFAULT_PAGE,
+      totalPage: 1,
       totalRecords: 5,
     },
   },

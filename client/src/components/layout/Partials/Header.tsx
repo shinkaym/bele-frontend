@@ -1,14 +1,27 @@
+import Login from '@/components/common/Login'
 import ModalSearch from '@/components/common/ModalSearch'
 import Overlay from '@/components/common/Overlay'
+import Popup from '@/components/common/Popup'
 import { logoList } from '@/constants'
-import { faArrowRight, faBagShopping, faBars, faChevronDown, faSearch, faUser } from '@fortawesome/free-solid-svg-icons'
+import SettingContext from '@/context/Setting/SettingContext'
+import {
+  faArrowRight,
+  faBagShopping,
+  faBars,
+  faChevronDown,
+  faSearch,
+  faUser
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
 function Header() {
   const [isShowSearchModal, setIsShowSearchModal] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(false)
+  const [popupOptions, setPopupOptions] = useState<'login' | 'register' | 'forgotPassword'>('login')
+  const [isShowPopup, setIsShowPopup] = useState(false)
+  const setting = useContext(SettingContext)
 
   const handleSearchModalClose = () => {
     setIsShowSearchModal(false)
@@ -26,7 +39,13 @@ function Header() {
     setIsShowMenu(true)
   }
 
+  const handlePopupOpen = () => {
+    setIsShowPopup(true)
+  }
 
+  const handlePopupClose = () => {
+    setIsShowPopup(false)
+  }
 
   return (
     <>
@@ -39,7 +58,7 @@ function Header() {
         </div>
         <div className='lg:px-14 md:px-12 sm:px-10 px-6 md mx-auto flex items-center justify-between lg:h-20 md:h-18 sm:h-16 h-14'>
           <Link to={'/'} className='h-full'>
-            <img className='h-full w-full object-cover' src={logoList.mainLogo.url} alt={logoList.mainLogo.name} />
+            <img className='h-full w-full object-cover' src={setting?.logo.mainLogo} alt={'Main Logo'} />
           </Link>
           <div className='items-center justify-between h-full hidden lg:flex relative'>
             <NavLink
@@ -178,11 +197,15 @@ function Header() {
                 onClick={handleSearchModalOpen}
               />
             </div>
-            <FontAwesomeIcon icon={faUser} className='lg:text-3xl md:text-2xl sm:text-xl text-lg text-white ' />
+            <FontAwesomeIcon
+              icon={faUser}
+              className='lg:text-3xl md:text-2xl sm:text-xl text-lg text-white cursor-pointer'
+              onClick={handlePopupOpen}
+            />
             <Link to={'/cart'} className='relative'>
               <FontAwesomeIcon
                 icon={faBagShopping}
-                className={`lg:text-3xl md:text-2xl sm:text-xl text-lg text-white`}
+                className={`lg:text-3xl md:text-2xl sm:text-xl text-lg text-white cursor-pointer`}
               />
               <div className='absolute lg:-bottom-2 lg:-right-2 sm:-bottom-1.5 sm:-right-1.5 -bottom-1 -right-1 bg-yellow-200 lg:w-5 lg:h-5 sm:w-4 sm:h-4 w-3 h-3 rounded-full flex justify-center items-center lg:text-2xs sm:text-3xs text-4xs font-bold text-black'>
                 0
@@ -196,6 +219,18 @@ function Header() {
           </div>
         </div>
       </header>
+      {isShowPopup && (
+        <Popup onPopupClose={handlePopupClose}>
+          {popupOptions === 'login' ? (
+            <Login
+              onRegister={() => setPopupOptions('register')}
+              onForgotPassoword={() => setPopupOptions('forgotPassword')}
+            />
+          ) : (
+            'Hello'
+          )}
+        </Popup>
+      )}
       {isShowSearchModal && <ModalSearch onSearchClose={handleSearchModalClose} />}
       {isShowMenu && (
         <>

@@ -4,126 +4,70 @@ import {
   IDiscountDeleteResponse,
   IDiscountUpdateStatusResponse,
   IDiscountAddResponse,
-  IDiscountUpdateResponse
+  IDiscountUpdateResponse,
+  IDiscount
 } from '@/models/interfaces/discount'
 import axiosPublic from '../client/public.client'
 import { discountData } from '@/models/data/discountData'
-
-const discountEndpoints = {
-  list: 'discount',
-  detail: ({ id }: { id: number}) => `discount/${id}`,
-  delete: ({ id }: { id: number}) => `discount/delete/${id}`,
-  updateStatus: ({ id }: { id: number}) => `discount/update/status/${id}`,
-  add: 'discount/add',
-  update: ({ id }: { id: number }) => `discount/update/${id}`
-}
+import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
+import { IApiResponse } from '@/models/interfaces/api'
 
 const discountApi = {
-  getList: (): IDiscountListResponse => {
-    return {
-      status: 200,
-      data: {
-        discounts: discountData,
-        pagination: {
-          currentPage: 1,
-          totalPages: 1,
-          totalRecords: discountData.length
-        }
-      },
-      message: 'Successfully fetched discounts'
-    }
-  },
-
-  async detail({ id }: { id: number }): Promise<IDiscountDetailResponse> {
+  async list(params: {
+    page: number
+    limit: number
+    query: string
+    field: EFieldByValue
+    status: any
+    sort: EFieldByValue
+    order: ESortOrderValue
+  }): Promise<IApiResponse<IDiscountListResponse>> {
     try {
-      const discount = discountData.find((item) => item.id === id)
-      if (!discount) {
-        throw new Error('Discount not found')
-      }
-      return {
-        status: 200,
-        data: discount,
-        message: 'Successfully fetched discount details'
-      }
+      const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value !== null))
+      return await axiosPublic.get('Discount', { params: filteredParams })
     } catch (error) {
       throw error
     }
   },
 
-  async delete({ id }: { id: number }): Promise<IDiscountDeleteResponse> {
+  async detail({ id }: { id: number }): Promise<IApiResponse<IDiscount>> {
     try {
-      const index = discountData.findIndex((item) => item.id === id)
-      if (index === -1) {
-        throw new Error('Discount not found')
-      }
-      discountData.splice(index, 1)
-
-      return {
-        status: 200,
-        message: 'Successfully deleted discount'
-      }
+      return await axiosPublic.get(`Discount/${id}`)
     } catch (error) {
       throw error
     }
   },
 
-  async updateStatus({ id, status }: { id: number; status: number }): Promise<IDiscountUpdateStatusResponse> {
+  async delete({ id }: { id: number }): Promise<IApiResponse> {
     try {
-      const discount = discountData.find((item) => item.id === id)
-      if (!discount) {
-        throw new Error('Discount not found')
-      }
-      discount.status = Number(status)
-      discount.updatedAt = new Date().toISOString()
-
-      return {
-        status: 200,
-        data: {
-          id: discount.id,
-          status: discount.status,
-          updatedAt: discount.updatedAt
-        },
-        message: 'Successfully updated discount status'
-      }
+      return await axiosPublic.delete(`Discount/${id}`)
     } catch (error) {
       throw error
     }
   },
 
-  async add({
-    name,
-    discount,
-    expireDate,
-    status,
-    deleted,
-    createdAt
+  async updateStatus({
+    id,
+    status
   }: {
+    id: number
+    status: number
+  }): Promise<IApiResponse<IDiscountUpdateStatusResponse>> {
+    try {
+      return await axiosPublic.patch(`Discount/${id}`, { status })
+    } catch (error) {
+      throw error
+    }
+  },
+
+  async add(data: {
     name: string
-    discount: number
+    discountValue: number
     expireDate: string
     status: number
-    deleted: boolean
-    createdAt: string
-  }): Promise<IDiscountAddResponse> {
+  }): Promise<IApiResponse<IDiscount>> {
     try {
-      const newDiscount = {
-        id: discountData.length + 1, // Auto-increment ID
-        name,
-        discount,
-        expireDate,
-        status,
-        deleted,
-        createdAt,
-        updatedAt: new Date().toISOString()
-      }
-
-      discountData.push(newDiscount)
-
-      return {
-        status: 201,
-        data: newDiscount,
-        message: 'Successfully added discount'
-      }
+      return await axiosPublic.post('Discount', data)
     } catch (error) {
       throw error
     }
@@ -136,17 +80,16 @@ const discountApi = {
     id: number
     data: {
       name: string
-      discount: number
+      discountValue: number
       expireDate: string
       status: number
     }
   }): Promise<IDiscountUpdateResponse> {
     try {
-        const response = await axiosPublic.put(discountEndpoints.update({ id }), data)
-        return response.data
-      } catch (error) {
-        throw error
-      }
+      return await axiosPublic.put(`Discount/${id}`, data)
+    } catch (error) {
+      throw error
+    }
   }
 }
 

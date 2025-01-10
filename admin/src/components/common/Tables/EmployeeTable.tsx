@@ -6,7 +6,6 @@ import { EEmployeeStatus } from '@/models/enums/status'
 import { formatDate } from '@/utils'
 import { useState } from 'react'
 import employeeApi from '@/apis/modules/employee.api'
-import Swal from 'sweetalert2'
 import ReCAPCHAModal from '../ReCAPCHAModal'
 import ConfirmationModal from '../ConfirmationModal'
 import StatusModal from '../StatusModal'
@@ -136,7 +135,7 @@ const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
                 </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{em.name}</h5>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{em.fullName}</h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
@@ -150,10 +149,10 @@ const EmployeeTable = ({ employees, onRefresh }: EmployeeTableProps) => {
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{em.sex}</h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{em.role}</h5>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{em.role.name}</h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px] text-center'>
                   <StatusBadge status={em.status} statusList={employeeStatus} onClick={() => handleStatusClick(em)} />
                 </h5>
               </td>

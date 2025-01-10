@@ -1,56 +1,59 @@
 import {
   IOrder,
-  IOrderDeleteResponse,
-  IOrderDetailResponse,
   IOrderListResponse,
   IOrderUpdateStatusResponse
 } from '@/models/interfaces/order'
 import axiosPublic from '../client/public.client'
-import { orderDetailResponseData, orderListResponseData } from '@/models/data/orderData'
-
-const orderEndpoints = {
-  list: 'order',
-  detail: ({ id }: { id: number }) => `order/${id}`,
-  delete: ({ id }: { id: number }) => `order/delete/${id}`,
-  updateStatus: ({ id }: { id: number }) => `order/update/status/${id}`
-}
+import { IApiResponse } from '@/models/interfaces/api'
+import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
 
 const orderApi = {
-  // async list(): Promise<IApiResponse<IOrderListResponse>> {
-  list(): IOrderListResponse {
+  async list(params: {
+    page: number
+    limit: number
+    query: string
+    field: EFieldByValue
+    status: any
+    sort: EFieldByValue
+    order: ESortOrderValue
+  }): Promise<IApiResponse<IOrderListResponse>> {
     try {
-      // return await axiosPublic.get(orderEndpoints.list, { params })
-      return orderListResponseData
+      const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value !== null))
+      return await axiosPublic.get(`Order`, { params: filteredParams })
     } catch (error) {
       throw error
     }
   },
 
-  // async detail({ id }: { id: number }): Promise<IOrderDetailResponse> {
-  detail({ id }: { id: number }): IOrderDetailResponse {
+  async detail({ id }: { id: number }): Promise<IApiResponse<IOrder>> {
     try {
-      // return await axiosPublic.get(orderEndpoints.detail({ id }))
-      return orderDetailResponseData
+      return await axiosPublic.get(`Order/${id}`)
     } catch (error) {
       throw error
     }
   },
 
-  async delete({ id }: { id: number }): Promise<IOrderDeleteResponse> {
+  async delete({ id }: { id: number }): Promise<IApiResponse> {
     try {
-      return await axiosPublic.delete(orderEndpoints.delete({ id }))
+      return await axiosPublic.delete(`Order/${id}`)
     } catch (error) {
       throw error
     }
   },
 
-  async updateStatus({ id, status }: { id: number; status: number }): Promise<IOrderUpdateStatusResponse> {
+  async updateStatus({
+    id,
+    status
+  }: {
+    id: number
+    status: number
+  }): Promise<IApiResponse<IOrderUpdateStatusResponse>> {
     try {
-      return await axiosPublic.patch(orderEndpoints.updateStatus({ id }), { status })
+      return await axiosPublic.patch(`Order/${id}`, { status })
     } catch (error) {
       throw error
     }
-  }
+  },
 }
 
 export default orderApi

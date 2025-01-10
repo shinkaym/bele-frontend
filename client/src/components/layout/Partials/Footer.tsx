@@ -1,15 +1,17 @@
-import { logoList } from '@/constants'
+import SettingContext from '@/context/Setting/SettingContext'
 import { faFacebook, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 function Footer() {
+  const setting = useContext(SettingContext)
   return (
     <footer className='bg-black text-white hidden lg:block'>
       <div className='lg:px-14 md:px-12 sm:px-10 px-6 mx-auto flex flex-col items-center justify-between'>
         <div className='py-5 grid grid-cols-5 w-full border-b-2'>
-          <img className='object-cover w-full' src={logoList.sloganLogo.url} alt={logoList.sloganLogo.name} />
+          <img className='object-cover w-full' src={setting?.logo.sloganLogo} alt={'Slogan Logo'} />
           <div></div>
           <div className='flex items-center justify-center'>
             <div className='flex flex-col items-start justify-center gap-3'>
@@ -17,29 +19,29 @@ function Footer() {
                 <FontAwesomeIcon icon={faPhone} className='text-3xl' />
                 <div className='flex flex-col justify-between'>
                   <span>Hotline</span>
-                  <span className='font-semibold'>0909691405</span>
+                  <span className='font-semibold'>{setting?.info.hotline}</span>
                 </div>
               </div>
               <div className='flex items-center gap-4'>
                 <FontAwesomeIcon icon={faEnvelope} className='text-3xl' />
                 <div className='flex flex-col justify-between'>
                   <span>Email</span>
-                  <span className='font-semibold'>bele@gmail.com</span>
+                  <span className='font-semibold'>{setting?.info.email}</span>
                 </div>
               </div>
             </div>
           </div>
           <div></div>
           <div className='flex items-center justify-center gap-10'>
-            <Link to={'/'}>
+            <a target='_blank' href={setting?.social.facebookLink}>
               <FontAwesomeIcon icon={faFacebook} className='text-5xl' />
-            </Link>
-            <Link to={'/'}>
+            </a>
+            <a target='_blank' href={setting?.social.youtubeLink}>
               <FontAwesomeIcon icon={faYoutube} className='text-5xl' />
-            </Link>
-            <Link to={'/'}>
+            </a>
+            <a target='_blank' href={setting?.social.instagramLink}>
               <FontAwesomeIcon icon={faInstagram} className='text-5xl' />
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -47,11 +49,7 @@ function Footer() {
           <div className='xl:max-w-80 max-w-64 '>
             <h3 className='mb-3 xl:text-lg text-base'>BELE</h3>
             <div>
-              <p className='xl:text-sm lg:text-xs'>
-                Bele là thương hiệu thời trang tiên phong, cung cấp các sản phẩm thời trang nam chất lượng cao, hiện đại
-                và phong cách. Được thành lập từ [năm thành lập], Bele nhanh chóng trở thành lựa chọn hàng đầu cho những
-                tín đồ thời trang yêu thích sự đơn giản, tiện lợi và tinh tế.
-              </p>
+              <p className='xl:text-sm lg:text-xs'>{setting?.info.description}</p>
             </div>
           </div>
           <div>
@@ -127,14 +125,12 @@ function Footer() {
               <ul className='flex flex-col gap-1'>
                 <li>
                   <p className='xl:text-sm lg:text-xs'>
-                    Văn phòng Hà Nội: Tầng 3, Tòa nhà BMM, KM2, Đường Phùng Hưng, Phường Phúc La, Quận Hà Đông, Thành
-                    phố Hà Nội
+                    <span>{setting?.address.branchName1}</span>: {setting?.address.branchAddress1}
                   </p>
                 </li>
                 <li>
                   <p className='xl:text-sm lg:text-xs'>
-                    Trung tâm vận hành Hà Nội: Lô C8, Khu Công nghiệp Lai Yên, Xã Lai Yên, Huyện Hoài Đức, Thành phố Hà
-                    Nội
+                    <span>{setting?.address.branchName2}</span>: {setting?.address.branchAddress2}
                   </p>
                 </li>
               </ul>

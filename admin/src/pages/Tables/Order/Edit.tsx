@@ -9,6 +9,8 @@ import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enums/option'
 import { useParams } from 'react-router-dom'
 import { IOrder } from '@/models/interfaces/order'
+import { calculateTotalDiscount, formatDate } from '@/utils'
+import { orderStatus } from '@/constants'
 
 const OrderEdit: React.FC = () => {
   const { id } = useParams<{ id: string }>()
@@ -23,9 +25,11 @@ const OrderEdit: React.FC = () => {
           setIsLoading(true)
           const res = await orderApi.detail({ id: parseInt(id) })
           if (res.status === 200) {
-            setOrder(res.data)
-            setStatus(res.data.status)
-            UToast(EToastOption.SUCCESS, res.message)
+            if (res.data) {
+              console.log('🚀 ~ fetchOrder ~ res.data:', res.data)
+              setOrder(res.data)
+              setStatus(res.data.status)
+            }
           } else {
             UToast(EToastOption.ERROR, res.message)
           }
@@ -36,7 +40,6 @@ const OrderEdit: React.FC = () => {
         UToast(EToastOption.ERROR, 'An unexpected error occurred.')
       } finally {
         setIsLoading(false)
-        console.log(order)
       }
     }
     fetchOrder()
@@ -52,7 +55,6 @@ const OrderEdit: React.FC = () => {
         const res = await orderApi.updateStatus({ id: order.id, status: Number(status) })
         if (res.status === 200) {
           UToast(EToastOption.SUCCESS, res.message)
-          window.location.reload()
         } else {
           UToast(EToastOption.ERROR, res.message)
         }
@@ -65,10 +67,11 @@ const OrderEdit: React.FC = () => {
   }
 
   const statusOptions = [
-    { value: 1, label: EOrderStatus.PENDING },
-    { value: 2, label: EOrderStatus.DELIVERED },
-    { value: 3, label: EOrderStatus.SHIPPED },
-    { value: 4, label: EOrderStatus.CANCELED }
+    { value: -1, label: EOrderStatus.CANCELED },
+    { value: 1, label: EOrderStatus.PENDING_CONFIRMATION },
+    { value: 2, label: EOrderStatus.PENDING },
+    { value: 3, label: EOrderStatus.DELIVERED },
+    { value: 4, label: EOrderStatus.SHIPPED }
   ]
 
   if (isLoading) {
@@ -109,25 +112,37 @@ const OrderEdit: React.FC = () => {
               <p>
                 <strong>Receive Date:</strong>
               </p>
+              {(order.status === -1 || order.status === 4) && (
+                <p>
+                  <strong>Status:</strong>
+                </p>
+              )}
             </div>
             <div className='w-1/3 md:w-1/4'>
-              <p>{order.email}</p>
-              <p>{order.name}</p>
-              <p>{order.phoneNumber}</p>
-              <p>{order.address}</p>
-              <p>{order.note}</p>
-              <p>{order.payMethod}</p>
-              <p>{order.shipDate}</p>
-              <p>{order.receiveDate}</p>
+              <p className='whitespace-nowrap'>{order.email || '\u00A0'}</p>
+              <p className='whitespace-nowrap'>{order.name || '\u00A0'}</p>
+              <p className='whitespace-nowrap'>{order.phoneNumber || '\u00A0'}</p>
+              <p className='whitespace-nowrap'>{order.address || '\u00A0'}</p>
+              <p className='whitespace-nowrap'>{order.note || '\u00A0'}</p>
+              <p className='whitespace-nowrap'>{order.payMethod || '\u00A0'}</p>
+              <p className='whitespace-nowrap'>{formatDate(order.shipDate) || '\u00A0'}</p>
+              <p className='whitespace-nowrap'>{formatDate(order.receiveDate) || '\u00A0'}</p>
+              {(order.status === -1 || order.status === 4) && (
+                <p className='whitespace-nowrap'>
+                  {orderStatus.find((e) => e.value === order.status)?.title || '\u00A0'}
+                </p>
+              )}
             </div>
-            <div className='w-1/3 md:w-2/4'>
-              <SelectGroup
-                className='w-[200px]'
-                options={statusOptions}
-                value={status}
-                onChange={(value) => handleStatusChange(Number(value))}
-              />
-            </div>
+            {order.status !== -1 && order.status !== 4 && (
+              <div className='w-1/3 md:w-2/4'>
+                <SelectGroup
+                  className='w-[200px]'
+                  options={statusOptions}
+                  value={status}
+                  onChange={(value) => handleStatusChange(Number(value))}
+                />
+              </div>
+            )}
           </div>
         </div>
 
@@ -152,16 +167,16 @@ const OrderEdit: React.FC = () => {
             </div>
           </div>
           <div className='bg-white p-4 rounded shadow overflow-y-auto max-h-550'>
-            {order.products &&
-              order.products.map((product) => (
+            {order.variants &&
+              order.variants.map((product) => (
                 <div key={product.id} className='flex items-center justify-between p-2 mb-2 border-b'>
                   {/* Column 1 */}
                   <div className='w-2/4 md:w-1/3 flex items-center gap-3'>
-                    <img src={product.image} alt={product.name} className='bg-boxdark object-cover w-18' />
+                    <img src={product.thumbnail} alt={product.name} className='bg-boxdark object-cover w-18' />
                     <div>
                       <p className='font-bold text-black'>{product.name}</p>
                       <p className='italic'>
-                        {product.color}/{product.size}
+                        {product.attribute[0].Color}/{product.attribute[1].Size}
                       </p>
                     </div>
                   </div>
@@ -171,7 +186,7 @@ const OrderEdit: React.FC = () => {
                   </div>
                   {/* Column 3 */}
                   <div className='w-1/4 md:w-1/3 text-right'>
-                    <p className='mt-1'>{product.price}</p>
+                    <p className='mt-1'>{product.finalPrice}VND <span className='line-through'>{product.originalPrice}VND</span></p>
                   </div>
                 </div>
               ))}
@@ -193,16 +208,16 @@ const OrderEdit: React.FC = () => {
               </p>
             </div>
             <div className='flex flex-col gap-1'>
-              <p className='text-right'>{order.totalMoney}$</p>
-              <p className='text-right'>0$</p>
-              <p className='text-right'>0$</p>
+              <p className='text-right'>{order.totalMoney+calculateTotalDiscount(order)}VND</p>
+              <p className='text-right'>{calculateTotalDiscount(order)}VND</p>
+              <p className='text-right'>0VND</p>
             </div>
           </div>
           <div className='flex justify-between'>
             <p>
               <strong>Total</strong>
             </p>
-            <p className='text-right'>{order.totalMoney}$</p>
+            <p className='text-right'>{order.totalMoney}VND</p>
           </div>
         </div>
 
@@ -211,9 +226,11 @@ const OrderEdit: React.FC = () => {
           <Button type='link' to='/tables/order' color='secondary' className='max-h-12'>
             Back
           </Button>
-          <Button type='button' className='max-h-12' onClick={handleSave}>
-            Save
-          </Button>
+          {order.status !== -1 && order.status !== 4 && (
+            <Button type='button' className='max-h-12' onClick={handleSave}>
+              Save
+            </Button>
+          )}
         </div>
       </div>
     )

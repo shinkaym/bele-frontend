@@ -13,6 +13,7 @@ import StatusBadge from '../StatusBadge'
 import { EToastOption } from '@/models/enums/option'
 import { UToast } from '@/utils/swal'
 import OrderDetailModal from '../OrderDetailModal'
+import { IApiResponse } from '@/models/interfaces/api'
 
 type OrderTableProps = {
   orders: IOrder[]
@@ -37,10 +38,11 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
   const fetchDetail = async (id: number) => {
     try {
       if (id) {
-        const res = await orderApi.detail({ id })
+        const res: IApiResponse<IOrder> = await orderApi.detail({ id })
         if (res.status === 200) {
-          setCurrent(res.data)
-          UToast(EToastOption.SUCCESS, res.message)
+          if (res.data) {
+            setCurrent(res.data)
+          }
         } else {
           UToast(EToastOption.ERROR, res.message)
         }
@@ -162,7 +164,9 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
                 </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.email}</h5>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
+                  {or.email || ''}
+                </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.name}</h5>
@@ -189,16 +193,24 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
                 </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>{or.shipDate}</h5>
-              </td>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                  {or.receiveDate}
+                  {formatDate(or.shipDate)}
                 </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                  <StatusBadge status={or.status} statusList={orderStatus} onClick={() => handleStatusClick(or)} />
+                  {formatDate(or.receiveDate)}
+                </h5>
+              </td>
+              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
+                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[200px] text-center'>
+                  <StatusBadge
+                    status={or.status}
+                    statusList={orderStatus}
+                    onClick={() => {
+                      or.status !== -1 && or.status !== 4 && handleStatusClick(or)
+                    }}
+                  />
                 </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
@@ -207,18 +219,15 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
                 </h5>
               </td>
               <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
-                <h5 className='font-medium text-black dark:text-white text-sm truncate max-w-[100px]'>
-                  {or.updatedAt ? formatDate(or.updatedAt) : 'N/A'}
-                </h5>
-              </td>
-              <td className='border-b border-[#eee] py-4 px-4 dark:border-strokedark'>
                 <div className='flex justify-center space-x-3.5'>
                   <button type='button' className='hover:text-primary' onClick={() => handleViewClick(or.id)}>
                     <EyeIcon width={24} height={24} />
                   </button>
-                  <Link to={`/tables/order/edit/${or.id}`} className='hover:text-primary'>
-                    <EditIcon width={24} height={24} />
-                  </Link>
+                  {or.status !== -1 && or.status !== 4 && (
+                    <Link to={`/tables/order/edit/${or.id}`} className='hover:text-primary'>
+                      <EditIcon width={24} height={24} />
+                    </Link>
+                  )}
                   <button type='button' className='hover:text-primary' onClick={() => handleDeleteClick(or.id)}>
                     <DeleteIcon width={24} height={24} />
                   </button>
@@ -260,9 +269,7 @@ const OrderTable = ({ orders, onRefresh }: OrderTableProps) => {
         />
       )}
 
-      {isOpenViewModal && current && (
-        <OrderDetailModal current={current} onCancel={() => setIsOpenViewModal(false)} />
-      )}
+      {isOpenViewModal && current && <OrderDetailModal current={current} onCancel={() => setIsOpenViewModal(false)} />}
     </div>
   )
 }
