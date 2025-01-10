@@ -1,6 +1,18 @@
 import IconPlay from '@/components/icons/IconPlay'
 import { EFieldByValue, EFieldByTitle, ESortOrderValue, ESortOrderTitle } from '@/models/enums/option'
+<<<<<<< Updated upstream
 import { EOrderStatus, ERateStatus, EEmployeeStatus, EDiscountStatus, ECustomerStatus, EContactStatus } from '@/models/enums/status'
+=======
+import {
+  EOrderStatus,
+  ERateStatus,
+  EEmployeeStatus,
+  EDiscountStatus,
+  ECustomerStatus,
+  EContactStatus,
+  ECategoryStatus
+} from '@/models/enums/status'
+>>>>>>> Stashed changes
 import { IStatus, ITable } from '@/models/interfaces'
 import { TMenuItem } from '@/models/types/brand'
 
@@ -18,8 +30,76 @@ export const sortByOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
     value: EFieldByValue.CREATED_AT
   },
   {
+<<<<<<< Updated upstream
     title: EFieldByTitle.UPDATED_AT,
     value: EFieldByValue.UPDATED_AT
+=======
+    title: EFieldByTitle.FULLNAME,
+    value: EFieldByValue.FULLNAME
+  }
+]
+
+export const customerSortByOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+    title: EFieldByTitle.CREATED_AT,
+    value: EFieldByValue.CREATED_AT
+  },
+  {
+    title: EFieldByTitle.FULLNAME,
+    value: EFieldByValue.FULLNAME
+  }
+]
+
+export const discountSortByOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+    title: EFieldByTitle.CREATED_AT,
+    value: EFieldByValue.CREATED_AT
+  },
+  {
+    title: EFieldByTitle.NAME,
+    value: EFieldByValue.NAME
+  },
+  {
+    title: EFieldByTitle.DISCOUNT_VALUE,
+    value: EFieldByValue.DISCOUNT_VALUE
+  }
+]
+
+export const orderSortByOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+    title: EFieldByTitle.CREATED_AT,
+    value: EFieldByValue.CREATED_AT
+  },
+  {
+    title: EFieldByTitle.FULLNAME,
+    value: EFieldByValue.FULLNAME
+  }
+]
+
+export const rateSortByOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+    title: EFieldByTitle.CREATED_AT,
+    value: EFieldByValue.CREATED_AT
+  },
+  {
+    title: EFieldByTitle.NAME,
+    value: EFieldByValue.NAME
+  },
+  {
+    title: EFieldByTitle.STAR,
+    value: EFieldByValue.STAR
+  }
+]
+
+export const attributeValueSortByOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+    title: EFieldByTitle.CREATED_AT,
+    value: EFieldByValue.CREATED_AT
+  },
+  {
+    title: EFieldByTitle.NAME,
+    value: EFieldByValue.NAME
+>>>>>>> Stashed changes
   }
 ]
 
@@ -34,6 +114,41 @@ export const sortOrderOptions: { title: ESortOrderTitle; value: ESortOrderValue 
   }
 ]
 
+<<<<<<< Updated upstream
+=======
+export const contactSortByOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+    title: EFieldByTitle.CREATED_AT,
+    value: EFieldByValue.CREATED_AT
+  },
+  {
+    title: EFieldByTitle.FULLNAME,
+    value: EFieldByValue.FULLNAME
+  },
+  {
+    title: EFieldByTitle.EMAIL,
+    value: EFieldByValue.EMAIL
+  },
+  {
+    title: EFieldByTitle.PHONE_NUMBER,
+    value: EFieldByValue.PHONE_NUMBER
+  }
+]
+
+export const categoryStatus: IStatus[] = [
+  {
+    title: ECategoryStatus.INACTIVE,
+    value: 0,
+    className: 'text-orange-600 border-orange-600 bg-orange-200'
+  },
+  {
+    title: ECategoryStatus.ACTIVE,
+    value: 1,
+    className: 'text-green-600 border-green-600 bg-green-200'
+  }
+]
+
+>>>>>>> Stashed changes
 export const rateStatus: IStatus[] = [
   {
     title: ERateStatus.INACTIVE,
@@ -80,11 +195,14 @@ export const employeeStatus: IStatus[] = [
     title: EEmployeeStatus.ACTIVE,
     value: 2,
     className: 'text-green-600 border-green-600 bg-green-200'
+<<<<<<< Updated upstream
   },
   {
     title: EEmployeeStatus.BANNED,
     value: 3,
     className: 'text-red-600 border-red-600 bg-red-200'
+=======
+>>>>>>> Stashed changes
   }
 ]
 
@@ -98,11 +216,14 @@ export const discountStatus: IStatus[] = [
     title: EDiscountStatus.ACTIVE,
     value: 1,
     className: 'text-green-600 border-green-600 bg-green-200'
+<<<<<<< Updated upstream
   },
   {
     title: EDiscountStatus.EXPIRED,
     value: 2,
     className: 'text-red-600 border-red-600 bg-red-200'
+=======
+>>>>>>> Stashed changes
   }
 ]
 
@@ -144,6 +265,20 @@ export const contactStatus: IStatus[] = [
 
 export const orderFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
   {
+<<<<<<< Updated upstream
+=======
+    title: EFieldByTitle.FULLNAME,
+    value: EFieldByValue.FULLNAME
+  },
+  {
+    title: EFieldByTitle.PHONE_NUMBER,
+    value: EFieldByValue.PHONE_NUMBER
+  }
+]
+
+export const categoryFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+>>>>>>> Stashed changes
     title: EFieldByTitle.ID,
     value: EFieldByValue.ID
   }
@@ -151,13 +286,58 @@ export const orderFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[]
 
 export const employeeFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
   {
+<<<<<<< Updated upstream
     title: EFieldByTitle.ID,
     value: EFieldByValue.ID
+=======
+    title: EFieldByTitle.FULLNAME,
+    value: EFieldByValue.FULLNAME
+  },
+  {
+    title: EFieldByTitle.EMAIL,
+    value: EFieldByValue.EMAIL
+  },
+  {
+    title: EFieldByTitle.PHONE_NUMBER,
+    value: EFieldByValue.PHONE_NUMBER
+>>>>>>> Stashed changes
   }
 ]
 
 export const rateFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
   {
+<<<<<<< Updated upstream
+=======
+    title: EFieldByTitle.FULLNAME,
+    value: EFieldByValue.FULLNAME
+  }
+]
+
+export const discountFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+    title: EFieldByTitle.NAME,
+    value: EFieldByValue.NAME
+  }
+]
+
+export const customerFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+    title: EFieldByTitle.FULLNAME,
+    value: EFieldByValue.FULLNAME
+  },
+  {
+    title: EFieldByTitle.EMAIL,
+    value: EFieldByValue.EMAIL
+  },
+  {
+    title: EFieldByTitle.PHONE_NUMBER,
+    value: EFieldByValue.PHONE_NUMBER
+  }
+]
+
+export const contactFieldOptions: { title: EFieldByTitle; value: EFieldByValue }[] = [
+  {
+>>>>>>> Stashed changes
     title: EFieldByTitle.ID,
     value: EFieldByValue.ID
   }
@@ -270,3 +450,11 @@ export const contactTableHeaders: ITable[] = [
   { title: 'Created At', value: 8, className: 'min-w-[150px]' },
   { title: 'Action', value: 9, className: 'min-w-[80px] text-center' }
 ]
+<<<<<<< Updated upstream
+=======
+
+export const PAGINATION_CONFIG = {
+  DEFAULT_LIMIT: 5,
+  DEFAULT_PAGE: 1
+}
+>>>>>>> Stashed changes

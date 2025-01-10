@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-
 import {
     IContactDetailResponse,
     IContactListResponse,
     IContactDeleteResponse,
+<<<<<<< Updated upstream
     IContactUpdateStatusResponse,
     IContactAddResponse,
   } from '@/models/interfaces/contact';
@@ -77,4 +77,68 @@ import {
   };
   
   export default contactApi;
+=======
+    IContactUpdateStatusResponse
+  } from '@/models/interfaces/contact'
+  import axiosPublic from '../client/public.client'
+  import { IApiResponse } from '@/models/interfaces/api'
+  import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
+  
+  const contactEndpoints = {
+    list: 'contacts',
+    detail: ({ id }: { id: number }) => `contacts/${id}`,
+    delete: ({ id }: { id: number }) => `contacts/${id}`,
+    updateStatus: ({ id }: { id: number }) => `contacts/${id}/status`,
+    add: 'contacts',
+    update: ({ id }: { id: number }) => `contacts/${id}`
+  }
+  
+  const contactApi = {
+    async list(params: {
+        page: number
+        limit: number
+        query: string
+        field: EFieldByValue
+        status: any
+        sort: EFieldByValue
+        order: ESortOrderValue
+      }): Promise<IApiResponse<IContactListResponse>> {
+      try {
+        const response = await axiosPublic.get(contactEndpoints.list, { params })
+        return response.data
+      } catch (error) {
+        throw error
+      }
+    },
+  
+    async detail({ id }: { id: number }): Promise<IApiResponse<IContactDetailResponse>> {
+      try {
+        const response = await axiosPublic.get(contactEndpoints.detail({ id }))
+        return response.data
+      } catch (error) {
+        throw error
+      }
+    },
+  
+    async delete({ id }: { id: number }): Promise<IApiResponse<IContactDeleteResponse>> {
+      try {
+        const response = await axiosPublic.delete(contactEndpoints.delete({ id }))
+        return response.data
+      } catch (error) {
+        throw error
+      }
+    },
+  
+    async updateStatus({ id, status }: { id: number; status: number }): Promise<IApiResponse<IContactUpdateStatusResponse>> {
+      try {
+        const response = await axiosPublic.put(contactEndpoints.updateStatus({ id }), { status })
+        return response.data
+      } catch (error) {
+        throw error
+      }
+    },
+  }
+  
+  export default contactApi
+>>>>>>> Stashed changes
   
