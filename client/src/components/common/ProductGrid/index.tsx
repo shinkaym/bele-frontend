@@ -1,7 +1,5 @@
 import variantApi from '@/apis/modules/variant.api'
 import { IApiResponse, IProduct, IVariantColor, IVariantProductColor } from '@/models/interfaces'
-import { faStar } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import { FormattedNumber, IntlProvider } from 'react-intl'
 import { Link } from 'react-router-dom'
@@ -28,15 +26,6 @@ const ProductGrid = ({
 }: IProductGridProps) => {
   const [colorData, setColorData] = useState<IVariantColor>(product.variantColors?.[0] ?? Object)
   const [variantByColor, setVariantByColor] = useState<IVariantProductColor[]>([])
-  const uniqueColors = Object.values(
-    product.variantColors.reduce((acc: Record<number, (typeof product.variantColors)[0]>, item) => {
-      if (!acc[item.colorId] || acc[item.colorId].variantId > item.variantId) {
-        acc[item.colorId] = item // Chọn đối tượng có `variantId` nhỏ nhất
-      }
-      return acc
-    }, {})
-  )
-  console.log(colorData)
   // console.log(colorData)
   const handleGetColor = (value: number) => {
     const data = product!.variantColors.find((color) => color.colorId === value)
@@ -118,7 +107,11 @@ const ProductGrid = ({
           </div>
           {isShowColor && Object.keys(Object(colorData)).length > 0 && (
             <RadioColorGroup
-              options={uniqueColors || []}
+              options={
+                product.variantColors.filter(
+                  (item, index, self) => self.findIndex((v) => v.colorId === item.colorId) === index
+                ) || []
+              }
               name={`${product.id}-${colorData.colorId}-${colorData.variantId}`}
               onChange={handleGetColor}
               classNameItems='lg:w-9 lg:h-5 md:w-8.5 md:h-4.5 sm:w-8 sm:h-4 w-7.5 h-3.5'

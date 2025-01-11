@@ -8,10 +8,10 @@ import SettingContext from '@/context/Setting/SettingContext'
 import { IApiResponse, ICategory } from '@/models/interfaces'
 import { faArrowRight, faBagShopping, faBars, faChevronDown, faSearch, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useContext, useEffect, useState } from 'react'
+import { memo, useContext, useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
-function Header() {
+const Header = memo(() => {
   const [isShowSearchModal, setIsShowSearchModal] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(false)
   const [popupOptions, setPopupOptions] = useState<'login' | 'register' | 'forgotPassword'>('login')
@@ -332,6 +332,6 @@ function Header() {
       )}
     </>
   )
-}
+})
 
 export default Header

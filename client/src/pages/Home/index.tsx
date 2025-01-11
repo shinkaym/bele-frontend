@@ -11,11 +11,11 @@ import SettingContext from '@/context/Setting/SettingContext'
 import { IApiResponse, IProduct } from '@/models/interfaces'
 import { faArrowLeft, faArrowRight, faStar } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useContext, useEffect, useState } from 'react'
+import { memo, useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import 'react-slideshow-image/dist/styles.css'
 
-function Home() {
+const Home = memo(() => {
   const [limit, setLimit] = useState<number>(5)
   // const [tags,setTags] = useState<ITag[]>([])
   const [tag, setTag] = useState<number>(1)
@@ -28,6 +28,7 @@ function Home() {
       setTag(Number(value))
     }
   }
+  console.log(products)
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -223,6 +224,6 @@ function Home() {
       )}
     </>
   )
-}
+})
 
 export default Home
