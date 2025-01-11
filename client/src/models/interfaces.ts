@@ -7,11 +7,8 @@ export interface ICategory {
   id: number
   name: string
   parentName?: string
-  referenceCategory: ICategory | null
-  status: number
+  referenceCategory: ICategory[] | []
   slug: string
-  createdAt: string
-  updatedAt: string
 }
 
 export interface IDiscount {
@@ -70,6 +67,12 @@ export interface ITag {
   id: number
   name: string
 }
+export interface IVariantColor {
+  variantId: number
+  color: string
+  thumbnail: string
+  colorId: number
+}
 export interface IProduct {
   id: number // ID của sản phẩm
   name: string // Tên sản phẩm
@@ -77,7 +80,7 @@ export interface IProduct {
   thumbnail: string
   description: string
   discount: IDiscount | null
-  rate: IRateProduct | null
+  // rate: IRateProduct | null
   tag: ITag[]
   basePrice: number // Giá sản phẩm
   slug: string // URL slug của sản phẩm
@@ -86,8 +89,14 @@ export interface IProduct {
   status: number // Trạng thái sản phẩm (1: hoạt động, 0: không hoạt động)
   updatedAt: string // Trạng thái xóa (0: chưa xóa, 1: đã xóa)
   createdAt: string // Thời gian tạo sản phẩm
-  variant: IVariant[]
-  variantAttributeTypes: IListVariantAttributeValue | null
+  variantColors: IVariantColor[]
+  attributeTypes: IAttributeType[]
+}
+
+export interface IVariantProductColor {
+  variantId: number
+  size: string
+  thumbnail: string
 }
 
 export interface IPagination {
@@ -186,7 +195,7 @@ export interface ISetting {
   social: ISocial
   address: IAddress
   service: IService
-  logo:ILogo
-  info:IInfo
+  logo: ILogo
+  info: IInfo
 }
 //End-Setting

@@ -23,7 +23,6 @@ type Props = {}
 function Edit({}: Props) {
   const [loading, setLoading] = useState(false)
   const [options, setOptions] = useState<IOptions[]>([])
-  const [categoryData, setCategoryData] = useState<ICategory[]>([])
   const params = useParams()
   const categoryId: number = Number(params.id)
 
@@ -31,23 +30,19 @@ function Edit({}: Props) {
     const handleGetData = async () => {
       setLoading(true)
       try {
-        const res: IApiResponse<{ categories: ICategory[]; pagination: IPagination }> = await categoryApi.list()
-        setCategoryData(res.data!.categories)
-
         const resDetail: IApiResponse<{ categorie: ICategory }> = await categoryApi.detail(categoryId)
         // console.log(resDetail);
         const dataDetail = resDetail.data!.categorie
         console.log(dataDetail)
         const resParent: IApiResponse<{ categories: ICategory[]; pagination: IPagination }> = await categoryApi.list({
-          field: EFieldByValue.REFERENCE_CATEGORY_Id,
+          field: EFieldByValue.REFERENCE_CATEGORY_ID,
           query: '0'
         })
         const data = resParent.data!.categories
-        setCategoryData(data)
         let newData: IOptions[] = data.map((cat) => ({
           value: cat.id,
           label: cat.name
-        }))
+        })).filter(cat => cat.value !== dataDetail.id)
         newData = [
           {
             value: 0,
@@ -74,16 +69,7 @@ function Edit({}: Props) {
   const categorySchema = z.object({
     name: z
       .string()
-      .min(1, { message: 'Category name is required' })
-      .refine(
-        (name) =>
-          !categoryData.some(
-            (category) => category.name.toLowerCase() === name.toLowerCase() && category.id !== categoryId
-          ),
-        {
-          message: 'Category name must be unique'
-        }
-      ), // Bắt buộc nhập tên
+      .min(1, { message: 'Category name is required' }),// Bắt buộc nhập tên
     referenceCategoryId: z.number(),
     status: z.number()
   })
