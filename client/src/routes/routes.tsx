@@ -16,7 +16,6 @@ const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> =>
 const Profile = Loadable(lazy(() => import('@/pages/Profile')))
 const Search = Loadable(lazy(() => import('@/pages/Search')))
 
-
 const AppRouter = () => {
   return useRoutes([
     {
@@ -35,11 +34,21 @@ const AppRouter = () => {
         },
         {
           path: 'profile',
-          element: <Profile />
+          element: (
+            <>
+              <PageTitle title='Thông tin cá nhân' />
+              <Profile />
+            </>
+          )
         },
         {
           path: 'search',
-          element: <Search />
+          element: (
+            <>
+              <PageTitle title='Trang tìm kiếm' />
+              <Search />
+            </>
+          )
         }
       ]
     }

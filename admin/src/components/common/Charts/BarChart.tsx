@@ -135,7 +135,11 @@ const BarChart: React.FC<BarChartProps> = ({ data, onClick }) => {
               ...options,
               xaxis: { ...options.xaxis, categories }
             }}
-            series={data.figures}
+            series={[
+              {
+                data: data.figures // Dữ liệu được truyền từ ngoài
+              }
+            ]}
             type='bar'
             height={350}
           />
