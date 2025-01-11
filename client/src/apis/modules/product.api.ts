@@ -8,8 +8,8 @@ const productEndpoints = {
 }
 
 const productApi = {
-  async list(): Promise<IApiResponse<{ product: IProduct[] }>> {
-    return axiosPublic.get(productEndpoints.list)
+  async list(params: { TagId: number }): Promise<IApiResponse<{ products: IProduct[] }>> {
+    return axiosPublic.get(productEndpoints.list, { params: { ...params } })
   }
 }
 

@@ -1,11 +1,12 @@
-import { IColor, IProduct } from '@/models/interfaces'
+import variantApi from '@/apis/modules/variant.api'
+import { IApiResponse, IProduct, IVariantColor, IVariantProductColor } from '@/models/interfaces'
+import { faStar } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
+import { FormattedNumber, IntlProvider } from 'react-intl'
 import { Link } from 'react-router-dom'
 import Button from '../Button'
 import RadioColorGroup from '../RadioColorGroup'
-import { IntlProvider, FormattedNumber } from 'react-intl'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar } from '@fortawesome/free-solid-svg-icons'
 import Tag from '../Tag'
 
 interface IProductGridProps {
@@ -25,22 +26,46 @@ const ProductGrid = ({
   isShowPrice = true,
   isShowAddCart = true
 }: IProductGridProps) => {
-  const [colorData, setColorData] = useState<IColor>(product.variantAttributeTypes?.color?.[0] ?? Object)
-  const variantDataByColor = product.variant.find((v) => v.variantAttributeValue?.colorId === colorData.id)
-
+  const [colorData, setColorData] = useState<IVariantColor>(product.variantColors?.[0] ?? Object)
+  const [variantByColor, setVariantByColor] = useState<IVariantProductColor[]>([])
+  const uniqueColors = Object.values(
+    product.variantColors.reduce((acc: Record<number, (typeof product.variantColors)[0]>, item) => {
+      if (!acc[item.colorId] || acc[item.colorId].variantId > item.variantId) {
+        acc[item.colorId] = item // Chọn đối tượng có `variantId` nhỏ nhất
+      }
+      return acc
+    }, {})
+  )
+  console.log(colorData)
+  // console.log(colorData)
   const handleGetColor = (value: number) => {
-    const data = product.variantAttributeTypes!.color.find((color) => color.id === value)
+    const data = product!.variantColors.find((color) => color.colorId === value)
     if (data) {
       setColorData(data)
     }
   }
-  const handleAddCart = (value?: number) => {
+  const handleAddCart = (value?: string) => {
     console.log(value)
   }
-  useEffect(() => {}, [])
+  useEffect(() => {
+    const fetchApi = async () => {
+      try {
+        const res: IApiResponse<{ variants: IVariantProductColor[] }> = await variantApi.detailColor({
+          productId: product.id,
+          colorId: colorData.colorId
+        })
+        if (res.data && res.status === 200) {
+          setVariantByColor(res.data.variants)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchApi()
+  }, [colorData, product.id])
   return (
     <>
-      {Object.keys(product).length > 0 ? (
+      {Object.keys(product).length > 0 && variantByColor.length > 0 && Object.keys(colorData).length > 0 ? (
         <div className={`${className} space-y-1`}>
           <div className='relative group transition-all duration-500 ease-linear overflow-hidden max-h-80'>
             <Link to='/'>
@@ -51,17 +76,19 @@ const ProductGrid = ({
               />
               <div className={`absolute left-2 right-2 top-1 ${isShowAddCart ? 'group-hover:blur-sm' : ''}`}>
                 <div className={`flex items-center justify-between `}>
-                  <div className='flex items-center'>
-                    <span className='lg:text-sm md:text-xs sm:text-2xs text-3xs'>{product.rate?.starAvg}</span>
-                    <FontAwesomeIcon icon={faStar} className='lg:text-xs md:text-2xs sm:text-3xs text-4xs' />
-                    <span className='lg:text-sm md:text-xs sm:text-2xs text-3xs text-blue-primary font-bold'>
-                      ({product.rate?.count})
-                    </span>
-                  </div>
+                  {/* {product.rateAVG.length > 0 && (
+                    <div className='flex items-center'>
+                      <span className='lg:text-sm md:text-xs sm:text-2xs text-3xs'>{product.rate?.starAvg}</span>
+                      <FontAwesomeIcon icon={faStar} className='lg:text-xs md:text-2xs sm:text-3xs text-4xs' />
+                      <span className='lg:text-sm md:text-xs sm:text-2xs text-3xs text-blue-primary font-bold'>
+                        ({product.rate?.count})
+                      </span>
+                    </div>
+                  )} */}
                   {tag ? (
-                    <Tag title={product.tag.find((t) => t.id === tag)?.name || ''} />
+                    <Tag title={product.tags.find((t) => t.id === tag)?.name || ''} />
                   ) : (
-                    <Tag title={product.tag[0]?.name || ''} />
+                    <Tag title={product.tags[0]?.name || ''} />
                   )}
                 </div>
               </div>
@@ -72,34 +99,27 @@ const ProductGrid = ({
                   Thêm vào giỏ hàng
                 </p>
                 <div className='grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2'>
-                  {product?.variant.map((v) => {
-                    if (v.variantAttributeValue?.colorId === colorData.id) {
-                      return (
-                        <Button
-                          key={v.id}
-                          onClick={handleAddCart}
-                          color='white'
-                          textColor='black'
-                          type='button'
-                          value={v.id}
-                          className='w-full lg:h-10 md:h-9 sm:h-8 h-7  lg:text-base md:text-sm text-xs rounded-md hover:bg-black hover:text-white'
-                        >
-                          {
-                            product.variantAttributeTypes?.size.find((s) => s.id === v.variantAttributeValue?.sizeId)
-                              ?.name
-                          }
-                        </Button>
-                      )
-                    }
-                  })}
+                  {variantByColor.map((v) => (
+                    <Button
+                      key={v.variantId}
+                      onClick={handleAddCart}
+                      color='white'
+                      textColor='black'
+                      type='button'
+                      value={v.variantId.toString()}
+                      className='w-full lg:h-10 md:h-9 sm:h-8 h-7  lg:text-base md:text-sm text-xs rounded-md hover:bg-black hover:text-white'
+                    >
+                      {v.size}
+                    </Button>
+                  ))}
                 </div>
               </div>
             )}
           </div>
           {isShowColor && Object.keys(Object(colorData)).length > 0 && (
             <RadioColorGroup
-              options={product.variantAttributeTypes?.color || []}
-              name={product.name + product.id}
+              options={uniqueColors || []}
+              name={`${product.id}-${colorData.colorId}-${colorData.variantId}`}
               onChange={handleGetColor}
               classNameItems='lg:w-9 lg:h-5 md:w-8.5 md:h-4.5 sm:w-8 sm:h-4 w-7.5 h-3.5'
             />
@@ -111,23 +131,25 @@ const ProductGrid = ({
           {isShowPrice && (
             <div className='space-x-2 flex items-center'>
               <IntlProvider locale='vi-VN'>
-                {product.discount && (
+                {product.discount?.discountValue !== 0 && (
                   <>
                     <span className='font-semibold lg:text-sm md:text-xs sm:text-2xs text-3xs'>
                       <FormattedNumber
-                        value={Math.trunc(variantDataByColor!.price * (1 - product.discount.discount / 100))}
+                        value={Math.trunc(colorData!.price * (1 - product.discount!.discountValue / 100))}
                         style='currency'
                         currency='VND'
                       />
                     </span>
                     <span className='px-1 py-0.5 bg-blue-primary text-white lg:text-xs md:text-2xs sm:text-3xs text-4xs rounded-md font-bold'>
-                      -{product.discount.discount}%
-                    </span>
-                    <span className='font-semibold lg:text-sm md:text-xs sm:text-2xs text-3xs text-gray-text line-through'>
-                      <FormattedNumber value={variantDataByColor!.price} style='currency' currency='VND' />
+                      -{product.discount!.discountValue}%
                     </span>
                   </>
                 )}
+                <span
+                  className={`font-semibold lg:text-sm md:text-xs sm:text-2xs text-3xs ${product.discount?.discountValue !== 0 ? 'text-gray-text line-through' : ''}`}
+                >
+                  <FormattedNumber value={colorData!.price} style='currency' currency='VND' />
+                </span>
               </IntlProvider>
             </div>
           )}

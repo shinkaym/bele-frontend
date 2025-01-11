@@ -6,7 +6,7 @@ import {
   IDiscountUpdateResponse,
   IDiscountUpdateStatusResponse
 } from '@/models/interfaces/discount'
-import axiosPublic from '../client/public.client'
+import axiosPrivate from '../client/private.client'
 
 const discountApi = {
   async list(params: {
@@ -20,7 +20,7 @@ const discountApi = {
   }): Promise<IApiResponse<IDiscountListResponse>> {
     try {
       const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value !== null))
-      return await axiosPublic.get('Discount', { params: filteredParams })
+      return await axiosPrivate.get('Discount', { params: filteredParams })
     } catch (error) {
       throw error
     }
@@ -28,7 +28,7 @@ const discountApi = {
 
   async detail({ id }: { id: number }): Promise<IApiResponse<IDiscount>> {
     try {
-      return await axiosPublic.get(`Discount/${id}`)
+      return await axiosPrivate.get(`Discount/${id}`)
     } catch (error) {
       throw error
     }
@@ -36,7 +36,7 @@ const discountApi = {
 
   async delete({ id }: { id: number }): Promise<IApiResponse> {
     try {
-      return await axiosPublic.delete(`Discount/${id}`)
+      return await axiosPrivate.delete(`Discount/${id}`)
     } catch (error) {
       throw error
     }
@@ -50,7 +50,7 @@ const discountApi = {
     status: number
   }): Promise<IApiResponse<IDiscountUpdateStatusResponse>> {
     try {
-      return await axiosPublic.patch(`Discount/${id}`, { status })
+      return await axiosPrivate.patch(`Discount/${id}`, { status })
     } catch (error) {
       throw error
     }
@@ -63,7 +63,7 @@ const discountApi = {
     status: number
   }): Promise<IApiResponse<IDiscount>> {
     try {
-      return await axiosPublic.post('Discount', data)
+      return await axiosPrivate.post('Discount', data)
     } catch (error) {
       throw error
     }
@@ -82,7 +82,7 @@ const discountApi = {
     }
   }): Promise<IDiscountUpdateResponse> {
     try {
-      return await axiosPublic.put(`Discount/${id}`, data)
+      return await axiosPrivate.put(`Discount/${id}`, data)
     } catch (error) {
       throw error
     }

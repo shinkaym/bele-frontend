@@ -12,6 +12,7 @@ import axiosPublic from '../client/public.client'
 import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
 import { IApiResponse } from '@/models/interfaces/api'
 import { EContactStatus } from '@/models/enums/status'
+import axiosPrivate from '../client/private.client'
 
 const contactEndpoints = {
   list: 'contact',
@@ -73,7 +74,7 @@ const contactApi = {
     status: number
   }): Promise<IApiResponse<IContactUpdateStatusResponse>> {
     try {
-      return await axiosPublic.patch(`Contact/${id}`, {
+      return await axiosPrivate.patch(`Contact/${id}`, {
         status
       })
     } catch (error) {
@@ -91,7 +92,7 @@ const contactApi = {
     status: number
   }): Promise<IContactAddResponse> {
     try {
-      const response = await axiosPublic.post(contactEndpoints.add, data)
+      const response = await axiosPrivate.post(contactEndpoints.add, data)
       return response.data
     } catch (error) {
       throw error

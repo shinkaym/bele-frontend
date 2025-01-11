@@ -5,7 +5,6 @@ import {
   IAttributeValueDetailResponse,
   IAttributeValueListResponse
 } from '@/models/interfaces/attribute'
-import axiosPublic from '../client/public.client'
 import { attributeValueData } from '@/models/data/attributeTypeData'
 import { IApiResponse } from '@/models/interfaces/api'
 import axiosPrivate from '../client/private.client'
@@ -20,11 +19,11 @@ const attributeValueEndpoints = {
 const attributeApi = {
   getList(): IAttributeValue[] {
     return attributeValueData
-    // return axiosPublic.get(attributeValueEndpoints.list)
+    // return axiosPrivate.get(attributeValueEndpoints.list)
   },
   getAttrValue(id: number): IAttributeValue | undefined {
     return attributeValueData.find((val) => val.id === id)
-    // return axiosPublic.get(attributeValueEndpoints.detail(id))
+    // return axiosPrivate.get(attributeValueEndpoints.detail(id))
   },
   async listAttributeTypes(): Promise<IApiResponse<{ attributeTypes: IAttributeType[] }>> {
     return axiosPrivate.get('Attribute')
@@ -42,7 +41,7 @@ const attributeApi = {
   },
   async delete({ id }: { id: number }): Promise<IApiResponse> {
     try {
-      return await axiosPublic.delete(`Attribute/value/${id}`)
+      return await axiosPrivate.delete(`Attribute/value/${id}`)
     } catch (error) {
       throw error
     }
@@ -52,7 +51,7 @@ const attributeApi = {
     data: { status: number; name: string; attributeTypeId: string | number; value?: string | undefined }
   ): Promise<IApiResponse<IAttributeValueDetailResponse>> {
     try {
-      return await axiosPublic.post(`Attribute/value/${id}`, { ...data })
+      return await axiosPrivate.post(`Attribute/value/${id}`, { ...data })
     } catch (error) {
       throw error
     }
@@ -62,21 +61,21 @@ const attributeApi = {
     data: { status: number | string; name: string; attributeTypeId: string | number; value?: string | undefined }
   ): Promise<IApiResponse<IAttributeValueDetailResponse>> {
     try {
-      return await axiosPublic.put(`Attribute/value/${id}`, { ...data })
+      return await axiosPrivate.put(`Attribute/value/${id}`, { ...data })
     } catch (error) {
       throw error
     }
   },
   async updateStatus({ id, status }: { id: number; status: number }): Promise<IApiResponse> {
     try {
-      return await axiosPublic.patch(`Attribute/value/${id}`, status)
+      return await axiosPrivate.patch(`Attribute/value/${id}`, status)
     } catch (error) {
       throw error
     }
   },
   async detail({ id }: { id: number }): Promise<IApiResponse<IAttributeValueDetailResponse>> {
     try {
-      return await axiosPublic.get(`Attribute/value/${id}`)
+      return await axiosPrivate.get(`Attribute/value/${id}`)
     } catch (error) {
       throw error
     }

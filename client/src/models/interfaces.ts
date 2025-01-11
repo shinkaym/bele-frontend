@@ -14,7 +14,7 @@ export interface ICategory {
 export interface IDiscount {
   id: number
   name: string
-  discount: number
+  discountValue: number
   expireDate: string
   status: number
   createdAt: string
@@ -72,6 +72,7 @@ export interface IVariantColor {
   color: string
   thumbnail: string
   colorId: number
+  price: number
 }
 export interface IProduct {
   id: number // ID của sản phẩm
@@ -80,8 +81,9 @@ export interface IProduct {
   thumbnail: string
   description: string
   discount: IDiscount | null
-  // rate: IRateProduct | null
-  tag: ITag[]
+  rate?: IRateProduct | null
+  rateAVG: []
+  tags: ITag[]
   basePrice: number // Giá sản phẩm
   slug: string // URL slug của sản phẩm
   view: number // Số lượt xem sản phẩm

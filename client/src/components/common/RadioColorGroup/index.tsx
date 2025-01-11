@@ -1,8 +1,8 @@
-import { IColor } from '@/models/interfaces'
+import { IVariantColor } from '@/models/interfaces'
 import React, { ForwardedRef, useState } from 'react'
 
 interface RadioColorGroupProps {
-  options: IColor[]
+  options: IVariantColor[]
   name: string // Name attribute to group radios
   onChange?: (value: number) => void
   className?: string
@@ -13,7 +13,7 @@ const RadioColorGroup = (
   { options, name, onChange, className = '', classNameItems = '' }: RadioColorGroupProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
-  const [selected, setSelected] = useState<number>(options[0].id)
+  const [selected, setSelected] = useState<number>(options[0].colorId)
 
   const handleChange = (value: number) => {
     setSelected(value)
@@ -27,21 +27,21 @@ const RadioColorGroup = (
       <div ref={ref} className='flex flex-wrap items-center gap-2'>
         {options.map((option) => (
           <label
-            key={name + option?.id}
-            htmlFor={name + option?.id.toString()}
+            key={name + option?.colorId}
+            htmlFor={name + option?.colorId.toString()}
             className={`relative inline-block cursor-pointer rounded-xl 
-                ${selected === option?.id ? "before:content-[''] before:block before:absolute before:-inset-0.75 before:rounded-xl before:border before:border-gray-600" : ''} 
+                ${selected === option?.colorId ? "before:content-[''] before:block before:absolute before:-inset-0.75 before:rounded-xl before:border before:border-gray-600" : ''} 
                 ${classNameItems}`}
-            style={{ backgroundColor: option.value }}
+            style={{ backgroundColor: option.color }}
           >
             <div className='absolute'>
               <input
                 type='radio'
-                id={name + option?.id.toString()}
+                id={name + option?.colorId.toString()}
                 name={name}
-                value={option?.id.toString()}
-                checked={selected === option?.id}
-                onChange={() => handleChange(option?.id)}
+                value={option?.colorId.toString()}
+                checked={selected === option?.colorId}
+                onChange={() => handleChange(option?.colorId)}
                 className='sr-only'
               />
             </div>

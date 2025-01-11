@@ -11,7 +11,7 @@ const variantApi = {
   async detailColor(params: {
     productId: number
     colorId: number
-  }): Promise<IApiResponse<{ variant: IVariantProductColor[] }>> {
+  }): Promise<IApiResponse<{ variants: IVariantProductColor[] }>> {
     return axiosPublic.get(variantEndpoints.list, { params })
   }
 }
