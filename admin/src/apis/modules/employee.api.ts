@@ -7,9 +7,9 @@ import {
   IEmployeeListResponse,
   IEmployeeUpdateStatusResponse
 } from '@/models/interfaces/employee'
-import axiosPublic from '../client/public.client'
 import { IApiResponse } from '@/models/interfaces/api'
 import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
+import axiosPrivate from '../client/private.client'
 
 const employeeApi = {
   async list(params: {
@@ -23,7 +23,7 @@ const employeeApi = {
   }): Promise<IApiResponse<IEmployeeListResponse>> {
     try {
       const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value !== null))
-      return await axiosPublic.get('Account', { params: filteredParams })
+      return await axiosPrivate.get('Account', { params: filteredParams })
     } catch (error) {
       throw error
     }
@@ -31,7 +31,7 @@ const employeeApi = {
 
   async detail({ id }: { id: number }): Promise<IApiResponse<IEmployeeDetailResponse>> {
     try {
-      return await axiosPublic.get(`Account/${id}`)
+      return await axiosPrivate.get(`Account/${id}`)
     } catch (error) {
       throw error
     }
@@ -39,7 +39,7 @@ const employeeApi = {
 
   async delete({ id }: { id: number }): Promise<IApiResponse> {
     try {
-      return await axiosPublic.delete(`Account/${id}`)
+      return await axiosPrivate.delete(`Account/${id}`)
     } catch (error) {
       throw error
     }
@@ -53,7 +53,7 @@ const employeeApi = {
     status: number
   }): Promise<IApiResponse<IEmployeeUpdateStatusResponse>> {
     try {
-      return await axiosPublic.patch(`Account/${id}`, { status })
+      return await axiosPrivate.patch(`Account/${id}`, { status })
     } catch (error) {
       throw error
     }
@@ -70,7 +70,7 @@ const employeeApi = {
     status: number
   }): Promise<IApiResponse<IEmployeeAddResponse>> {
     try {
-      return await axiosPublic.post('Account', data)
+      return await axiosPrivate.post('Account', data)
     } catch (error) {
       throw error
     }
@@ -93,8 +93,7 @@ const employeeApi = {
     }
   }): Promise<IApiResponse<IEmployee>> {
     try {
-      console.log('🚀 ~ data:', data)
-      return await axiosPublic.put(`Account/${id}`, data)
+      return await axiosPrivate.put(`Account/${id}`, data)
     } catch (error) {
       throw error
     }

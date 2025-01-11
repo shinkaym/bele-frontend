@@ -45,8 +45,6 @@ const ContactPage: React.FC = () => {
         const res = await contactApi.list(params)
         if (res && res.contacts && res.pagination) {
           const { contacts, pagination } = res
-          //   console.log('🚀 ~ fetchData ~ contacts:', contacts);
-          //   console.log('🚀 ~ fetchData ~ pagination:', pagination);
 
           if (Array.isArray(contacts) && pagination) {
             setContacts(contacts)
@@ -58,7 +56,6 @@ const ContactPage: React.FC = () => {
           throw new Error('Unexpected response structure.')
         }
       } catch (error: any) {
-        // console.error('🚀 ~ fetchData ~ API Error:', error);
         const errorMessage = error.message || 'Failed to fetch data.'
         UToast(EToastOption.ERROR, errorMessage)
       } finally {

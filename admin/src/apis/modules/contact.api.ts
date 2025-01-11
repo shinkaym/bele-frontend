@@ -7,11 +7,11 @@ import {
   IContactUpdateStatusResponse,
   IContactAddResponse
 } from '@/models/interfaces/contact'
-import { contactListResponseData, contactDetailResponseData } from '@/models/data/contactData'
-import axiosPublic from '../client/public.client'
+import {  contactDetailResponseData } from '@/models/data/contactData'
 import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
 import { IApiResponse } from '@/models/interfaces/api'
 import { EContactStatus } from '@/models/enums/status'
+import axiosPrivate from '../client/private.client'
 
 const contactEndpoints = {
   list: 'contact',
@@ -34,12 +34,9 @@ const contactApi = {
     order: ESortOrderValue
   }): Promise<IContactListResponse> {
     try {
-      console.log('🚀 ~ list ~ params:', params); // Log tham số truyền vào API
-      const response = await axiosPublic.get(contactEndpoints.list, { params });
-      console.log('🚀 ~ list ~ response:', response); // Log toàn bộ phản hồi từ axios
+      const response = await axiosPrivate.get(contactEndpoints.list, { params });
       return response.data; // Chỉ trả về `data`
     } catch (error: any) {
-      console.error('🚀 ~ list ~ error:', error.response || error.message || error);
       throw error.response?.data || error.message || error;
     }
   }, 
@@ -58,7 +55,7 @@ const contactApi = {
   // Xóa một contact
   async delete({ id }: { id: number }): Promise<IContactDeleteResponse> {
     try {
-      return await axiosPublic.delete(`Contact/${id}`)
+      return await axiosPrivate.delete(`Contact/${id}`)
     } catch (error) {
       throw error
     }
@@ -73,7 +70,7 @@ const contactApi = {
     status: number
   }): Promise<IApiResponse<IContactUpdateStatusResponse>> {
     try {
-      return await axiosPublic.patch(`Contact/${id}`, {
+      return await axiosPrivate.patch(`Contact/${id}`, {
         status
       })
     } catch (error) {
@@ -91,7 +88,7 @@ const contactApi = {
     status: number
   }): Promise<IContactAddResponse> {
     try {
-      const response = await axiosPublic.post(contactEndpoints.add, data)
+      const response = await axiosPrivate.post(contactEndpoints.add, data)
       return response.data
     } catch (error) {
       throw error

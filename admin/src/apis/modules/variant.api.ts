@@ -1,4 +1,3 @@
-import axiosPublic from '../client/public.client'
 import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
 import { IApiResponse } from '@/models/interfaces/api'
 import { IVariantDetailResponse, IVariantListResponse } from '@/models/interfaces/variant'
@@ -16,15 +15,14 @@ const variantApi = {
   }): Promise<IApiResponse<IVariantListResponse>> {
     try {
       const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value !== null))
-      console.log('🚀 ~ filteredParams:', filteredParams)
-      return await axiosPublic.get('Variant', { params: filteredParams })
+      return await axiosPrivate.get('Variant', { params: filteredParams })
     } catch (error) {
       throw error
     }
   },
   async detail({ id }: { id: number }): Promise<IApiResponse<IVariantDetailResponse>> {
     try {
-      return await axiosPublic.get(`Variant/${id}`)
+      return await axiosPrivate.get(`Variant/${id}`)
     } catch (error) {
       throw error
     }
@@ -32,7 +30,7 @@ const variantApi = {
 
   async delete({ id }: { id: number }): Promise<IApiResponse> {
     try {
-      return await axiosPublic.delete(`Variant/${id}`)
+      return await axiosPrivate.delete(`Variant/${id}`)
     } catch (error) {
       throw error
     }
@@ -46,7 +44,7 @@ const variantApi = {
     status: number
   }): Promise<IApiResponse> {
     try {
-      return await axiosPublic.patch(`Variant/${id}`, { 
+      return await axiosPrivate.patch(`Variant/${id}`, { 
         modifyField: 'Status',
         modifyValue: status.toString()
        })

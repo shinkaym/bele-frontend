@@ -45,7 +45,6 @@ const index: React.FC = () => {
       }
 
       const res: IApiResponse<IVariantListResponse> = await variantApi.list(params)
-      console.log('🚀 ~ fetchData ~ params:', params)
       if (res.status === 200 && res.data) {
         setVariants(res.data.variants)
         setPagination(res.data.pagination)

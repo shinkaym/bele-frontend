@@ -5,9 +5,9 @@ import {
   ICustomerListResponse,
   ICustomerUpdateStatusResponse
 } from '@/models/interfaces/customer'
-import axiosPublic from '../client/public.client'
 import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
 import { IApiResponse } from '@/models/interfaces/api'
+import axiosPrivate from '../client/private.client'
 
 const customerApi = {
   // Lấy danh sách khách hàng
@@ -22,7 +22,7 @@ const customerApi = {
   }): Promise<IApiResponse<ICustomerListResponse>> {
     try {
       const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value !== null))
-      return await axiosPublic.get('Customer', { params: filteredParams })
+      return await axiosPrivate.get('Customer', { params: filteredParams })
     } catch (error) {
       throw error
     }
@@ -31,7 +31,7 @@ const customerApi = {
   // Lấy thông tin chi tiết của khách hàng
   async detail({ id }: { id: number }): Promise<IApiResponse<ICustomerDetailResponse>> {
     try {
-      return await axiosPublic.get(`Customer/${id}`)
+      return await axiosPrivate.get(`Customer/${id}`)
     } catch (error) {
       throw error
     }
@@ -40,7 +40,7 @@ const customerApi = {
   // Xóa khách hàng
   async delete({ id }: { id: number }): Promise<IApiResponse> {
     try {
-      return await axiosPublic.delete(`Customer/${id}`)
+      return await axiosPrivate.delete(`Customer/${id}`)
     } catch (error) {
       throw error
     }
@@ -55,7 +55,7 @@ const customerApi = {
     status: number
   }): Promise<IApiResponse<ICustomerUpdateStatusResponse>> {
     try {
-      return await axiosPublic.patch(`Customer/${id}`, {
+      return await axiosPrivate.patch(`Customer/${id}`, {
         status
       })
     } catch (error) {

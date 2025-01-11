@@ -3,9 +3,9 @@ import {
   IOrderListResponse,
   IOrderUpdateStatusResponse
 } from '@/models/interfaces/order'
-import axiosPublic from '../client/public.client'
 import { IApiResponse } from '@/models/interfaces/api'
 import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
+import axiosPrivate from '../client/private.client'
 
 const orderApi = {
   async list(params: {
@@ -19,7 +19,7 @@ const orderApi = {
   }): Promise<IApiResponse<IOrderListResponse>> {
     try {
       const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value !== null))
-      return await axiosPublic.get(`Order`, { params: filteredParams })
+      return await axiosPrivate.get(`Order`, { params: filteredParams })
     } catch (error) {
       throw error
     }
@@ -27,7 +27,7 @@ const orderApi = {
 
   async detail({ id }: { id: number }): Promise<IApiResponse<IOrder>> {
     try {
-      return await axiosPublic.get(`Order/${id}`)
+      return await axiosPrivate.get(`Order/${id}`)
     } catch (error) {
       throw error
     }
@@ -35,7 +35,7 @@ const orderApi = {
 
   async delete({ id }: { id: number }): Promise<IApiResponse> {
     try {
-      return await axiosPublic.delete(`Order/${id}`)
+      return await axiosPrivate.delete(`Order/${id}`)
     } catch (error) {
       throw error
     }
@@ -49,7 +49,7 @@ const orderApi = {
     status: number
   }): Promise<IApiResponse<IOrderUpdateStatusResponse>> {
     try {
-      return await axiosPublic.patch(`Order/${id}`, { status })
+      return await axiosPrivate.patch(`Order/${id}`, { status })
     } catch (error) {
       throw error
     }

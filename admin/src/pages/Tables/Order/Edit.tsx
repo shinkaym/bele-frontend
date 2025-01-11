@@ -26,7 +26,6 @@ const OrderEdit: React.FC = () => {
           const res = await orderApi.detail({ id: parseInt(id) })
           if (res.status === 200) {
             if (res.data) {
-              console.log('🚀 ~ fetchOrder ~ res.data:', res.data)
               setOrder(res.data)
               setStatus(res.data.status)
             }
