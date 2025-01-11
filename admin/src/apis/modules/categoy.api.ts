@@ -2,7 +2,6 @@
 import { IApiResponse } from '@/models/interfaces/api'
 import { ICategory } from '@/models/interfaces/category'
 import axiosPrivate from '../client/private.client'
-import axiosPublic from '../client/public.client'
 import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
 import { IPagination } from '@/models/interfaces/pagination'
 
@@ -25,19 +24,19 @@ const categoryApi = {
     return axiosPrivate.get('Category', { params: filteredParams })
   },
   detail(id: number): Promise<IApiResponse<{ categorie: ICategory }>> {
-    return axiosPublic.get(`Category/${id}`)
+    return axiosPrivate.get(`Category/${id}`)
   },
   delete(id: number): Promise<IApiResponse<{ category: ICategory }>> {
-    return axiosPublic.delete(`Category/${id}`)
+    return axiosPrivate.delete(`Category/${id}`)
   },
   updateStatus(id: number, status: number): Promise<IApiResponse<{ category: ICategory }>> {
-    return axiosPublic.patch(`Category/${id}`, { status })
+    return axiosPrivate.patch(`Category/${id}`, { status })
   },
   add(data:{name:string,referenceCategoryId:number,status:number}): Promise<IApiResponse<{ category: ICategory }>>{
-    return axiosPublic.post(`Category`, { ...data })
+    return axiosPrivate.post(`Category`, { ...data })
   },
   edit(id:number,data:{name:string,referenceCategoryId:number,status:number}): Promise<IApiResponse<{ category: ICategory }>>{
-    return axiosPublic.put(`Category/${id}`, { ...data })
+    return axiosPrivate.put(`Category/${id}`, { ...data })
   },
 }
 
