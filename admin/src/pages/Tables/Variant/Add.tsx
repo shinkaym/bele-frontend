@@ -308,7 +308,7 @@ function Add({}: Props) {
                 </div>
               </div>
               <div className='grid grid-cols-2 gap-4'>
-                <Button type='link' to='/tables/variant' color='secondary' className='max-h-12'>
+                <Button type='link' to={`/tables/variant?productId=${productId}`} color='secondary' className='max-h-12'>
                   Back
                 </Button>
                 <Button type='button' className='max-h-12 mr-4'>

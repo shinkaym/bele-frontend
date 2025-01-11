@@ -68,7 +68,7 @@ function Edit({}: Props) {
     const handleGetData = async () => {
       setLoading(true) // Bật trạng thái loading
       try {
-        const res = await attributeApi.listAttributeValues({ query: '2',field: EFieldByValue.ATTRIBUTE_TYPE_ID })
+        const res = await attributeApi.listAttributeValues({ query: '2', field: EFieldByValue.ATTRIBUTE_TYPE_ID })
         if (res.data && res.status === 200) {
           const data = res.data!.attributeValues
           let newData: IOptions[] = data.map((attr) => ({
@@ -116,7 +116,7 @@ function Edit({}: Props) {
     const handleGetData = async () => {
       setLoading(true) // Bật trạng thái loading
       try {
-        const res:IApiResponse<IVariantDetailResponse> = await variantApi.detail({id:variantId})
+        const res: IApiResponse<IVariantDetailResponse> = await variantApi.detail({ id: variantId })
         if (res.data && res.status === 200) {
           const variant = res.data.variant
           setVariantById(variant)
@@ -124,13 +124,13 @@ function Edit({}: Props) {
             status: variant.status,
             price: variant.price,
             stock: variant.stock,
-            colorId:variant.attributeValues.find(val => val.attributeTypeId === 1)?.id,
-            sizeId:variant.attributeValues.find(val => val.attributeTypeId === 2)?.id
+            colorId: variant.attributeValues.find((val) => val.attributeTypeId === 1)?.id,
+            sizeId: variant.attributeValues.find((val) => val.attributeTypeId === 2)?.id
           })
         }
       } catch (error) {
         console.error('Error fetching images:', error)
-      }finally{
+      } finally {
         setLoading(false)
       }
     }
@@ -170,37 +170,37 @@ function Edit({}: Props) {
     resolver: zodResolver(variantSchema)
   })
 
-  const onSubmit = async(data: variantFormData) => {
+  const onSubmit = async (data: variantFormData) => {
     try {
-      const formData = new FormData();
+      const formData = new FormData()
 
       // Tạo mảng AttributeValueId từ sizeId và colorId
-      const attributeValueId = [Number(data.sizeId), Number(data.colorId)];
-  
+      const attributeValueId = [Number(data.sizeId), Number(data.colorId)]
+
       // Xóa sizeId và colorId khỏi dữ liệu ban đầu
-      const { sizeId, colorId, ...restData } = data;
-  
+      const { sizeId, colorId, ...restData } = data
+
       // Thêm dữ liệu còn lại vào formData
       Object.entries(restData).forEach(([key, value]) => {
         if (Array.isArray(value)) {
           // Nếu là mảng, thêm từng phần tử với cùng tên trường
-          value.forEach((item) => formData.append(key, item.toString()));
+          value.forEach((item) => formData.append(key, item.toString()))
         } else if (key === 'variantFile' && value instanceof File) {
           // Kiểm tra và thêm file nếu tồn tại
-          formData.append(key, value);
+          formData.append(key, value)
         } else {
-          formData.append(key, value as string | Blob);
+          formData.append(key, value as string | Blob)
         }
-      });
-  
+      })
+
       // Thêm từng phần tử trong mảng AttributeValueId vào formData
       attributeValueId.forEach((id) => {
-        formData.append('AttributeValueId', id.toString());
-      });
-  
-      console.log('FormData to submit:', Array.from(formData.entries())); // Debug log
+        formData.append('AttributeValueId', id.toString())
+      })
 
-      const response = await variantApi.edit(variantId,formData);
+      console.log('FormData to submit:', Array.from(formData.entries())) // Debug log
+
+      const response = await variantApi.edit(variantId, formData)
 
       if (response && response.status === 200) {
         UToast(EToastOption.SUCCESS, 'Edit Variant Successfully!')
@@ -218,7 +218,8 @@ function Edit({}: Props) {
       {loading ? (
         <Loader />
       ) : (
-        Object.keys(variantById).length > 0 && Object.keys(productById).length > 0 && (
+        Object.keys(variantById).length > 0 &&
+        Object.keys(productById).length > 0 && (
           <div className='flex flex-col gap-10'>
             <Breadcrumb pageName='Edit Variant' parentPageName='Variant' parentTo='/tables/variant' />
 
@@ -320,7 +321,12 @@ function Edit({}: Props) {
                 </div>
               </div>
               <div className='grid grid-cols-2 gap-4'>
-                <Button type='link' to='/tables/variant' color='secondary' className='max-h-12'>
+                <Button
+                  type='link'
+                  to={`/tables/variant?productId=${productId}`}
+                  color='secondary'
+                  className='max-h-12'
+                >
                   Back
                 </Button>
                 <Button type='button' className='max-h-12 mr-4'>
