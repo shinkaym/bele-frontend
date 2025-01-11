@@ -8,7 +8,7 @@ import SelectFilter from '@/components/common/SelectFilter'
 import SelectSort from '@/components/common/SelectSort'
 import SelectStatusFilter from '@/components/common/SelectStatusFilter'
 import ContactTable from '@/components/common/Tables/ContactTable'
-import { contactFieldOptions, contactStatus, PAGINATION_CONFIG, sortByOptions, sortOrderOptions } from '@/constants'
+import { contactFieldOptions, contactStatus, PAGINATION_CONFIG, sortOrderOptions, contactSortByOptions } from '@/constants'
 import { EFieldByValue, ESortOrderValue } from '@/models/enums/option'
 import { EContactStatus } from '@/models/enums/status'
 import { IContact, IContactListResponse } from '@/models/interfaces/contact'
@@ -112,7 +112,7 @@ const ContactPage: React.FC = () => {
                   setSortBy(by)
                   setSortOrder(order)
                 }}
-                sortByOptions={sortByOptions}
+                sortByOptions={contactSortByOptions}
                 sortOrderOptions={sortOrderOptions}
               />
             </div>
