@@ -1,19 +1,14 @@
+import categoryApi from '@/apis/modules/category.api'
 import Login from '@/components/common/Login'
 import ModalSearch from '@/components/common/ModalSearch'
 import Overlay from '@/components/common/Overlay'
 import Popup from '@/components/common/Popup'
 import { logoList } from '@/constants'
 import SettingContext from '@/context/Setting/SettingContext'
-import {
-  faArrowRight,
-  faBagShopping,
-  faBars,
-  faChevronDown,
-  faSearch,
-  faUser
-} from '@fortawesome/free-solid-svg-icons'
+import { IApiResponse, ICategory } from '@/models/interfaces'
+import { faArrowRight, faBagShopping, faBars, faChevronDown, faSearch, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
 function Header() {
@@ -21,6 +16,7 @@ function Header() {
   const [isShowMenu, setIsShowMenu] = useState(false)
   const [popupOptions, setPopupOptions] = useState<'login' | 'register' | 'forgotPassword'>('login')
   const [isShowPopup, setIsShowPopup] = useState(false)
+  const [categories, setCategories] = useState<ICategory[]>([])
   const setting = useContext(SettingContext)
 
   const handleSearchModalClose = () => {
@@ -46,6 +42,20 @@ function Header() {
   const handlePopupClose = () => {
     setIsShowPopup(false)
   }
+
+  useEffect(() => {
+    const fetchApi = async () => {
+      try {
+        const res: IApiResponse<{ categories: ICategory[] }> = await categoryApi.list()
+        if (res.data && res.status === 200) {
+          setCategories(res.data.categories)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchApi()
+  }, [])
 
   return (
     <>
@@ -83,66 +93,27 @@ function Header() {
               SẢN PHẨM
               {/* Menu con */}
               <ul className='absolute z-40 inset-x-0 top-full bg-white p-6 ease-linear transition-all duration-200 hidden group-hover:flex  justify-between shadow-md rounded-b-md'>
-                <li className='text-sm'>
-                  <h3 className='lg:text-base md:text-sm sm:text-xs text-2xs font-semibold text-black uppercase'>
-                    Áo Nam
-                  </h3>
-                  <div className='mt-2 mb-5 h-0.5 w-1/2 bg-black'></div>
-                  <ul className='text-gray-500 xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs space-y-2'>
-                    <li className='hover:text-blue-primary'>
-                      <Link to={'/'}>Tất cả Áo Nam</Link>
+                {categories.length > 0 &&
+                  categories.map((cat) => (
+                    <li className='text-sm'>
+                      <h3 className='lg:text-base md:text-sm sm:text-xs text-2xs font-semibold text-black uppercase'>
+                        {cat.name}
+                      </h3>
+                      <div className='mt-2 mb-5 h-0.5 w-1/2 bg-black'></div>
+                      {cat.referenceCategory?.length > 0 && (
+                        <ul className='text-gray-500 xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs space-y-2'>
+                          <li className='hover:text-blue-primary'>
+                            <Link to={'/' + cat.slug}>Tất cả {cat.name}</Link>
+                          </li>
+                          {cat.referenceCategory.map((catChild) => (
+                            <li className='hover:text-blue-primary'>
+                              <Link to={'/' + catChild.slug}>{catChild.name}</Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </li>
-                    <li className='hover:text-blue-primary'>
-                      <Link to={'/'}>Áo thun</Link>
-                    </li>
-                    <li className='hover:text-blue-primary'>
-                      <Link to={'/'}>Áo sơ mi</Link>
-                    </li>
-                    <li className='hover:text-blue-primary'>
-                      <Link to={'/'}>Áo polo</Link>
-                    </li>
-                  </ul>
-                </li>
-                <li className='text-sm'>
-                  <h3 className='lg:text-base md:text-sm sm:text-xs text-2xs font-semibold text-black uppercase'>
-                    Quần nam
-                  </h3>
-                  <div className='mt-2 mb-5 h-0.5 w-1/2 bg-black'></div>
-                  <ul className='text-gray-500 xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs space-y-2'>
-                    <li className='hover:text-blue-primary'>
-                      <Link to={'/'}>Tất cả Quần Nam</Link>
-                    </li>
-                    <li className='hover:text-blue-primary'>
-                      <Link to={'/'}>Quần short</Link>
-                    </li>
-                    <li className='hover:text-blue-primary'>
-                      <Link to={'/'}>Quần dài</Link>
-                    </li>
-                    <li className='hover:text-blue-primary'>
-                      <Link to={'/'}>Quần Jean</Link>
-                    </li>
-                    <li className='hover:text-blue-primary'>
-                      <Link to={'/'}>Quần kaki</Link>
-                    </li>
-                  </ul>
-                </li>
-                <li className='text-sm'>
-                  <h3 className='lg:text-base md:text-sm sm:text-xs text-2xs font-semibold text-black uppercase'>
-                    Phụ kiện Nam
-                  </h3>
-                  <div className='mt-2 mb-5 h-0.5 w-1/2 bg-black'></div>
-                  <ul className='text-gray-500 xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs space-y-2'>
-                    <li className='hover:text-blue-primary'>
-                      <Link to={'/'}>Tất cả Phụ Kiện</Link>
-                    </li>
-                    <li className='hover:text-blue-primary'>
-                      <Link to={'/'}>Tất/vớ</Link>
-                    </li>
-                    <li className='hover:text-blue-primary'>
-                      <Link to={'/'}>Ví</Link>
-                    </li>
-                  </ul>
-                </li>
+                  ))}
               </ul>
             </NavLink>
 

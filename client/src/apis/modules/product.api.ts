@@ -1,9 +1,16 @@
+import { IApiResponse, IProduct } from '@/models/interfaces'
+import axiosPublic from '../client/public.client'
+
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 const productEndpoints = {
-  list: 'product',
+  list: 'Product',
   detail: (id: string | number) => `product/${id}`
 }
 
-const productApi = {}
+const productApi = {
+  async list(): Promise<IApiResponse<{ product: IProduct[] }>> {
+    return axiosPublic.get(productEndpoints.list)
+  }
+}
 
 export default productApi
