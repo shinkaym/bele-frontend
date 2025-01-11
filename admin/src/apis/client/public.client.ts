@@ -14,6 +14,8 @@ const axiosPublic = axios.create({
 axiosPublic.interceptors.response.use(
   (response) => response.data, // Xử lý khi thành công
   (error) => {
+    console.error('Public API error:', error)
+    return Promise.reject(error) // Trả về lỗi
     if (error.response) {
       // Lỗi từ server, có mã status
       console.error(`API error: ${error.response.status}`, error.response.data);
@@ -26,7 +28,8 @@ axiosPublic.interceptors.response.use(
     }
     return Promise.reject(error); // Trả về lỗi
   }
-);
+)
+
 
 
 export default axiosPublic

@@ -58,7 +58,7 @@ const contactApi = {
   // Xóa một contact
   async delete({ id }: { id: number }): Promise<IContactDeleteResponse> {
     try {
-      return await axiosPublic.delete(contactEndpoints.delete({ id }))
+      return await axiosPublic.delete(`Contact/${id}`)
     } catch (error) {
       throw error
     }

@@ -7,6 +7,7 @@ import SelectFilter from '@/components/common/SelectFilter'
 import SelectSort from '@/components/common/SelectSort'
 import SelectStatusFilter from '@/components/common/SelectStatusFilter'
 import VariantTable from '@/components/common/Tables/VariantTable'
+import { SearchIcon } from '@/components/icons'
 import { PAGINATION_CONFIG, sortOrderOptions, variantFieldOptions, variantSortByOptions, variantStatus } from '@/constants'
 import { EFieldByValue, ESortOrderValue, EToastOption } from '@/models/enums/option'
 import { EVariantStatus } from '@/models/enums/status'
@@ -20,7 +21,6 @@ import { useSearchParams } from 'react-router-dom'
 
 const index: React.FC = () => {
   const [variants, setVariants] = useState<IVariant[]>([])
-  const [products, setProducts] = useState<IProduct[]>([])
   const [pagination, setPagination] = useState<IPagination>({ currentPage: PAGINATION_CONFIG.DEFAULT_PAGE, totalPage: 0 })
   const [loading, setLoading] = useState(false)
   const [selectedField, setSelectedField] = useState<EFieldByValue>(EFieldByValue.IN_STOCK)
@@ -30,7 +30,6 @@ const index: React.FC = () => {
   const [searchParams] = useSearchParams()
 
   const productId = Number(searchParams.get('productId'))
-  console.log(productId);
 
   const fetchData = async (page: number, limit: number) => {
     setLoading(true)
@@ -40,12 +39,13 @@ const index: React.FC = () => {
         limit,
         field: selectedField,
         status: selectedStatus,
-        productId: productId,
+        productId,
         sort: sortBy,
         order: sortOrder
       }
 
       const res: IApiResponse<IVariantListResponse> = await variantApi.list(params)
+      console.log('🚀 ~ fetchData ~ params:', params)
       if (res.status === 200 && res.data) {
         setVariants(res.data.variants)
         setPagination(res.data.pagination)
@@ -58,32 +58,6 @@ const index: React.FC = () => {
       setLoading(false)
     }
   }
-
-  // const fetchProducts = async (page: number, limit: number) => {
-  //   setLoading(true)
-  //   try {
-  //     const res: IApiResponse<IProductListResponse> = await productApi.list(
-  //       {
-  //         page: '',
-  //         limit: '',
-  //         query: '',
-  //         field: 'Name',
-  //         status: '',
-  //         sort: 'CreatedAt',
-  //         order: 'desc'
-  //       }
-  //     )
-  //     if (res.status === 200 && res.data) {
-  //       setProducts(res.data.products)
-  //     } else {
-  //       UToast(EToastOption.ERROR, res.message)
-  //     }
-  //   } catch (error) {
-  //     UToast(EToastOption.ERROR, 'An unexpected error occurred.')
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
 
   const handleSearchSubmit = () => {
     setPagination((prev) => ({ ...prev, currentPage: PAGINATION_CONFIG.DEFAULT_PAGE }))
@@ -106,6 +80,9 @@ const index: React.FC = () => {
         <div className='rounded-sm border bg-white px-5 pt-6 pb-2.5 shadow-default dark:bg-boxdark'>
           <div className='flex items-center justify-between gap-5 mb-6'>
             <div className='flex items-center justify-between gap-5'>
+            <button onClick={handleSearchSubmit} className={'px-4 py-2 text-white hover:bg-opacity-90 focus:outline-none rounded-e-sm bg-primary'}>
+        <SearchIcon className='w-6 h-6' />
+      </button>
               <SelectFilter
                 label='Field'
                 value={selectedField}
