@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { EMenuProfileItemId } from './enum'
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 
 export type TMenuItem = {
   url: string
@@ -11,5 +12,5 @@ export type TMenuItem = {
 export type TMenuProfileItem = {
   id: EMenuProfileItemId
   title: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: IconDefinition
 }

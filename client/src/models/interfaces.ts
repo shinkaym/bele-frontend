@@ -1,7 +1,7 @@
 export interface IApiResponse<T> {
   status: number
   message: string
-  data: T
+  data?: T
 }
 export interface ICategory {
   id: number
@@ -201,3 +201,34 @@ export interface ISetting {
   info: IInfo
 }
 //End-Setting
+
+export interface ICustomer {
+  id: number
+  fullName?: string
+  phoneNumber: string
+  name: string
+  email: string
+  sex: 'Male' | 'Female' | 'Other' // hoặc có thể thay bằng string nếu bạn không muốn giới hạn giá trị
+  birthday: string
+  totalSpending: number
+  status: number
+  createdAt: string
+  updatedAt: string
+}
+
+export interface IJwt {
+  accessToken: string
+  expireAccessToken: string // ISO Date string
+  refreshToken: string
+  expireRefreshToken?: string // ISO Date string
+}
+
+export interface ICustomerLogin {
+  customer: ICustomer
+  jwt: IJwt
+}
+
+export interface IError {
+  message: string
+  status: number
+}

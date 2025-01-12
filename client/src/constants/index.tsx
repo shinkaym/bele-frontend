@@ -12,9 +12,9 @@ import SSItem3 from '@/assets/images/slideshow/3.webp'
 import IconPlay from '@/components/icons/IconPlay'
 import { TMenuItem, TMenuProfileItem } from '@/models/types'
 
-import { IProduct } from '@/models/interfaces'
-import { IconBag, IconGlobe, IconHeart, IconStar, IconUser } from '@/components/icons'
 import { EMenuProfileItemId } from '@/models/enum'
+import { IProduct } from '@/models/interfaces'
+import { faHeart, faBagShopping, faGlobe, faStar, faUser } from '@fortawesome/free-solid-svg-icons'
 
 export const logoList = {
   mainLogo: {
@@ -125,7 +125,7 @@ export const productData: IProduct[] = [
     discount: {
       id: 1,
       name: '20% Off Summer Sale',
-      discount: 20,
+      discountValue: 20,
       expireDate: '2024-06-30T23:59:59Z',
       status: 1, // 1: Active
       createdAt: '2024-01-01T12:00:00Z',
@@ -2153,26 +2153,26 @@ export const menuProfileItems: TMenuProfileItem[] = [
   {
     id: EMenuProfileItemId.AccountInfo,
     title: 'Thông tin tài khoản',
-    icon: IconUser
+    icon: faUser
   },
   {
     id: EMenuProfileItemId.OrderHistory,
     title: 'Lịch sử đơn hàng',
-    icon: IconBag
+    icon: faBagShopping
   },
   {
     id: EMenuProfileItemId.AddressNotes,
     title: 'Sổ địa chỉ',
-    icon: IconGlobe
+    icon: faGlobe
   },
   {
     id: EMenuProfileItemId.Wishlist,
     title: 'Danh sách yêu thích',
-    icon: IconHeart
+    icon: faHeart
   },
   {
     id: EMenuProfileItemId.RatingProducts,
     title: 'Đánh giá và phản hồi',
-    icon: IconStar
+    icon: faStar
   }
 ]

@@ -1,3 +1,4 @@
+import { IError } from '@/models/interfaces'
 import axios from 'axios'
 
 const axiosPublic = axios.create({
@@ -14,8 +15,21 @@ const axiosPublic = axios.create({
 axiosPublic.interceptors.response.use(
   (response) => response.data, // Xử lý khi thành công
   (error) => {
-    console.error('Public API error:', error)
-    return Promise.reject(error) // Trả về lỗi
+    if (error.response) {
+      // Trường hợp lỗi trả về từ server
+      const errorMessage = error.response.data?.message || 'Something went wrong'
+      const data: IError = {
+        status: error.response.status || 500,
+        message: errorMessage
+      }
+      return Promise.reject(data)
+    } else {
+      // Nếu không có response (ví dụ: lỗi mạng)
+      return Promise.reject({
+        status: 500,
+        message: 'Network error'
+      })
+    }
   }
 )
 

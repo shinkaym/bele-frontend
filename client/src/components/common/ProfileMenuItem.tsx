@@ -1,4 +1,5 @@
 import { TMenuProfileItem } from '@/models/types'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface MenuProfileItemProps {
   item: TMenuProfileItem
@@ -7,7 +8,7 @@ interface MenuProfileItemProps {
 }
 
 const MenuProfileItem: React.FC<MenuProfileItemProps> = ({ item, isActive, onClick }) => {
-  const { title, icon: Icon } = item
+  const { title, icon } = item
 
   return (
     <li
@@ -17,7 +18,10 @@ const MenuProfileItem: React.FC<MenuProfileItemProps> = ({ item, isActive, onCli
       <div
         className={`${isActive ? 'bg-white' : 'bg-black group-hover:bg-white'} w-8 h-8 rounded-xl flex items-center justify-center`}
       >
-        <Icon className={`w-6 h-6 bg-transparent ${isActive ? 'text-black' : 'text-white group-hover:text-black'}`} />
+        <FontAwesomeIcon
+          icon={icon}
+          className={`text-lg bg-transparent ${isActive ? 'text-black' : 'text-white group-hover:text-black'}`}
+        />
       </div>
       <span>{title}</span>
     </li>

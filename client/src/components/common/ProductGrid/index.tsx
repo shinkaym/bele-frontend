@@ -26,7 +26,6 @@ const ProductGrid = ({
 }: IProductGridProps) => {
   const [colorData, setColorData] = useState<IVariantColor>(product.variantColors?.[0] ?? Object)
   const [variantByColor, setVariantByColor] = useState<IVariantProductColor[]>([])
-  // console.log(colorData)
   const handleGetColor = (value: number) => {
     const data = product!.variantColors.find((color) => color.colorId === value)
     if (data) {

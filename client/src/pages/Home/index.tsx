@@ -24,11 +24,9 @@ const Home = memo(() => {
   const setting = useContext(SettingContext)
   const handleChangeTag = (value?: string) => {
     if (value) {
-      console.log(value)
       setTag(Number(value))
     }
   }
-  console.log(products)
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -36,7 +34,6 @@ const Home = memo(() => {
       try {
         const res: IApiResponse<{ products: IProduct[] }> = await productApi.list({ TagId: tag })
         if (res.data && res.status === 200) {
-          console.log(res.data.products)
           setProducts(res.data.products)
         }
       } catch (error) {
@@ -98,8 +95,6 @@ const Home = memo(() => {
       window.removeEventListener('resize', updateLimit)
     }
   }, [])
-
-  console.log(products.length)
 
   return (
     <>

@@ -1,9 +1,12 @@
 import categoryApi from '@/apis/modules/category.api'
+import { CustomerMenu } from '@/components/common/CustomerMenu'
 import Login from '@/components/common/Login'
 import ModalSearch from '@/components/common/ModalSearch'
 import Overlay from '@/components/common/Overlay'
 import Popup from '@/components/common/Popup'
+import Register from '@/components/common/Register'
 import { logoList } from '@/constants'
+import AuthContext from '@/context/Auth/AuthContext'
 import SettingContext from '@/context/Setting/SettingContext'
 import { IApiResponse, ICategory } from '@/models/interfaces'
 import { faArrowRight, faBagShopping, faBars, faChevronDown, faSearch, faUser } from '@fortawesome/free-solid-svg-icons'
@@ -14,32 +17,33 @@ import { Link, NavLink } from 'react-router-dom'
 const Header = memo(() => {
   const [isShowSearchModal, setIsShowSearchModal] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(false)
+  const [isShowCustomer, setIsShowCustomer] = useState(false)
   const [popupOptions, setPopupOptions] = useState<'login' | 'register' | 'forgotPassword'>('login')
   const [isShowPopup, setIsShowPopup] = useState(false)
   const [categories, setCategories] = useState<ICategory[]>([])
+  const authMethod = useContext(AuthContext)
   const setting = useContext(SettingContext)
-
-  const handleSearchModalClose = () => {
-    setIsShowSearchModal(false)
+  const handleAction = () => {
+    if (authMethod?.isAuthenticated) {
+      setIsShowCustomer(true)
+    } else {
+      setIsShowPopup(true)
+    }
   }
-
-  const handleSearchModalOpen = () => {
-    setIsShowSearchModal(true)
-  }
-
-  const handleMenuClose = () => {
-    setIsShowMenu(false)
-  }
-
-  const handleMenuOpen = () => {
-    setIsShowMenu(true)
-  }
-
-  const handlePopupOpen = () => {
-    setIsShowPopup(true)
+  const renderPopupOptionsComponent = {
+    login: (
+      <Login
+        onLoginSuccess={() => setIsShowPopup(false)}
+        onRegister={() => setPopupOptions('register')}
+        onForgotPassoword={() => setPopupOptions('forgotPassword')}
+      />
+    ),
+    register: <Register onRegisterSuccess={() => setPopupOptions('login')} onLogin={() => setPopupOptions('login')} />,
+    forgotPassword: <div>Hello</div>
   }
 
   const handlePopupClose = () => {
+    setPopupOptions('login')
     setIsShowPopup(false)
   }
 
@@ -95,23 +99,22 @@ const Header = memo(() => {
               <ul className='absolute z-40 inset-x-0 top-full bg-white p-6 ease-linear transition-all duration-200 hidden group-hover:flex  justify-between shadow-md rounded-b-md'>
                 {categories.length > 0 &&
                   categories.map((cat) => (
-                    <li className='text-sm'>
+                    <li key={cat.id} className='text-sm'>
                       <h3 className='lg:text-base md:text-sm sm:text-xs text-2xs font-semibold text-black uppercase'>
                         {cat.name}
                       </h3>
                       <div className='mt-2 mb-5 h-0.5 w-1/2 bg-black'></div>
-                      {cat.referenceCategory?.length > 0 && (
-                        <ul className='text-gray-500 xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs space-y-2'>
-                          <li className='hover:text-blue-primary'>
-                            <Link to={'/' + cat.slug}>Tất cả {cat.name}</Link>
-                          </li>
-                          {cat.referenceCategory.map((catChild) => (
+                      <ul className='text-gray-500 xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs space-y-2'>
+                        <li className='hover:text-blue-primary'>
+                          <Link to={'/' + cat.slug}>Tất cả {cat.name}</Link>
+                        </li>
+                        {cat.referenceCategory?.length > 0 &&
+                          cat.referenceCategory.map((catChild) => (
                             <li className='hover:text-blue-primary'>
                               <Link to={'/' + catChild.slug}>{catChild.name}</Link>
                             </li>
                           ))}
-                        </ul>
-                      )}
+                      </ul>
                     </li>
                   ))}
               </ul>
@@ -165,13 +168,13 @@ const Header = memo(() => {
                 readOnly={true}
                 placeholder='Tìm kiếm sản phẩm...'
                 className='w-full outline-none bg-transparent text-black text-sm'
-                onClick={handleSearchModalOpen}
+                onClick={() => setIsShowSearchModal(true)}
               />
             </div>
             <FontAwesomeIcon
               icon={faUser}
-              className='lg:text-3xl md:text-2xl sm:text-xl text-lg text-white cursor-pointer'
-              onClick={handlePopupOpen}
+              className={`cursor-pointer ${authMethod?.isAuthenticated ? 'bg-zinc-300 border-4 p-1.5 text-blue-primary border-solid border-blue-primary rounded-2xl lg:text-2xl md:text-xl sm:text-lg text-base' : 'lg:text-3xl md:text-2xl sm:text-xl text-lg text-white'}`}
+              onClick={handleAction}
             />
             <Link to={'/cart'} className='relative'>
               <FontAwesomeIcon
@@ -185,27 +188,16 @@ const Header = memo(() => {
             <FontAwesomeIcon
               icon={faBars}
               className='md:text-2xl sm:text-xl text-lg text-white lg:hidden'
-              onClick={handleMenuOpen}
+              onClick={() => setIsShowMenu(true)}
             />
           </div>
         </div>
       </header>
-      {isShowPopup && (
-        <Popup onPopupClose={handlePopupClose}>
-          {popupOptions === 'login' ? (
-            <Login
-              onRegister={() => setPopupOptions('register')}
-              onForgotPassoword={() => setPopupOptions('forgotPassword')}
-            />
-          ) : (
-            'Hello'
-          )}
-        </Popup>
-      )}
-      {isShowSearchModal && <ModalSearch onSearchClose={handleSearchModalClose} />}
+      {isShowPopup && <Popup onPopupClose={handlePopupClose}>{renderPopupOptionsComponent[popupOptions]}</Popup>}
+      {isShowSearchModal && <ModalSearch onSearchClose={() => setIsShowSearchModal(false)} />}
       {isShowMenu && (
         <>
-          <Overlay onClose={handleMenuClose} className='z-50' />
+          <Overlay onClose={() => setIsShowMenu(false)} className='z-50' />
           <div className='absolute left-0 top-0 lg:w-[300px] md:w-[260px] sm:w-[220px] w-[180px] bg-black h-screen z-50 shadow-md border-r border-zinc-700'>
             <img src={logoList.mainLogo.url} alt={logoList.mainLogo.name} className='w-full object-cover ' />
             <div className='text-white'>
@@ -329,6 +321,10 @@ const Header = memo(() => {
             </div>
           </div>
         </>
+      )}
+
+      {isShowCustomer && (
+        <CustomerMenu fullName={authMethod!.customer!.name} onClose={() => setIsShowCustomer(false)} />
       )}
     </>
   )

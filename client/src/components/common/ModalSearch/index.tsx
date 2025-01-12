@@ -1,6 +1,5 @@
 import Overlay from '@/components/common/Overlay'
-import ProductGrid from '@/components/common/ProductGrid'
-import { MD_BP, productData } from '@/constants'
+import { MD_BP } from '@/constants'
 import useDebounce from '@/hooks/useDebounce'
 import executeAOS from '@/utils/executeAOS'
 import { faChevronLeft, faClose, faSearch } from '@fortawesome/free-solid-svg-icons'
@@ -155,9 +154,9 @@ const ModalSearch: React.FunctionComponent<ISearchProps> = ({ onSearchClose }) =
           <div className='mt-10'>
             <span className='text-sm font-medium'>Sản phẩm đã xem gần đây</span>
             <div className={`grid grid-cols-${limit} gap-2 mt-2`}>
-              {productData.slice(0, limit).map((product) => (
+              {/* {productData.slice(0, limit).map((product) => (
                 <ProductGrid key={product.id} product={product} />
-              ))}
+              ))} */}
             </div>
           </div>
         </div>

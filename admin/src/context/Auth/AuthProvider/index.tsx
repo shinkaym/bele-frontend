@@ -23,6 +23,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     const { account, jwt } = accountLogin
     const expireAccessToken = new Date(jwt.expireAccessToken)
     const expireRefreshToken = new Date(jwt.expireRefreshToken || '')
+    console.log(expireAccessToken, expireRefreshToken)
     // Lưu các token vào cookie với thời gian hết hạn
     Cookies.set('accessToken', jwt.accessToken, { expires: expireAccessToken })
     Cookies.set('refreshToken', jwt.refreshToken, { expires: expireRefreshToken })
