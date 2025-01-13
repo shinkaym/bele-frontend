@@ -1,8 +1,8 @@
-import React, { ForwardedRef, useState } from 'react'
-import {IOptions} from '@/models/interfaces/options'
+import { IOption } from '@/models/interfaces'
+import React, { ForwardedRef, useEffect, useState } from 'react'
 
 interface RadioGroupProps {
-  options: IOptions[]
+  options: IOption[]
   name: string // Name attribute to group radios
   selectedValue?: string
   onChange?: (value: string) => void
@@ -17,7 +17,12 @@ const RadioGroup = (
 ) => {
   const [selected, setSelected] = useState<string>(selectedValue || '')
 
+  useEffect(() => {
+    setSelected(selectedValue || '')
+  }, [selectedValue])
+
   const handleChange = (value: string) => {
+    console.log('🚀 ~ handleChange ~ value:', value)
     setSelected(value)
     if (onChange) {
       onChange(value)
@@ -46,12 +51,12 @@ const RadioGroup = (
               />
               <div
                 className={`mr-2 flex h-5 w-5 items-center justify-center rounded-full border ${
-                  selected === option?.value.toString() ? 'border-primary' : 'border-gray-300'
+                  selected === option?.value.toString() ? 'border-black' : 'border-gray-300'
                 }`}
               >
                 <span
                   className={`h-2.5 w-2.5 rounded-full bg-transparent ${
-                    selected === option?.value.toString() ? '!bg-primary' : ''
+                    selected === option?.value.toString() ? '!bg-black' : ''
                   }`}
                 >
                   {' '}
@@ -66,10 +71,7 @@ const RadioGroup = (
   )
 }
 
-// Sử dụng forwardRef để bao bọc RadioGroup
 const ForwardedRadioGroup = React.forwardRef(RadioGroup)
-
-// Đặt displayName cho component khi sử dụng forwardRef
 ForwardedRadioGroup.displayName = 'RadioGroup'
 
 export default ForwardedRadioGroup

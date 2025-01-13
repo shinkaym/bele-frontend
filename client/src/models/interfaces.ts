@@ -200,18 +200,15 @@ export interface ISetting {
   logo: ILogo
   info: IInfo
 }
-//End-Setting
+//End-Setting 
 
 export interface ICustomer {
-  id: number
-  fullName?: string
+  fullName: string
   phoneNumber: string
-  name: string
   email: string
-  sex: 'Male' | 'Female' | 'Other' // hoặc có thể thay bằng string nếu bạn không muốn giới hạn giá trị
+  sex: 'Nam' | 'Nữ'
   birthday: string
-  totalSpending: number
-  status: number
+  totalSpending?: number
   createdAt: string
   updatedAt: string
 }
@@ -231,4 +228,22 @@ export interface ICustomerLogin {
 export interface IError {
   message: string
   status: number
+}
+
+export interface IOption {
+  value: string
+  label: string
+}
+
+export interface IChangePasswordFormData {
+  currentPassword: string
+  newPassword: string
+  confirmPassword: string
+}
+
+export interface IUpdateInfoFormData {
+  name: string
+  phone: string
+  sex: string
+  birthday: Date
 }

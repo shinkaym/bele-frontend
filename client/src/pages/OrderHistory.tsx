@@ -1,6 +1,6 @@
-import { IconChevronDown } from '../icons'
-import ButtonCustom from './ButtonCustom'
-import OrderDetail from './OrderDetail'
+import { IconChevronDown } from '../components/icons'
+import ButtonCustom from '../components/common/ButtonCustom'
+import OrderDetail from '../components/common/OrderDetail'
 
 const OrderHistory = () => {
   return (
