@@ -1,706 +1,116 @@
-import Breadcrumb from '../components/common/Breadcrumbs/Breadcrumb'
-import CoverOne from '@/assets/images/cover/cover-01.png'
-import userSix from '@/assets/images/user/user-06.png'
-import { Link } from 'react-router-dom'
-import userThree from '@/assets/images/user/user-03.png'
+import { useEffect, useState } from 'react';
+import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb';
+import Loader from '@/components/common/Loader';
+import Button from '@/components/common/Button';
+import settingApi from '@/apis/modules/setting.api';
+import { ISetting } from '@/models/interfaces/setting';
+import { useForm, SubmitHandler } from 'react-hook-form';
+
+type FormData = {
+  hotline: string;
+  email: string;
+  slogan: string;
+  description?: string;
+  branchName1: string;
+  branchAddress1: string;
+  branchName2: string;
+  branchAddress2: string;
+  facebookLink: string;
+  instagramLink: string;
+  youtubeLink: string;
+};
 
 const Setting = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [existingSettings, setExistingSettings] = useState<ISetting | null>(null);
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
+
+  const fetchSettings = async () => {
+    setLoading(true);
+    try {
+      const response = await settingApi.fetchSettings();
+      if (response) {
+        setExistingSettings(response);
+        reset(response); // Reset form với dữ liệu từ API
+      }
+    } catch (error) {
+      console.error('Failed to fetch settings:', error);
+      alert('Failed to fetch settings.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      const updatedSettings: ISetting = {
+        ...existingSettings!,
+        ...data,
+        id: existingSettings?.id ?? 0, // Đảm bảo `id` luôn có giá trị
+      };
+
+      await settingApi.updateSettings(updatedSettings);
+      alert('Settings updated successfully!');
+    } catch (error) {
+      console.error('Failed to update settings:', error);
+      alert('Failed to update settings.');
+    }
+  };
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  if (loading) return <Loader />;
+
   return (
-    <>
-      <div className='mx-auto max-w-270'>
-        <Breadcrumb pageName='Information' />
-
-        <div className='col-span-5 xl:col-span-3'>
-          {/* Header Section */}
-
-          <div className='mb-5.5 grid md:grid-cols-2 gap-6'>
-            {/* Left Column */}
+    <div className="mx-auto max-w-270">
+      <Breadcrumb pageName="Settings" />
+      <div className="col-span-5 xl:col-span-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="rounded-sm border bg-white p-6 shadow-default dark:bg-boxdark">
+          <h2 className="text-lg font-bold mb-6">General Information</h2>
+          <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <div className='mb-5.5 flex flex-col gap-5.5 sm:flex-row'>
-                <div className='w-full'>
-                  <label className='mb-3 block text-sm font-medium text-black dark:text-white'>Name</label>
-                  <div className='relative'>
-                    <input
-                      className='w-full rounded border border-stroke bg-gray py-3 pl-5 pr-11.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
-                      type='text'
-                      name='name'
-                      id='name'
-                      placeholder='Bele'
-                      defaultValue='Bele'
-                    />
-                    <span className='absolute right-4.5 top-4'>
-                      <svg
-                        className='fill-current'
-                        width='20'
-                        height='20'
-                        viewBox='0 0 20 20'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <g opacity='0.8'>
-                          <path
-                            fillRule='evenodd'
-                            clipRule='evenodd'
-                            d='M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z'
-                            fill=''
-                          />
-                        </g>
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className='w-full'>
-                <label className='mb-3 block text-sm font-medium text-black dark:text-white'>Hotline</label>
-                <div className='relative'>
-                  <input
-                    className='w-full rounded border border-stroke bg-gray py-3 pl-5 pr-11.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
-                    type='text'
-                    name='hotline'
-                    id='hotline'
-                    placeholder='0869610949'
-                    defaultValue='0869610949'
-                  />
-                  <span className='absolute right-4.5 top-4'>
-                    <svg
-                      className='fill-current'
-                      width='20'
-                      height='20'
-                      viewBox='0 0 20 20'
-                      fill='none'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <g opacity='0.8'>
-                        <path
-                          fillRule='evenodd'
-                          clipRule='evenodd'
-                          d='M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z'
-                          fill=''
-                        />
-                      </g>
-                    </svg>
-                  </span>
-                </div>
-              </div>
+              <label className="block mb-2 text-sm font-medium">Hotline</label>
+              <input
+                {...register('hotline', {
+                  required: 'Hotline is required',
+                  minLength: { value: 8, message: 'Hotline must be at least 8 characters' },
+                  maxLength: { value: 15, message: 'Hotline must not exceed 15 characters' },
+                })}
+                type="text"
+                className={`w-full rounded border px-4 py-2 ${errors.hotline ? 'border-red-500' : ''}`}
+              />
+              {errors.hotline && <p className="text-red-500 text-sm mt-1">{errors.hotline.message}</p>}
             </div>
 
-            {/* Right Column */}
             <div>
-              <div className='mb-5.5 flex flex-col gap-5.5 sm:flex-row'>
-                <div className='w-full'>
-                  <label className='mb-3 block text-sm font-medium text-black dark:text-white'>Email</label>
-                  <div className='relative'>
-                    <input
-                      className='w-full rounded border border-stroke bg-gray py-3 pl-5 pr-11.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
-                      type='text'
-                      name='email'
-                      id='email'
-                      placeholder='bele@gmail.com'
-                      defaultValue='bele@gmail.com'
-                    />
-                    <span className='absolute right-4.5 top-4'>
-                      <svg
-                        className='fill-current'
-                        width='20'
-                        height='20'
-                        viewBox='0 0 20 20'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <g opacity='0.8'>
-                          <path
-                            fillRule='evenodd'
-                            clipRule='evenodd'
-                            d='M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z'
-                            fill=''
-                          />
-                        </g>
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className='w-full'>
-                <label className='mb-3 block text-sm font-medium text-black dark:text-white'>Slogan</label>
-                <div className='relative'>
-                  <input
-                    className='w-full rounded border border-stroke bg-gray py-3 pl-5 pr-11.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
-                    type='text'
-                    name='fullName'
-                    id='fullName'
-                    placeholder='Best Choice For Good Styles'
-                    defaultValue='Best Choice For Good Styles'
-                  />
-                  <span className='absolute right-4.5 top-4'>
-                    <svg
-                      className='fill-current'
-                      width='20'
-                      height='20'
-                      viewBox='0 0 20 20'
-                      fill='none'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <g opacity='0.8'>
-                        <path
-                          fillRule='evenodd'
-                          clipRule='evenodd'
-                          d='M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z'
-                          fill=''
-                        />
-                      </g>
-                    </svg>
-                  </span>
-                </div>
-              </div>
+              <label className="block mb-2 text-sm font-medium">Email</label>
+              <input
+                {...register('email', {
+                  required: 'Email is required',
+                  pattern: {
+                    value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+                    message: 'Invalid email format',
+                  },
+                })}
+                type="email"
+                className={`w-full rounded border px-4 py-2 ${errors.email ? 'border-red-500' : ''}`}
+              />
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
             </div>
-          </div>
-          <div className='mb-15 grid md:grid-cols gap-6'>
-            <div className='w-full'>
-              <label className='mb-3 block text-sm font-medium text-black dark:text-white'>Desscription</label>
-              <div className='relative'>
-                <textarea
-                  className='w-full rounded border border-stroke bg-gray py-3 pl-5 pr-11.5 text-black resize-none focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
-                  placeholder='Note'
-                  defaultValue='Bele is a pioneer fashion brand that offers high-quality, modern, and stylish men fashion products. Founded five [year of establishment], Bele quickly became the top choice for fashions who love simplicity, convenience, and sophistication.'
-                />
-                <span className='absolute right-4.5 top-4'>
-                  <svg
-                    className='fill-current'
-                    width='20'
-                    height='20'
-                    viewBox='0 0 20 20'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <g opacity='0.8'>
-                      <path
-                        fillRule='evenodd'
-                        clipRule='evenodd'
-                        d='M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z'
-                        fill=''
-                      />
-                    </g>
-                  </svg>
-                </span>
-              </div>
-            </div>
+            {/* Các trường khác */}
           </div>
 
-          {/* Address Section */}
-          <Breadcrumb pageName='Address' />
-
-          <div className='mb-15 grid md:grid-cols-2 gap-6'>
-            {/* Left Column */}
-            <div>
-              <div className='mb-5.5 flex flex-col gap-5.5 sm:flex-row'>
-                <div className='w-full'>
-                  <label className='mb-3 block text-sm font-medium text-black dark:text-white'>Branch Name 1</label>
-                  <div className='relative'>
-                    <input
-                      className='w-full rounded border border-stroke bg-gray py-3 pl-5 pr-11.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
-                      type='text'
-                      name='name'
-                      id='name'
-                      placeholder='Bele'
-                      defaultValue='Bele'
-                    />
-                    <span className='absolute right-4.5 top-4'>
-                      <svg
-                        className='fill-current'
-                        width='20'
-                        height='20'
-                        viewBox='0 0 20 20'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <g opacity='0.8'>
-                          <path
-                            fillRule='evenodd'
-                            clipRule='evenodd'
-                            d='M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z'
-                            fill=''
-                          />
-                        </g>
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className='w-full'>
-                <label className='mb-3 block text-sm font-medium text-black dark:text-white'>Info Branch 1</label>
-                <div className='relative'>
-                  <input
-                    className='w-full rounded border border-stroke bg-gray py-3 pl-5 pr-11.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
-                    type='text'
-                    name='hotline'
-                    id='hotline'
-                    placeholder='0869610949'
-                    defaultValue='0869610949'
-                  />
-                  <span className='absolute right-4.5 top-4'>
-                    <svg
-                      className='fill-current'
-                      width='20'
-                      height='20'
-                      viewBox='0 0 20 20'
-                      fill='none'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <g opacity='0.8'>
-                        <path
-                          fillRule='evenodd'
-                          clipRule='evenodd'
-                          d='M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z'
-                          fill=''
-                        />
-                      </g>
-                    </svg>
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column */}
-            <div>
-              <div className='mb-5.5 flex flex-col gap-5.5 sm:flex-row'>
-                <div className='w-full'>
-                  <label className='mb-3 block text-sm font-medium text-black dark:text-white'>Branch Name 2</label>
-                  <div className='relative'>
-                    <input
-                      className='w-full rounded border border-stroke bg-gray py-3 pl-5 pr-11.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
-                      type='text'
-                      name='email'
-                      id='email'
-                      placeholder='bele@gmail.com'
-                      defaultValue='bele@gmail.com'
-                    />
-                    <span className='absolute right-4.5 top-4'>
-                      <svg
-                        className='fill-current'
-                        width='20'
-                        height='20'
-                        viewBox='0 0 20 20'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <g opacity='0.8'>
-                          <path
-                            fillRule='evenodd'
-                            clipRule='evenodd'
-                            d='M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z'
-                            fill=''
-                          />
-                        </g>
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className='w-full'>
-                <label className='mb-3 block text-sm font-medium text-black dark:text-white'>Info Branch 2</label>
-                <div className='relative'>
-                  <input
-                    className='w-full rounded border border-stroke bg-gray py-3 pl-5 pr-11.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
-                    type='text'
-                    name='fullName'
-                    id='fullName'
-                    placeholder='Best Choice For Good Styles'
-                    defaultValue='Best Choice For Good Styles'
-                  />
-                  <span className='absolute right-4.5 top-4'>
-                    <svg
-                      className='fill-current'
-                      width='20'
-                      height='20'
-                      viewBox='0 0 20 20'
-                      fill='none'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <g opacity='0.8'>
-                        <path
-                          fillRule='evenodd'
-                          clipRule='evenodd'
-                          d='M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z'
-                          fill=''
-                        />
-                      </g>
-                    </svg>
-                  </span>
-                </div>
-              </div>
-            </div>
+          <div className="flex justify-end mt-6">
+            <Button type="button" className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
+              Save Changes
+            </Button>
           </div>
-
-          {/* Social Media Section */}
-          <Breadcrumb pageName='Social Media' />
-          <div className='mb-5.5 grid md:grid-cols-2 gap-6'>
-            {/* Left Column */}
-            <div>
-              <div className='mb-5.5 flex flex-col gap-5.5 sm:flex-row'>
-                <div className='w-full'>
-                  <label className='mb-3 block text-sm font-medium text-black dark:text-white'>Facebook</label>
-                  <div className='relative'>
-                    <input
-                      className='w-full rounded border border-stroke bg-gray py-3 pl-5 pr-11.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
-                      type='text'
-                      name='name'
-                      id='name'
-                      placeholder='Bele'
-                      defaultValue='Bele'
-                    />
-                    <span className='absolute right-4.5 top-4'>
-                      <svg
-                        className='fill-current'
-                        width='20'
-                        height='20'
-                        viewBox='0 0 20 20'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <g opacity='0.8'>
-                          <path
-                            fillRule='evenodd'
-                            clipRule='evenodd'
-                            d='M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z'
-                            fill=''
-                          />
-                        </g>
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className='mb-5.5 w-full'>
-                <label className='mb-3 block text-sm font-medium text-black dark:text-white'>Instagram</label>
-                <div className='relative'>
-                  <input
-                    className='w-full rounded border border-stroke bg-gray py-3 pl-5 pr-11.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
-                    type='text'
-                    name='hotline'
-                    id='hotline'
-                    placeholder='0869610949'
-                    defaultValue='0869610949'
-                  />
-                  <span className='absolute right-4.5 top-4'>
-                    <svg
-                      className='fill-current'
-                      width='20'
-                      height='20'
-                      viewBox='0 0 20 20'
-                      fill='none'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <g opacity='0.8'>
-                        <path
-                          fillRule='evenodd'
-                          clipRule='evenodd'
-                          d='M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z'
-                          fill=''
-                        />
-                      </g>
-                    </svg>
-                  </span>
-                </div>
-              </div>
-              <div className='w-full'>
-                  <label className='mb-3 block text-sm font-medium text-black dark:text-white'>Zalo</label>
-                  <div className='relative'>
-                    <input
-                      className='w-full rounded border border-stroke bg-gray py-3 pl-5 pr-11.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
-                      type='text'
-                      name='zalo'
-                      id='zalo'
-                      placeholder='0869610949'
-                      defaultValue='0869610949'
-                    />
-                    <span className='absolute right-4.5 top-4'>
-                      <svg
-                        className='fill-current'
-                        width='20'
-                        height='20'
-                        viewBox='0 0 20 20'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <g opacity='0.8'>
-                          <path
-                            fillRule='evenodd'
-                            clipRule='evenodd'
-                            d='M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z'
-                            fill=''
-                          />
-                        </g>
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-            </div>
-
-            {/* Right Column */}
-            <div>
-              <div className='mb-5.5 flex flex-col gap-5.5 sm:flex-row'>
-                <div className='w-full'>
-                  <label className='mb-3 block text-sm font-medium text-black dark:text-white'>Youtube</label>
-                  <div className='relative'>
-                    <input
-                      className='w-full rounded border border-stroke bg-gray py-3 pl-5 pr-11.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
-                      type='text'
-                      name='email'
-                      id='email'
-                      placeholder='bele@gmail.com'
-                      defaultValue='bele@gmail.com'
-                    />
-                    <span className='absolute right-4.5 top-4'>
-                      <svg
-                        className='fill-current'
-                        width='20'
-                        height='20'
-                        viewBox='0 0 20 20'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <g opacity='0.8'>
-                          <path
-                            fillRule='evenodd'
-                            clipRule='evenodd'
-                            d='M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z'
-                            fill=''
-                          />
-                        </g>
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className='w-full'>
-                  <label className='mb-3 block text-sm font-medium text-black dark:text-white'>Tik tok</label>
-                  <div className='relative'>
-                    <input
-                      className='w-full rounded border border-stroke bg-gray py-3 pl-5 pr-11.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
-                      type='text'
-                      name='tikTok'
-                      id='tikTok'
-                      placeholder=''
-                      defaultValue=''
-                    />
-                    <span className='absolute right-4.5 top-4'>
-                      <svg
-                        className='fill-current'
-                        width='20'
-                        height='20'
-                        viewBox='0 0 20 20'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <g opacity='0.8'>
-                          <path
-                            fillRule='evenodd'
-                            clipRule='evenodd'
-                            d='M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z'
-                            fill=''
-                          />
-                        </g>
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-            </div>
-          </div>
-
-          {/* Logo */}
-          <Breadcrumb pageName='Logo' />
-          <div className='mb-5.5 grid md:grid-cols-2 gap-6'>
-            {/* Left Column */}
-            <div>
-              <div className='mb-5.5 flex flex-col gap-5.5 sm:flex-row'>
-                <div className='w-full'>
-                  <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
-                    <div className='border-b border-stroke py-4 px-7 dark:border-strokedark'>
-                      <h3 className='font-medium text-black dark:text-white'>Main logo</h3>
-                    </div>
-                    <div className='p-7'>
-                      <form action='#'>
-                        <div className='mb-4 flex items-center gap-3'>
-                          <div className='h-14 w-14 rounded-full'>
-                            <img src={userThree} alt='Main logo' />
-                          </div>
-                          <div>
-                            <span className='mb-1.5 text-black dark:text-white'>Edit your main logo</span>
-                            <span className='flex gap-2.5'>
-                              <button className='text-sm hover:text-primary'>Delete</button>
-                              <button className='text-sm hover:text-primary'>Update</button>
-                            </span>
-                          </div>
-                        </div>
-
-                        <div
-                          id='FileUpload'
-                          className='relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5'
-                        >
-                          <input
-                            type='file'
-                            accept='image/*'
-                            className='absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none'
-                          />
-                          <div className='flex flex-col items-center justify-center space-y-3'>
-                            <span className='flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark'>
-                              <svg
-                                width='16'
-                                height='16'
-                                viewBox='0 0 16 16'
-                                fill='none'
-                                xmlns='http://www.w3.org/2000/svg'
-                              >
-                                <path
-                                  fillRule='evenodd'
-                                  clipRule='evenodd'
-                                  d='M1.99967 9.33337C2.36786 9.33337 2.66634 9.63185 2.66634 10V12.6667C2.66634 12.8435 2.73658 13.0131 2.8616 13.1381C2.98663 13.2631 3.1562 13.3334 3.33301 13.3334H12.6663C12.8431 13.3334 13.0127 13.2631 13.1377 13.1381C13.2628 13.0131 13.333 12.8435 13.333 12.6667V10C13.333 9.63185 13.6315 9.33337 13.9997 9.33337C14.3679 9.33337 14.6663 9.63185 14.6663 10V12.6667C14.6663 13.1971 14.4556 13.7058 14.0806 14.0809C13.7055 14.456 13.1968 14.6667 12.6663 14.6667H3.33301C2.80257 14.6667 2.29387 14.456 1.91879 14.0809C1.54372 13.7058 1.33301 13.1971 1.33301 12.6667V10C1.33301 9.63185 1.63148 9.33337 1.99967 9.33337Z'
-                                  fill='#3C50E0'
-                                />
-                                <path
-                                  fillRule='evenodd'
-                                  clipRule='evenodd'
-                                  d='M7.5286 1.52864C7.78894 1.26829 8.21106 1.26829 8.4714 1.52864L11.8047 4.86197C12.0651 5.12232 12.0651 5.54443 11.8047 5.80478C11.5444 6.06513 11.1223 6.06513 10.8619 5.80478L8 2.94285L5.13807 5.80478C4.87772 6.06513 4.45561 6.06513 4.19526 5.80478C3.93491 5.54443 3.93491 5.12232 4.19526 4.86197L7.5286 1.52864Z'
-                                  fill='#3C50E0'
-                                />
-                                <path
-                                  fillRule='evenodd'
-                                  clipRule='evenodd'
-                                  d='M7.99967 1.33337C8.36786 1.33337 8.66634 1.63185 8.66634 2.00004V10C8.66634 10.3682 8.36786 10.6667 7.99967 10.6667C7.63148 10.6667 7.33301 10.3682 7.33301 10V2.00004C7.33301 1.63185 7.63148 1.33337 7.99967 1.33337Z'
-                                  fill='#3C50E0'
-                                />
-                              </svg>
-                            </span>
-                            <p>
-                              <span className='text-primary'>Click to upload</span> or drag and drop
-                            </p>
-                            <p className='mt-1.5'>SVG, PNG, JPG or GIF</p>
-                            <p>(max, 800 X 800px)</p>
-                          </div>
-                        </div>
-
-                        <div className='flex justify-end gap-4.5'>
-                          <button
-                            className='flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
-                            type='submit'
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90'
-                            type='submit'
-                          >
-                            Save
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column */}
-            <div>
-              <div className='mb-5.5 flex flex-col gap-5.5 sm:flex-row'>
-                <div className='w-full'>
-                  <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
-                    <div className='border-b border-stroke py-4 px-7 dark:border-strokedark'>
-                      <h3 className='font-medium text-black dark:text-white'>Sub logo</h3>
-                    </div>
-                    <div className='p-7'>
-                      <form action='#'>
-                        <div className='mb-4 flex items-center gap-3'>
-                          <div className='h-14 w-14 rounded-full'>
-                            <img src={userThree} alt='Sub logo' />
-                          </div>
-                          <div>
-                            <span className='mb-1.5 text-black dark:text-white'>Edit your sub logo</span>
-                            <span className='flex gap-2.5'>
-                              <button className='text-sm hover:text-primary'>Delete</button>
-                              <button className='text-sm hover:text-primary'>Update</button>
-                            </span>
-                          </div>
-                        </div>
-
-                        <div
-                          id='FileUpload'
-                          className='relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5'
-                        >
-                          <input
-                            type='file'
-                            accept='image/*'
-                            className='absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none'
-                          />
-                          <div className='flex flex-col items-center justify-center space-y-3'>
-                            <span className='flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark'>
-                              <svg
-                                width='16'
-                                height='16'
-                                viewBox='0 0 16 16'
-                                fill='none'
-                                xmlns='http://www.w3.org/2000/svg'
-                              >
-                                <path
-                                  fillRule='evenodd'
-                                  clipRule='evenodd'
-                                  d='M1.99967 9.33337C2.36786 9.33337 2.66634 9.63185 2.66634 10V12.6667C2.66634 12.8435 2.73658 13.0131 2.8616 13.1381C2.98663 13.2631 3.1562 13.3334 3.33301 13.3334H12.6663C12.8431 13.3334 13.0127 13.2631 13.1377 13.1381C13.2628 13.0131 13.333 12.8435 13.333 12.6667V10C13.333 9.63185 13.6315 9.33337 13.9997 9.33337C14.3679 9.33337 14.6663 9.63185 14.6663 10V12.6667C14.6663 13.1971 14.4556 13.7058 14.0806 14.0809C13.7055 14.456 13.1968 14.6667 12.6663 14.6667H3.33301C2.80257 14.6667 2.29387 14.456 1.91879 14.0809C1.54372 13.7058 1.33301 13.1971 1.33301 12.6667V10C1.33301 9.63185 1.63148 9.33337 1.99967 9.33337Z'
-                                  fill='#3C50E0'
-                                />
-                                <path
-                                  fillRule='evenodd'
-                                  clipRule='evenodd'
-                                  d='M7.5286 1.52864C7.78894 1.26829 8.21106 1.26829 8.4714 1.52864L11.8047 4.86197C12.0651 5.12232 12.0651 5.54443 11.8047 5.80478C11.5444 6.06513 11.1223 6.06513 10.8619 5.80478L8 2.94285L5.13807 5.80478C4.87772 6.06513 4.45561 6.06513 4.19526 5.80478C3.93491 5.54443 3.93491 5.12232 4.19526 4.86197L7.5286 1.52864Z'
-                                  fill='#3C50E0'
-                                />
-                                <path
-                                  fillRule='evenodd'
-                                  clipRule='evenodd'
-                                  d='M7.99967 1.33337C8.36786 1.33337 8.66634 1.63185 8.66634 2.00004V10C8.66634 10.3682 8.36786 10.6667 7.99967 10.6667C7.63148 10.6667 7.33301 10.3682 7.33301 10V2.00004C7.33301 1.63185 7.63148 1.33337 7.99967 1.33337Z'
-                                  fill='#3C50E0'
-                                />
-                              </svg>
-                            </span>
-                            <p>
-                              <span className='text-primary'>Click to upload</span> or drag and drop
-                            </p>
-                            <p className='mt-1.5'>SVG, PNG, JPG or GIF</p>
-                            <p>(max, 800 X 800px)</p>
-                          </div>
-                        </div>
-
-                        <div className='flex justify-end gap-4.5'>
-                          <button
-                            className='flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
-                            type='submit'
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90'
-                            type='submit'
-                          >
-                            Save
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Edit Button */}
-          <div className='flex justify-end mt-6'>
-            <button className='px-6 py-2 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500'>
-              Edit
-            </button>
-          </div>
-        </div>
+        </form>
       </div>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default Setting
+export default Setting;
