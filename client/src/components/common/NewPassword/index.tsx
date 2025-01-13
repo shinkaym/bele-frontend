@@ -1,5 +1,5 @@
 import authApi from '@/apis/modules/auth.api'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'

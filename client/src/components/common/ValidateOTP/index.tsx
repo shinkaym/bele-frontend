@@ -12,6 +12,7 @@ interface IValidateOTPProps {
 }
 
 const ValidateOTP: React.FunctionComponent<IValidateOTPProps> = ({ onValidateOTPSuccess, email }) => {
+  const timeCountDownOTP = import.meta.env.VITE_TIME_COUNT_DOWN_OTP
   // Cấu hình Zod schema
   const validateOTPSchema = z.object({
     otp: z
@@ -86,7 +87,7 @@ const ValidateOTP: React.FunctionComponent<IValidateOTPProps> = ({ onValidateOTP
             />
           </div>
           <div className='mb-2 flex justify-end'>
-            <CountDownTimer timeCountDown={120} title='Gửi lại OTP sau' onClick={handleResendOtp} />
+            <CountDownTimer timeCountDown={timeCountDownOTP} title='Gửi lại OTP sau' onClick={handleResendOtp} />
           </div>
           <button
             type={`${otp.length === 4 ? 'submit' : 'button'}`}
