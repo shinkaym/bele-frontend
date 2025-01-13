@@ -51,9 +51,9 @@ const Button: React.FC<ButtonProps> = ({
   if (type === 'a') {
     // Sử dụng thẻ <a> thông thường
     return (
-      <a href={to || '#'} className={combinedStyles} target='_blank' rel='noopener noreferrer'>
+      <Link to={to || '#'} className={combinedStyles} target='_blank' rel='noopener noreferrer'>
         {children}
-      </a>
+      </Link>
     )
   }
 

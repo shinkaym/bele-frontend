@@ -6,9 +6,10 @@ import React, { PropsWithChildren, useCallback, useEffect } from 'react'
 
 interface IPopupProps {
   onPopupClose: () => void
+  className?: string
 }
 
-const Popup: React.FunctionComponent<PropsWithChildren<IPopupProps>> = ({ children, onPopupClose }) => {
+const Popup: React.FunctionComponent<PropsWithChildren<IPopupProps>> = ({ children, onPopupClose, className }) => {
   const callBackAos = useCallback(() => {
     executeAOS({})
   }, [])
@@ -19,7 +20,9 @@ const Popup: React.FunctionComponent<PropsWithChildren<IPopupProps>> = ({ childr
   return (
     <div className='fixed inset-0 z-40' data-aos='fade-down'>
       <Overlay onClose={onPopupClose} className='h-screen z-40 overflow-y-visible' position='relative' />
-      <div className='shadow-md absolute lg:w-[500px] w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 bg-white p-5 lg:p-10  text-black rounded-lg'>
+      <div
+        className={`shadow-md absolute  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 bg-white p-5 lg:p-10  text-black rounded-lg ${className ? className : 'w-full lg:w-[500px]'}`}
+      >
         {children}
         <button
           onClick={onPopupClose}

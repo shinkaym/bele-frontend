@@ -5,11 +5,11 @@ import Home from '@/pages/Home'
 import Blog from '@/pages/Blog'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
-import AccountInfo from '@/components/common/AccountInfo'
-import OrderHistory from '@/components/common/OrderHistory'
-import AddressNotes from '@/components/common/AddressNotes'
-import RatingProducts from '@/components/common/RatingProducts'
-import Wishlist from '@/components/common/Wishlist'
+import AccountInfo from '@/pages/AccountInfo'
+import OrderHistory from '@/pages/OrderHistory'
+import AddressNotes from '@/pages/AddressNotes'
+import RatingProducts from '@/pages/RatingProducts'
+import Wishlist from '@/pages/Wishlist'
 
 const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> => {
   return (props: P): ReactNode => (

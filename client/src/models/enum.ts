@@ -12,3 +12,9 @@ export enum EMenuProfileItemId {
   RatingProducts = 'ratingProducts',
   Logout = 'logout'
 }
+
+export enum EToastOption {
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  ERROR = 'error'
+}

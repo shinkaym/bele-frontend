@@ -1,5 +1,5 @@
-import { IconStar } from '../icons'
-import ButtonCustom from './ButtonCustom'
+import { IconStar } from '../components/icons'
+import ButtonCustom from '../components/common/ButtonCustom'
 
 const AddressNotes = () => {
   return (
