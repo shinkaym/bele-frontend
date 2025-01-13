@@ -9,5 +9,6 @@ export enum EMenuProfileItemId {
   OrderHistory = 'orderHistory',
   AddressNotes = 'addressNotes',
   Wishlist = 'wishlist',
-  RatingProducts = 'ratingProducts'
+  RatingProducts = 'ratingProducts',
+  Logout = 'logout'
 }

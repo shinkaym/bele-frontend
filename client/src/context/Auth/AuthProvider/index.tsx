@@ -1,10 +1,8 @@
-import axiosPrivate from '@/apis/client/private.client'
 import authApi from '@/apis/modules/auth.api'
 import Loader from '@/components/common/Loader'
-import { ICustomer, ICustomerLogin, IJwt } from '@/models/interfaces'
+import { ICustomer, ICustomerLogin } from '@/models/interfaces'
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import AuthContext from '../AuthContext'
 
 // Định nghĩa kiểu dữ liệu cho props của AuthProvider
@@ -16,7 +14,6 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const [customer, setCustomer] = useState<ICustomer | null>(null) // Khởi tạo user với giá trị null
   const [loading, setLoading] = useState<boolean>(true) // Trạng thái loading khi gọi API
-  const navigate = useNavigate()
 
   // Hàm signin nhận dữ liệu user, accessToken và refreshToken
   const login = (customerLogin: ICustomerLogin) => {
@@ -79,7 +76,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
 
     if (!customer) fetchApi()
-  }, [customer, navigate])
+  }, [customer])
 
   if (loading) {
     return <Loader /> // Hiển thị loading trong khi đang kiểm tra token

@@ -14,7 +14,7 @@ import { TMenuItem, TMenuProfileItem } from '@/models/types'
 
 import { EMenuProfileItemId } from '@/models/enum'
 import { IProduct } from '@/models/interfaces'
-import { faHeart, faBagShopping, faGlobe, faStar, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faHeart, faBagShopping, faGlobe, faStar, faUser, faPowerOff } from '@fortawesome/free-solid-svg-icons'
 
 export const logoList = {
   mainLogo: {
@@ -2174,5 +2174,10 @@ export const menuProfileItems: TMenuProfileItem[] = [
     id: EMenuProfileItemId.RatingProducts,
     title: 'Đánh giá và phản hồi',
     icon: faStar
+  },
+  {
+    id: EMenuProfileItemId.Logout,
+    title: 'Đăng xuất',
+    icon: faPowerOff
   }
 ]

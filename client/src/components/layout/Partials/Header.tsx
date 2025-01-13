@@ -1,10 +1,13 @@
 import categoryApi from '@/apis/modules/category.api'
 import { CustomerMenu } from '@/components/common/CustomerMenu'
+import ForgotPassword from '@/components/common/ForgotPassword'
 import Login from '@/components/common/Login'
 import ModalSearch from '@/components/common/ModalSearch'
+import NewPassword from '@/components/common/NewPassword'
 import Overlay from '@/components/common/Overlay'
 import Popup from '@/components/common/Popup'
 import Register from '@/components/common/Register'
+import ValidateOTP from '@/components/common/ValidateOTP'
 import { logoList } from '@/constants'
 import AuthContext from '@/context/Auth/AuthContext'
 import SettingContext from '@/context/Setting/SettingContext'
@@ -18,9 +21,14 @@ const Header = memo(() => {
   const [isShowSearchModal, setIsShowSearchModal] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(false)
   const [isShowCustomer, setIsShowCustomer] = useState(false)
-  const [popupOptions, setPopupOptions] = useState<'login' | 'register' | 'forgotPassword'>('login')
+  const [popupOptions, setPopupOptions] = useState<
+    'login' | 'register' | 'forgotPassword' | 'validateOTP' | 'newPassword'
+  >('login')
   const [isShowPopup, setIsShowPopup] = useState(false)
   const [categories, setCategories] = useState<ICategory[]>([])
+  const [emailOTP, setEmailOTP] = useState<string>('')
+  const [jwtNewPassword, setJwtNewPassword] = useState<string>('')
+
   const authMethod = useContext(AuthContext)
   const setting = useContext(SettingContext)
   const handleAction = () => {
@@ -30,6 +38,15 @@ const Header = memo(() => {
       setIsShowPopup(true)
     }
   }
+  const handleGetOTPSuccess = (email: string) => {
+    setEmailOTP(email)
+    setPopupOptions('validateOTP')
+  }
+  const handleValidateOTPSuccess = (jwt: string) => {
+    setJwtNewPassword(jwt)
+    setPopupOptions('newPassword')
+  }
+
   const renderPopupOptionsComponent = {
     login: (
       <Login
@@ -39,7 +56,9 @@ const Header = memo(() => {
       />
     ),
     register: <Register onRegisterSuccess={() => setPopupOptions('login')} onLogin={() => setPopupOptions('login')} />,
-    forgotPassword: <div>Hello</div>
+    forgotPassword: <ForgotPassword onGetOTPSuccess={handleGetOTPSuccess} />,
+    validateOTP: <ValidateOTP email={emailOTP} onValidateOTPSuccess={handleValidateOTPSuccess} />,
+    newPassword: <NewPassword onCreateNewPasswordSuccess={() => setPopupOptions('login')} jwt={jwtNewPassword} />
   }
 
   const handlePopupClose = () => {
@@ -110,7 +129,7 @@ const Header = memo(() => {
                         </li>
                         {cat.referenceCategory?.length > 0 &&
                           cat.referenceCategory.map((catChild) => (
-                            <li className='hover:text-blue-primary'>
+                            <li className='hover:text-blue-primary' key={catChild.id}>
                               <Link to={'/' + catChild.slug}>{catChild.name}</Link>
                             </li>
                           ))}

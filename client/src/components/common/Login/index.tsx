@@ -1,3 +1,4 @@
+import authApi from '@/apis/modules/auth.api'
 import AuthContext from '@/context/Auth/AuthContext'
 import { faEnvelope, faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,7 +8,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import Button from '../Button'
 import Input from '../Forms/Input'
-import authApi from '@/apis/modules/auth.api'
+import Loader from '../Loader'
 
 interface ILoginProps {
   onRegister: () => void
@@ -21,6 +22,7 @@ interface ModifyPassword {
 }
 
 const Login: React.FunctionComponent<ILoginProps> = ({ onRegister, onForgotPassoword, onLoginSuccess }) => {
+  const [loading, setLoading] = useState<boolean>(false)
   const [modifyPassword, setModifyPassword] = useState<ModifyPassword>({
     type: 'password',
     icon: faEyeSlash
@@ -62,6 +64,7 @@ const Login: React.FunctionComponent<ILoginProps> = ({ onRegister, onForgotPasso
   const authMethod = useContext(AuthContext)
 
   const onSubmit = async (data: loginFormData) => {
+    setLoading(true)
     try {
       console.log(data)
       //call api in here...
@@ -73,7 +76,13 @@ const Login: React.FunctionComponent<ILoginProps> = ({ onRegister, onForgotPasso
     } catch (error) {
       console.log(error)
       reset()
-      setError('password', { type: 'manual', message: 'Email hoặc mật khẩu không đúng' })
+      if (error === "Can't find Account !!") {
+        setError('email', { type: 'manual', message: 'Email không tồn tại' })
+      } else if (error === 'Invalid Password !!') {
+        setError('password', { type: 'manual', message: 'Mật khẩu không chính xác' })
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -133,6 +142,7 @@ const Login: React.FunctionComponent<ILoginProps> = ({ onRegister, onForgotPasso
           </button>
         </div>
       </div>
+      {loading && <Loader type='inside' />}
     </>
   )
 }

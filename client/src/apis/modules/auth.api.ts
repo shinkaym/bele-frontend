@@ -7,14 +7,21 @@ const authEndpoints = {
   login: 'Auth/Login',
   register: 'Auth/Register',
   getMe: 'Auth/GetMe',
-  refresh: `Auth/RefreshToken`
+  logout: 'Auth/Logout',
+  refresh: `Auth/RefreshToken`,
+  getOTP: 'Auth/GetOTP',
+  validateOTP: 'Auth/ValidateOTP',
+  createNewPassword: 'Auth/CreateNewPassword'
 }
 
 const authApi = {
-  login(data: { email: string; password: string }): Promise<{ customer: ICustomer; jwt: IJwt }> {
+  async login(data: { email: string; password: string }): Promise<{ customer: ICustomer; jwt: IJwt }> {
     return axiosPublic.post(authEndpoints.login, { ...data })
   },
-  register(data: {
+  async logout(): Promise<{ message: string; status: number }> {
+    return axiosPrivate(authEndpoints.logout)
+  },
+  async register(data: {
     email: string
     password: string
     confirmPassword: string
@@ -23,8 +30,28 @@ const authApi = {
   }): Promise<IApiResponse<{ customer: ICustomer }>> {
     return axiosPublic.post(authEndpoints.register, { ...data })
   },
-  getMe(): Promise<IApiResponse<ICustomer>> {
+  async getMe(): Promise<IApiResponse<ICustomer>> {
     return axiosPrivate.get(authEndpoints.getMe)
+  },
+  async getOTP(email: string): Promise<{ status: number; message: string }> {
+    return axiosPublic.post(authEndpoints.getOTP, email)
+  },
+  async validateOTP(data: { email: string; otp: string }): Promise<IApiResponse<{ jwt: string }>> {
+    return axiosPublic.post(authEndpoints.validateOTP, { ...data })
+  },
+  async createNewPassword(
+    data: { password: string; confirmPassword: string },
+    jwt: string
+  ): Promise<IApiResponse<ICustomer>> {
+    return axiosPublic.post(
+      authEndpoints.createNewPassword,
+      { ...data },
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}` // Thêm JWT vào header Authorization
+        }
+      }
+    )
   }
 }
 
