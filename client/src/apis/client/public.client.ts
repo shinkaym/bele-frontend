@@ -17,7 +17,11 @@ axiosPublic.interceptors.response.use(
   (error) => {
     if (error.response) {
       // Trường hợp lỗi trả về từ server
-      const data = error.response.data || 'Something went wrong'
+      const errorMessage = error.response.data?.message || 'Something went wrong'
+      const data: IError = {
+        status: error.response.status || 500,
+        message: errorMessage
+      }
       return Promise.reject(data)
     } else {
       // Nếu không có response (ví dụ: lỗi mạng)

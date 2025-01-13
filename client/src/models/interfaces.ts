@@ -204,9 +204,8 @@ export interface ISetting {
 
 export interface ICustomer {
   id: number
-  fullName?: string
+  fullName: string
   phoneNumber: string
-  name: string
   email: string
   sex: 'Male' | 'Female' | 'Other' // hoặc có thể thay bằng string nếu bạn không muốn giới hạn giá trị
   birthday: string

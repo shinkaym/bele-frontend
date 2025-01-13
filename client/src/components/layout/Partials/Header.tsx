@@ -342,7 +342,7 @@ const Header = memo(() => {
       )}
 
       {isShowCustomer && (
-        <CustomerMenu fullName={authMethod!.customer!.name} onClose={() => setIsShowCustomer(false)} />
+        <CustomerMenu fullName={authMethod!.customer!.fullName} onClose={() => setIsShowCustomer(false)} />
       )}
     </>
   )

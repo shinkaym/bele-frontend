@@ -9,6 +9,7 @@ import { z } from 'zod'
 import Button from '../Button'
 import Input from '../Forms/Input'
 import Loader from '../Loader'
+import { IError } from '@/models/interfaces'
 
 interface ILoginProps {
   onRegister: () => void
@@ -62,11 +63,9 @@ const Login: React.FunctionComponent<ILoginProps> = ({ onRegister, onForgotPasso
   })
 
   const authMethod = useContext(AuthContext)
-
   const onSubmit = async (data: loginFormData) => {
     setLoading(true)
     try {
-      console.log(data)
       //call api in here...
       const customer = await authApi.login(data)
       if (customer) {
@@ -74,11 +73,11 @@ const Login: React.FunctionComponent<ILoginProps> = ({ onRegister, onForgotPasso
         onLoginSuccess()
       }
     } catch (error) {
-      console.log(error)
+      const apiError = error as IError
       reset()
-      if (error === "Can't find Account !!") {
+      if (apiError.message === "Can't find Account !!") {
         setError('email', { type: 'manual', message: 'Email không tồn tại' })
-      } else if (error === 'Invalid Password !!') {
+      } else if (apiError.message === 'Invalid Password !!') {
         setError('password', { type: 'manual', message: 'Mật khẩu không chính xác' })
       }
     } finally {

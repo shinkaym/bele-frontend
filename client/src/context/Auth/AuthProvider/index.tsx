@@ -1,6 +1,6 @@
 import authApi from '@/apis/modules/auth.api'
 import Loader from '@/components/common/Loader'
-import { ICustomer, ICustomerLogin } from '@/models/interfaces'
+import { ICustomer, ICustomerLogin, IJwt } from '@/models/interfaces'
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 import AuthContext from '../AuthContext'
@@ -17,6 +17,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   // Hàm signin nhận dữ liệu user, accessToken và refreshToken
   const login = (customerLogin: ICustomerLogin) => {
+    console.log('đã vào');
     const { customer, jwt } = customerLogin
     const expireAccessToken = new Date(jwt.expireAccessToken)
     const expireRefreshToken = new Date(jwt.expireRefreshToken || '')
@@ -53,21 +54,21 @@ function AuthProvider({ children }: AuthProviderProps) {
           }
           return
         }
-        // if (refreshToken) {
-        //   const { jwt }: { jwt: IJwt } = await axiosPrivate.post(`Auth/RefreshToken`, { refreshToken })
-        //   const expireRefreshToken = Cookies.get('expireRefreshToken')
-        //   if (expireRefreshToken && jwt) {
-        //     Cookies.set('accessToken', jwt.accessToken, { expires: new Date(jwt.expireAccessToken) })
-        //     Cookies.set('expireAccessToken', jwt.expireAccessToken)
-        //     Cookies.set('refreshToken', jwt.refreshToken, { expires: new Date(expireRefreshToken) })
-        //     const dataCustomer = await authApi.getMe()
-        //     if (dataCustomer.data) {
-        //       setCustomer(dataCustomer.data)
-        //       setIsAuthenticated(true)
-        //       return
-        //     }
-        //   } 
-        // }
+        if (refreshToken) {
+          const { jwt }: { jwt: IJwt } = await authApi.refresh(refreshToken)
+          const expireRefreshToken = Cookies.get('expireRefreshToken')
+          if (expireRefreshToken && jwt) {
+            Cookies.set('accessToken', jwt.accessToken, { expires: new Date(jwt.expireAccessToken) })
+            Cookies.set('expireAccessToken', jwt.expireAccessToken)
+            Cookies.set('refreshToken', jwt.refreshToken, { expires: new Date(expireRefreshToken) })
+            const dataCustomer = await authApi.getMe()
+            if (dataCustomer.data) {
+              setCustomer(dataCustomer.data)
+              setIsAuthenticated(true)
+              return
+            }
+          }
+        }
       } catch (error) {
         console.error('Error fetching user data:', error)
       } finally {

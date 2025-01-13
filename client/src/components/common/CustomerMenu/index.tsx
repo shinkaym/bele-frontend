@@ -69,9 +69,10 @@ export function CustomerMenu({ onClose, fullName }: ICustomerMenuProps) {
                 } else {
                   return (
                     <Link
+                      onClick={() => onClose()}
                       key={item.id}
                       className='w-full px-3 py-4 h-32 rounded-xl bg-zinc-200 flex items-center flex-col gap-2'
-                      to={'/'}
+                      to={'/profile/' + item.link}
                     >
                       <FontAwesomeIcon
                         icon={item.icon}
@@ -86,7 +87,7 @@ export function CustomerMenu({ onClose, fullName }: ICustomerMenuProps) {
           </div>
           <Button
             type='link'
-            to='/profile'
+            to='/profile/account-info'
             className='py-4 text-center uppercase hover:bg-blue-primary-light transition-colors ease-linear duration-200'
             color='blue-primary'
             textColor='white'

@@ -21,6 +21,9 @@ const authApi = {
   async logout(): Promise<{ message: string; status: number }> {
     return axiosPrivate(authEndpoints.logout)
   },
+  async refresh(refreshToken: string): Promise<{ jwt: IJwt }> {
+    return axiosPrivate.post(authEndpoints.refresh, { refreshToken })
+  },
   async register(data: {
     email: string
     password: string
