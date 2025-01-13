@@ -28,7 +28,6 @@ const Header = memo(() => {
   const [categories, setCategories] = useState<ICategory[]>([])
   const [emailOTP, setEmailOTP] = useState<string>('')
   const [jwtNewPassword, setJwtNewPassword] = useState<string>('')
-
   const authMethod = useContext(AuthContext)
   const setting = useContext(SettingContext)
   const handleAction = () => {
