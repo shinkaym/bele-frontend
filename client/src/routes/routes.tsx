@@ -2,6 +2,7 @@ import LoadingScreen from '@/components/common/LoadingScreen'
 import PageTitle from '@/components/common/PageTitle'
 import DefaultLayout from '@/components/layout/DefaultLayout'
 import Home from '@/pages/Home'
+import Blog from '@/pages/Blog'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
 import AccountInfo from '@/components/common/AccountInfo'
@@ -69,6 +70,15 @@ const AppRouter = () => {
             <>
               <PageTitle title='Trang tìm kiếm' />
               <Search />
+            </>
+          )
+        },
+        {
+          path: 'blog',
+          element: (
+            <>
+              <PageTitle title='Trang thông tin' />
+              <Blog />
             </>
           )
         }
