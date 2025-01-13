@@ -7,6 +7,7 @@ import Pagination from './Pagination'
 import { IPagination } from '@/models/interfaces'
 import NotRatedProducts from './NotRatedProducts'
 import RatedProducts from './RatedProducts'
+import { PAGINATION_CONFIG } from '@/constants'
 
 interface Product {
   id: number

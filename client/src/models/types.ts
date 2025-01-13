@@ -13,4 +13,5 @@ export type TMenuProfileItem = {
   id: EMenuProfileItemId
   title: string
   icon: IconDefinition
+  link: string
 }

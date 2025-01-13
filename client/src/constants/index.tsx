@@ -2153,31 +2153,42 @@ export const menuProfileItems: TMenuProfileItem[] = [
   {
     id: EMenuProfileItemId.AccountInfo,
     title: 'Thông tin tài khoản',
-    icon: faUser
+    icon: faUser,
+    link: 'account-info'
   },
   {
     id: EMenuProfileItemId.OrderHistory,
     title: 'Lịch sử đơn hàng',
-    icon: faBagShopping
+    icon: faBagShopping,
+    link: 'order-history'
   },
   {
     id: EMenuProfileItemId.AddressNotes,
     title: 'Sổ địa chỉ',
-    icon: faGlobe
+    icon: faGlobe,
+    link: 'address-notes'
   },
   {
     id: EMenuProfileItemId.Wishlist,
     title: 'Danh sách yêu thích',
-    icon: faHeart
+    icon: faHeart,
+    link: 'wishlist'
   },
   {
     id: EMenuProfileItemId.RatingProducts,
     title: 'Đánh giá và phản hồi',
-    icon: faStar
+    icon: faStar,
+    link: 'rating-products'
   },
   {
     id: EMenuProfileItemId.Logout,
     title: 'Đăng xuất',
-    icon: faPowerOff
+    icon: faPowerOff,
+    link: 'logout'
   }
 ]
+
+export const PAGINATION_CONFIG = {
+  DEFAULT_LIMIT: 5,
+  DEFAULT_PAGE: 1
+}
