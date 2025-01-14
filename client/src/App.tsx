@@ -1,29 +1,54 @@
 import Cookies from 'js-cookie'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchUserData } from './redux/slices/auh.slice'
 import { AppDispatch, RootState } from './redux/store'
 import AppRouter from './routes/routes'
+import { fetchCart } from './redux/slices/cart.slice'
+import { fetchSettings } from './redux/slices/setting.slice'
+import Loader from './components/common/Loader'
 
 function App() {
   const dispatch = useDispatch<AppDispatch>()
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth)
+  const { isAuthenticated, error } = useSelector((state: RootState) => state.auth)
+  const settings = useSelector((state: RootState) => state.settings)
+  const [loading, setLoading] = useState<boolean>(true)
+
   // Fetch user data when the app starts
   useEffect(() => {
-    if (isAuthenticated) {
-      console.log("Chay vao");
+    const fetchApi = async () => {
       const accessToken = Cookies.get('accessToken')
+      const refreshToken = Cookies.get('refreshToken')
 
-      if (!accessToken) {
-        const refreshToken = Cookies.get('refreshToken')
-        if (refreshToken) {
-          dispatch(fetchUserData(refreshToken))
+      if (!accessToken && refreshToken) {
+        console.log('Dispatching fetchUserData...')
+        await dispatch(fetchUserData(refreshToken))
+
+        if (!error) {
+          console.log('Dispatching fetchCart...')
+          dispatch(fetchCart())
         }
-        // If access token is available, we don't need to refresh
-        dispatch(fetchUserData(null)) // We can skip refreshing the token
       }
     }
-  }, [dispatch])
+
+    if (isAuthenticated) {
+      console.log('Fetching API...')
+      fetchApi()
+    }
+  }, [dispatch, isAuthenticated, error])
+
+  useEffect(() => {
+    const fetchApi = async () => {
+      dispatch(fetchSettings())
+      setLoading(false)
+    }
+    if (!settings.data) fetchApi()
+    else {
+      setLoading(false)
+    }
+  }, [dispatch, settings])
+
+  if (loading) return <Loader />
 
   return <AppRouter />
 }

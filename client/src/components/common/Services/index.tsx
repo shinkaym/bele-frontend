@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface Props {
   className?: string
-  service: IService
+  service: IService | null
 }
 
 const Services = ({ className, service }: Props) => {
@@ -15,10 +15,10 @@ const Services = ({ className, service }: Props) => {
           <FontAwesomeIcon icon={faTruck} className='text-blue-primary lg:text-3xl md:text-2xl sm:text-xl text-base' />
           <div className='flex flex-col justify-between'>
             <p className='uppercase font-semibold lg:text-sm md:text-xs sm:text-2xs text-3xs'>
-              {service.serviceTitle1}
+              {service?.serviceTitle1}
             </p>
             <span className='font-thin xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs '>
-              {service.serviceInfo1}
+              {service?.serviceInfo1}
             </span>
           </div>
         </div>
@@ -29,10 +29,10 @@ const Services = ({ className, service }: Props) => {
           />
           <div className='flex flex-col justify-between'>
             <p className='uppercase font-semibold lg:text-sm md:text-xs sm:text-2xs text-3xs'>
-              {service.serviceTitle2}
+              {service?.serviceTitle2}
             </p>
             <span className='font-thin xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs '>
-              {service.serviceInfo2}
+              {service?.serviceInfo2}
             </span>
           </div>
         </div>
@@ -43,10 +43,10 @@ const Services = ({ className, service }: Props) => {
           />
           <div className='flex flex-col justify-between'>
             <p className='uppercase font-semibold lg:text-sm md:text-xs sm:text-2xs text-3xs'>
-              {service.serviceTitle3}
+              {service?.serviceTitle3}
             </p>
             <span className='font-thin xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs '>
-              {service.serviceInfo3}
+              {service?.serviceInfo3}
             </span>
           </div>
         </div>
@@ -54,10 +54,10 @@ const Services = ({ className, service }: Props) => {
           <FontAwesomeIcon icon={faClock} className='text-blue-primary lg:text-3xl md:text-2xl sm:text-xl text-base' />
           <div className='flex flex-col justify-between'>
             <p className='uppercase font-semibold lg:text-sm md:text-xs sm:text-2xs text-3xs'>
-              {service.serviceTitle4}
+              {service?.serviceTitle4}
             </p>
             <span className='font-thin xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs '>
-              {service.serviceInfo4}
+              {service?.serviceInfo4}
             </span>
           </div>
         </div>

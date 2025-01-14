@@ -262,3 +262,24 @@ export interface IUpdateInfoFormData {
   sex: string
   birthday: Date
 }
+
+export interface ICartItem {
+  productId: number
+  productName: string
+  productPrice: number
+  thumbnail: string
+  attributes: [
+    {
+      Color: string
+    },
+    {
+      Size: string
+    }
+  ]
+  quantity: number
+  discount: number
+}
+export interface ICart {
+  totalMoney: number
+  cartItems: ICartItem[]
+}

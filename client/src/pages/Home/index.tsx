@@ -111,7 +111,7 @@ const Home = memo(() => {
         </Link>
       </SlideShow>
       <Services
-        service={settings!.service}
+        service={settings?.service || null} 
         className='bg-gray-primary lg:py-8 md:py-6 sm:py-4 py-2 lg:px-14 md:px-12 sm:px-10 px-6 mb-10'
       />
       <div className='lg:px-14 md:px-12 sm:px-10 px-6 mb-10 space-x-4'>
@@ -143,7 +143,7 @@ const Home = memo(() => {
         </Button>
       </div>
       <div className='lg:px-14 md:px-12 sm:px-10 px-6 mb-10'>
-        {products.length > 0 ? (
+        {!loading ? (
           products.length > limit + 2 ? (
             <>
               <SlideShow
@@ -185,7 +185,7 @@ const Home = memo(() => {
         link={{ to: '/', title: 'Xem Thêm' }}
         className='lg:px-14 md:px-12 sm:px-10 px-6 mb-10'
       >
-        {products.length > 0 ? (
+        {!loading ? (
           products.length > limit + 2 ? (
             <>
               <SlideShow

@@ -1,6 +1,11 @@
 import { IError, IJwt } from '@/models/interfaces'
+import { fetchUserData } from '@/redux/slices/auh.slice'
+import { fetchCart } from '@/redux/slices/cart.slice'
+import { AppDispatch, RootState } from '@/redux/store'
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 // Tạo instance axios
 const axiosPrivate = axios.create({
@@ -39,25 +44,17 @@ axiosPrivate.interceptors.response.use(
       originalRequest._retry = true
 
       try {
+        const dispatch = useDispatch<AppDispatch>()
+        const { error } = useSelector((state: RootState) => state.auth)
         const refreshToken = Cookies.get('refreshToken')
         if (!refreshToken) {
           throw new Error('No refresh token available')
         }
-
-        // Yêu cầu refresh token
-        const { jwt }: { jwt: IJwt } = await axiosPrivate.post(`Auth/RefreshToken`, {
-          refreshToken: refreshToken
-        })
-        const expireRefreshToken = Cookies.get('expireRefreshToken')
-        if (expireRefreshToken) {
-          // Cập nhật token mới
-          Cookies.set('accessToken', jwt.accessToken, { expires: new Date(jwt.expireAccessToken) })
-          Cookies.set('expireAccessToken', jwt.expireAccessToken)
-          Cookies.set('refreshToken', jwt.refreshToken, { expires: new Date(expireRefreshToken) })
-          originalRequest.headers.Authorization = `Bearer ${jwt.accessToken}`
-        } else {
-          window.location.href = '/login'
+        if (refreshToken) {
+          dispatch(fetchUserData(refreshToken))
+          if (!error) dispatch(fetchCart())
         }
+
         return axiosPrivate(originalRequest) // Retry request
       } catch (refreshError) {
         console.error('Refresh token failed:', refreshError)
@@ -65,7 +62,6 @@ axiosPrivate.interceptors.response.use(
         Cookies.remove('refreshToken')
         Cookies.remove('expireAccessToken')
         Cookies.remove('expireRefreshToken')
-        window.location.href = '/login'
         return Promise.reject(refreshError)
       }
     }

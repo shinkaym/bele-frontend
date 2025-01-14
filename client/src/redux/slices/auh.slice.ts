@@ -1,18 +1,21 @@
 import authApi from '@/apis/modules/auth.api'
 import { IApiResponse, ICustomerLogin, ICustomerResponse, IJwt } from '@/models/interfaces'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { error } from 'console'
 import Cookies from 'js-cookie'
 
 interface AuthState {
   isAuthenticated: boolean
   customer: ICustomerResponse | null
   loading: boolean
+  error:string | null
 }
 
 const initialState: AuthState = {
   isAuthenticated: false,
   customer: null,
-  loading: false
+  loading: false,
+  error:null
 }
 
 export const fetchUserData = createAsyncThunk(
@@ -81,6 +84,7 @@ const authSlice = createSlice({
       })
       .addCase(fetchUserData.rejected, (state, action) => {
         state.loading = false
+        state.error = action.payload as string
       })
   }
 })

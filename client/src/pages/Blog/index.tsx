@@ -1,14 +1,15 @@
-import { useEffect, useState, useContext } from 'react'
-import SettingContext from '@/context/Setting/SettingContext'
 import Loader from '@/components/common/Loader'
+import { useEffect, useState } from 'react'
 // import { Link } from 'react-router-dom'
-import { IApiResponse, IBlog } from '@/models/interfaces'
 import blogApi from '@/apis/modules/blog.api'
+import { IApiResponse, IBlog } from '@/models/interfaces'
+import { RootState } from '@/redux/store'
+import { useSelector } from 'react-redux'
 
 function Blog() {
   const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState<IBlog | null>(null)
-  const setting = useContext(SettingContext)
+  const setting = useSelector((state:RootState) => state.settings.data)
 
   useEffect(() => {
     const fetchApi = async () => {

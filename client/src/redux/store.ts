@@ -7,7 +7,7 @@ import rootReducer from './rootReducer'
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['settings', 'auth'] // Only persist the products reducer
+  whitelist: ['settings', 'auth','cart'] // Only persist the products reducer
 }
 
 // Apply Redux Persist to the root reducer
