@@ -1,10 +1,12 @@
 import authApi from '@/apis/modules/auth.api'
 import { menuProfileItems } from '@/constants'
-import AuthContext from '@/context/Auth/AuthContext'
 import { EMenuProfileItemId } from '@/models/enum'
+import { logout } from '@/redux/slices/auh.slice'
+import { AppDispatch } from '@/redux/store'
 import executeAOS from '@/utils/executeAOS'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Button from '../Button'
 import Loader from '../Loader'
@@ -12,18 +14,18 @@ import Overlay from '../Overlay'
 
 export interface ICustomerMenuProps {
   onClose: () => void
-  fullName: string
+  fullName: string | ''
 }
 
 export function CustomerMenu({ onClose, fullName }: ICustomerMenuProps) {
-  const authMethod = useContext(AuthContext)
   const [loading, setLoading] = useState<boolean>(false)
+  const dispatch = useDispatch<AppDispatch>()
   const handleLogout = async () => {
     setLoading(true)
     try {
       const res: { message: string; status: number } = await authApi.logout()
       if (res.status === 200) {
-        authMethod?.logout()
+        dispatch(logout())
         onClose()
       }
     } catch (error) {

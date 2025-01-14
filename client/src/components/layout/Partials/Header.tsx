@@ -9,12 +9,12 @@ import Popup from '@/components/common/Popup'
 import Register from '@/components/common/Register'
 import ValidateOTP from '@/components/common/ValidateOTP'
 import { logoList } from '@/constants'
-import AuthContext from '@/context/Auth/AuthContext'
-import SettingContext from '@/context/Setting/SettingContext'
 import { IApiResponse, ICategory } from '@/models/interfaces'
+import { RootState } from '@/redux/store'
 import { faArrowRight, faBagShopping, faBars, faChevronDown, faSearch, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { memo, useContext, useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
 
 const Header = memo(() => {
@@ -28,10 +28,10 @@ const Header = memo(() => {
   const [categories, setCategories] = useState<ICategory[]>([])
   const [emailOTP, setEmailOTP] = useState<string>('')
   const [jwtNewPassword, setJwtNewPassword] = useState<string>('')
-  const authMethod = useContext(AuthContext)
-  const setting = useContext(SettingContext)
+  const { isAuthenticated, customer } = useSelector((state: RootState) => state.auth)
+  const settings = useSelector((state: RootState) => state.settings.data)
   const handleAction = () => {
-    if (authMethod?.isAuthenticated) {
+    if (isAuthenticated) {
       setIsShowCustomer(true)
     } else {
       setIsShowPopup(true)
@@ -90,7 +90,7 @@ const Header = memo(() => {
         </div>
         <div className='lg:px-14 md:px-12 sm:px-10 px-6 md mx-auto flex items-center justify-between lg:h-20 md:h-18 sm:h-16 h-14'>
           <Link to={'/'} className='h-full'>
-            <img className='h-full w-full object-cover' src={setting?.logo.mainLogo} alt={'Main Logo'} />
+            <img className='h-full w-full object-cover' src={settings?.logo.mainLogo} alt={'Main Logo'} />
           </Link>
           <div className='items-center justify-between h-full hidden lg:flex relative'>
             <NavLink
@@ -191,7 +191,11 @@ const Header = memo(() => {
             </div>
             <FontAwesomeIcon
               icon={faUser}
-              className={`cursor-pointer ${authMethod?.isAuthenticated ? 'bg-zinc-300 border-4 p-1.5 text-blue-primary border-solid border-blue-primary rounded-2xl lg:text-2xl md:text-xl sm:text-lg text-base' : 'lg:text-3xl md:text-2xl sm:text-xl text-lg text-white'}`}
+              className={`cursor-pointer ${
+                isAuthenticated
+                  ? 'bg-zinc-300 border-4 p-1.5 text-blue-primary border-solid border-blue-primary rounded-2xl lg:text-2xl md:text-xl sm:text-lg text-base'
+                  : 'lg:text-3xl md:text-2xl sm:text-xl text-lg text-white'
+              }`}
               onClick={handleAction}
             />
             <Link to={'/cart'} className='relative'>
@@ -341,9 +345,7 @@ const Header = memo(() => {
         </>
       )}
 
-      {isShowCustomer && (
-        <CustomerMenu fullName={authMethod!.customer!.fullName} onClose={() => setIsShowCustomer(false)} />
-      )}
+      {isShowCustomer && <CustomerMenu fullName={customer?.fullName || ''} onClose={() => setIsShowCustomer(false)} />}
     </>
   )
 })

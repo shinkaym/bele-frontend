@@ -200,7 +200,7 @@ export interface ISetting {
   logo: ILogo
   info: IInfo
 }
-//End-Setting 
+//End-Setting
 
 export interface ICustomer {
   fullName: string
@@ -219,9 +219,13 @@ export interface IJwt {
   refreshToken: string
   expireRefreshToken?: string // ISO Date string
 }
+export interface ICustomerResponse {
+  id: number
+  fullName: string
+}
 
 export interface ICustomerLogin {
-  customer: ICustomer
+  customer: ICustomerResponse
   jwt: IJwt
 }
 

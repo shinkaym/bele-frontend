@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-import { IApiResponse, ICustomer, IJwt } from '@/models/interfaces'
+import { IApiResponse, ICustomer, ICustomerLogin, ICustomerResponse, IJwt } from '@/models/interfaces'
 import axiosPrivate from '../client/private.client'
 import axiosPublic from '../client/public.client'
 
@@ -15,7 +15,7 @@ const authEndpoints = {
 }
 
 const authApi = {
-  async login(data: { email: string; password: string }): Promise<{ customer: ICustomer; jwt: IJwt }> {
+  async login(data: { email: string; password: string }): Promise<ICustomerLogin> {
     return axiosPublic.post(authEndpoints.login, { ...data })
   },
   async logout(): Promise<{ message: string; status: number }> {
@@ -30,10 +30,10 @@ const authApi = {
     confirmPassword: string
     fullName: string
     phoneNumber: string
-  }): Promise<IApiResponse<{ customer: ICustomer }>> {
+  }): Promise<IApiResponse<{ customer: ICustomerLogin }>> {
     return axiosPublic.post(authEndpoints.register, { ...data })
   },
-  async getMe(): Promise<IApiResponse<ICustomer>> {
+  async getMe(): Promise<IApiResponse<ICustomerResponse>> {
     return axiosPrivate.get(authEndpoints.getMe)
   },
   async getOTP(email: string): Promise<{ status: number; message: string }> {

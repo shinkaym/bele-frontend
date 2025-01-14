@@ -1,17 +1,17 @@
-import SettingContext from '@/context/Setting/SettingContext'
+import { RootState } from '@/redux/store'
 import { faFacebook, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useContext } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 function Footer() {
-  const setting = useContext(SettingContext)
+  const settings = useSelector((state: RootState) => state.settings.data)
   return (
     <footer className='bg-black text-white hidden lg:block'>
       <div className='lg:px-14 md:px-12 sm:px-10 px-6 mx-auto flex flex-col items-center justify-between'>
         <div className='py-5 grid grid-cols-5 w-full border-b-2'>
-          <img className='object-cover w-full' src={setting?.logo.sloganLogo} alt={'Slogan Logo'} />
+          <img className='object-cover w-full' src={settings?.logo.sloganLogo} alt={'Slogan Logo'} />
           <div></div>
           <div className='flex items-center justify-center'>
             <div className='flex flex-col items-start justify-center gap-3'>
@@ -19,27 +19,27 @@ function Footer() {
                 <FontAwesomeIcon icon={faPhone} className='text-3xl' />
                 <div className='flex flex-col justify-between'>
                   <span>Hotline</span>
-                  <span className='font-semibold'>{setting?.info.hotline}</span>
+                  <span className='font-semibold'>{settings?.info.hotline}</span>
                 </div>
               </div>
               <div className='flex items-center gap-4'>
                 <FontAwesomeIcon icon={faEnvelope} className='text-3xl' />
                 <div className='flex flex-col justify-between'>
                   <span>Email</span>
-                  <span className='font-semibold'>{setting?.info.email}</span>
+                  <span className='font-semibold'>{settings?.info.email}</span>
                 </div>
               </div>
             </div>
           </div>
           <div></div>
           <div className='flex items-center justify-center gap-10'>
-            <a target='_blank' href={setting?.social.facebookLink}>
+            <a target='_blank' href={settings?.social.facebookLink}>
               <FontAwesomeIcon icon={faFacebook} className='text-5xl' />
             </a>
-            <a target='_blank' href={setting?.social.youtubeLink}>
+            <a target='_blank' href={settings?.social.youtubeLink}>
               <FontAwesomeIcon icon={faYoutube} className='text-5xl' />
             </a>
-            <a target='_blank' href={setting?.social.instagramLink}>
+            <a target='_blank' href={settings?.social.instagramLink}>
               <FontAwesomeIcon icon={faInstagram} className='text-5xl' />
             </a>
           </div>
@@ -49,7 +49,7 @@ function Footer() {
           <div className='xl:max-w-80 max-w-64 '>
             <h3 className='mb-3 xl:text-lg text-base'>BELE</h3>
             <div>
-              <p className='xl:text-sm lg:text-xs'>{setting?.info.description}</p>
+              <p className='xl:text-sm lg:text-xs'>{settings?.info.description}</p>
             </div>
           </div>
           <div>
@@ -125,12 +125,12 @@ function Footer() {
               <ul className='flex flex-col gap-1'>
                 <li>
                   <p className='xl:text-sm lg:text-xs'>
-                    <span>{setting?.address.branchName1}</span>: {setting?.address.branchAddress1}
+                    <span>{settings?.address.branchName1}</span>: {settings?.address.branchAddress1}
                   </p>
                 </li>
                 <li>
                   <p className='xl:text-sm lg:text-xs'>
-                    <span>{setting?.address.branchName2}</span>: {setting?.address.branchAddress2}
+                    <span>{settings?.address.branchName2}</span>: {settings?.address.branchAddress2}
                   </p>
                 </li>
               </ul>
