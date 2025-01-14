@@ -219,9 +219,13 @@ export interface IJwt {
   refreshToken: string
   expireRefreshToken?: string // ISO Date string
 }
+export interface ICustomerResponse {
+  id: number
+  fullName: string
+}
 
 export interface ICustomerLogin {
-  customer: ICustomer
+  customer: ICustomerResponse
   jwt: IJwt
 }
 

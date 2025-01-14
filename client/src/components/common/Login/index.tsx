@@ -1,15 +1,17 @@
 import authApi from '@/apis/modules/auth.api'
-import AuthContext from '@/context/Auth/AuthContext'
+import { IError } from '@/models/interfaces'
+import { login } from '@/redux/slices/auh.slice'
+import { AppDispatch } from '@/redux/store'
 import { faEnvelope, faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
 import { z } from 'zod'
 import Button from '../Button'
 import Input from '../Forms/Input'
 import Loader from '../Loader'
-import { IError } from '@/models/interfaces'
 
 interface ILoginProps {
   onRegister: () => void
@@ -24,6 +26,7 @@ interface ModifyPassword {
 
 const Login: React.FunctionComponent<ILoginProps> = ({ onRegister, onForgotPassoword, onLoginSuccess }) => {
   const [loading, setLoading] = useState<boolean>(false)
+  const dispatch = useDispatch<AppDispatch>()
   const [modifyPassword, setModifyPassword] = useState<ModifyPassword>({
     type: 'password',
     icon: faEyeSlash
@@ -62,14 +65,13 @@ const Login: React.FunctionComponent<ILoginProps> = ({ onRegister, onForgotPasso
     resolver: zodResolver(loginSchema)
   })
 
-  const authMethod = useContext(AuthContext)
   const onSubmit = async (data: loginFormData) => {
     setLoading(true)
     try {
       //call api in here...
       const customer = await authApi.login(data)
       if (customer) {
-        authMethod?.login(customer)
+        dispatch(login(customer))
         onLoginSuccess()
       }
     } catch (error) {

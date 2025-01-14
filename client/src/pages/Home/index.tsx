@@ -7,11 +7,12 @@ import ProductGrid from '@/components/common/ProductGrid'
 import Services from '@/components/common/Services'
 import SlideShow from '@/components/common/SlideShow'
 import { LG_BP, LG_LIMIT, MD_BP, MD_LIMIT, SM_BP, SM_LIMIT, XS_LIMIT } from '@/constants'
-import SettingContext from '@/context/Setting/SettingContext'
 import { IApiResponse, IProduct } from '@/models/interfaces'
+import { RootState } from '@/redux/store'
 import { faArrowLeft, faArrowRight, faStar } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { memo, useContext, useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import 'react-slideshow-image/dist/styles.css'
 
@@ -21,7 +22,7 @@ const Home = memo(() => {
   const [tag, setTag] = useState<number>(1)
   const [products, setProducts] = useState<IProduct[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const setting = useContext(SettingContext)
+  const settings = useSelector((state: RootState) => state.settings.data)
   const handleChangeTag = (value?: string) => {
     if (value) {
       setTag(Number(value))
@@ -98,125 +99,127 @@ const Home = memo(() => {
 
   return (
     <>
-      {loading ? (
-        <Loader />
-      ) : (
-        products.length > 0 && (
-          <>
-            <SlideShow properties={bannerArrowProperty} duration={5000}>
-              <Link to=''>
-                <img src={setting?.slideShow.slideshowBanner1} alt={'slideshowBanner1'} />
-              </Link>
-              <Link to=''>
-                <img src={setting?.slideShow.slideshowBanner2} alt={'slideshowBanner2'} />
-              </Link>
-              <Link to=''>
-                <img src={setting?.slideShow.slideshowBanner3} alt={'slideshowBanner3'} />
-              </Link>
-            </SlideShow>
-            <Services
-              service={setting!.service}
-              className='bg-gray-primary lg:py-8 md:py-6 sm:py-4 py-2 lg:px-14 md:px-12 sm:px-10 px-6 mb-10'
-            />
-            <div className='lg:px-14 md:px-12 sm:px-10 px-6 mb-10 space-x-4'>
-              <Button
-                type='button'
-                color='black'
-                textColor={`${tag === 1 ? 'white' : 'black'}`}
-                variant={`${tag === 1 ? 'primary' : 'outline'}`}
-                className={`lg:min-w-48 md:min-w-44 sm:min-w-40 min-w-36 lg:text-lg md:text-base sm:text-sm text-xs py-2 rounded-full ${tag === 1 ? '' : 'hover:bg-black hover:text-white'}`}
-                onClick={handleChangeTag}
-                value={'1'}
+      <SlideShow properties={bannerArrowProperty} duration={5000}>
+        <Link to=''>
+          <img src={settings?.slideShow.slideshowBanner1} alt={'slideshowBanner1'} />
+        </Link>
+        <Link to=''>
+          <img src={settings?.slideShow.slideshowBanner2} alt={'slideshowBanner2'} />
+        </Link>
+        <Link to=''>
+          <img src={settings?.slideShow.slideshowBanner3} alt={'slideshowBanner3'} />
+        </Link>
+      </SlideShow>
+      <Services
+        service={settings!.service}
+        className='bg-gray-primary lg:py-8 md:py-6 sm:py-4 py-2 lg:px-14 md:px-12 sm:px-10 px-6 mb-10'
+      />
+      <div className='lg:px-14 md:px-12 sm:px-10 px-6 mb-10 space-x-4'>
+        <Button
+          type='button'
+          color='black'
+          textColor={`${tag === 1 ? 'white' : 'black'}`}
+          variant={`${tag === 1 ? 'primary' : 'outline'}`}
+          className={`lg:min-w-48 md:min-w-44 sm:min-w-40 min-w-36 lg:text-lg md:text-base sm:text-sm text-xs py-2 rounded-full ${
+            tag === 1 ? '' : 'hover:bg-black hover:text-white'
+          }`}
+          onClick={handleChangeTag}
+          value={'1'}
+        >
+          <span>Sản phẩm mới</span> {tag === 1 && <FontAwesomeIcon icon={faStar} className='ml-2' />}
+        </Button>
+        <Button
+          type='button'
+          color='black'
+          textColor={`${tag === 3 ? 'white' : 'black'}`}
+          className={`lg:min-w-48 md:min-w-44 sm:min-w-40 min-w-36 lg:text-lg md:text-base sm:text-sm text-xs py-2 rounded-full ${
+            tag === 2 ? '' : 'hover:bg-black hover:text-white'
+          }`}
+          variant={`${tag === 3 ? 'primary' : 'outline'}`}
+          onClick={handleChangeTag}
+          value={'2'}
+        >
+          <span>Bán chạy nhất</span> {tag === 2 && <FontAwesomeIcon icon={faStar} className='ml-2' />}
+        </Button>
+      </div>
+      <div className='lg:px-14 md:px-12 sm:px-10 px-6 mb-10'>
+        {products.length > 0 ? (
+          products.length > limit + 2 ? (
+            <>
+              <SlideShow
+                slidesToScroll={1}
+                slidesToShow={products.length < limit ? products.length : limit}
+                properties={productArrowProperty}
+                duration={1000000}
               >
-                <span>Sản phẩm mới</span> {tag === 1 && <FontAwesomeIcon icon={faStar} className='ml-2' />}
-              </Button>
-              <Button
-                type='button'
-                color='black'
-                textColor={`${tag === 3 ? 'white' : 'black'}`}
-                className={`lg:min-w-48 md:min-w-44 sm:min-w-40 min-w-36 lg:text-lg md:text-base sm:text-sm text-xs py-2 rounded-full ${tag === 2 ? '' : 'hover:bg-black hover:text-white'}`}
-                variant={`${tag === 3 ? 'primary' : 'outline'}`}
-                onClick={handleChangeTag}
-                value={'2'}
+                {products.map((p) => (
+                  <ProductGrid className='mx-2' key={p.id} product={p} tag={tag} />
+                ))}
+              </SlideShow>
+            </>
+          ) : (
+            <>
+              <div className={`grid grid-cols-${limit} gap-2`}>
+                {products.map((p) => (
+                  <ProductGrid key={p.id} product={p} tag={tag} />
+                ))}
+              </div>
+            </>
+          )
+        ) : (
+          <Loader />
+        )}
+      </div>
+      <Banner
+        title='Đồ thu đông'
+        subTitle='Giữ ấm cơ thể bạn'
+        url={settings!.banner.mainBanner}
+        to='/'
+        btnColor='blue-primary'
+        btnTextColor='white'
+        className='mb-10'
+        btnClassName='hover:bg-blue-primary-light'
+      />
+      <Collection
+        title='Sản phẩm giảm giá'
+        link={{ to: '/', title: 'Xem Thêm' }}
+        className='lg:px-14 md:px-12 sm:px-10 px-6 mb-10'
+      >
+        {products.length > 0 ? (
+          products.length > limit + 2 ? (
+            <>
+              <SlideShow
+                slidesToScroll={1}
+                slidesToShow={products.length < limit ? products.length : limit}
+                properties={productArrowProperty}
+                duration={1000000}
               >
-                <span>Bán chạy nhất</span> {tag === 2 && <FontAwesomeIcon icon={faStar} className='ml-2' />}
-              </Button>
-            </div>
-            <div className='lg:px-14 md:px-12 sm:px-10 px-6 mb-10'>
-              {products.length > limit + 2 ? (
-                <>
-                  {' '}
-                  <SlideShow
-                    slidesToScroll={1}
-                    slidesToShow={products.length < limit ? products.length : limit}
-                    properties={productArrowProperty}
-                    duration={1000000}
-                  >
-                    {products.map((p) => (
-                      <ProductGrid className='mx-2' key={p.id} product={p} tag={tag} />
-                    ))}
-                  </SlideShow>
-                </>
-              ) : (
-                <>
-                  <div className={`grid grid-cols-${limit} gap-2`}>
-                    {products.map((p) => (
-                      <ProductGrid key={p.id} product={p} tag={tag} />
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-            <Banner
-              title='Đồ thu đông'
-              subTitle='Giữ ấm cơ thể bạn'
-              url={setting!.banner.mainBanner}
-              to='/'
-              btnColor='blue-primary'
-              btnTextColor='white'
-              className='mb-10'
-              btnClassName='hover:bg-blue-primary-light'
-            />
-            <Collection
-              title='Sản phẩm giảm giá'
-              link={{ to: '/', title: 'Xem Thêm' }}
-              className='lg:px-14 md:px-12 sm:px-10 px-6 mb-10'
-            >
-              {products.length > limit + 2 ? (
-                <>
-                  {' '}
-                  <SlideShow
-                    slidesToScroll={1}
-                    slidesToShow={products.length < limit ? products.length : limit}
-                    properties={productArrowProperty}
-                    duration={1000000}
-                  >
-                    {products.map((p) => (
-                      <ProductGrid className='mx-2' key={p.id} product={p} tag={tag} />
-                    ))}
-                  </SlideShow>
-                </>
-              ) : (
-                <>
-                  <div className={`grid grid-cols-${limit} gap-2`}>
-                    {products.map((p) => (
-                      <ProductGrid key={p.id} product={p} tag={tag} />
-                    ))}
-                  </div>
-                </>
-              )}
-            </Collection>
-            <div className='grid grid-cols-2 gap-5 mb-10'>
-              <Link to={'/'}>
-                <img src={setting?.banner.subBanner1} alt={'subBanner1'} className='w-full object-cover' />
-              </Link>
-              <Link to={'/'}>
-                <img src={setting?.banner.subBanner2} alt={'subBanner2'} className='w-full object-cover' />
-              </Link>
-            </div>
-          </>
-        )
-      )}
+                {products.map((p) => (
+                  <ProductGrid className='mx-2' key={p.id} product={p} tag={tag} />
+                ))}
+              </SlideShow>
+            </>
+          ) : (
+            <>
+              <div className={`grid grid-cols-${limit} gap-2`}>
+                {products.map((p) => (
+                  <ProductGrid key={p.id} product={p} tag={tag} />
+                ))}
+              </div>
+            </>
+          )
+        ) : (
+          <Loader />
+        )}
+      </Collection>
+      <div className='grid grid-cols-2 gap-5 mb-10'>
+        <Link to={'/'}>
+          <img src={settings?.banner.subBanner1} alt={'subBanner1'} className='w-full object-cover' />
+        </Link>
+        <Link to={'/'}>
+          <img src={settings?.banner.subBanner2} alt={'subBanner2'} className='w-full object-cover' />
+        </Link>
+      </div>
     </>
   )
 })
