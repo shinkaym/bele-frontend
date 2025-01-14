@@ -1,4 +1,5 @@
 import categoryApi from '@/apis/modules/category.api'
+import CartDropDown from '@/components/CartDropdown'
 import { CustomerMenu } from '@/components/common/CustomerMenu'
 import ForgotPassword from '@/components/common/ForgotPassword'
 import Login from '@/components/common/Login'
@@ -10,11 +11,18 @@ import Register from '@/components/common/Register'
 import ValidateOTP from '@/components/common/ValidateOTP'
 import { logoList } from '@/constants'
 import { IApiResponse, ICategory } from '@/models/interfaces'
-import { RootState } from '@/redux/store'
-import { faArrowRight, faBagShopping, faBars, faChevronDown, faSearch, faUser } from '@fortawesome/free-solid-svg-icons'
+import { AppDispatch, RootState } from '@/redux/store'
+import {
+  faArrowRight,
+  faBagShopping,
+  faBars,
+  faChevronDown,
+  faSearch,
+  faUser
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { memo, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
 
 const Header = memo(() => {
@@ -28,7 +36,10 @@ const Header = memo(() => {
   const [categories, setCategories] = useState<ICategory[]>([])
   const [emailOTP, setEmailOTP] = useState<string>('')
   const [jwtNewPassword, setJwtNewPassword] = useState<string>('')
+  const dispatch = useDispatch<AppDispatch>()
   const { isAuthenticated, customer } = useSelector((state: RootState) => state.auth)
+  const cart = useSelector((state: RootState) => state.cart.data)
+
   const settings = useSelector((state: RootState) => state.settings.data)
   const handleAction = () => {
     if (isAuthenticated) {
@@ -59,7 +70,7 @@ const Header = memo(() => {
     validateOTP: <ValidateOTP email={emailOTP} onValidateOTPSuccess={handleValidateOTPSuccess} />,
     newPassword: <NewPassword onCreateNewPasswordSuccess={() => setPopupOptions('login')} jwt={jwtNewPassword} />
   }
-
+  console.log(cart)
   const handlePopupClose = () => {
     setPopupOptions('login')
     setIsShowPopup(false)
@@ -172,7 +183,7 @@ const Header = memo(() => {
             </NavLink>
           </div>
 
-          <div className='flex items-center justify-between gap-5'>
+          <div className='flex items-center justify-between gap-2'>
             <FontAwesomeIcon
               icon={faSearch}
               className='md:text-2xl sm:text-xl text-lg text-white lg:hidden'
@@ -194,19 +205,28 @@ const Header = memo(() => {
               className={`cursor-pointer ${
                 isAuthenticated
                   ? 'bg-zinc-300 border-4 p-1.5 text-blue-primary border-solid border-blue-primary rounded-2xl lg:text-2xl md:text-xl sm:text-lg text-base'
-                  : 'lg:text-3xl md:text-2xl sm:text-xl text-lg text-white'
+                  : 'lg:text-3xl md:text-2xl sm:text-xl text-lg text-white px-2'
               }`}
               onClick={handleAction}
             />
-            <Link to={'/cart'} className='relative'>
-              <FontAwesomeIcon
-                icon={faBagShopping}
-                className={`lg:text-3xl md:text-2xl sm:text-xl text-lg text-white cursor-pointer`}
-              />
-              <div className='absolute lg:-bottom-2 lg:-right-2 sm:-bottom-1.5 sm:-right-1.5 -bottom-1 -right-1 bg-yellow-200 lg:w-5 lg:h-5 sm:w-4 sm:h-4 w-3 h-3 rounded-full flex justify-center items-center lg:text-2xs sm:text-3xs text-4xs font-bold text-black'>
-                0
+            <div className='relative group before:block before:h-8 before:absolute before:top-full before:inset-0 px-2'>
+              <Link to={'/cart'} className=''>
+                <FontAwesomeIcon
+                  icon={faBagShopping}
+                  className={`lg:text-3xl md:text-2xl sm:text-xl text-lg text-white cursor-pointer`}
+                />
+                <div className='absolute lg:-bottom-2 lg:-right-0.5 sm:-bottom-1.5 sm:-right-1.5 -bottom-1 -right-1 bg-yellow-200 lg:w-5 lg:h-5 sm:w-4 sm:h-4 w-3 h-3 rounded-full flex justify-center items-center lg:text-2xs sm:text-3xs text-4xs font-bold text-black'>
+                  {cart ? cart!.cartItems.length : 0}
+                </div>
+              </Link>
+              <div className='group-hover:flex flex-col hidden bg-white pt-4 px-4 rounded-md shadow-lg border absolute top-full right-0 z-50  mt-6 text-black w-[400px] space-y-3 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-primary scrollbar-track-gray-100'>
+                {cart && cart.cartItems.length > 0 ? (
+                 <CartDropDown cart={cart}/>
+                ) : (
+                  <p className='pb-4 text-center'>Giỏ hàng đang trống</p>
+                )}
               </div>
-            </Link>
+            </div>
             <FontAwesomeIcon
               icon={faBars}
               className='md:text-2xl sm:text-xl text-lg text-white lg:hidden'

@@ -12,6 +12,7 @@ import { z } from 'zod'
 import Button from '../Button'
 import Input from '../Forms/Input'
 import Loader from '../Loader'
+import { fetchCart } from '@/redux/slices/cart.slice'
 
 interface ILoginProps {
   onRegister: () => void
@@ -72,6 +73,7 @@ const Login: React.FunctionComponent<ILoginProps> = ({ onRegister, onForgotPasso
       const customer = await authApi.login(data)
       if (customer) {
         dispatch(login(customer))
+        dispatch(fetchCart())
         onLoginSuccess()
       }
     } catch (error) {

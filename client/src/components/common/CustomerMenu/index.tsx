@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom'
 import Button from '../Button'
 import Loader from '../Loader'
 import Overlay from '../Overlay'
+import { resetCart } from '@/redux/slices/cart.slice'
 
 export interface ICustomerMenuProps {
   onClose: () => void
@@ -26,6 +27,7 @@ export function CustomerMenu({ onClose, fullName }: ICustomerMenuProps) {
       const res: { message: string; status: number } = await authApi.logout()
       if (res.status === 200) {
         dispatch(logout())
+        dispatch(resetCart())
         onClose()
       }
     } catch (error) {
