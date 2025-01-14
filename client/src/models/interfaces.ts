@@ -200,7 +200,7 @@ export interface ISetting {
   logo: ILogo
   info: IInfo
 }
-//End-Setting 
+//End-Setting
 
 export interface ICustomer {
   fullName: string
@@ -233,6 +233,17 @@ export interface IError {
 export interface IOption {
   value: string
   label: string
+}
+export interface IBlog {
+  id: number
+  title: string
+  content: string
+  author: string
+  createdAt: string
+  updatedAt: string
+  tags: ITag[]
+  thumbnail: string
+  status: number // 1: published, 0: draft
 }
 
 export interface IChangePasswordFormData {
