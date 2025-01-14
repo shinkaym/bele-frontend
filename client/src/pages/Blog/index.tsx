@@ -12,7 +12,7 @@ function Blog() {
   const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState<IBlog | null>(null)
   const settings = useSelector((state: RootState) => state.settings.data)
-  const [currentPage, setCurrentPage] = useState<number>(1);
+//   const [currentPage, setCurrentPage] = useState<number>(1)
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -110,11 +110,11 @@ function Blog() {
             placeholder='Search...'
             className='w-full max-w-md p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500'
           />
-          <p className='text-gray-500 mt-2'>Found {totalResults} results</p>
+          {/* <p className='text-gray-500 mt-2'>Found {totalResults} results</p> */}
         </div>
 
         {/* Danh sách bài viết */}
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
+        {/* <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
           {blogs.map((blog, index) => (
             <div key={index} className='bg-white shadow-md rounded-lg overflow-hidden'>
               <img src={blog.thumbnail} alt={blog.title} className='w-full h-40 object-cover' />
@@ -125,7 +125,7 @@ function Blog() {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
 
         {/* Phân trang */}
         <div className='mt-12 flex justify-center items-center space-x-2'>
