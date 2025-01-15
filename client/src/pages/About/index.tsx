@@ -7,7 +7,7 @@ import { RootState } from '@/redux/store'
 import { useSelector } from 'react-redux'
 import Services from '@/components/common/Services'
 
-function Blog() {
+function About() {
   const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState<IBlog | null>(null)
   const settings = useSelector((state: RootState) => state.settings.data)
@@ -36,7 +36,7 @@ function Blog() {
         <div className='bg-gray-100 py-16 px-10 lg:px-24'>
           <div className='max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'>
             <div className='flex flex-col items-center lg:items-start'>
-              <h2 className='text-4xl font-bold ml-8'>ABOUT BELE</h2>
+              <h2 className='text-3xl font-bold ml-8'>VỀ CHÚNG TÔI - BELE</h2>
               <div className='flex justify-center'>
                 <img
                   src='./src/assets/images/logo/logo_slogan.png'
@@ -106,4 +106,4 @@ function Blog() {
   )
 }
 
-export default Blog
+export default About

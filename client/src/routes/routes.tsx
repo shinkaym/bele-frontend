@@ -11,6 +11,7 @@ import OrderHistory from '@/pages/Profile/OrderHistory'
 import AddressNotes from '@/pages/Profile/AddressNotes'
 import RatingProducts from '@/pages/Profile/RatingProducts'
 import Wishlist from '@/pages/Profile/Wishlist'
+import About from '@/pages/About'
 
 
 const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> => {
@@ -90,6 +91,15 @@ const AppRouter = () => {
             <>
               <PageTitle title='Trang liên hệ' />
               <Contact />
+            </>
+          )
+        },
+        {
+          path: 'about',
+          element: (
+            <>
+              <PageTitle title='Trang thông tin' />
+              <About />
             </>
           )
         }

@@ -48,8 +48,8 @@ const ContactPageClient: React.FC = () => {
     <div className='max-w-7xl mx-auto px-4 py-8'>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
         <div className='bg-black text-white p-6 rounded-md mt-8'>
-          <h2 className='text-2xl font-bold mb-4'>Contact Information</h2>
-          <p className='mb-4'>Say something with Bele</p>
+          <h2 className='text-2xl font-bold mb-4'>Thông tin liên hệ</h2>
+          <p className='mb-4'>"Bạn hãy nói gì đó với Bele 😉"</p>
           <br />
           <br />
           <ul className='space-y-4'>
@@ -69,7 +69,7 @@ const ContactPageClient: React.FC = () => {
         </div>
 
         <div>
-          <h2 className='text-2xl font-bold mb-4'>Send us a message</h2>
+          <h2 className='text-2xl font-bold mb-4'>Hãy để lại dấu ấn của bạn</h2>
           <form className='space-y-4'>
             <div className='grid grid-cols-2 gap-4'>
               <input
@@ -112,7 +112,7 @@ const ContactPageClient: React.FC = () => {
               onClick={handleAddContact}
               className='bg-black text-white px-4 py-2 rounded hover:bg-gray-800'
             >
-              Send Message
+              Gửi tin nhắn
             </button>
           </form>
         </div>
