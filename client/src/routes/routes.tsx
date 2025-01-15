@@ -6,11 +6,12 @@ import Blog from '@/pages/Blog'
 import Contact from '@/pages/Contact'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
-import AccountInfo from '@/pages/AccountInfo'
-import OrderHistory from '@/pages/OrderHistory'
-import AddressNotes from '@/pages/AddressNotes'
-import RatingProducts from '@/pages/RatingProducts'
-import Wishlist from '@/pages/Wishlist'
+import AccountInfo from '@/pages/Profile/AccountInfo'
+import OrderHistory from '@/pages/Profile/OrderHistory'
+import AddressNotes from '@/pages/Profile/AddressNotes'
+import RatingProducts from '@/pages/Profile/RatingProducts'
+import Wishlist from '@/pages/Profile/Wishlist'
+
 
 const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> => {
   return (props: P): ReactNode => (
@@ -20,7 +21,7 @@ const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> =>
   )
 }
 
-const Profile = Loadable(lazy(() => import('@/pages/Profile')))
+const Profile = Loadable(lazy(() => import('@/pages/Profile/Profile')))
 const Search = Loadable(lazy(() => import('@/pages/Search')))
 
 const AppRouter = () => {
