@@ -3,6 +3,7 @@ import PageTitle from '@/components/common/PageTitle'
 import DefaultLayout from '@/components/layout/DefaultLayout'
 import Home from '@/pages/Home'
 import Blog from '@/pages/Blog'
+import Contact from '@/pages/Contact'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
 import AccountInfo from '@/pages/AccountInfo'
@@ -79,6 +80,15 @@ const AppRouter = () => {
             <>
               <PageTitle title='Trang thông tin' />
               <Blog />
+            </>
+          )
+        },
+        {
+          path: 'contact',
+          element: (
+            <>
+              <PageTitle title='Trang liên hệ' />
+              <Contact />
             </>
           )
         }
