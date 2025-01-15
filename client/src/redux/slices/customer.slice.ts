@@ -1,4 +1,3 @@
-// store/slices/customerSlice.ts
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { ICustomer } from '@/models/interfaces'
 import customerApi from '@/apis/modules/customer.api'

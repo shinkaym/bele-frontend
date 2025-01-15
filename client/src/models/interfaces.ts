@@ -160,10 +160,11 @@ export interface ILogo {
 }
 
 export interface IAddress {
-  branchName1: string
-  branchAddress1: string
-  branchName2: string
-  branchAddress2: string
+  id: number
+  name: string
+  address: string
+  phoneNumber: string
+  isDefault: boolean
 }
 
 export interface ISocial {
@@ -259,7 +260,7 @@ export interface IUpdateInfoFormData {
   name: string
   phone: string
   sex: string
-  birthday: Date
+  birthday: string
 }
 
 export interface ICartItem {
@@ -282,4 +283,11 @@ export interface ICartItem {
 export interface ICart {
   totalMoney: number
   cartItems: ICartItem[]
+}
+
+export interface IAddressFormData {
+  name: string
+  phoneNumber: string
+  address: string
+  isDefault: boolean
 }

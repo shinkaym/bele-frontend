@@ -9,6 +9,7 @@ import { fetchCustomerInfo } from '@/redux/slices/customer.slice'
 import customerApi from '@/apis/modules/customer.api'
 import { AppDispatch, RootState } from '@/redux/store'
 import CustomerInfoSection from '@/components/common/CustomerInfoSection'
+import { formatDate } from '@/utils'
 
 const AccountInfo = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -24,9 +25,14 @@ const AccountInfo = () => {
 
   const handleUpdateInfo = async (data: IUpdateInfoFormData) => {
     try {
-      await customerApi.updateInfo(data)
-      UToast(EToastOption.SUCCESS, 'Cập nhật thông tin thành công')
-      dispatch(fetchCustomerInfo())
+      const res = await customerApi.updateInfo({
+        ...data,
+        birthday: new Date(data.birthday).toISOString()
+      })
+      if (res.status === 200) {
+        UToast(EToastOption.SUCCESS, 'Cập nhật thông tin thành công')
+        dispatch(fetchCustomerInfo())
+      } else UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra')
     } catch {
       UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra')
     } finally {
@@ -36,8 +42,9 @@ const AccountInfo = () => {
 
   const handleChangePassword = async (data: IChangePasswordFormData) => {
     try {
-      await customerApi.changePassword(data)
-      UToast(EToastOption.SUCCESS, 'Thay đổi mật khẩu thành công')
+      const res = await customerApi.changePassword(data)
+      if (res.status === 200) UToast(EToastOption.SUCCESS, 'Thay đổi mật khẩu thành công')
+      else UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra')
     } catch {
       UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra')
     } finally {
@@ -49,8 +56,11 @@ const AccountInfo = () => {
     { label: 'Họ và tên', value: info?.fullName || 'N/A' },
     { label: 'Số điện thoại', value: info?.phoneNumber || 'N/A' },
     { label: 'Giới tính', value: info?.sex || 'N/A' },
-    { label: 'Ngày sinh', value: info?.birthday || 'N/A' },
-    { label: 'Ngày cập nhật tài khoản', value: info?.updatedAt || info?.createdAt || 'N/A' }
+    { label: 'Ngày sinh', value: info?.birthday ? formatDate(info.birthday!) : 'N/A' },
+    {
+      label: 'Ngày cập nhật tài khoản',
+      value: info?.updatedAt ? formatDate(info.updatedAt!) : info?.createdAt ? formatDate(info.createdAt!) : 'N/A'
+    }
   ]
 
   const info2Options = [
@@ -74,7 +84,11 @@ const AccountInfo = () => {
         onClick={() => setIsPasswordUpdateModalOpen(true)}
       />
       {isInfoUpdateModalOpen && (
-        <UpdateInfoModal onClose={() => setIsInfoUpdateModalOpen(false)} onSubmit={handleUpdateInfo} />
+        <UpdateInfoModal
+          onClose={() => setIsInfoUpdateModalOpen(false)}
+          onSubmit={handleUpdateInfo}
+          initialData={info}
+        />
       )}
       {isPasswordUpdateModalOpen && (
         <ChangePasswordModal onClose={() => setIsPasswordUpdateModalOpen(false)} onSubmit={handleChangePassword} />

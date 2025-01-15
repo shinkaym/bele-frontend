@@ -1,10 +1,10 @@
-import { IOptions } from '@/models/interfaces/options'
+import { IOption } from '@/models/interfaces'
 import React from 'react'
 
 interface SelectGroupProps {
   value: number | string
   onChange: (value: string) => void
-  options: IOptions[]
+  options: IOption[]
   error?: string
   label?: string
   className?:string

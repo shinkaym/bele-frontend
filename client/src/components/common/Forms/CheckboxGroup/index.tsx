@@ -1,8 +1,8 @@
+import { IOption } from '@/models/interfaces'
 import React, { ForwardedRef, useEffect, useState } from 'react'
-import { IOptions } from '@/models/interfaces/options'
 
 interface CheckboxGroupProps {
-  options: IOptions[]
+  options: IOption[]
   name: string // Name attribute for grouping checkboxes
   selectedValues?: string[] // Selected checkbox values
   onChange?: (values: string[]) => void
@@ -55,11 +55,11 @@ const CheckboxGroup = (
               />
               <div
                 className={`mr-2 flex h-5 w-5 items-center justify-center border rounded ${
-                  selected.includes(option.value.toString()) ? 'border-primary' : 'border-gray-300'
+                  selected.includes(option.value.toString()) ? 'border-black' : 'border-gray-300'
                 }`}
               >
                 {selected.includes(option.value.toString()) && (
-                  <span className='h-2.5 w-2.5 bg-primary rounded-sm'> </span>
+                  <span className='h-2.5 w-2.5 bg-black rounded-sm'> </span>
                 )}
               </div>
             </div>

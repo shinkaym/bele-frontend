@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -8,11 +8,12 @@ import Loader from './Loader'
 import ForwardedRadioGroup from './Forms/RadioGroup'
 import Popup from './Popup'
 import CustomDatePicker from './CustomDatePicker'
-import { IUpdateInfoFormData } from '@/models/interfaces'
+import { IUpdateInfoFormData, ICustomer } from '@/models/interfaces'
 
 interface IUpdateInfoModalProps {
   onClose: () => void
   onSubmit: (data: IUpdateInfoFormData) => void
+  initialData: ICustomer | null
 }
 
 const sexOptions = [
@@ -27,19 +28,37 @@ const updateInfoSchema = z.object({
     .min(1, { message: 'Số điện thoại không được để trống' })
     .regex(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, { message: 'Số điện thoại không đúng định dạng' }),
   sex: z.string().min(1, { message: 'Không được để trống giới tính' }),
-  birthday: z.date({ required_error: 'Không được để trống ngày sinh' })
+  birthday: z.string().min(1, { message: 'Không được để trống ngày sinh' })
 })
 
-const UpdateInfoModal: React.FunctionComponent<IUpdateInfoModalProps> = ({ onClose, onSubmit }) => {
+const UpdateInfoModal: React.FunctionComponent<IUpdateInfoModalProps> = ({ onClose, onSubmit, initialData }) => {
   const [loading, setLoading] = useState<boolean>(false)
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors }
   } = useForm<IUpdateInfoFormData>({
-    resolver: zodResolver(updateInfoSchema)
+    resolver: zodResolver(updateInfoSchema),
+    defaultValues: {
+      name: initialData?.fullName || '',
+      phone: initialData?.phoneNumber || '',
+      sex: initialData?.sex || 'Nữ',
+      birthday: initialData?.birthday ? new Date(initialData.birthday).toISOString() : ''
+    }
   })
+
+  useEffect(() => {
+    if (initialData) {
+      reset({
+        name: initialData.fullName || '',
+        phone: initialData.phoneNumber || '',
+        sex: initialData.sex || 'Nữ',
+        birthday: initialData?.birthday ? new Date(initialData.birthday).toISOString() : ''
+      })
+    }
+  }, [initialData, reset])
 
   const handleFormSubmit = async (data: IUpdateInfoFormData) => {
     setLoading(true)
@@ -62,7 +81,6 @@ const UpdateInfoModal: React.FunctionComponent<IUpdateInfoModalProps> = ({ onClo
             <Controller
               name='name'
               control={control}
-              defaultValue=''
               render={({ field }) => (
                 <Input
                   placeholder='Họ và tên'
@@ -80,7 +98,6 @@ const UpdateInfoModal: React.FunctionComponent<IUpdateInfoModalProps> = ({ onClo
             <Controller
               name='phone'
               control={control}
-              defaultValue=''
               render={({ field }) => (
                 <Input
                   placeholder='Số điện thoại'
@@ -102,8 +119,10 @@ const UpdateInfoModal: React.FunctionComponent<IUpdateInfoModalProps> = ({ onClo
                   label='Ngày sinh:'
                   name='birthday'
                   placeholder='Chọn ngày sinh'
-                  value={field.value}
-                  onChange={field.onChange}
+                  value={field.value ? new Date(field.value) : null}
+                  onChange={(date: Date | null) => {
+                    field.onChange(date ? date.toISOString() : '')
+                  }}
                   error={errors.birthday?.message}
                 />
               )}
@@ -115,7 +134,6 @@ const UpdateInfoModal: React.FunctionComponent<IUpdateInfoModalProps> = ({ onClo
           <Controller
             name='sex'
             control={control}
-            defaultValue='Nữ'
             render={({ field }) => (
               <ForwardedRadioGroup
                 options={sexOptions}
@@ -135,7 +153,7 @@ const UpdateInfoModal: React.FunctionComponent<IUpdateInfoModalProps> = ({ onClo
           color='black'
           textColor='white'
           className='w-full rounded-md py-3 hover:opacity-85 uppercase'
-          onClick={() => handleSubmit(handleFormSubmit)} // Sửa lại để gọi handleSubmit với handleFormSubmit
+          onClick={() => handleSubmit(handleFormSubmit)}
         >
           Cập nhật tài khoản
         </Button>
