@@ -265,10 +265,7 @@ export interface IUpdateInfoFormData {
 
 export interface ICartItem {
   productId: number
-<<<<<<< Updated upstream
-=======
   variantId: number
->>>>>>> Stashed changes
   productName: string
   productPrice: number
   thumbnail: string
@@ -287,8 +284,6 @@ export interface ICart {
   totalMoney: number
   cartItems: ICartItem[]
 }
-<<<<<<< Updated upstream
-=======
 
 export interface IAddressFormData {
   name: string
@@ -311,4 +306,3 @@ export interface IContactAddResponse {
   }
   message: string
 }
->>>>>>> Stashed changes
