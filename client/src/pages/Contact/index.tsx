@@ -107,13 +107,15 @@ const ContactPageClient: React.FC = () => {
               onChange={(e) => setNewContact((prev) => ({ ...prev, message: e.target.value }))}
               className='border border-gray-300 px-4 py-2 rounded w-full h-32'
             ></textarea>
-            <button
-              type='button'
-              onClick={handleAddContact}
-              className='bg-black text-white px-4 py-2 rounded hover:bg-gray-800'
-            >
-              Gửi tin nhắn
-            </button>
+            <div className='flex justify-end'>
+              <button
+                type='button'
+                onClick={handleAddContact}
+                className='bg-black text-white px-4 py-2 rounded hover:bg-gray-800'
+              >
+                Gửi tin nhắn
+              </button>
+            </div>
           </form>
         </div>
       </div>
