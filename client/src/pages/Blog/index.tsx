@@ -10,7 +10,7 @@ import Services from '@/components/common/Services'
 function Blog() {
   const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState<IBlog | null>(null)
-  const settings = useSelector((state:RootState) => state.settings.data)
+  const settings = useSelector((state: RootState) => state.settings.data)
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -66,6 +66,11 @@ function Blog() {
                   <span className='mr-2'>📍</span>
                   <strong className='mr-1'>Address:</strong>
                   <span>{settings?.address.branchAddress1}</span>
+                </p>
+                <p className='flex items-center text-gray-700'>
+                  <span className='mr-2'>📍</span>
+                  <strong className='mr-1'>Address:</strong>
+                  <span>{settings?.address.branchAddress2}</span>
                 </p>
                 <p className='flex items-center text-gray-700'>
                   <span className='mr-2'>🌐</span>

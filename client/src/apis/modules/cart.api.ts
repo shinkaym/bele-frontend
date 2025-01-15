@@ -11,8 +11,8 @@ const cartApi = {
     return axiosPrivate.put('Cart', { ...data })
   },
   async delete(): Promise<IApiResponse<{ cart: ICart }>> {
-    return axiosPrivate.delete  ('Cart')
-  } 
+    return axiosPrivate.delete('Cart')
+  }
 }
 
 export default cartApi
