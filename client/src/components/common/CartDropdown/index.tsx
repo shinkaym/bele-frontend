@@ -1,5 +1,5 @@
 import { ICart } from '@/models/interfaces'
-import { addToCart } from '@/redux/slices/cart.slice'
+import { addToCart, removeFromCart } from '@/redux/slices/cart.slice'
 import { AppDispatch } from '@/redux/store'
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -9,10 +9,10 @@ import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 interface ICartDropDownProps {
-  cart:ICart
+  cart: ICart
 }
 
-const CartDropDown: React.FunctionComponent<ICartDropDownProps> = ({cart}) => {
+const CartDropDown: React.FunctionComponent<ICartDropDownProps> = ({ cart }) => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <>
@@ -69,7 +69,7 @@ const CartDropDown: React.FunctionComponent<ICartDropDownProps> = ({cart}) => {
                   </div>
                 </div>
                 <FontAwesomeIcon
-                  onClick={() => dispatch(addToCart({variantId:item.productId,quantity:-item.quantity}))}
+                  onClick={() => dispatch(addToCart({ variantId: item.variantId, quantity: -item.quantity }))}
                   icon={faCircleXmark}
                   className='text-zinc-500 text-lg cursor-pointer'
                 />
@@ -78,14 +78,17 @@ const CartDropDown: React.FunctionComponent<ICartDropDownProps> = ({cart}) => {
           </li>
         ))}
       </ul>
-      <div className='flex items-center justify-between lg:text-base md:text-sm sm:text-xs text-2xs sticky bottom-0 inset-x-0 bg-white py-4 text-black z-50'>
+      <Link
+        to={'/cart'}
+        className='hover:opacity-80 flex items-center justify-between lg:text-base md:text-sm sm:text-xs text-2xs sticky bottom-0 inset-x-0 bg-white py-4 text-black z-50'
+      >
         <span>Tổng tiền</span>
         <IntlProvider locale='vi-VN'>
           <span className={`font-semibold`}>
             <FormattedNumber value={cart.totalMoney} style='currency' currency='VND' />
           </span>
         </IntlProvider>
-      </div>
+      </Link>
     </>
   )
 }

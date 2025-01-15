@@ -9,6 +9,8 @@ import Input from '../Forms/Input'
 import authApi from '@/apis/modules/auth.api'
 import { IError } from '@/models/interfaces'
 import Loader from '../Loader'
+import { UToast } from '@/utils/swal'
+import { EToastOption } from '@/models/enum'
 
 interface IRegisterProps {
   onLogin: () => void
@@ -87,6 +89,7 @@ const Register: React.FunctionComponent<IRegisterProps> = ({ onLogin, onRegister
       // call api in here...
       const res = await authApi.register(data)
       if (res.data) {
+        UToast(EToastOption.SUCCESS, 'Đăng ký tài khoản thành công!')
         onRegisterSuccess()
       }
     } catch (error) {

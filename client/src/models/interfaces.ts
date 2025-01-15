@@ -81,8 +81,7 @@ export interface IProduct {
   thumbnail: string
   description: string
   discount: IDiscount | null
-  rate?: IRateProduct | null
-  rateAVG: []
+  rateAVG: number[]
   tags: ITag[]
   basePrice: number // Giá sản phẩm
   slug: string // URL slug của sản phẩm
@@ -265,6 +264,7 @@ export interface IUpdateInfoFormData {
 
 export interface ICartItem {
   productId: number
+  variantId:number
   productName: string
   productPrice: number
   thumbnail: string

@@ -1,5 +1,5 @@
 import categoryApi from '@/apis/modules/category.api'
-import CartDropDown from '@/components/CartDropdown'
+import CartDropDown from '@/components/common/CartDropdown'
 import { CustomerMenu } from '@/components/common/CustomerMenu'
 import ForgotPassword from '@/components/common/ForgotPassword'
 import Login from '@/components/common/Login'
@@ -70,7 +70,6 @@ const Header = memo(() => {
     validateOTP: <ValidateOTP email={emailOTP} onValidateOTPSuccess={handleValidateOTPSuccess} />,
     newPassword: <NewPassword onCreateNewPasswordSuccess={() => setPopupOptions('login')} jwt={jwtNewPassword} />
   }
-  console.log(cart)
   const handlePopupClose = () => {
     setPopupOptions('login')
     setIsShowPopup(false)

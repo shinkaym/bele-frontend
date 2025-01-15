@@ -1,16 +1,17 @@
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchUserData } from './redux/slices/auh.slice'
+import { fetchUserData, logout } from './redux/slices/auh.slice'
 import { AppDispatch, RootState } from './redux/store'
 import AppRouter from './routes/routes'
-import { fetchCart } from './redux/slices/cart.slice'
+import { fetchCart, resetCart } from './redux/slices/cart.slice'
 import { fetchSettings } from './redux/slices/setting.slice'
 import Loader from './components/common/Loader'
 
 function App() {
   const dispatch = useDispatch<AppDispatch>()
   const { isAuthenticated, error } = useSelector((state: RootState) => state.auth)
+
   const settings = useSelector((state: RootState) => state.settings)
   const [loading, setLoading] = useState<boolean>(true)
 
@@ -27,6 +28,12 @@ function App() {
         if (!error) {
           console.log('Dispatching fetchCart...')
           dispatch(fetchCart())
+        }
+      } else if (!accessToken && !refreshToken) {
+        await dispatch(logout())
+        if (!error) {
+          console.log('Dispatching fetchCart...')
+          dispatch(resetCart())
         }
       }
     }

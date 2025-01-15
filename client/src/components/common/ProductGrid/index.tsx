@@ -12,6 +12,8 @@ import Button from '../Button'
 import Loader from '../Loader'
 import RadioColorGroup from '../RadioColorGroup'
 import Tag from '../Tag'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStar } from '@fortawesome/free-solid-svg-icons'
 
 interface IProductGridProps {
   product: IProduct
@@ -28,7 +30,7 @@ const ProductGrid = ({
   className,
   isShowColor = true,
   isShowPrice = true,
-  isShowAddCart = true,
+  isShowAddCart = true
 }: IProductGridProps) => {
   const [colorData, setColorData] = useState<IVariantColor>(product.variantColors?.[0] ?? Object)
   const [variantByColor, setVariantByColor] = useState<IVariantProductColor[]>([])
@@ -83,15 +85,17 @@ const ProductGrid = ({
               />
               <div className={`absolute left-2 right-2 top-1 ${isShowAddCart ? 'group-hover:blur-sm' : ''}`}>
                 <div className={`flex items-center justify-between `}>
-                  {/* {product.rateAVG.length > 0 && (
-                    <div className='flex items-center'>
-                      <span className='lg:text-sm md:text-xs sm:text-2xs text-3xs'>{product.rate?.starAvg}</span>
+                  {product.rateAVG.length > 0 && (
+                    <div className='flex items-center space-x-0.5'>
+                      <span className='lg:text-sm md:text-xs sm:text-2xs text-3xs'>
+                        {Math.trunc(product.rateAVG.reduce((acc, cur) => acc + cur, 0) / product.rateAVG.length)}
+                      </span>
                       <FontAwesomeIcon icon={faStar} className='lg:text-xs md:text-2xs sm:text-3xs text-4xs' />
                       <span className='lg:text-sm md:text-xs sm:text-2xs text-3xs text-blue-primary font-bold'>
-                        ({product.rate?.count})
+                        ({product.rateAVG.length})
                       </span>
                     </div>
-                  )} */}
+                  )}
                   {tag ? (
                     <Tag title={product.tags.find((t) => t.id === tag)?.name || ''} />
                   ) : (
@@ -169,7 +173,17 @@ const ProductGrid = ({
           {loading && <Loader type='inside' />}
         </div>
       ) : (
-        <div>Hello</div>
+        <div className={`${className} space-y-1 animate-pulse`}>
+          <div className='relative group transition-all duration-500 ease-linear overflow-hidden min-h-80 w-full bg-slate-200'></div>
+          <div className='flex items-center gap-2'>
+            <div className='lg:w-9 lg:h-5 md:w-8.5 md:h-4.5 sm:w-8 sm:h-4 w-7.5 h-3.5 rounded-md bg-slate-200'></div>
+            <div className='lg:w-9 lg:h-5 md:w-8.5 md:h-4.5 sm:w-8 sm:h-4 w-7.5 h-3.5 rounded-md bg-slate-200'></div>
+            <div className='lg:w-9 lg:h-5 md:w-8.5 md:h-4.5 sm:w-8 sm:h-4 w-7.5 h-3.5 rounded-md bg-slate-200'></div>
+          </div>
+          <p className='max-w-full truncate lg:text-sm md:text-xs sm:text-2xs text-3xs font-normal bg-slate-200 h-3'></p>
+          <div className='bg-slate-200 w-full h-5'></div>
+          {loading && <Loader type='inside' />}
+        </div>
       )}
     </>
   )

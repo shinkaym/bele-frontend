@@ -44,18 +44,23 @@ axiosPrivate.interceptors.response.use(
       originalRequest._retry = true
 
       try {
-        const dispatch = useDispatch<AppDispatch>()
-        const { error } = useSelector((state: RootState) => state.auth)
         const refreshToken = Cookies.get('refreshToken')
         if (!refreshToken) {
           throw new Error('No refresh token available')
         }
-        if (refreshToken) {
-          dispatch(fetchUserData(refreshToken))
-          if (!error) dispatch(fetchCart())
+        const { jwt }: { jwt: IJwt } = await axiosPrivate.post(`Auth/RefreshToken`, {
+          refreshToken: refreshToken
+        })
+        const expireRefreshToken = Cookies.get('expireRefreshToken')
+        if (expireRefreshToken) {
+          // Cập nhật token mới
+          Cookies.set('accessToken', jwt.accessToken, { expires: new Date(jwt.expireAccessToken) })
+          Cookies.set('expireAccessToken', jwt.expireAccessToken)
+          Cookies.set('refreshToken', jwt.refreshToken, { expires: new Date(expireRefreshToken) })
+          console.log("Set lai token");
+          originalRequest.headers.Authorization = `Bearer ${jwt.accessToken}`
+          return axiosPrivate(originalRequest) // Retry request
         }
-
-        return axiosPrivate(originalRequest) // Retry request
       } catch (refreshError) {
         console.error('Refresh token failed:', refreshError)
         Cookies.remove('accessToken')

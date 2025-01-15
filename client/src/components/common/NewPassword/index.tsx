@@ -8,6 +8,8 @@ import { z } from 'zod'
 import Button from '../Button'
 import Input from '../Forms/Input'
 import Loader from '../Loader'
+import { UToast } from '@/utils/swal'
+import { EToastOption } from '@/models/enum'
 
 interface INewPasswordProps {
   onCreateNewPasswordSuccess: () => void
@@ -80,6 +82,7 @@ const NewPassword: React.FunctionComponent<INewPasswordProps> = ({ jwt, onCreate
       // call api in here...
       const res = await authApi.createNewPassword(data, jwt)
       if (res.status === 200) {
+        UToast(EToastOption.SUCCESS, 'Thay đổi mật khẩu thành công!')
         onCreateNewPasswordSuccess()
       }
     } catch (error) {

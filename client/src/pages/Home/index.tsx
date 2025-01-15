@@ -4,6 +4,7 @@ import Button from '@/components/common/Button'
 import Collection from '@/components/common/Collection'
 import Loader from '@/components/common/Loader'
 import ProductGrid from '@/components/common/ProductGrid'
+import ProductGridSkeleton from '@/components/common/ProductGridSkeleton'
 import Services from '@/components/common/Services'
 import SlideShow from '@/components/common/SlideShow'
 import { LG_BP, LG_LIMIT, MD_BP, MD_LIMIT, SM_BP, SM_LIMIT, XS_LIMIT } from '@/constants'
@@ -21,7 +22,6 @@ const Home = memo(() => {
   // const [tags,setTags] = useState<ITag[]>([])
   const [tag, setTag] = useState<number>(1)
   const [products, setProducts] = useState<IProduct[]>([])
-  const [loading, setLoading] = useState<boolean>(false)
   const settings = useSelector((state: RootState) => state.settings.data)
   const handleChangeTag = (value?: string) => {
     if (value) {
@@ -31,7 +31,6 @@ const Home = memo(() => {
 
   useEffect(() => {
     const fetchApi = async () => {
-      setLoading(true)
       try {
         const res: IApiResponse<{ products: IProduct[] }> = await productApi.list({ TagId: tag })
         if (res.data && res.status === 200) {
@@ -39,8 +38,6 @@ const Home = memo(() => {
         }
       } catch (error) {
         console.log(error)
-      } finally {
-        setLoading(false)
       }
     }
     fetchApi()
@@ -111,7 +108,7 @@ const Home = memo(() => {
         </Link>
       </SlideShow>
       <Services
-        service={settings?.service || null} 
+        service={settings?.service || null}
         className='bg-gray-primary lg:py-8 md:py-6 sm:py-4 py-2 lg:px-14 md:px-12 sm:px-10 px-6 mb-10'
       />
       <div className='lg:px-14 md:px-12 sm:px-10 px-6 mb-10 space-x-4'>
@@ -133,41 +130,41 @@ const Home = memo(() => {
           color='black'
           textColor={`${tag === 3 ? 'white' : 'black'}`}
           className={`lg:min-w-48 md:min-w-44 sm:min-w-40 min-w-36 lg:text-lg md:text-base sm:text-sm text-xs py-2 rounded-full ${
-            tag === 2 ? '' : 'hover:bg-black hover:text-white'
+            tag === 3 ? '' : 'hover:bg-black hover:text-white'
           }`}
           variant={`${tag === 3 ? 'primary' : 'outline'}`}
           onClick={handleChangeTag}
-          value={'2'}
+          value={'3'}
         >
           <span>Bán chạy nhất</span> {tag === 2 && <FontAwesomeIcon icon={faStar} className='ml-2' />}
         </Button>
       </div>
       <div className='lg:px-14 md:px-12 sm:px-10 px-6 mb-10'>
-        {!loading ? (
+        {products.length > 0 ? (
           products.length > limit + 2 ? (
-            <>
-              <SlideShow
-                slidesToScroll={1}
-                slidesToShow={products.length < limit ? products.length : limit}
-                properties={productArrowProperty}
-                duration={1000000}
-              >
-                {products.map((p) => (
-                  <ProductGrid className='mx-2' key={p.id} product={p} tag={tag} />
-                ))}
-              </SlideShow>
-            </>
+            <SlideShow
+              slidesToScroll={1}
+              slidesToShow={products.length < limit ? products.length : limit}
+              properties={productArrowProperty}
+              duration={1000000}
+            >
+              {products.map((p) => (
+                <ProductGrid className='mx-2' key={p.id} product={p} tag={tag} />
+              ))}
+            </SlideShow>
           ) : (
-            <>
-              <div className={`grid grid-cols-${limit} gap-2`}>
-                {products.map((p) => (
-                  <ProductGrid key={p.id} product={p} tag={tag} />
-                ))}
-              </div>
-            </>
+            <div className={`grid grid-cols-${limit} gap-2`}>
+              {products.map((p) => (
+                <ProductGrid key={p.id} product={p} tag={tag} />
+              ))}
+            </div>
           )
         ) : (
-          <Loader />
+          <div className={`grid grid-cols-${limit} gap-2`}>
+            {Array.from({ length: limit }).map((_, i) => (
+              <ProductGridSkeleton key={i} />
+            ))}
+          </div>
         )}
       </div>
       <Banner
@@ -185,31 +182,31 @@ const Home = memo(() => {
         link={{ to: '/', title: 'Xem Thêm' }}
         className='lg:px-14 md:px-12 sm:px-10 px-6 mb-10'
       >
-        {!loading ? (
+        {products.length > 0 ? (
           products.length > limit + 2 ? (
-            <>
-              <SlideShow
-                slidesToScroll={1}
-                slidesToShow={products.length < limit ? products.length : limit}
-                properties={productArrowProperty}
-                duration={1000000}
-              >
-                {products.map((p) => (
-                  <ProductGrid className='mx-2' key={p.id} product={p} tag={tag} />
-                ))}
-              </SlideShow>
-            </>
+            <SlideShow
+              slidesToScroll={1}
+              slidesToShow={products.length < limit ? products.length : limit}
+              properties={productArrowProperty}
+              duration={1000000}
+            >
+              {products.map((p) => (
+                <ProductGrid className='mx-2' key={p.id} product={p} tag={0} />
+              ))}
+            </SlideShow>
           ) : (
-            <>
-              <div className={`grid grid-cols-${limit} gap-2`}>
-                {products.map((p) => (
-                  <ProductGrid key={p.id} product={p} tag={tag} />
-                ))}
-              </div>
-            </>
+            <div className={`grid grid-cols-${limit} gap-2`}>
+              {products.map((p) => (
+                <ProductGrid key={p.id} product={p} tag={0} />
+              ))}
+            </div>
           )
         ) : (
-          <Loader />
+          <div className={`grid grid-cols-${limit} gap-2`}>
+            {Array.from({ length: limit }).map((_, i) => (
+              <ProductGridSkeleton key={i} />
+            ))}
+          </div>
         )}
       </Collection>
       <div className='grid grid-cols-2 gap-5 mb-10'>
