@@ -10,6 +10,7 @@ const contactApi = {
     email: string
     phoneNumber: string
     status: number
+    createdAt: string
   }): Promise<IApiResponse<{ contact: IContactAddResponse }>> {
     return axiosPrivate.post('contact', { ...data })
   }
