@@ -16,6 +16,8 @@ import { EMenuProfileItemId } from '@/models/enum'
 import { IProduct } from '@/models/interfaces'
 import { faHeart, faBagShopping, faGlobe, faStar, faUser, faPowerOff } from '@fortawesome/free-solid-svg-icons'
 
+
+
 export const logoList = {
   mainLogo: {
     name: 'Main Logo',

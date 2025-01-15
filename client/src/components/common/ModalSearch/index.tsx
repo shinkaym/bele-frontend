@@ -7,6 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../Button'
+import { IApiResponse, IPagination, IProduct } from '@/models/interfaces'
+import searchApi from '@/apis/modules/search.api.'
+import productApi from '@/apis/modules/product.api'
+import ProductGrid from '../ProductGrid'
+import ProductGridSkeleton from '../ProductGridSkeleton'
+import Loader from '../Loader'
 
 interface ISearchProps {
   onSearchClose: () => void
@@ -16,6 +22,10 @@ const ModalSearch: React.FunctionComponent<ISearchProps> = ({ onSearchClose }) =
   const [searchValue, setSearchValue] = useState('')
   const debouncedSearchValue = useDebounce(searchValue, 500)
   const [limit, setLimit] = useState<number>(4)
+  const [result, setResult] = useState<IProduct[]>([])
+  const [resultInitial, setResultInitial] = useState<IProduct[]>([])
+
+  const [loading, setLoading] = useState<boolean>(false)
   const navigate = useNavigate()
 
   const callBackAos = useCallback(() => {
@@ -62,22 +72,31 @@ const ModalSearch: React.FunctionComponent<ISearchProps> = ({ onSearchClose }) =
     navigateToSearchPage(searchValue)
   }
 
-  const handleSearch = (value: string) => {
-    if (!value.trim()) {
-      alert('Vui lòng nhập từ khóa tìm kiếm.')
-      return
-    }
-    console.log(`Searching for: ${value}`)
-    // Add your search logic here, e.g., API call or filter data.
-  }
-
   const highlightKeywords = ['Tập Gym', 'Yoga', 'Bóng đá', 'Chạy bộ']
 
   // Trigger search whenever the debounced value changes
   useEffect(() => {
-    if (debouncedSearchValue) {
-      handleSearch(debouncedSearchValue)
+    if (!debouncedSearchValue?.trim()) {
+      setResult([])
+      return
     }
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        const res: IApiResponse<{
+          searchedProducts: IProduct[]
+          pagination: IPagination
+        }> = await searchApi.all(debouncedSearchValue, { limit })
+        if (res.status === 200 && res.data) {
+          setResult(res.data.searchedProducts)
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
   }, [debouncedSearchValue])
 
   useEffect(() => {
@@ -90,6 +109,25 @@ const ModalSearch: React.FunctionComponent<ISearchProps> = ({ onSearchClose }) =
     return () => {
       window.removeEventListener('resize', updateLimit)
     }
+  }, [])
+
+  useEffect(() => {
+    const fetchDataInitial = async () => {
+      setLoading(true)
+      try {
+        const res: IApiResponse<{
+          products: IProduct[]
+        }> = await productApi.list({ TagId: 1 }, { limit })
+        if (res.status === 200 && res.data) {
+          setResultInitial(res.data.products)
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchDataInitial()
   }, [])
 
   return (
@@ -132,33 +170,73 @@ const ModalSearch: React.FunctionComponent<ISearchProps> = ({ onSearchClose }) =
         </div>
         <Overlay onClose={onSearchClose} className='h-screen' position='relative' />
         <div className='absolute lg:top-28 md:top-27 sm:top-26 top-25 lg:w-[1000px] w-full  left-1/2 transform -translate-x-1/2 z-50 bg-white px-5 py-10 lg:px-20 lg:py-12  text-black rounded-lg overflow-y-auto scrollbar-thin scrollbar-thumb-blue-primary scrollbar-track-gray-100'>
-          <div>
-            <span className='md:text-base text-sm font-medium'>Từ khoá nổi bật ngày hôm nay</span>
-            <div className='flex flex-wrap items-start gap-2 mt-2'>
-              {highlightKeywords.map((keyword, index) => (
-                <Button
-                  key={index}
-                  type='button'
-                  variant='outline'
-                  color='slate-500'
-                  textColor='black'
-                  className='px-3 py-2 rounded-full md:text-sm text-xs font-medium'
-                  onClick={navigateToSearchPage}
-                  value={keyword}
-                >
-                  {keyword}
-                </Button>
-              ))}
-            </div>
-          </div>
-          <div className='mt-10'>
-            <span className='text-sm font-medium'>Sản phẩm đã xem gần đây</span>
-            <div className={`grid grid-cols-${limit} gap-2 mt-2`}>
-              {/* {productData.slice(0, limit).map((product) => (
-                <ProductGrid key={product.id} product={product} />
-              ))} */}
-            </div>
-          </div>
+          {debouncedSearchValue ? (
+            <>
+              <div className='mt-5 relative space-y-5'>
+                {!loading ? (
+                  result.length > 0 ? (
+                    <>
+                      <span className='text-lg  font-medium'>Sản phẩm</span>
+                      <div className={`grid grid-cols-${limit} gap-2 mt-2`}>
+                        {result.map((product) => (
+                          <ProductGrid key={product.id} product={product} />
+                        ))}
+                      </div>
+                      <div className='flex items-center justify-center'>
+                        <Button
+                          type='button'
+                          color='blue-primary'
+                          textColor='white'
+                          className='px-10 py-3 rounded-full md:text-sm text-xs font-medium hover:opacity-80'
+                          onClick={navigateToSearchPage}
+                          value={debouncedSearchValue}
+                        >
+                          Xem tất cả
+                        </Button>
+                      </div>
+                    </>
+                  ) : (
+                    <span className='text-sm font-medium'>Không tìm thấy kết quả</span>
+                  )
+                ) : (
+                  <Loader type='inside' />
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              {' '}
+              <div>
+                <span className='md:text-base text-sm font-medium'>Từ khoá nổi bật</span>
+                <div className='flex flex-wrap items-start gap-2 mt-2'>
+                  {highlightKeywords.map((keyword, index) => (
+                    <Button
+                      key={index}
+                      type='button'
+                      variant='outline'
+                      color='slate-500'
+                      textColor='black'
+                      className='px-3 py-2 rounded-full md:text-sm text-xs font-medium'
+                      onClick={navigateToSearchPage}
+                      value={keyword}
+                    >
+                      {keyword}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+              <div className='mt-10'>
+                <span className='text-sm font-medium'>Sản phẩm mới</span>
+                <div className={`grid grid-cols-${limit} gap-2 mt-2 relative`}>
+                  {resultInitial.length > 0
+                    ? resultInitial.map((product) => (
+                        <ProductGrid key={product.id} product={product} isShowAddCart={false} isShowColor={false} />
+                      ))
+                    : Array.from({ length: limit }).map((_, i) => <ProductGridSkeleton key={i} className='min-h-60' />)}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>

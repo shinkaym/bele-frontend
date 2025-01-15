@@ -22,7 +22,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       name,
       placeholder,
       type = 'text',
-      className = '',
+      className = 'w-full py-4 pl-6 pr-10',
       error,
       value = '',
       onChange,
@@ -52,7 +52,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             min={1}
             className={`${
               isDisabled ? 'opacity-50' : ''
-            } w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-blue-primary focus-visible:shadow-none ${className}`}
+            } rounded-lg border border-stroke bg-transparent text-black outline-none focus:border-blue-primary focus-visible:shadow-none ${className}`}
           />
           {/* Icon hiển thị trong ô input */}
           {icon && (

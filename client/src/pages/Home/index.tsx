@@ -32,7 +32,7 @@ const Home = memo(() => {
   useEffect(() => {
     const fetchApi = async () => {
       try {
-        const res: IApiResponse<{ products: IProduct[] }> = await productApi.list({ TagId: tag })
+        const res: IApiResponse<{ products: IProduct[] }> = await productApi.list({ TagId: tag },{})
         if (res.data && res.status === 200) {
           setProducts(res.data.products)
         }
@@ -136,7 +136,7 @@ const Home = memo(() => {
           onClick={handleChangeTag}
           value={'3'}
         >
-          <span>Bán chạy nhất</span> {tag === 2 && <FontAwesomeIcon icon={faStar} className='ml-2' />}
+          <span>Bán chạy nhất</span> {tag === 3 && <FontAwesomeIcon icon={faStar} className='ml-2' />}
         </Button>
       </div>
       <div className='lg:px-14 md:px-12 sm:px-10 px-6 mb-10'>
