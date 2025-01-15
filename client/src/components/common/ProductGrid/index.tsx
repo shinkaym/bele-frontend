@@ -18,7 +18,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons'
 interface IProductGridProps {
   product: IProduct
   className?: string
-  tag?: number
+  tag?: number | null
   isShowColor?: boolean
   isShowPrice?: boolean
   isShowAddCart?: boolean
@@ -26,7 +26,7 @@ interface IProductGridProps {
 
 const ProductGrid = ({
   product,
-  tag,
+  tag = null,
   className,
   isShowColor = true,
   isShowPrice = true,
@@ -72,12 +72,13 @@ const ProductGrid = ({
     }
     fetchApi()
   }, [colorData, product.id])
+  // console.log(product.tags[0]?.name);
   return (
     <>
       {Object.keys(product).length > 0 && variantByColor.length > 0 && Object.keys(colorData).length > 0 ? (
         <div className={`${className} space-y-1`}>
           <div className='relative group transition-all duration-500 ease-linear overflow-hidden max-h-80'>
-            <Link to='/'>
+            <Link to={`/product/detail/${product.slug}`}>
               <img
                 src={colorData.thumbnail}
                 alt={product.name}
@@ -96,10 +97,14 @@ const ProductGrid = ({
                       </span>
                     </div>
                   )}
-                  {tag ? (
-                    <Tag title={product.tags.find((t) => t.id === tag)?.name || ''} />
+                  {product.tags.length > 0 ? (
+                    tag ? (
+                      <Tag title={product.tags.find((t) => t.id === tag)?.name || ''} />
+                    ) : (
+                      <Tag title={product.tags[0]?.name || ''} />
+                    )
                   ) : (
-                    <Tag title={product.tags[0]?.name || ''} />
+                    ''
                   )}
                 </div>
               </div>
@@ -140,13 +145,13 @@ const ProductGrid = ({
             />
           )}
           <p className='max-w-full truncate lg:text-sm md:text-xs sm:text-2xs text-3xs font-normal'>
-            <Link to={'/'}>{product.name}</Link>
+            <Link to={`/product/detail/${product.slug}`}>{product.name}</Link>
           </p>
 
           {isShowPrice && (
             <div className='space-x-2 flex items-center'>
               <IntlProvider locale='vi-VN'>
-                {product.discount?.discountValue !== 0 && (
+                {product.discount && product.discount?.discountValue !== 0 && (
                   <>
                     <span className='font-semibold lg:text-sm md:text-xs sm:text-2xs text-3xs'>
                       <FormattedNumber
