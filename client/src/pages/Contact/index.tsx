@@ -1,115 +1,126 @@
-import React from 'react'
+import { useState } from 'react'
+import contactApi from '@/apis/modules/contact.api'
+import Loader from '@/components/common/Loader'
+import { RootState } from '@/redux/store'
+import { useSelector } from 'react-redux'
 
-const ContactPage = () => {
+const ContactPageClient: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(false)
+  const [newContact, setNewContact] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phoneNumber: '',
+    message: ''
+  })
+  const settings = useSelector((state: RootState) => state.settings.data)
+  //   alert(JSON.stringify(useSelector((state: RootState) => state.settings.data)))
+  const handleAddContact = async () => {
+    if (!newContact.firstName || !newContact.lastName || !newContact.email || !newContact.message) {
+      alert('Please fill out all fields!')
+      return
+    }
+
+    setLoading(true)
+    try {
+      const res = await contactApi.add({
+        title: `${newContact.firstName} ${newContact.lastName}`,
+        fullName: `${newContact.firstName} ${newContact.lastName}`,
+        email: newContact.email,
+        phoneNumber: newContact.phoneNumber,
+        message: newContact.message,
+        status: 1
+      })
+      if (res.status === 200) {
+        alert('Message sent successfully!')
+        setNewContact({ firstName: '', lastName: '', email: '', phoneNumber: '', message: '' }) // Reset form
+      } else {
+        throw new Error('Failed to send message')
+      }
+    } catch (error) {
+      console.error('Error sending message:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <div className='max-w-7xl mx-auto px-4 py-16 grid grid-cols-1 lg:grid-cols-2 gap-8'>
-      {/* Contact Information Section */}
-      <div className='bg-black text-white p-8 rounded-lg'>
-        <h2 className='text-3xl font-bold mb-4'>Contact Information</h2>
-        <p className='text-gray-400 mb-6'>Say something with Bele</p>
-
-        <div className='space-y-6'>
-          {/* Phone */}
-          <div className='flex items-center space-x-4'>
-            <span className='text-xl'>📞</span>
-            <p className='text-lg'>+1 012 3456 789</p>
-          </div>
-
-          {/* Email */}
-          <div className='flex items-center space-x-4'>
-            <span className='text-xl'>✉️</span>
-            <p className='text-lg'>demo@gmail.com</p>
-          </div>
-
-          {/* Address */}
-          <div className='flex items-center space-x-4'>
-            <span className='text-xl'>📍</span>
-            <p className='text-lg'>
-              Lot C8, Lai Yen Industrial Park, <br />
-              Lai Yen Commune, Hoai Duc District, Hanoi City
-            </p>
-          </div>
-
-          {/* Social Media */}
-          <div className='flex items-center space-x-4 mt-4'>
-            <a href='#' className='text-white hover:text-gray-400'>
-              <span>🌐 Facebook</span>
-            </a>
-            <a href='#' className='text-white hover:text-gray-400'>
-              <span>📸 Instagram</span>
-            </a>
-            <a href='#' className='text-white hover:text-gray-400'>
-              <span>🎥 YouTube</span>
-            </a>
-          </div>
+    <div className='max-w-7xl mx-auto px-4 py-8'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+        <div className='bg-black text-white p-6 rounded-md mt-8'>
+          <h2 className='text-2xl font-bold mb-4'>Contact Information</h2>
+          <p className='mb-4'>Say something with Bele</p>
+          <br />
+          <br />
+          <ul className='space-y-4'>
+            <li className='flex items-center'>
+              <span className='mr-4'>&#9743;</span> {settings?.info.hotline}
+            </li>
+            <li className='flex items-center'>
+              <span className='mr-4'>&#9993;</span> {settings?.info.email}
+            </li>
+            <li className='flex items-center'>
+              <span className='mr-4'>&#127968;</span> {settings?.address.branchAddress1}
+            </li>
+            <li className='flex items-center'>
+              <span className='mr-4'>&#127968;</span> {settings?.address.branchAddress2}
+            </li>
+          </ul>
         </div>
-      </div>
 
-      {/* Contact Form Section */}
-      <div className='bg-white p-8 rounded-lg shadow-lg'>
-        <h2 className='text-3xl font-bold mb-4'>Send Us a Message</h2>
-        <form className='space-y-4'>
-          {/* Name Fields */}
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-            <div>
-              <label className='block text-gray-700'>First Name</label>
+        <div>
+          <h2 className='text-2xl font-bold mb-4'>Send us a message</h2>
+          <form className='space-y-4'>
+            <div className='grid grid-cols-2 gap-4'>
               <input
                 type='text'
                 placeholder='First Name'
-                className='w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                value={newContact.firstName}
+                onChange={(e) => setNewContact((prev) => ({ ...prev, firstName: e.target.value }))}
+                className='border border-gray-300 px-4 py-2 rounded'
               />
-            </div>
-            <div>
-              <label className='block text-gray-700'>Last Name</label>
               <input
                 type='text'
                 placeholder='Last Name'
-                className='w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                value={newContact.lastName}
+                onChange={(e) => setNewContact((prev) => ({ ...prev, lastName: e.target.value }))}
+                className='border border-gray-300 px-4 py-2 rounded'
               />
             </div>
-          </div>
-
-          {/* Email and Phone */}
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-            <div>
-              <label className='block text-gray-700'>Email</label>
-              <input
-                type='email'
-                placeholder='Email'
-                className='w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-              />
-            </div>
-            <div>
-              <label className='block text-gray-700'>Phone Number</label>
-              <input
-                type='tel'
-                placeholder='Phone Number'
-                className='w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-              />
-            </div>
-          </div>
-
-          {/* Message Field */}
-          <div>
-            <label className='block text-gray-700'>Message</label>
+            <input
+              type='email'
+              placeholder='Email'
+              value={newContact.email}
+              onChange={(e) => setNewContact((prev) => ({ ...prev, email: e.target.value }))}
+              className='border border-gray-300 px-4 py-2 rounded w-full'
+            />
+            <input
+              type='text'
+              placeholder='Phone Number'
+              value={newContact.phoneNumber}
+              onChange={(e) => setNewContact((prev) => ({ ...prev, phoneNumber: e.target.value }))}
+              className='border border-gray-300 px-4 py-2 rounded w-full'
+            />
             <textarea
               placeholder='Write your message...'
-              rows={5}
-              className='w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+              value={newContact.message}
+              onChange={(e) => setNewContact((prev) => ({ ...prev, message: e.target.value }))}
+              className='border border-gray-300 px-4 py-2 rounded w-full h-32'
             ></textarea>
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type='submit'
-            className='bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500'
-          >
-            Send Message
-          </button>
-        </form>
+            <button
+              type='button'
+              onClick={handleAddContact}
+              className='bg-black text-white px-4 py-2 rounded hover:bg-gray-800'
+            >
+              Send Message
+            </button>
+          </form>
+        </div>
       </div>
+
+      {loading && <Loader />}
     </div>
   )
 }
 
-export default ContactPage
+export default ContactPageClient

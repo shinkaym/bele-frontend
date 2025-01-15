@@ -45,7 +45,6 @@ const contactApi = {
   // Lấy thông tin chi tiết của một contact
   detail({ id }: { id: number }): IContactDetailResponse {
     try {
-      // Return mock data for detail
       return contactDetailResponseData
     } catch (error) {
       throw error
