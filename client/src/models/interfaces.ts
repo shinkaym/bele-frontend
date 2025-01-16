@@ -313,6 +313,8 @@ export interface IProductDetail {
   name:string,
   view:number,
   like: number,
+  wishLists:Array<number>,
+  categoryId:number,
   variants:IVariantDetail[],
   discount:number,
   description:string,
@@ -321,6 +323,7 @@ export interface IProductDetail {
 export interface IVariantDetail{
   id:number,
   price:number,
+  stock:number,
   thumbnail:string,
   attributes:any
 }
@@ -330,4 +333,11 @@ export interface IRateDetail{
   content:string,
   createdAt:string,
 }
+export interface IRateAddDetail{
+  productId:number,
+  orderId:number,
+  star:number,
+  content:string
+}
+
 //end

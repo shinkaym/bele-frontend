@@ -69,7 +69,7 @@ const AppRouter = () => {
           ]
         },
         {
-          path: 'products',
+          path: 'product',
           element: <ProductDetail/>,
           children: [
            {

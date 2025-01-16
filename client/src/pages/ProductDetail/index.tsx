@@ -13,6 +13,10 @@ import RatingDropdown from '@/components/common/RatingDropdown'
 import { IApiResponse, IProductDetail, IRateDetail, IVariantDetail } from '@/models/interfaces'
 import productApi from '@/apis/modules/product.api'
 import Loader from '@/components/common/Loader';
+import { UToast } from '@/utils/swal';
+import { EToastOption } from '@/models/enum';
+import ListRalatedProduct from '@/components/common/ListRatedProduct';
+import AddFavorite from '@/components/common/AddFavorite';
 interface IColorSize{
     image:string,
     color:string,
@@ -36,6 +40,7 @@ const [imgState,setImgState] = useState<IColorSize>({
     color: colors?.[0]?.Color, // Giá trị mặc định là chuỗi rỗng
     size: sizes?.[0]?.Size // Giá trị mặc định là chuỗi rỗng
 });
+const [wishLists,setWishLists] = useState<Array<number>>([]);
 const [counterValue, setCounterValue] = useState(1);
 const [activeIndexColor, setActiveIndexColor] = useState(0); // Theo dõi nút đang active
 const [activeIndexSize, setActiveIndexSize] = useState(0); // Theo dõi nút đang active
@@ -52,6 +57,7 @@ const [ratingCard,setRatingCard] = useState<IRateCard>();
               const productData = res.data.product;
               setProduct(productData);
               setRates(res.data.product.rates);
+              setWishLists(res.data.product.wishLists)
               const avgRate:number =  res.data.product.rates?.reduce((pre,cur)=>pre+=cur.star,0);
               const toTalRangting: number =  res.data.product.rates?.length ;
 
@@ -100,20 +106,33 @@ const [ratingCard,setRatingCard] = useState<IRateCard>();
           });
         }
       }, [colors, sizes]);
+    const handleAddWistList = (wishLists:Array<number>)=>{
+      setWishLists(wishLists);
+    }
     const handleAddReview = (reviews:IRateDetail[])=>{
       setRates(reviews)
+      const avgRate:number =  reviews?.reduce((pre,cur)=>pre+=cur.star,0);
+      const toTalRangting: number =  reviews?.length;
+      setRatingCard({
+        totalRating : reviews?.length || 0,
+        ratings : avgRate/toTalRangting||0,
+      })
+      
     }
     const handleAddToCart = (variantId:number,quantity:number)=>{
-        console.log(variantId,quantity);
+        if(variant?.stock! - quantity >= 0 ){
+          UToast(EToastOption.SUCCESS, 'Thêm giỏ hàng thành công')
+        }else{
+          UToast(EToastOption.ERROR, 'Không đủ sản phẩm')
+        }
 
     }
     const variant = product?.variants.find(item=>item.attributes[0].Color== imgState.color && item.attributes[1].Size == imgState.size);
-
     const handleCounterChange = (value: number) => {
         setCounterValue(value); // Cập nhật giá trị khi Counter thay đổi
       };
       const handleRatingSelect = (rating: number) => {
-        setRates(product?.rates.filter(item => item.star === rating));
+        setRates(rating==0?product?.rates:product?.rates.filter(item => item.star === rating));
       };
 
 return (<>
@@ -132,9 +151,9 @@ return (<>
         <div className="space-y-4">
         <h1 className="text-3xl font-bold">{product.name}</h1>
         <div className="flex items-center space-x-4 text-gray-500">
-            <span><FontAwesomeIcon icon={faHouse} /> {product.like}</span>
+            <span><FontAwesomeIcon icon={faHouse} /> {variant?.stock}</span>
             <span><FontAwesomeIcon icon={faEye} /> {product.view}</span>
-            <span><FontAwesomeIcon icon={faHeart} /> 20</span>
+            <span><FontAwesomeIcon icon={faHeart} /> {wishLists?.length}</span>
         </div>
         <AvgStar rate={ratingCard?.ratings!} />
         <div>Color: <b>{imgState.color}</b></div>
@@ -195,18 +214,26 @@ return (<>
 
         <div className="flex items-center space-x-4">
             <Counter  onValueChange={handleCounterChange} />
-            <button onClick={()=>handleAddToCart(variant?.id??0,counterValue)} className="flex-1 bg-black text-white py-2 px-4 rounded-full font-medium">
+            {
+              variant?.stock! > 0 ? (<>
+                  <button onClick={()=>handleAddToCart(variant?.id??0,counterValue)} className="flex-1 bg-black text-white py-2 px-4 rounded-full font-medium">
+                      <FontAwesomeIcon icon={faCartPlus} className='mx-2'/>
+                      Thêm vào giỏ hàng
+                  </button>
+              </>):(<>
+                <button className="flex-1 bg-gray-400 text-white py-2 px-4 rounded-full font-medium">
                 <FontAwesomeIcon icon={faCartPlus} className='mx-2'/>
-                Add To Cart
+                Hết hàng
             </button>
-            <button className="w-10 h-10 border border-black bg-black rounded-full flex items-center justify-center">
-                <FontAwesomeIcon icon={faHeart} className='text-white' />
-            </button>
+              </>)
+            }
+            <AddFavorite wistList={wishLists} productId={product.id} handleAddWistList={handleAddWistList}/>
+            
         </div>
         </div>
         </div>
         <div className='py-10'>
-            <h1 className='mb-4 text-4xl font-bold leading-none tracking-tight text-black md:text-5xl lg:text-2xl dark:text-white'>Description</h1>
+            <h1 className='mb-4 text-4xl font-bold leading-none tracking-tight text-black md:text-5xl lg:text-2xl dark:text-white'>Mô tả chi tiết</h1>
             <Description htmlContent={product?.description??"Không có"}/>
         </div>
      
@@ -222,6 +249,10 @@ return (<>
                 <ReviewList reviews={rates!} />
             </div>
         </div>
+    </div>
+    <div className='py-10 lg:px-14'>
+      <h1 className='text-center mb-4 text-4xl font-bold leading-none tracking-tight text-black md:text-5xl lg:text-2xl dark:text-white'>Sản phẩm liên quan</h1>
+      <ListRalatedProduct categoryId={product.categoryId} />
     </div>
         </>
       )}
