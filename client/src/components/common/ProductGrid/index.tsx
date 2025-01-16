@@ -37,8 +37,8 @@ const ProductGrid = ({
   const { loading, error } = useSelector((state: RootState) => state.cart)
   const { isAuthenticated } = useSelector((state: RootState) => state.auth)
   const dispatch = useDispatch<AppDispatch>()
-  const handleGetColor = (value: number) => {
-    const data = product!.variantColors.find((color) => color.colorId === value)
+  const handleGetColor = (value: string) => {
+    const data = product!.variantColors.find((color) => color.colorId === Number(value))
     if (data) {
       setColorData(data)
     }
@@ -137,8 +137,12 @@ const ProductGrid = ({
               options={
                 product.variantColors.filter(
                   (item, index, self) => self.findIndex((v) => v.colorId === item.colorId) === index
-                ) || []
+                ).map((item) => ({
+                  id: item.colorId.toString(), // Lấy colorId làm id
+                  value: item.color, // Lấy colorName làm value (tuỳ thuộc vào cấu trúc dữ liệu)
+                })) || []
               }
+              selectedValue={colorData.colorId.toString()}
               name={`${product.id}-${colorData.colorId}-${colorData.variantId}`}
               onChange={handleGetColor}
               classNameItems='lg:w-9 lg:h-5 md:w-8.5 md:h-4.5 sm:w-8 sm:h-4 w-7.5 h-3.5'

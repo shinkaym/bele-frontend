@@ -179,7 +179,7 @@ const ModalSearch: React.FunctionComponent<ISearchProps> = ({ onSearchClose }) =
                       <span className='text-lg  font-medium'>Sản phẩm</span>
                       <div className={`grid grid-cols-${limit} gap-2 mt-2`}>
                         {result.map((product) => (
-                          <ProductGrid key={product.id} product={product} />
+                          <ProductGrid key={product.id} product={product} isShowAddCart={false} isShowColor={false} />
                         ))}
                       </div>
                       <div className='flex items-center justify-center'>

@@ -29,14 +29,3 @@ export const categoryData: ICategory[] = [
     updatedAt:'2023-01-15T00:00:00Z',
   }
 ]
-
-export const categoryChildOption:IOptions[] = [
-  {
-    value:0,
-    label:'---Select Category---'
-  },
-  {
-    value: 2,
-    label: 'Polo Shirt',
-  }
-]

@@ -1,50 +1,67 @@
-import { IVariantColor } from '@/models/interfaces'
-import React, { ForwardedRef, useState } from 'react'
+import React, { ForwardedRef, useEffect, useState } from 'react'
 
 interface RadioColorGroupProps {
-  options: IVariantColor[]
+  options: { id: string; value: string; optionName?: string }[]
   name: string // Name attribute to group radios
-  onChange?: (value: number) => void
+  onChange?: (value: string, name?: string) => void
   className?: string
   classNameItems?: string
+  colorOutline?: string
+  selectedValue?: string
 }
 
 const RadioColorGroup = (
-  { options, name, onChange, className = '', classNameItems = '' }: RadioColorGroupProps,
+  {
+    options,
+    name,
+    onChange,
+    className = '',
+    classNameItems = '',
+    colorOutline = 'gray-600',
+    selectedValue = ''
+  }: RadioColorGroupProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
-  const [selected, setSelected] = useState<number>(options[0].colorId)
+  const [selected, setSelected] = useState<string>(selectedValue || '')
 
-  const handleChange = (value: number) => {
+  const handleChange = (value: string, name?: string) => {
     setSelected(value)
     if (onChange) {
-      onChange(value)
+      onChange(value, name)
     }
   }
 
+  useEffect(() => {
+    setSelected(selectedValue || '')
+  }, [selectedValue])
   return (
-    <div className={`${className} py-2`}>
-      <div ref={ref} className='flex flex-wrap items-center gap-2'>
+    <div className={`py-2`}>
+      <div ref={ref} className={`flex flex-wrap items-center gap-2 ${className}`}>
         {options.map((option) => (
           <label
-            key={name + option?.colorId}
-            htmlFor={name + option?.colorId.toString()}
-            className={`relative inline-block cursor-pointer rounded-xl 
-                ${selected === option?.colorId ? "before:content-[''] before:block before:absolute before:-inset-0.75 before:rounded-xl before:border before:border-gray-600" : ''} 
+            key={name + option?.id}
+            htmlFor={name + option?.id.toString()}
+            className={`relative flex items-center flex-col space-y-6 cursor-pointer rounded-xl text-center
+                ${
+                  selected === option?.id
+                    ? `before:content-[''] before:block before:absolute before:-inset-0.75 before:rounded-xl before:border before:border-${colorOutline}`
+                    : ''
+                } 
                 ${classNameItems}`}
-            style={{ backgroundColor: option.color }}
+            style={{ backgroundColor: option.value }}
           >
             <div className='absolute'>
               <input
                 type='radio'
-                id={name + option?.colorId.toString()}
+                id={name + option?.id.toString()}
                 name={name}
-                value={option?.colorId.toString()}
-                checked={selected === option?.colorId}
-                onChange={() => handleChange(option?.colorId)}
+                value={option?.id.toString()}
+                checked={selected === option?.id}
+                onChange={() => handleChange(option?.id, option?.optionName)}
                 className='sr-only'
               />
             </div>
+            {option.optionName && <p className='text-xs'>{option.optionName}</p>}
           </label>
         ))}
       </div>

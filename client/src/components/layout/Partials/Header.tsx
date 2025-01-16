@@ -12,14 +12,7 @@ import ValidateOTP from '@/components/common/ValidateOTP'
 import { logoList } from '@/constants'
 import { IApiResponse, ICategory } from '@/models/interfaces'
 import { AppDispatch, RootState } from '@/redux/store'
-import {
-  faArrowRight,
-  faBagShopping,
-  faBars,
-  faChevronDown,
-  faSearch,
-  faUser
-} from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faBagShopping, faBars, faChevronDown, faSearch, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -115,7 +108,7 @@ const Header = memo(() => {
             </NavLink>
 
             <NavLink
-              to={'/product'}
+              to={'/products/filter'}
               className={({ isActive }) =>
                 `xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs lg:px-5 h-full flex items-center justify-center hover:bg-hover text-white ease-linear transition-all duration-200 font-medium group ${
                   isActive ? 'bg-hover' : ''
@@ -134,12 +127,13 @@ const Header = memo(() => {
                       <div className='mt-2 mb-5 h-0.5 w-1/2 bg-black'></div>
                       <ul className='text-gray-500 xl:text-sm lg:text-xs md:text-2xs sm:text-3xs text-4xs space-y-2'>
                         <li className='hover:text-blue-primary'>
-                          <Link to={'/' + cat.slug}>Tất cả {cat.name}</Link>
+                          <Link to={'/products/filter/' + cat.slug}>Tất cả {cat.name}</Link>
                         </li>
-                        {cat.referenceCategory?.length > 0 &&
+                        {cat.referenceCategory &&
+                          cat.referenceCategory?.length > 0 &&
                           cat.referenceCategory.map((catChild) => (
                             <li className='hover:text-blue-primary' key={catChild.id}>
-                              <Link to={'/' + catChild.slug}>{catChild.name}</Link>
+                              <Link to={'/products/filter/' + catChild.slug}>{catChild.name}</Link>
                             </li>
                           ))}
                       </ul>
@@ -220,7 +214,7 @@ const Header = memo(() => {
               </Link>
               <div className='group-hover:flex flex-col hidden bg-white pt-4 px-4 rounded-md shadow-lg border absolute top-full right-0 z-50  mt-6 text-black w-[400px] space-y-3 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-primary scrollbar-track-gray-100'>
                 {cart && cart.cartItems.length > 0 ? (
-                 <CartDropDown cart={cart}/>
+                  <CartDropDown cart={cart} />
                 ) : (
                   <p className='pb-4 text-center'>Giỏ hàng đang trống</p>
                 )}
