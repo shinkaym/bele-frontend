@@ -1,5 +1,6 @@
 import LoadingScreen from '@/components/common/LoadingScreen'
 import PageTitle from '@/components/common/PageTitle'
+import BlogDetail from '@/components/common/Blog/BlogDetail'
 import DefaultLayout from '@/components/layout/DefaultLayout'
 import Home from '@/pages/Home'
 import Blog from '@/pages/Blog'
@@ -104,12 +105,26 @@ const AppRouter = () => {
         },
         {
           path: 'blog',
-          element: (
-            <>
-              <PageTitle title='Trang thông tin' />
-              <Blog />
-            </>
-          )
+          children: [
+            {
+              path: '',
+              element: (
+                <>
+                  <PageTitle title='Trang danh sách blog' />
+                  <Blog />
+                </>
+              )
+            },
+            {
+              path: ':id',
+              element: (
+                <>
+                  <PageTitle title='Edit Category' />
+                  <BlogDetail />
+                </>
+              )
+            }
+          ]
         },
         {
           path: 'contact',

@@ -1,107 +1,120 @@
 import Loader from '@/components/common/Loader'
 import { useEffect, useState } from 'react'
-// import { Link } from 'react-router-dom'
 import blogApi from '@/apis/modules/blog.api'
-import { IApiResponse, IBlog } from '@/models/interfaces'
-import { RootState } from '@/redux/store'
-import { useSelector } from 'react-redux'
-import Services from '@/components/common/Services'
+import { IBlog } from '@/models/interfaces'
 
 function About() {
   const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState<IBlog | null>(null)
-  const settings = useSelector((state: RootState) => state.settings.data)
+  const [error, setError] = useState<string | null>(null)
+
+  const fetchBlogData = async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const blog: IBlog = await blogApi.getById(1)
+      console.log('Blog:', blog)
+      setData(blog)
+    } catch (err) {
+      setError('An error occurred while fetching the blog data.')
+      console.error('Error fetching blog data:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
-    const fetchApi = async () => {
-      setLoading(true)
-      try {
-        const res: IApiResponse<IBlog[]> = await blogApi.getBlogs()
-        if (res.data && res.status === 200) {
-          setData(res.data[0])
-        }
-      } catch (error) {
-        console.log(error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchApi()
-  }, [])
+    if (!data) fetchBlogData()
+  }, [data])
 
   return (
     <div>
-      <div className='mx-auto px-8'>
+      <div className='mx-40 px-8'>
         {loading && <Loader />}
-        <div className='bg-gray-100 py-16 px-10 lg:px-24'>
-          <div className='max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'>
-            <div className='flex flex-col items-center lg:items-start'>
-              <h2 className='text-3xl font-bold ml-8'>VỀ CHÚNG TÔI - BELE</h2>
-              <div className='flex justify-center'>
-                <img
-                  src='./src/assets/images/logo/logo_slogan.png'
-                  alt={'Slogan Logo'}
-                  className='w-full max-w-lg mx-auto mb-6 rounded-lg shadow-lg bg-black'
-                />
+        {error && <p className='text-red-500 text-center my-4'>{error}</p>}
+        {!loading && !error && (
+          <div className='bg-gray-100 py-16 px-10 lg:px-24'>
+            {/* About Title */}
+            <div className='max-w-4xl mx-auto grid grid-cols-1 gap-12 items-center'>
+              <div className='flex flex-col items-center justify-center text-center'>
+                <h2 className='text-5xl font-extrabold text-gray-900 leading-tight tracking-tight'>
+                  {data?.title || 'VỀ CHÚNG TÔI - BELE'}
+                </h2>
+                <div className='w-1/2 h-1 mt-3 bg-black rounded'></div>
               </div>
             </div>
 
-            <div>
-              {data?.thumbnail && (
-                <img
-                  src={data?.thumbnail}
-                  alt='Thumbnail'
-                  className='w-full max-w-3xl mx-auto mb-8 rounded-lg shadow-md'
-                />
+            <div className='mt-12 mx-32 space-y-6'>
+              {/* Content 1: Logo */}
+              {data?.contents?.find((content) => content.id === 1) && (
+                <div className='flex justify-center'>
+                  <img
+                    src={data.contents.find((content) => content.id === 1)?.imageUrl || ''}
+                    alt='About Us Logo'
+                    className='w-120 h-auto max-w-lg rounded-lg shadow-md'
+                  />
+                </div>
               )}
-              <p className='text-gray-700 mb-6 text-lg lg:text-xl leading-relaxed break-words'>{data?.content}</p>
 
-              <div className='space-y-6 text-lg'>
-                <p className='flex items-center text-gray-700'>
-                  <span className='mr-2'>🏢</span>
-                  <strong className='mr-1'>Tên công ty:</strong>
-                  <span>BELE</span>
-                </p>
-                <p className='flex items-center text-gray-700'>
-                  <span className='mr-2'>📍</span>
-                  <strong className='mr-1'>Địa chỉ cơ sở 1:</strong>
-                  <span>{settings?.address.branchAddress1}</span>
-                </p>
-                <p className='flex items-center text-gray-700'>
-                  <span className='mr-2'>📍</span>
-                  <strong className='mr-1'>Địa chỉ cơ sở 2:</strong>
-                  <span>{settings?.address.branchAddress2}</span>
-                </p>
-                <p className='flex items-center text-gray-700'>
-                  <span className='mr-2'>🌐</span>
-                  <strong className='mr-1'>Website:</strong>
-                  <a
-                    href={settings?.social.facebookLink}
-                    className='text-gray-500 hover:underline'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  >
-                    {settings?.social.facebookLink}
-                  </a>
-                </p>
-                <p className='flex items-center text-gray-700'>
-                  <span className='mr-2'>📞</span>
-                  <strong className='mr-1'>Hotline:</strong> {settings?.info.hotline}
-                </p>
-                <p className='flex items-center text-gray-700'>
-                  <span className='mr-2'>✉️</span>
-                  <strong className='mr-1'>Email:</strong>
-                  <a href={`mailto:${settings?.info.email}`}>{settings?.info.email}</a>
-                </p>
-              </div>
+              {/* Content 2: Description */}
+              {data?.contents?.find((content) => content.id === 2) && (
+                <div className='text-lèt text-gray-700 text-lg leading-relaxed'>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: data.contents.find((content) => content.id === 2)?.contentText || ''
+                    }}
+                  />
+                </div>
+              )}
+
+              {/* Content 3: Policies */}
+              {data?.contents?.find((content) => content.id === 3) && (
+                <div className='text-center'>
+                  <h3 className='text-3xl font-bold text-gray-900'>
+                    {data.contents.find((content) => content.id === 3)?.title || 'Chính sách'}
+                  </h3>
+                </div>
+              )}
+            </div>
+
+            {/* Policies Section */}
+            <div className='mx-32 mt-8 grid grid-cols-1 md:grid-cols-2 gap-8'>
+              {data?.contents?.length ? (
+                [4, 6, 8, 10].map((textId, index) => {
+                  const textContent = data.contents.find((content) => content.id === textId)
+                  const imageContent = data.contents.find((content) => content.id === textId + 1)
+
+                  return (
+                    <div
+                      key={index}
+                      className='flex flex-col items-center text-left bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300'
+                    >
+                      <h3 className='text-2xl font-bold mb-2'>{textContent?.title || 'No Title'}</h3>
+
+                      {imageContent && (
+                        <img
+                          src={imageContent.imageUrl}
+                          alt={textContent?.title || 'Content Image'}
+                          className='w-auto h-auto mb-4 object-contain'
+                        />
+                      )}
+                      <p className='text-gray-600 text-sm'>
+                        {textContent?.contentText ? (
+                          <span dangerouslySetInnerHTML={{ __html: textContent.contentText }} />
+                        ) : (
+                          'No description available.'
+                        )}
+                      </p>
+                    </div>
+                  )
+                })
+              ) : (
+                <p className='text-gray-500 text-center col-span-full'>No content available.</p>
+              )}
             </div>
           </div>
-        </div>
+        )}
       </div>
-      <Services
-        service={settings!.service}
-        className='bg-gray-primary lg:py-8 md:py-6 sm:py-4 py-2 lg:px-14 md:px-12 sm:px-10 px-6 mb-10'
-      />
     </div>
   )
 }

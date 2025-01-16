@@ -1,20 +1,27 @@
+import { IApiResponse, IBlog, IBlogListResponse } from '@/models/interfaces'
 import axiosPrivate from '../client/private.client'
-import { IApiResponse, IBlog } from '@/models/interfaces'
-
-const blogEndpoints = {
-  getBlogs: 'blogs',
-  getBlogById: (id: string) => `blogs/${id}`,
-  createBlog: 'blogs',
-  updateBlog: (id: string) => `blogs/${id}`,
-  deleteBlog: (id: string) => `blogs/${id}`
-}
 
 const blogApi = {
-  async getBlogs(): Promise<IApiResponse<IBlog[]>> {
-    return axiosPrivate.get(blogEndpoints.getBlogs)
+  // Lấy danh sách blogs với phân trang
+  async getAll(): Promise<IApiResponse<IBlogListResponse>> {
+    try {
+      const response = await axiosPrivate.get<IApiResponse<IBlogListResponse>>('/blog')
+      return response.data
+    } catch (error) {
+      console.error('Error in getAll:', error)
+      throw error
+    }
   },
-  async getBlogById(id: string): Promise<IApiResponse<IBlog>> {
-    return axiosPrivate.get(blogEndpoints.getBlogById(id))
+
+  // Lấy thông tin chi tiết một blog
+  async getById(id: number): Promise<IBlog> {
+    try {
+      const response = await axiosPrivate.get<{ blog: IBlog }>(`/blog/${id}`)
+      return response.data.blog
+    } catch (error) {
+      console.error(`Error in getById (id: ${id}):`, error)
+      throw error
+    }
   }
 }
 
