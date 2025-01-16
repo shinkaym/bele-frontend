@@ -137,15 +137,6 @@ const AppRouter = () => {
               <Cart />
             </>
           )
-        },
-        {
-          path: 'cart',
-          element: (
-            <>
-              <PageTitle title='Trang thanh toán' />
-              <Cart />
-            </>
-          )
         }
       ]
     }
