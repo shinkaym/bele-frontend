@@ -12,8 +12,8 @@ import SSItem3 from '@/assets/images/slideshow/3.webp'
 import IconPlay from '@/components/icons/IconPlay'
 import { TMenuItem, TMenuProfileItem } from '@/models/types'
 
-import { EMenuProfileItemId } from '@/models/enum'
-import { IApiResponse, IPagination, IProduct } from '@/models/interfaces'
+import { EMenuProfileItemId, EOrderStatus } from '@/models/enum'
+import { IApiResponse, IOrder, IPagination, IProduct, IProductReview, IStatus } from '@/models/interfaces'
 import { faHeart, faBagShopping, faGlobe, faStar, faUser, faPowerOff } from '@fortawesome/free-solid-svg-icons'
 
 export const logoList = {
@@ -2176,7 +2176,7 @@ export const menuProfileItems: TMenuProfileItem[] = [
   },
   {
     id: EMenuProfileItemId.RatingProducts,
-    title: 'Đánh giá và phản hồi',
+    title: 'Đánh giá sản phẩm',
     icon: faStar,
     link: 'rating-products'
   },
@@ -2191,81 +2191,114 @@ export const menuProfileItems: TMenuProfileItem[] = [
 export const PAGINATION_CONFIG = {
   DEFAULT_LIMIT: 5,
   DEFAULT_WISHLIST_LIMIT: 9,
+  DEFAULT_UNRATED_LIMIT: 9,
+  DEFAULT_RATED_LIMIT: 3,
+  DEFAULT_CART_LIMIT: 3,
   DEFAULT_PAGE: 1
 }
+
+export const orderStatus: IStatus[] = [
+  {
+    title: EOrderStatus.PENDING_CONFIRMATION,
+    value: 1,
+    className: 'text-yellow-600 border-yellow-600 bg-yellow-200'
+  },
+  {
+    title: EOrderStatus.PENDING,
+    value: 2,
+    className: 'text-orange-600 border-orange-600 bg-orange-200'
+  },
+  {
+    title: EOrderStatus.DELIVERED,
+    value: 3,
+    className: 'text-blue-600 border-blue-600 bg-blue-200'
+  },
+  {
+    title: EOrderStatus.SHIPPED,
+    value: 4,
+    className: 'text-green-600 border-green-600 bg-green-200'
+  },
+  {
+    title: EOrderStatus.CANCELED,
+    value: -1,
+    className: 'text-red-600 border-red-600 bg-red-200'
+  }
+]
 
 export const test: IApiResponse<{ products: IProduct[]; pagination: IPagination }> = {
   status: 200,
   data: {
     products: [
-{
-  id: 1,
-  name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
-  categoryStatus: 1,
-  description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
-  discount: {
-    id: 1,
-    name: 'No Discount',
-    discountValue: 0,
-    expireDate: '9999-12-31T23:59:59.9999999',
-    status: 1,
-    createdAt: '2025-01-16T00:16:59.5582653',
-    updatedAt: '0001-01-01T00:00:00'
-  },
-  basePrice: 209000,
-  slug: 'ao-giu-nhiet-ex-warm-modal-co-cao',
-  thumbnail:
-    'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
-  view: 0,
-  like: 0,
-  status: 1,
-  rateAVG: [5, 5],
-  updatedAt: '2025-01-16T00:16:59.6025446',
-  createdAt: '2025-01-16T00:16:59.6025153',
-  variantColors: [
-    {
-      variantId: 1,
-      color: '#000',
-      thumbnail:
-        'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
-      price: 209000,
-      colorId: 1
-    },
-    {
-      variantId: 2,
-      color: '#000',
-      thumbnail:
-        'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
-      price: 209000,
-      colorId: 1
-    },
-    {
-      variantId: 3,
-      color: '#fff',
-      thumbnail:
-        'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
-      price: 209000,
-      colorId: 2
-    },
-    {
-      variantId: 4,
-      color: '#fff',
-      thumbnail:
-        'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
-      price: 209000,
-      colorId: 2
-    }
-  ],
+      {
+        id: 1,
+        orderId: 1,
+        name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
+        categoryStatus: 1,
+        description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
+        discount: {
+          id: 1,
+          name: 'No Discount',
+          discountValue: 0,
+          expireDate: '9999-12-31T23:59:59.9999999',
+          status: 1,
+          createdAt: '2025-01-16T00:16:59.5582653',
+          updatedAt: '0001-01-01T00:00:00'
+        },
+        basePrice: 209000,
+        slug: 'ao-giu-nhiet-ex-warm-modal-co-cao',
+        thumbnail:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        view: 0,
+        like: 0,
+        status: 1,
+        rateAVG: [5, 5],
+        updatedAt: '2025-01-16T00:16:59.6025446',
+        createdAt: '2025-01-16T00:16:59.6025153',
+        variantColors: [
+          {
+            variantId: 1,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 2,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 3,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          },
+          {
+            variantId: 4,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          }
+        ],
 
-  tags: [
-    {
-      id: 1,
-      name: 'New'
-    }
-  ]
-},
+        tags: [
+          {
+            id: 1,
+            name: 'New'
+          }
+        ]
+      },
       {
         id: 2,
+        orderId: 1,
         name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
         categoryStatus: 1,
         description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
@@ -2332,6 +2365,7 @@ export const test: IApiResponse<{ products: IProduct[]; pagination: IPagination 
       },
       {
         id: 3,
+        orderId: 1,
         name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
         categoryStatus: 1,
         description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
@@ -2399,6 +2433,7 @@ export const test: IApiResponse<{ products: IProduct[]; pagination: IPagination 
       {
         id: 4,
         name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
+        orderId: 1,
         categoryStatus: 1,
         description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
         discount: {
@@ -2465,6 +2500,7 @@ export const test: IApiResponse<{ products: IProduct[]; pagination: IPagination 
       {
         id: 5,
         name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
+        orderId: 1,
         categoryStatus: 1,
         description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
         discount: {
@@ -2532,6 +2568,7 @@ export const test: IApiResponse<{ products: IProduct[]; pagination: IPagination 
         id: 6,
         name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
         categoryStatus: 1,
+        orderId: 1,
         description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
         discount: {
           id: 1,
@@ -2598,6 +2635,7 @@ export const test: IApiResponse<{ products: IProduct[]; pagination: IPagination 
         id: 7,
         name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
         categoryStatus: 1,
+        orderId: 1,
         description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
         discount: {
           id: 1,
@@ -2664,6 +2702,7 @@ export const test: IApiResponse<{ products: IProduct[]; pagination: IPagination 
         id: 8,
         name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
         categoryStatus: 1,
+        orderId: 1,
         description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
         discount: {
           id: 1,
@@ -2730,6 +2769,7 @@ export const test: IApiResponse<{ products: IProduct[]; pagination: IPagination 
         id: 9,
         name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
         categoryStatus: 1,
+        orderId: 1,
         description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
         discount: {
           id: 1,
@@ -2799,4 +2839,129 @@ export const test: IApiResponse<{ products: IProduct[]; pagination: IPagination 
     }
   },
   message: 'Get products success !'
+}
+
+export const mockOrders: IOrder[] = [
+  {
+    id: 1,
+    name: 'Nguyễn Văn A',
+    phoneNumber: '0123456789',
+    address: '123 Đường ABC, Quận 1, TP.HCM',
+    note: 'Giao hàng trước 17h',
+    payMethod: 'COD',
+    shipDate: '2024-01-01',
+    receiveDate: '2024-01-03',
+    createdAt: '2023-12-30',
+    status: 4, // PENDING_CONFIRMATION
+    totalMoney: 500000,
+    totalDiscount: 50000,
+    products: [
+      {
+        id: 1,
+        name: 'Áo thun nam',
+        image:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        color: 'Trắng',
+        size: 'L',
+        quantity: 2,
+        price: 250000,
+        disPrice: 225000
+      },
+      {
+        id: 2,
+        name: 'Quần jean nam',
+        image:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        color: 'Xanh',
+        size: '32',
+        quantity: 1,
+        price: 300000,
+        disPrice: 270000
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: 'Trần Thị B',
+    phoneNumber: '0987654321',
+    address: '456 Đường XYZ, Quận 2, TP.HCM',
+    note: 'Gọi điện trước khi giao',
+    payMethod: 'VNPAY',
+    shipDate: '2024-01-02',
+    receiveDate: '2024-01-05',
+    createdAt: '2023-12-31',
+    status: 2, // PENDING
+    totalMoney: 700000,
+    totalDiscount: 100000,
+    products: [
+      {
+        id: 3,
+        name: 'Áo khoác nam',
+        image:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        color: 'Đen',
+        size: 'XL',
+        quantity: 1,
+        price: 500000,
+        disPrice: 450000
+      },
+      {
+        id: 4,
+        name: 'Quần short nam',
+        image:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        color: 'Xám',
+        size: 'M',
+        quantity: 1,
+        price: 200000,
+        disPrice: 180000
+      }
+    ]
+  }
+]
+
+export const mockData: IApiResponse<{ items: IProductReview[]; pagination: IPagination }> = {
+  status: 200,
+  data: {
+    items: [
+      {
+        id: 1,
+        star: 4,
+        content: 'Sản phẩm rất tốt, chất lượng cao. Sản phẩm rất tốt, chất lượng cao.Sản phẩm rất tốt, chất lượng cao.Sản phẩm rất tốt, chất lượng cao.Sản phẩm rất tốt, chất lượng cao.Sản phẩm rất tốt, chất lượng cao.Sản phẩm rất tốt, chất lượng cao.Sản phẩm rất tốt, chất lượng cao.Sản phẩm rất tốt, chất lượng cao.Sản phẩm rất tốt, chất lượng cao.Sản phẩm rất tốt, chất lượng cao.Sản phẩm rất tốt, chất lượng cao.',
+        createdAt: '2024-01-01T14:01:00Z',
+        pId: 101,
+        pName: 'Áo thun nam Coolmate',
+        pImage:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        slug: 'ao-thun-nam-coolmate'
+      },
+      {
+        id: 2,
+        star: 5,
+        content: 'Giao hàng nhanh, đóng gói cẩn thận.',
+        createdAt: '2024-01-02T10:30:00Z',
+        pId: 102,
+        pName: 'Quần jean nam Coolmate',
+        pImage:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        slug: 'quan-jean-nam-coolmate'
+      },
+      {
+        id: 3,
+        star: 3,
+        content: 'Sản phẩm tạm ổn, giá cả hợp lý.',
+        createdAt: '2024-01-03T16:45:00Z',
+        pId: 103,
+        pName: 'Áo khoác nam Coolmate',
+        pImage:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        slug: 'ao-khoac-nam-coolmate'
+      }
+    ],
+    pagination: {
+      currentPage: 1,
+      totalPage: 10
+    }
+  },
+  message: 'hihi'
 }

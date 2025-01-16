@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IApiResponse, ICart } from '@/models/interfaces'
 import axiosPrivate from '../client/private.client'
 
@@ -12,6 +13,20 @@ const cartApi = {
   },
   async delete(): Promise<IApiResponse<{ cart: ICart }>> {
     return axiosPrivate.delete('Cart')
+  },
+  async sub(variantId: number): Promise<IApiResponse<{ cart: ICart }>> {
+    return axiosPrivate.put('Cart', { variantId, quantity: -1 })
+  },
+  async checkout(
+    payMethod: string,
+    data: {
+      fullName: string
+      phoneNumber: string
+      address: string
+      note: string
+    }
+  ): Promise<IApiResponse<string | any>> {
+    return axiosPrivate.post(`Checkout/${payMethod}`, data)
   }
 }
 

@@ -9,7 +9,7 @@ import { fetchCustomerInfo } from '@/redux/slices/customer.slice'
 import customerApi from '@/apis/modules/customer.api'
 import { AppDispatch, RootState } from '@/redux/store'
 import CustomerInfoSection from '@/components/common/CustomerInfoSection'
-import { formatDate } from '@/utils'
+import { formatDate, formatYouTubeLikeTime } from '@/utils'
 
 const AccountInfo = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -58,8 +58,12 @@ const AccountInfo = () => {
     { label: 'Giới tính', value: info?.sex || 'N/A' },
     { label: 'Ngày sinh', value: info?.birthday ? formatDate(info.birthday!) : 'N/A' },
     {
-      label: 'Ngày cập nhật tài khoản',
-      value: info?.updatedAt ? formatDate(info.updatedAt!) : info?.createdAt ? formatDate(info.createdAt!) : 'N/A'
+      label: 'Thời gian cập nhật tài khoản',
+      value: info?.updatedAt
+        ? formatYouTubeLikeTime(info.updatedAt!)
+        : info?.createdAt
+          ? formatYouTubeLikeTime(info.createdAt!)
+          : 'N/A'
     }
   ]
 

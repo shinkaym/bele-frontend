@@ -12,8 +12,8 @@ const ButtonCustom: React.FC<ButtonCustomProps> = ({ children, onClick, classNam
   return (
     <button
       type={type}
-      className={`flex items-center justify-center text-sm lg:text-lg tracking-tighter ${inverted ? '' : 'bg-white text-black'}  border border-black rounded-full  font-bold h-[50px] px-8 py-2 transition-all duration-200 hover:bg-black hover:text-white ${
-        inverted ? 'bg-black text-white hover:bg-white hover:text-black' : ''
+      className={`flex items-center justify-center text-sm lg:text-lg tracking-tighter ${inverted ? '' : 'bg-white text-black'}  border border-black rounded-full  font-bold h-[50px] px-8 py-2 transition-all duration-200 hover:bg-black hover:text-white truncate ${
+        inverted ? 'bg-black text-white hover:bg-white hover:!text-black' : ''
       } ${className}`}
       onClick={onClick}
     >

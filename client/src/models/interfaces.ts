@@ -90,6 +90,7 @@ export interface IVariantColor {
 export interface IProduct {
   id: number // ID của sản phẩm
   name: string // Tên sản phẩm
+  orderId?: number
   category: ICategory
   thumbnail: string
   description: string
@@ -105,6 +106,17 @@ export interface IProduct {
   createdAt: string // Thời gian tạo sản phẩm
   variantColors: IVariantColor[]
   attributeTypes: IAttributeType[]
+}
+
+export interface IProductReview {
+  id: number
+  star: number
+  content: string
+  createdAt: string
+  pId: number
+  pName: string
+  pImage: string
+  slug: string
 }
 
 export interface IVariantProductColor {
@@ -215,6 +227,7 @@ export interface ICustomer {
   phoneNumber: string
   email: string
   sex: 'Nam' | 'Nữ'
+  address?: string
   birthday: string
   totalSpending?: number
   createdAt: string
@@ -339,3 +352,37 @@ export interface IRateDetail {
   createdAt: string
 }
 //end
+
+export interface IStatus {
+  title: string
+  value: number
+  className?: string
+}
+
+export interface IOrder {
+  id: number
+  name: string
+  phoneNumber: string
+  address: string
+  note: string
+  payMethod: string
+  shipDate: string
+  receiveDate: string
+  createdAt: string
+  status: number
+  totalMoney: number
+  totalDiscount: number
+  products: IOrderProduct[]
+}
+
+export interface IOrderProduct {
+  id: number
+  name: string
+  slug: string
+  image: string
+  color: string
+  size: string
+  quantity: number
+  price: number
+  disPrice: number
+}

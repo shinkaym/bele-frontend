@@ -18,3 +18,12 @@ export enum EToastOption {
   WARNING = 'warning',
   ERROR = 'error'
 }
+
+export enum EOrderStatus {
+  UNKNOWN = 'Unknown',
+  PENDING_CONFIRMATION = 'Pending confirmation',
+  PENDING = 'Pending',
+  DELIVERED = 'Delivered',
+  SHIPPED = 'Shipped',
+  CANCELED = 'Cancelled'
+}

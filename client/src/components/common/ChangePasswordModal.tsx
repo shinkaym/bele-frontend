@@ -50,7 +50,7 @@ const ChangePasswordModal: React.FunctionComponent<IChangePasswordModalProps> = 
   }
 
   return (
-    <Popup onPopupClose={onClose} className='lg:w-[700px] w-full'>
+    <Popup onPopupClose={onClose} className='lg:w-[700px] w-11/12'>
       <h2 className='text-2xl font-semibold mb-4'>Thay đổi mật khẩu</h2>
       <form onSubmit={handleSubmit(handleFormSubmit)}>
         <div className='mb-4'>

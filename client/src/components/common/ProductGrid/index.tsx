@@ -13,8 +13,7 @@ import Loader from '../Loader'
 import RadioColorGroup from '../RadioColorGroup'
 import Tag from '../Tag'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar } from '@fortawesome/free-solid-svg-icons'
-import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faStar, faHeart, faCommentDots } from '@fortawesome/free-solid-svg-icons'
 import productApi from '@/apis/modules/product.api'
 
 interface IProductGridProps {
@@ -24,8 +23,9 @@ interface IProductGridProps {
   isShowColor?: boolean
   isShowPrice?: boolean
   isShowAddCart?: boolean
-  isShowTym?: boolean
   handleClickTym?: () => void
+  isShowTym?: boolean
+  unrated?: boolean
 }
 
 const ProductGrid = ({
@@ -36,7 +36,8 @@ const ProductGrid = ({
   isShowPrice = true,
   isShowAddCart = true,
   isShowTym = false,
-  handleClickTym
+  handleClickTym,
+  unrated = false
 }: IProductGridProps) => {
   const [colorData, setColorData] = useState<IVariantColor>(product.variantColors?.[0] ?? Object)
   const [variantByColor, setVariantByColor] = useState<IVariantProductColor[]>([])
@@ -147,6 +148,28 @@ const ProductGrid = ({
                   ))}
                 </div>
               </div>
+            )}
+            {isShowTym && (
+              <button
+                className='absolute -top-40  lg:right-5  md:right-4  sm:right-3 right-2 bg-transparent p-2 rounded-md lg:group-hover:top-5 md:group-hover:top-4 sm:group-hover:top-3 group-hover:top-2  z-50 transition-all duration-300 ease-linear'
+                onClick={handleRemoveFromWishlist}
+              >
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  className='w-8 h-8 text-red-500 hover:text-red-600 hover:scale-150 transition-all duration-200 bg-transparent'
+                />
+              </button>
+            )}
+            {unrated && (
+              <Link
+                to={`/product/detail/${product.slug}?orderId=${product.orderId}`}
+                className='absolute -top-40  lg:right-5  md:right-4  sm:right-3 right-2 bg-transparent p-2 rounded-md lg:group-hover:top-5 md:group-hover:top-4 sm:group-hover:top-3 group-hover:top-2  z-50 transition-all duration-300 ease-linear'
+              >
+                <FontAwesomeIcon
+                  icon={faCommentDots}
+                  className='w-10 h-10 text-white hover:text-white hover:scale-150 transition-all duration-200 bg-transparent'
+                />
+              </Link>
             )}
             {isShowTym && (
               <button

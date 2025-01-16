@@ -10,9 +10,9 @@ import ProductDetail from '@/pages/ProductDetail'
 import AccountInfo from '@/pages/Profile/AccountInfo'
 import OrderHistory from '@/pages/Profile/OrderHistory'
 import AddressNotes from '@/pages/Profile/AddressNotes'
-import RatingProducts from '@/pages/Profile/RatingProducts'
 import Wishlist from '@/pages/Profile/Wishlist'
 import About from '@/pages/About'
+import RateProduct from '@/pages/Profile/RateProduct'
 
 const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> => {
   return (props: P): ReactNode => (
@@ -24,8 +24,8 @@ const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> =>
 
 const Profile = Loadable(lazy(() => import('@/pages/Profile/Profile')))
 const Search = Loadable(lazy(() => import('@/pages/Search')))
+const Cart = Loadable(lazy(() => import('@/pages/Cart')))
 const Filter = Loadable(lazy(() => import('@/pages/Filter')))
-
 
 const AppRouter = () => {
   return useRoutes([
@@ -61,7 +61,7 @@ const AppRouter = () => {
             },
             {
               path: 'rating-products',
-              element: <RatingProducts />
+              element: <RateProduct />
             },
             {
               path: 'wishlist',
@@ -71,6 +71,7 @@ const AppRouter = () => {
         },
         {
           path: 'products',
+          element: <ProductDetail />,
           children: [
             {
               path: 'detail/:slug',
@@ -125,6 +126,24 @@ const AppRouter = () => {
             <>
               <PageTitle title='Trang thông tin' />
               <About />
+            </>
+          )
+        },
+        {
+          path: 'cart',
+          element: (
+            <>
+              <PageTitle title='Trang thanh toán' />
+              <Cart />
+            </>
+          )
+        },
+        {
+          path: 'cart',
+          element: (
+            <>
+              <PageTitle title='Trang thanh toán' />
+              <Cart />
             </>
           )
         }

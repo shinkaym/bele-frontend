@@ -40,11 +40,11 @@ const UpdateAddressModal: React.FunctionComponent<IUpdateAddressModalProps> = ({
   }
 
   return (
-    <Popup onPopupClose={onClose} className='lg:w-[800px] w-full'>
+    <Popup onPopupClose={onClose} className='lg:w-[800px] w-11/12'>
       <h2 className='text-2xl font-semibold mb-4'>Cập nhật địa chỉ</h2>
       <form onSubmit={handleSubmit(handleFormSubmit)}>
         <div className='grid grid-cols-2 gap-3 mb-5'>
-          <div className='mb-4'>
+          <div className='mb-4 col-span-2 md:col-span-1'>
             <Controller
               name='name'
               control={control}
@@ -60,7 +60,7 @@ const UpdateAddressModal: React.FunctionComponent<IUpdateAddressModalProps> = ({
             />
           </div>
 
-          <div className='mb-4'>
+          <div className='mb-4 col-span-2 md:col-span-1'>
             <Controller
               name='phoneNumber'
               control={control}
@@ -92,7 +92,7 @@ const UpdateAddressModal: React.FunctionComponent<IUpdateAddressModalProps> = ({
             />
           </div>
 
-          <div className='mb-4'>
+          <div className='mb-4 col-span-2 md:col-span-1'>
             <Controller
               name='isDefault'
               control={control}

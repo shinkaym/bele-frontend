@@ -12,8 +12,8 @@ interface CartState {
 
 const initialState: CartState = {
   data: {
-    totalMoney:0,
-    cartItems:[]
+    totalMoney: 0,
+    cartItems: []
   },
   loading: false,
   error: null
@@ -43,17 +43,23 @@ export const addToCart = createAsyncThunk(
 )
 
 // Thunk để xóa sản phẩm khỏi giỏ hàng
-export const removeFromCart = createAsyncThunk(
-  'cart/removeFromCart',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response: IApiResponse<{ cart: ICart }> = await cartApi.delete()
-      return response.data!.cart
-    } catch (error) {
-      return rejectWithValue('Failed to remove item from cart')
-    }
+export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (_, { rejectWithValue }) => {
+  try {
+    const response: IApiResponse<{ cart: ICart }> = await cartApi.delete()
+    return response.data!.cart
+  } catch (error) {
+    return rejectWithValue('Failed to remove item from cart')
   }
-)
+})
+
+export const subToCart = createAsyncThunk('cart/subToCart', async (variantId: number, { rejectWithValue }) => {
+  try {
+    const response: IApiResponse<{ cart: ICart }> = await cartApi.sub(variantId)
+    return response.data!.cart
+  } catch (error) {
+    return rejectWithValue('Failed to subtract item from cart')
+  }
+})
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -61,8 +67,8 @@ const cartSlice = createSlice({
   reducers: {
     resetCart: (state) => {
       state.data = {
-        totalMoney:0,
-        cartItems:[]
+        totalMoney: 0,
+        cartItems: []
       }
       state.error = null
       state.loading = false
@@ -108,6 +114,20 @@ const cartSlice = createSlice({
         state.data = action.payload
       })
       .addCase(removeFromCart.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload as string
+      })
+
+      // Sub to Cart
+      .addCase(subToCart.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(subToCart.fulfilled, (state, action: PayloadAction<ICart>) => {
+        state.loading = false
+        state.data = action.payload
+      })
+      .addCase(subToCart.rejected, (state, action) => {
         state.loading = false
         state.error = action.payload as string
       })

@@ -1,38 +1,68 @@
-import { IconChevronDown } from '../../components/icons'
-import ButtonCustom from '../../components/common/ButtonCustom'
-import OrderDetail from '../../components/common/OrderDetail'
+import React, { useEffect, useState } from 'react'
+import { IOrder } from '@/models/interfaces'
+import OrderItem from '@/components/common/OrderItem'
+import orderApi from '@/apis/modules/order.api'
+import { UToast } from '@/utils/swal'
+import { EToastOption } from '@/models/enum'
+// import { mockOrders } from '@/constants'
 
-const OrderHistory = () => {
+const OrderHistoryPage: React.FC = () => {
+  const [orders, setOrders] = useState<IOrder[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchOrders()
+  }, [])
+
+  const fetchOrders = async () => {
+    try {
+      const res = await orderApi.getAll()
+      const orderList: Array<{ id: number; status: number }> = Array.isArray(res.data?.orders) ? res.data.orders : []
+
+      const detailedOrders = await Promise.all(
+        orderList.map(async (order: { id: number; status: number }) => {
+          const detailRes = await orderApi.getOne(order.id)
+          return detailRes.data
+        })
+      )
+
+      setOrders(detailedOrders.filter((order): order is IOrder => order !== undefined))
+      // setOrders(mockOrders)
+    } catch {
+      UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleCancelOrder = async (orderId: number) => {
+    try {
+      await orderApi.cancel(orderId)
+      fetchOrders()
+    } catch {
+      UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra')
+
+    }
+  }
+
+  if (loading) {
+    return <p>Loading...</p>
+  }
+
   return (
-    <div className='md:w-2/3 lg:w-full md:mx-auto lg:mx-0'>
-      <h3 className='font-medium text-3xl tracking-wider mb-3 lg:mb-5'>Lịch sử đơn hàng</h3>
-      <div className='flex flex-col items-center gap-4'>
-        <div className='border border-black rounded-lg w-full h-[80px] flex items-center justify-between px-5 cursor-pointer'>
-          <div className='flex items-center justify-between gap-3'>
-            <h4>ĐƠN HÀNG #12345</h4>
-            <ButtonCustom className='h-[30px] md:h-[40px] text-yellow-500 border-yellow-500 hover:text-yellow-500 hover:bg-transparent'>
-              Đang giao
-            </ButtonCustom>
-          </div>
-          <div>
-            <IconChevronDown className='w-6 h-6' />
-          </div>
+    <div className='p-4'>
+      <h1 className='text-2xl font-bold mb-4'>Lịch sử đơn hàng</h1>
+      {orders.length === 0 ? (
+        <p>Không có đơn hàng nào.</p>
+      ) : (
+        <div className='space-y-4'>
+          {orders.map((order) => (
+            <OrderItem key={order.id} order={order} onCancelOrder={handleCancelOrder} />
+          ))}
         </div>
-        <div className='border border-black rounded-lg w-full h-[80px] flex items-center justify-between px-5 cursor-pointer'>
-          <div className='flex items-center justify-between gap-0 md:gap-3'>
-            <h4>ĐƠN HÀNG #12345</h4>
-            <ButtonCustom className='h-[30px] md:h-[40px] text-blue-500 border-blue-500 hover:text-blue-500 hover:bg-transparent'>
-              Chờ xác nhận
-            </ButtonCustom>
-          </div>
-          <div>
-            <IconChevronDown className='w-6 h-6' />
-          </div>
-        </div>
-        <OrderDetail />
-      </div>
+      )}
     </div>
   )
 }
 
-export default OrderHistory
+export default OrderHistoryPage
