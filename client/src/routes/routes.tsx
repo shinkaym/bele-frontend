@@ -6,6 +6,7 @@ import Blog from '@/pages/Blog'
 import Contact from '@/pages/Contact'
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
+import ProductDetail from '@/pages/ProductDetail'
 import AccountInfo from '@/pages/Profile/AccountInfo'
 import OrderHistory from '@/pages/Profile/OrderHistory'
 import AddressNotes from '@/pages/Profile/AddressNotes'
@@ -67,6 +68,22 @@ const AppRouter = () => {
             }
           ]
         },
+        {
+          path: 'products',
+          element: <ProductDetail/>,
+          children: [
+           {
+            path: 'detail/:slug',
+            element: (
+              <>
+                <PageTitle title='Trang chi tiết sản phẩm' />
+                <ProductDetail/>,
+              </>
+            ),
+           }
+          ]
+        }
+        ,
         {
           path: 'search',
           element: (
