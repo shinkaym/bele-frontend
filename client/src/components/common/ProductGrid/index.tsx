@@ -14,6 +14,8 @@ import RadioColorGroup from '../RadioColorGroup'
 import Tag from '../Tag'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import productApi from '@/apis/modules/product.api'
 
 interface IProductGridProps {
   product: IProduct
@@ -22,6 +24,8 @@ interface IProductGridProps {
   isShowColor?: boolean
   isShowPrice?: boolean
   isShowAddCart?: boolean
+  isShowTym?: boolean
+  handleClickTym?: () => void
 }
 
 const ProductGrid = ({
@@ -30,7 +34,9 @@ const ProductGrid = ({
   className,
   isShowColor = true,
   isShowPrice = true,
-  isShowAddCart = true
+  isShowAddCart = true,
+  isShowTym = false,
+  handleClickTym
 }: IProductGridProps) => {
   const [colorData, setColorData] = useState<IVariantColor>(product.variantColors?.[0] ?? Object)
   const [variantByColor, setVariantByColor] = useState<IVariantProductColor[]>([])
@@ -72,7 +78,18 @@ const ProductGrid = ({
     }
     fetchApi()
   }, [colorData, product.id])
-  // console.log(product.tags[0]?.name);
+
+  const handleRemoveFromWishlist = async () => {
+    try {
+      const res: IApiResponse<void> = await productApi.removeFromWishlist(product.id)
+      if (res.status === 200) {
+        if (handleClickTym) handleClickTym()
+        UToast(EToastOption.SUCCESS, 'Đã xóa sản phẩm khỏi danh sách yêu thích!')
+      }
+    } catch {
+      UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra khi xóa sản phẩm khỏi danh sách yêu thích!')
+    }
+  }
   return (
     <>
       {Object.keys(product).length > 0 && variantByColor.length > 0 && Object.keys(colorData).length > 0 ? (
@@ -130,6 +147,17 @@ const ProductGrid = ({
                   ))}
                 </div>
               </div>
+            )}
+            {isShowTym && (
+              <button
+                className='absolute -top-40  lg:right-5  md:right-4  sm:right-3 right-2 bg-transparent p-2 rounded-md lg:group-hover:top-5 md:group-hover:top-4 sm:group-hover:top-3 group-hover:top-2  z-50 transition-all duration-300 ease-linear'
+                onClick={handleRemoveFromWishlist}
+              >
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  className='w-8 h-8 text-red-500 hover:text-red-600 hover:scale-150 transition-all duration-200 bg-transparent'
+                />
+              </button>
             )}
           </div>
           {isShowColor && Object.keys(Object(colorData)).length > 0 && (

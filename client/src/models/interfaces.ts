@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IApiResponse<T> {
   status: number
   message: string
@@ -101,13 +102,8 @@ export interface IVariantProductColor {
 }
 
 export interface IPagination {
-  currentPage: number // Trang hiện tại
-  totalPage: number // Tổng số trang
-  totalRecords?: number // Tổng số bản ghi
-  onPageChange?: (page: number) => void // Hàm gọi khi chuyển trang
-  siblingCount?: number // Số lượng trang liền kề hiển thị (mặc định 1)
-  className?: string // Lớp CSS tùy chỉnh
-  activeColor?: string
+  currentPage: number
+  totalPage: number
 }
 
 //Setting
@@ -309,25 +305,25 @@ export interface IContactAddResponse {
 
 //Hoang
 export interface IProductDetail {
-  id:number,
-  name:string,
-  view:number,
-  like: number,
-  variants:IVariantDetail[],
-  discount:number,
-  description:string,
-  rates:IRateDetail[]
+  id: number
+  name: string
+  view: number
+  like: number
+  variants: IVariantDetail[]
+  discount: number
+  description: string
+  rates: IRateDetail[]
 }
-export interface IVariantDetail{
-  id:number,
-  price:number,
-  thumbnail:string,
-  attributes:any
+export interface IVariantDetail {
+  id: number
+  price: number
+  thumbnail: string
+  attributes: any
 }
-export interface IRateDetail{
-  fullName:string,
-  star:number,
-  content:string,
-  createdAt:string,
+export interface IRateDetail {
+  fullName: string
+  star: number
+  content: string
+  createdAt: string
 }
 //end

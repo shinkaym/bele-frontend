@@ -34,6 +34,7 @@ const Home = memo(() => {
       try {
         const res: IApiResponse<{ products: IProduct[] }> = await productApi.list({ TagId: tag },{})
         if (res.data && res.status === 200) {
+          console.log('🚀 ~ fetchApi ~ res:', res)
           setProducts(res.data.products)
         }
       } catch (error) {

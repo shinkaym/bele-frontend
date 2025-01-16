@@ -13,10 +13,8 @@ import IconPlay from '@/components/icons/IconPlay'
 import { TMenuItem, TMenuProfileItem } from '@/models/types'
 
 import { EMenuProfileItemId } from '@/models/enum'
-import { IProduct } from '@/models/interfaces'
+import { IApiResponse, IPagination, IProduct } from '@/models/interfaces'
 import { faHeart, faBagShopping, faGlobe, faStar, faUser, faPowerOff } from '@fortawesome/free-solid-svg-icons'
-
-
 
 export const logoList = {
   mainLogo: {
@@ -2192,5 +2190,613 @@ export const menuProfileItems: TMenuProfileItem[] = [
 
 export const PAGINATION_CONFIG = {
   DEFAULT_LIMIT: 5,
+  DEFAULT_WISHLIST_LIMIT: 9,
   DEFAULT_PAGE: 1
+}
+
+export const test: IApiResponse<{ products: IProduct[]; pagination: IPagination }> = {
+  status: 200,
+  data: {
+    products: [
+{
+  id: 1,
+  name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
+  categoryStatus: 1,
+  description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
+  discount: {
+    id: 1,
+    name: 'No Discount',
+    discountValue: 0,
+    expireDate: '9999-12-31T23:59:59.9999999',
+    status: 1,
+    createdAt: '2025-01-16T00:16:59.5582653',
+    updatedAt: '0001-01-01T00:00:00'
+  },
+  basePrice: 209000,
+  slug: 'ao-giu-nhiet-ex-warm-modal-co-cao',
+  thumbnail:
+    'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+  view: 0,
+  like: 0,
+  status: 1,
+  rateAVG: [5, 5],
+  updatedAt: '2025-01-16T00:16:59.6025446',
+  createdAt: '2025-01-16T00:16:59.6025153',
+  variantColors: [
+    {
+      variantId: 1,
+      color: '#000',
+      thumbnail:
+        'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+      price: 209000,
+      colorId: 1
+    },
+    {
+      variantId: 2,
+      color: '#000',
+      thumbnail:
+        'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+      price: 209000,
+      colorId: 1
+    },
+    {
+      variantId: 3,
+      color: '#fff',
+      thumbnail:
+        'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+      price: 209000,
+      colorId: 2
+    },
+    {
+      variantId: 4,
+      color: '#fff',
+      thumbnail:
+        'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+      price: 209000,
+      colorId: 2
+    }
+  ],
+
+  tags: [
+    {
+      id: 1,
+      name: 'New'
+    }
+  ]
+},
+      {
+        id: 2,
+        name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
+        categoryStatus: 1,
+        description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
+        discount: {
+          id: 1,
+          name: 'No Discount',
+          discountValue: 0,
+          expireDate: '9999-12-31T23:59:59.9999999',
+          status: 1,
+          createdAt: '2025-01-16T00:16:59.5582653',
+          updatedAt: '0001-01-01T00:00:00'
+        },
+        basePrice: 209000,
+        slug: 'ao-giu-nhiet-ex-warm-modal-co-cao',
+        thumbnail:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        view: 0,
+        like: 0,
+        status: 1,
+        rateAVG: [5, 5],
+        updatedAt: '2025-01-16T00:16:59.6025446',
+        createdAt: '2025-01-16T00:16:59.6025153',
+        variantColors: [
+          {
+            variantId: 1,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 2,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 3,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          },
+          {
+            variantId: 4,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          }
+        ],
+
+        tags: [
+          {
+            id: 1,
+            name: 'New'
+          }
+        ]
+      },
+      {
+        id: 3,
+        name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
+        categoryStatus: 1,
+        description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
+        discount: {
+          id: 1,
+          name: 'No Discount',
+          discountValue: 0,
+          expireDate: '9999-12-31T23:59:59.9999999',
+          status: 1,
+          createdAt: '2025-01-16T00:16:59.5582653',
+          updatedAt: '0001-01-01T00:00:00'
+        },
+        basePrice: 209000,
+        slug: 'ao-giu-nhiet-ex-warm-modal-co-cao',
+        thumbnail:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        view: 0,
+        like: 0,
+        status: 1,
+        rateAVG: [5, 5],
+        updatedAt: '2025-01-16T00:16:59.6025446',
+        createdAt: '2025-01-16T00:16:59.6025153',
+        variantColors: [
+          {
+            variantId: 1,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 2,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 3,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          },
+          {
+            variantId: 4,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          }
+        ],
+
+        tags: [
+          {
+            id: 1,
+            name: 'New'
+          }
+        ]
+      },
+      {
+        id: 4,
+        name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
+        categoryStatus: 1,
+        description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
+        discount: {
+          id: 1,
+          name: 'No Discount',
+          discountValue: 0,
+          expireDate: '9999-12-31T23:59:59.9999999',
+          status: 1,
+          createdAt: '2025-01-16T00:16:59.5582653',
+          updatedAt: '0001-01-01T00:00:00'
+        },
+        basePrice: 209000,
+        slug: 'ao-giu-nhiet-ex-warm-modal-co-cao',
+        thumbnail:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        view: 0,
+        like: 0,
+        status: 1,
+        rateAVG: [5, 5],
+        updatedAt: '2025-01-16T00:16:59.6025446',
+        createdAt: '2025-01-16T00:16:59.6025153',
+        variantColors: [
+          {
+            variantId: 1,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 2,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 3,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          },
+          {
+            variantId: 4,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          }
+        ],
+
+        tags: [
+          {
+            id: 1,
+            name: 'New'
+          }
+        ]
+      },
+      {
+        id: 5,
+        name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
+        categoryStatus: 1,
+        description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
+        discount: {
+          id: 1,
+          name: 'No Discount',
+          discountValue: 0,
+          expireDate: '9999-12-31T23:59:59.9999999',
+          status: 1,
+          createdAt: '2025-01-16T00:16:59.5582653',
+          updatedAt: '0001-01-01T00:00:00'
+        },
+        basePrice: 209000,
+        slug: 'ao-giu-nhiet-ex-warm-modal-co-cao',
+        thumbnail:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        view: 0,
+        like: 0,
+        status: 1,
+        rateAVG: [5, 5],
+        updatedAt: '2025-01-16T00:16:59.6025446',
+        createdAt: '2025-01-16T00:16:59.6025153',
+        variantColors: [
+          {
+            variantId: 1,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 2,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 3,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          },
+          {
+            variantId: 4,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          }
+        ],
+
+        tags: [
+          {
+            id: 1,
+            name: 'New'
+          }
+        ]
+      },
+      {
+        id: 6,
+        name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
+        categoryStatus: 1,
+        description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
+        discount: {
+          id: 1,
+          name: 'No Discount',
+          discountValue: 0,
+          expireDate: '9999-12-31T23:59:59.9999999',
+          status: 1,
+          createdAt: '2025-01-16T00:16:59.5582653',
+          updatedAt: '0001-01-01T00:00:00'
+        },
+        basePrice: 209000,
+        slug: 'ao-giu-nhiet-ex-warm-modal-co-cao',
+        thumbnail:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        view: 0,
+        like: 0,
+        status: 1,
+        rateAVG: [5, 5],
+        updatedAt: '2025-01-16T00:16:59.6025446',
+        createdAt: '2025-01-16T00:16:59.6025153',
+        variantColors: [
+          {
+            variantId: 1,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 2,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 3,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          },
+          {
+            variantId: 4,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          }
+        ],
+
+        tags: [
+          {
+            id: 1,
+            name: 'New'
+          }
+        ]
+      },
+      {
+        id: 7,
+        name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
+        categoryStatus: 1,
+        description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
+        discount: {
+          id: 1,
+          name: 'No Discount',
+          discountValue: 0,
+          expireDate: '9999-12-31T23:59:59.9999999',
+          status: 1,
+          createdAt: '2025-01-16T00:16:59.5582653',
+          updatedAt: '0001-01-01T00:00:00'
+        },
+        basePrice: 209000,
+        slug: 'ao-giu-nhiet-ex-warm-modal-co-cao',
+        thumbnail:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        view: 0,
+        like: 0,
+        status: 1,
+        rateAVG: [5, 5],
+        updatedAt: '2025-01-16T00:16:59.6025446',
+        createdAt: '2025-01-16T00:16:59.6025153',
+        variantColors: [
+          {
+            variantId: 1,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 2,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 3,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          },
+          {
+            variantId: 4,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          }
+        ],
+
+        tags: [
+          {
+            id: 1,
+            name: 'New'
+          }
+        ]
+      },
+      {
+        id: 8,
+        name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
+        categoryStatus: 1,
+        description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
+        discount: {
+          id: 1,
+          name: 'No Discount',
+          discountValue: 0,
+          expireDate: '9999-12-31T23:59:59.9999999',
+          status: 1,
+          createdAt: '2025-01-16T00:16:59.5582653',
+          updatedAt: '0001-01-01T00:00:00'
+        },
+        basePrice: 209000,
+        slug: 'ao-giu-nhiet-ex-warm-modal-co-cao',
+        thumbnail:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        view: 0,
+        like: 0,
+        status: 1,
+        rateAVG: [5, 5],
+        updatedAt: '2025-01-16T00:16:59.6025446',
+        createdAt: '2025-01-16T00:16:59.6025153',
+        variantColors: [
+          {
+            variantId: 1,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 2,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 3,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          },
+          {
+            variantId: 4,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          }
+        ],
+
+        tags: [
+          {
+            id: 1,
+            name: 'New'
+          }
+        ]
+      },
+      {
+        id: 9,
+        name: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao',
+        categoryStatus: 1,
+        description: 'Áo giữ nhiệt Ex-Warm Lenzing Modal cổ cao cho mùa đông ấm áp.',
+        discount: {
+          id: 1,
+          name: 'No Discount',
+          discountValue: 0,
+          expireDate: '9999-12-31T23:59:59.9999999',
+          status: 1,
+          createdAt: '2025-01-16T00:16:59.5582653',
+          updatedAt: '0001-01-01T00:00:00'
+        },
+        basePrice: 209000,
+        slug: 'ao-giu-nhiet-ex-warm-modal-co-cao',
+        thumbnail:
+          'https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+        view: 0,
+        like: 0,
+        status: 1,
+        rateAVG: [5, 5],
+        updatedAt: '2025-01-16T00:16:59.6025446',
+        createdAt: '2025-01-16T00:16:59.6025153',
+        variantColors: [
+          {
+            variantId: 1,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 2,
+            color: '#000',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-DEN.jpg',
+            price: 209000,
+            colorId: 1
+          },
+          {
+            variantId: 3,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          },
+          {
+            variantId: 4,
+            color: '#fff',
+            thumbnail:
+              'https://media3.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85/uploads/November2024/24CMHU.GN003_-TRANG.jpg',
+            price: 209000,
+            colorId: 2
+          }
+        ],
+
+        tags: [
+          {
+            id: 1,
+            name: 'New'
+          }
+        ]
+      }
+    ],
+    pagination: {
+      currentPage: 1,
+      totalPage: 1
+    }
+  },
+  message: 'Get products success !'
 }
