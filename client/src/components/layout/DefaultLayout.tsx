@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import Footer from './Partials/Footer'
 import Header from './Partials/Header'
+import Chat from './Partials/Chat'
 
 function DefaultLayout() {
 
@@ -10,6 +11,7 @@ function DefaultLayout() {
       <main>
         <Outlet />
       </main>
+      <Chat/>
       <Footer />  
     </div>
   )

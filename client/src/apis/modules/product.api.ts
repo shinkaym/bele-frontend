@@ -11,8 +11,14 @@ const productEndpoints = {
 }
 
 const productApi = {
-  async list(params: { TagId: number }): Promise<IApiResponse<{ products: IProduct[] }>> {
-    return axiosPublic.get(productEndpoints.list, { params: { ...params } })
+  async list(filter: {
+    TagId?: number
+    CategoryId?: number
+    Color?: string
+    Size?: string
+    CategoryRefId?:number
+  },params:{page?:number;limit?:number}): Promise<IApiResponse<{ products: IProduct[] ; pagination:IPagination }>> {
+    return axiosPublic.get(productEndpoints.list, { params: { ...filter,...params } })
   },
   async detail(params: { Slug: string }): Promise<IApiResponse<{ product: IProductDetail }>> {
     return axiosPublic.get(productEndpoints.hdetail(params.Slug))

@@ -8,8 +8,9 @@ export interface ICategory {
   id: number
   name: string
   parentName?: string
-  referenceCategory: ICategory[] | []
+  referenceCategory?: ICategory[] | []
   slug: string
+  type?:string
 }
 
 export interface IDiscount {
@@ -21,6 +22,17 @@ export interface IDiscount {
   createdAt: string
   updatedAt: string
 }
+
+export interface IAttributeValue {
+  id: number;
+  name: string;
+  value: string;
+  attributeType: string | null; // Giá trị có thể là chuỗi hoặc null
+  status: number; // Có thể thay đổi thành enum nếu bạn có danh sách trạng thái cụ thể
+  createdAt: string; // ISO datetime dưới dạng chuỗi
+  updatedAt: string; // ISO datetime dưới dạng chuỗi
+}
+
 
 export interface IColor {
   id: number

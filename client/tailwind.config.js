@@ -89,6 +89,8 @@ module.exports = {
   },
   safelist: [
     'bg-blue-primary',
+    'before:border-blue-primary',
+    'before:border-gray-600',
     'blue-primary-light',
     'border-black',
     'bg-white',

@@ -14,7 +14,6 @@ import RatingProducts from '@/pages/Profile/RatingProducts'
 import Wishlist from '@/pages/Profile/Wishlist'
 import About from '@/pages/About'
 
-
 const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> => {
   return (props: P): ReactNode => (
     <Suspense fallback={<LoadingScreen />}>
@@ -25,6 +24,8 @@ const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> =>
 
 const Profile = Loadable(lazy(() => import('@/pages/Profile/Profile')))
 const Search = Loadable(lazy(() => import('@/pages/Search')))
+const Filter = Loadable(lazy(() => import('@/pages/Filter')))
+
 
 const AppRouter = () => {
   return useRoutes([
@@ -70,20 +71,27 @@ const AppRouter = () => {
         },
         {
           path: 'products',
-          element: <ProductDetail/>,
           children: [
-           {
-            path: 'detail/:slug',
-            element: (
-              <>
-                <PageTitle title='Trang chi tiết sản phẩm' />
-                <ProductDetail/>,
-              </>
-            ),
-           }
+            {
+              path: 'detail/:slug',
+              element: (
+                <>
+                  <PageTitle title='Trang chi tiết sản phẩm' />
+                  <ProductDetail />,
+                </>
+              )
+            },
+            {
+              path: 'filter/:slug?',
+              element: (
+                <>
+                  <PageTitle title='Trang sản phẩm' />
+                  <Filter />,
+                </>
+              )
+            }
           ]
-        }
-        ,
+        },
         {
           path: 'search',
           element: (

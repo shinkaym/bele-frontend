@@ -1,11 +1,11 @@
-import { IOption } from '@/models/interfaces'
+import { ICategory, IOption } from '@/models/interfaces'
 import React, { ForwardedRef, useEffect, useState } from 'react'
 
 interface RadioGroupProps {
-  options: IOption[]
+  options: ICategory[]
   name: string // Name attribute to group radios
   selectedValue?: string
-  onChange?: (value: string) => void
+  onChange?: (value: string,type?:string) => void
   className?: string
   layout?: 'vertical' | 'horizontal' // Prop để xác định kiểu hiển thị
   label?: string
@@ -21,11 +21,10 @@ const RadioGroup = (
     setSelected(selectedValue || '')
   }, [selectedValue])
 
-  const handleChange = (value: string) => {
-    console.log('🚀 ~ handleChange ~ value:', value)
+  const handleChange = (value: string, type?: string) => {
     setSelected(value)
     if (onChange) {
-      onChange(value)
+      onChange(value,type)
     }
   }
 
@@ -35,35 +34,37 @@ const RadioGroup = (
       <div ref={ref} className={`${layout === 'horizontal' ? 'flex flex-wrap' : ''}`}>
         {options.map((option) => (
           <label
-            key={name + option?.value}
-            htmlFor={name + option?.value.toString()}
-            className={`flex cursor-pointer select-none items-center mb-2 ${layout === 'horizontal' ? 'mr-6' : ''}`}
+            key={name + option?.id}
+            htmlFor={name + option?.id.toString()}
+            className={`flex cursor-pointer select-none items-center mb-2 text-sm ${
+              layout === 'horizontal' ? 'mr-6' : ''
+            }`}
           >
             <div className='relative'>
               <input
                 type='radio'
-                id={name + option?.value.toString()}
+                id={name + option?.id.toString()}
                 name={name}
-                value={option?.value.toString()}
-                checked={selected === option?.value.toString()}
-                onChange={() => handleChange(option?.value.toString())}
+                value={option?.id.toString()}
+                checked={selected === option?.id.toString()}
+                onChange={() => handleChange(option?.id.toString(), option.type)}
                 className='sr-only'
               />
               <div
                 className={`mr-2 flex h-5 w-5 items-center justify-center rounded-full border ${
-                  selected === option?.value.toString() ? 'border-black' : 'border-gray-300'
+                  selected === option?.id.toString() ? 'border-black' : 'border-gray-300'
                 }`}
               >
                 <span
                   className={`h-2.5 w-2.5 rounded-full bg-transparent ${
-                    selected === option?.value.toString() ? '!bg-black' : ''
+                    selected === option?.id.toString() ? '!bg-blue-primary' : ''
                   }`}
                 >
                   {' '}
                 </span>
               </div>
             </div>
-            {option?.label}
+            {option?.name}
           </label>
         ))}
       </div>
