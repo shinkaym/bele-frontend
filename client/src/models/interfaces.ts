@@ -258,3 +258,28 @@ export interface IUpdateInfoFormData {
   sex: string
   birthday: Date
 }
+
+//Hoang
+export interface IProductDetail {
+  id:number,
+  name:string,
+  view:number,
+  like: number,
+  variants:IVariantDetail[],
+  discount:number,
+  description:string,
+  rates:IRateDetail[]
+}
+export interface IVariantDetail{
+  id:number,
+  price:number,
+  thumbnail:string,
+  attributes:any
+}
+export interface IRateDetail{
+  fullName:string,
+  star:number,
+  content:string,
+  createdAt:string,
+}
+//end

@@ -10,6 +10,7 @@ import OrderHistory from '@/pages/OrderHistory'
 import AddressNotes from '@/pages/AddressNotes'
 import RatingProducts from '@/pages/RatingProducts'
 import Wishlist from '@/pages/Wishlist'
+import ProductDetail from '@/pages/ProductDetail'
 
 const Loadable = <P extends object>(Component: ComponentType<P>): React.FC<P> => {
   return (props: P): ReactNode => (
@@ -64,6 +65,22 @@ const AppRouter = () => {
             }
           ]
         },
+        {
+          path: 'products',
+          element: <ProductDetail/>,
+          children: [
+           {
+            path: 'detail/:slug',
+            element: (
+              <>
+                <PageTitle title='Trang chi tiết sản phẩm' />
+                <ProductDetail/>,
+              </>
+            ),
+           }
+          ]
+        }
+        ,
         {
           path: 'search',
           element: (
