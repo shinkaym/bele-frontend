@@ -5,10 +5,9 @@ import { addToCart, fetchCart, removeFromCart, subToCart } from '@/redux/slices/
 import { fetchCustomerInfo } from '@/redux/slices/customer.slice'
 import Pagination from '@/components/common/Pagination'
 import { IOption } from '@/models/interfaces'
-import Input from '@/components/common/Forms/Input'
-import ForwardedCheckboxGroup from '@/components/common/Forms/CheckboxGroup'
-import ForwardedRadioGroup2 from '@/components/common/Forms/RadioGroup2'
-import SelectGroup from '@/components/common/Forms/SelectGroup'
+import InputCheckout from '@/components/common/Forms/InputCheckout'
+import ForwardedCheckboxGroupCheckout from '@/components/common/Forms/CheckboxGroupCheckout'
+import SelectGroupCheckout from '@/components/common/Forms/SelectGroupCheckout'
 import { IAddress } from '@/models/interfaces'
 import { fetchAddresses } from '@/redux/slices/address.slice'
 import { z } from 'zod'
@@ -24,6 +23,9 @@ import { faXmarkCircle, faSubtract, faPlus } from '@fortawesome/free-solid-svg-i
 import { calculateDiscount, calculateSubtotal, calculateTotal } from '@/utils'
 import { PAGINATION_CONFIG } from '@/constants'
 import Swal from 'sweetalert2'
+import ForwardedRadioGroupPayMethod from '@/components/common/Forms/RadioGroupPayMethod'
+import TextareaCheckout from '@/components/common/Forms/TextareaCheckout'
+import ButtonCustom from '@/components/common/ButtonCustom'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dynamicFormSchema = (useCustomAddress: boolean, addresses: IAddress[]) => {
@@ -158,7 +160,7 @@ const Cart: React.FC = () => {
       } else {
         Swal.fire({
           title: 'Xác nhận đặt hàng',
-          icon: 'success',
+          icon: 'warning',
           showCancelButton: true,
           confirmButtonText: 'Xác nhận',
           cancelButtonText: 'Hủy',
@@ -190,9 +192,13 @@ const Cart: React.FC = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = cart.cartItems.slice(indexOfFirstItem, indexOfLastItem)
 
-  const paymentMethods: IOption[] = [
-    { value: 'VNPAY', label: 'Thanh toán VNPAY' },
-    { value: 'COD', label: 'Thanh toán khi nhận hàng' }
+  const paymentMethods: {
+    value: string
+    label: string
+    icon: React.ReactNode
+  }[] = [
+    { value: 'VNPAY', label: 'Thanh toán VNPAY', icon: <></> },
+    { value: 'COD', label: 'Thanh toán khi nhận hàng', icon: <></> }
   ]
 
   const sortedAddresses = [...addresses].sort((a, b) => {
@@ -209,17 +215,17 @@ const Cart: React.FC = () => {
   const customAddressOption: IOption[] = [{ value: 'customAddress', label: 'Nhập địa chỉ khác' }]
 
   return (
-    <div className='mx-auto px-20 py-4'>
+    <div className='mx-auto px-4 md:px-20 py-1 md:py-4'>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
         <div className='space-y-6'>
-          <h2 className='text-2xl font-bold'>Thông tin thanh toán</h2>
+          <h2 className='text-2xl font-bold'>Thông tin đặt hàng</h2>
           <div className='grid grid-cols-2 gap-3'>
             <div className='mb-4 col-span-2 lg:col-span-1'>
               <Controller
                 name='fullName'
                 control={control}
                 render={({ field }) => (
-                  <Input
+                  <InputCheckout
                     label='Họ và tên'
                     placeholder='Nhập họ và tên...'
                     name='fullName'
@@ -235,7 +241,7 @@ const Cart: React.FC = () => {
                 name='phoneNumber'
                 control={control}
                 render={({ field }) => (
-                  <Input
+                  <InputCheckout
                     label='Số điện thoại'
                     name='phoneNumber'
                     placeholder='Nhập số điện thoại...'
@@ -248,7 +254,7 @@ const Cart: React.FC = () => {
             </div>
             {addresses.length > 0 ? (
               <div className='mb-4 col-span-2'>
-                <SelectGroup
+                <SelectGroupCheckout
                   options={addressOptions}
                   name='address'
                   selectedValues={selectedAddressName ? [selectedAddressName] : []}
@@ -263,7 +269,7 @@ const Cart: React.FC = () => {
             )}
             {addresses.length > 0 && (
               <div className='mb-4 col-span-2 lg:col-span-1'>
-                <ForwardedCheckboxGroup
+                <ForwardedCheckboxGroupCheckout
                   options={customAddressOption}
                   name='customAddress'
                   selectedValues={useCustomAddress ? ['customAddress'] : []}
@@ -275,28 +281,37 @@ const Cart: React.FC = () => {
             )}
 
             {(useCustomAddress || addresses.length < 1) && (
-              <div className='mb-4 col-span-2'>
-                <Controller
-                  name='address'
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      label='Địa chỉ'
-                      name='address'
-                      value={field.value}
-                      onChange={field.onChange}
-                      error={errors.address?.message}
-                    />
-                  )}
-                />
+              <div className='bg-[#f1f1f1] col-span-2 p-5 pt-9 rounded-lg'>
+                <div className='mb-4 '>
+                  <Controller
+                    name='address'
+                    control={control}
+                    render={({ field }) => (
+                      <InputCheckout
+                        name='address'
+                        value={field.value}
+                        onChange={field.onChange}
+                        error={errors.address?.message}
+                        placeholder='Địa chỉ (ví dụ: 103 Vạn Phúc, phường Vạn Phúc)'
+                        invert
+                      />
+                    )}
+                  />
+                </div>
               </div>
             )}
             <div className='mb-4 col-span-2'>
-              <Input label='Ghi chú' name='note' value={note} onChange={(e) => setNote(e.target.value)} />
+              <TextareaCheckout
+                label='Ghi chú'
+                name='note'
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                placeholder='Ghi chú thêm (Ví dụ: Giao hàng giờ hành chính)'
+              />
             </div>
 
-            <div className='mb-4'>
-              <ForwardedRadioGroup2
+            <div className='mb-4 col-span-2'>
+              <ForwardedRadioGroupPayMethod
                 options={paymentMethods}
                 name='paymentMethod'
                 selectedValue={paymentMethod}
@@ -306,12 +321,6 @@ const Cart: React.FC = () => {
               />
             </div>
           </div>
-          <button
-            onClick={handleSubmit(onSubmit)}
-            className='bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600'
-          >
-            ĐẶT HÀNG
-          </button>
         </div>
 
         <div className='space-y-6'>
@@ -397,7 +406,7 @@ const Cart: React.FC = () => {
                     totalPage={Math.ceil(cart.cartItems.length / itemsPerPage)}
                     onPageChange={handlePageChange}
                   />
-                  <div className='space-y-4'>
+                  <div className='space-y-4 flex flex-col ml-auto max-w-[500px]'>
                     <div className='flex justify-between'>
                       <span>Tạm tính:</span>
                       <span>
@@ -416,12 +425,17 @@ const Cart: React.FC = () => {
                         <FormattedNumber value={0} style='currency' currency='VND' />
                       </span>
                     </div>
-                    <div className='flex justify-between font-bold'>
+                    <div className='flex justify-between font-bold border-t-2 pt-4'>
                       <span>Tổng cộng:</span>
                       <span>
                         <FormattedNumber value={calculateTotal(cart)} style='currency' currency='VND' />
                       </span>
                     </div>
+                  </div>
+                  <div className='w-full flex justify-end'>
+                    <ButtonCustom className='font-normal px-16' inverted onClick={handleSubmit(onSubmit)}>
+                      THANH TOÁN
+                    </ButtonCustom>
                   </div>
                 </>
               )}
