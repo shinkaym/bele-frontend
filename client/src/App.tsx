@@ -7,8 +7,17 @@ import AppRouter from './routes/routes'
 import { fetchCart, resetCart } from './redux/slices/cart.slice'
 import { fetchSettings } from './redux/slices/setting.slice'
 import Loader from './components/common/Loader'
+import { connectSocket,socket,disconnectSocket } from './sockets/connect'
 
 function App() {
+  useEffect(() => {
+    // Kết nối socket khi App mount
+    connectSocket();
+    return () => {
+      disconnectSocket();
+    };
+  }, []);
+
   const dispatch = useDispatch<AppDispatch>()
   const { isAuthenticated, error } = useSelector((state: RootState) => state.auth)
 

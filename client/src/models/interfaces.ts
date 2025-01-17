@@ -10,7 +10,7 @@ export interface ICategory {
   parentName?: string
   referenceCategory?: ICategory[] | []
   slug: string
-  type?:string
+  type?: string
 }
 
 export interface IDiscount {
@@ -24,15 +24,14 @@ export interface IDiscount {
 }
 
 export interface IAttributeValue {
-  id: number;
-  name: string;
-  value: string;
-  attributeType: string | null; // Giá trị có thể là chuỗi hoặc null
-  status: number; // Có thể thay đổi thành enum nếu bạn có danh sách trạng thái cụ thể
-  createdAt: string; // ISO datetime dưới dạng chuỗi
-  updatedAt: string; // ISO datetime dưới dạng chuỗi
+  id: number
+  name: string
+  value: string
+  attributeType: string | null // Giá trị có thể là chuỗi hoặc null
+  status: number // Có thể thay đổi thành enum nếu bạn có danh sách trạng thái cụ thể
+  createdAt: string // ISO datetime dưới dạng chuỗi
+  updatedAt: string // ISO datetime dưới dạng chuỗi
 }
-
 
 export interface IColor {
   id: number
@@ -344,6 +343,22 @@ export interface IVariantDetail {
   price: number
   thumbnail: string
   attributes: any
+  name: string
+  view: number
+  like: number
+  wishLists: Array<number>
+  categoryId: number
+  variants: IVariantDetail[]
+  discount: number
+  description: string
+  rates: IRateDetail[]
+}
+export interface IVariantDetail {
+  id: number
+  price: number
+  stock: number
+  thumbnail: string
+  attributes: any
 }
 export interface IRateDetail {
   fullName: string
@@ -386,3 +401,16 @@ export interface IOrderProduct {
   price: number
   disPrice: number
 }
+export interface IRateAddDetail {
+  productId: number
+  orderId: number
+  star: number
+  content: string
+}
+
+export interface IModifyProduct {
+  modifyField: string
+  modifyValue: string
+  modifyAction: string
+}
+//end
