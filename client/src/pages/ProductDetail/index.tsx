@@ -18,6 +18,10 @@ import { EToastOption } from '@/models/enum'
 import ListRalatedProduct from '@/components/common/ListRatedProduct'
 import AddFavorite from '@/components/common/AddFavorite'
 import ViewProduct from '@/components/common/ViewProduct'
+import { useDispatch } from 'react-redux'
+import { AppDispatch, RootState } from '@/redux/store'
+import { addToCart } from '@/redux/slices/cart.slice'
+import { useSelector } from 'react-redux'
 interface IColorSize {
   image: string
   color: string
@@ -48,6 +52,8 @@ const ProductDetail: React.FC = () => {
   const [product, setProduct] = useState<IProductDetail>()
   const [ratingCard, setRatingCard] = useState<IRateCard>()
   const [view, setView] = useState<number>(0)
+  const {isAuthenticated} = useSelector((state:RootState)=>state.auth)
+  const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -120,12 +126,18 @@ const ProductDetail: React.FC = () => {
       ratings: avgRate / toTalRangting || 0
     })
   }
-  const handleAddToCart = (variantId: number, quantity: number) => {
-    if (variant?.stock! - quantity >= 0) {
-      UToast(EToastOption.SUCCESS, 'Thêm giỏ hàng thành công')
-    } else {
-      UToast(EToastOption.ERROR, 'Không đủ sản phẩm')
+  const handleAddToCart = async (variantId: number, quantity: number) => {
+    if (isAuthenticated) {
+      if (variant?.stock! - quantity >= 0) {
+        dispatch(addToCart({ variantId, quantity }))
+        UToast(EToastOption.SUCCESS, 'Thêm sản phẩm vào giỏ hàng thành công!')
+      } else {
+        UToast(EToastOption.ERROR, 'Không đủ sản phẩm')
+      }
+    }else{
+      UToast(EToastOption.WARNING, 'Vui lòng đăng nhập trước khi thêm vào giỏ hàng!')
     }
+    
   }
   const handleView = (view: number) => {
     setView(view)
@@ -223,7 +235,7 @@ const ProductDetail: React.FC = () => {
                     ))}
                   </div>
                   <div className='flex items-center space-x-2'>
-                    {(product?.discount ?? 0 > 0) ? (
+                    {product?.discount ?? 0 > 0 ? (
                       <span className='text-gray-400 line-through'>{variant?.price}</span>
                     ) : (
                       ''

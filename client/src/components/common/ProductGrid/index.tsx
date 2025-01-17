@@ -1,20 +1,19 @@
+import productApi from '@/apis/modules/product.api'
 import variantApi from '@/apis/modules/variant.api'
 import { EToastOption } from '@/models/enum'
 import { IApiResponse, IProduct, IVariantColor, IVariantProductColor } from '@/models/interfaces'
 import { addToCart } from '@/redux/slices/cart.slice'
 import { AppDispatch, RootState } from '@/redux/store'
 import { UToast } from '@/utils/swal'
+import { faCommentDots, faHeart, faStar } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import { FormattedNumber, IntlProvider } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Button from '../Button'
-import Loader from '../Loader'
 import RadioColorGroup from '../RadioColorGroup'
 import Tag from '../Tag'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar, faHeart, faCommentDots } from '@fortawesome/free-solid-svg-icons'
-import productApi from '@/apis/modules/product.api'
 
 interface IProductGridProps {
   product: IProduct
@@ -41,7 +40,6 @@ const ProductGrid = ({
 }: IProductGridProps) => {
   const [colorData, setColorData] = useState<IVariantColor>(product.variantColors?.[0] ?? Object)
   const [variantByColor, setVariantByColor] = useState<IVariantProductColor[]>([])
-  const { loading, error } = useSelector((state: RootState) => state.cart)
   const { isAuthenticated } = useSelector((state: RootState) => state.auth)
   const dispatch = useDispatch<AppDispatch>()
   const handleGetColor = (value: string) => {
@@ -54,11 +52,7 @@ const ProductGrid = ({
     if (isAuthenticated) {
       const data: { variantId: number; quantity: number } = { variantId: Number(value), quantity: 1 }
       dispatch(addToCart(data))
-      if (!error) {
-        UToast(EToastOption.SUCCESS, 'Thêm sản phẩm vào giỏ hàng thành công!')
-      } else {
-        UToast(EToastOption.ERROR, 'Thêm sản phẩm vào giỏ hàng thất bại!')
-      }
+      UToast(EToastOption.SUCCESS, 'Thêm sản phẩm vào giỏ hàng thành công!')
     } else {
       UToast(EToastOption.WARNING, 'Vui lòng đăng nhập trước khi thêm vào giỏ hàng!')
     }
@@ -230,7 +224,6 @@ const ProductGrid = ({
               </IntlProvider>
             </div>
           )}
-          {loading && <Loader type='inside' />}
         </div>
       )}
     </>
