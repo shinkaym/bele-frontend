@@ -6,9 +6,9 @@ const rateEndpoints = {
 }
 
 const rateApi = {
-    async addRate(data: IRateAddDetail): Promise<IApiResponse<{rate:IRateDetail}>> {
-        return axiosPrivate.post(rateEndpoints.addRating, { ...data })
-      }
+  async addRate(data: IRateAddDetail): Promise<IApiResponse<{ rate: IRateDetail }>> {
+    return axiosPrivate.post(rateEndpoints.addRating, { ...data })
+  }
 }
 
-export default rateApi;
+export default rateApi

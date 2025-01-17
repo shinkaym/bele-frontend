@@ -23,7 +23,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmarkCircle, faSubtract, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { calculateDiscount, calculateSubtotal, calculateTotal } from '@/utils'
 import { PAGINATION_CONFIG } from '@/constants'
-import ConfirmationModal from '@/components/common/ConfirmationModal'
+import Swal from 'sweetalert2'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dynamicFormSchema = (useCustomAddress: boolean, addresses: IAddress[]) => {
@@ -49,7 +49,7 @@ const Cart: React.FC = () => {
       navigate(-1)
     }
   }, [isAuthenticated, navigate])
-  
+
   const dispatch = useDispatch<AppDispatch>()
   const [searchParams] = useSearchParams()
   const { data: cart, loading: cartLoading } = useSelector((state: RootState) => state.cart)
@@ -62,7 +62,6 @@ const Cart: React.FC = () => {
   const [paymentMethod, setPaymentMethod] = useState('COD')
   const [useCustomAddress, setUseCustomAddress] = useState(false)
   const [selectedAddressName, setSelectedAddressName] = useState<string | null>(null)
-  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false)
 
   const {
     control,
@@ -107,15 +106,13 @@ const Cart: React.FC = () => {
     dispatch(fetchAddresses())
   }, [dispatch])
 
-  const handleConfirmOrder = () => {
-    setIsConfirmationModalOpen(true)
-  }
-
   useEffect(() => {
     const status = searchParams.get('status')
     if (status) {
-      if (status === '00') UToast(EToastOption.SUCCESS, 'Thanh toán đơn hàng thành công')
-      else {
+      if (status === '00') {
+        UToast(EToastOption.SUCCESS, 'Thanh toán đơn hàng thành công')
+        dispatch(removeFromCart())
+      } else {
         UToast(EToastOption.SUCCESS, 'Thanh toán đơn hàng thất bại')
       }
     }
@@ -155,33 +152,37 @@ const Cart: React.FC = () => {
   }
 
   const onSubmit = async (data: FormData) => {
-    console.log({
-      fullName: data.fullName,
-      phoneNumber: data.phoneNumber,
-      address: useCustomAddress ? (data.address ?? '') : (selectedAddressName ?? ''),
-      note
-    })
     try {
       if (cart.cartItems.length === 0) {
         UToast(EToastOption.ERROR, 'Chưa có sản phẩm trong giỏ hàng')
       } else {
-        const res = await cartApi.checkout(paymentMethod, {
-          fullName: data.fullName,
-          phoneNumber: data.phoneNumber,
-          address: useCustomAddress || addresses.length < 1 ? (data.address ?? '') : (selectedAddressName ?? ''),
-          note
-        })
-        if (res.status === 200) {
-          if (res.message === 'Redirect') window.location.href = res.data
-          else {
-            UToast(EToastOption.SUCCESS, 'Thanh toán đơn hàng thành công')
+        Swal.fire({
+          title: 'Xác nhận đặt hàng',
+          icon: 'success',
+          showCancelButton: true,
+          confirmButtonText: 'Xác nhận',
+          cancelButtonText: 'Hủy',
+          reverseButtons: true
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            const res = await cartApi.checkout(paymentMethod, {
+              fullName: data.fullName,
+              phoneNumber: data.phoneNumber,
+              address: useCustomAddress || addresses.length < 1 ? (data.address ?? '') : (selectedAddressName ?? ''),
+              note: note || 'Không có'
+            })
+            if (res.status === 200) {
+              if (res.message === 'Redirect') window.location.href = res.data
+              else {
+                UToast(EToastOption.SUCCESS, 'Thanh toán đơn hàng thành công')
+                dispatch(removeFromCart())
+              }
+            }
           }
-        }
+        })
       }
     } catch {
       UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra')
-    } finally {
-      setIsConfirmationModalOpen(false)
     }
   }
 
@@ -306,7 +307,7 @@ const Cart: React.FC = () => {
             </div>
           </div>
           <button
-            onClick={handleConfirmOrder}
+            onClick={handleSubmit(onSubmit)}
             className='bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600'
           >
             ĐẶT HÀNG
@@ -428,18 +429,6 @@ const Cart: React.FC = () => {
           )}
         </div>
       </div>
-      {isConfirmationModalOpen && (
-        <ConfirmationModal
-          onClose={() => setIsConfirmationModalOpen(false)}
-          onConfirm={handleSubmit(onSubmit)}
-          title='Xác nhận thanh toán'
-          description='Bạn có chắc chắn muốn thanh toán đơn hàng này?'
-          confirmButtonText='Thanh toán'
-          confirmButtonColor='blue'
-          cancelButtonText='Huỷ'
-          cancelButtonColor='gray'
-        />
-      )}
     </div>
   )
 }
