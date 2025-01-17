@@ -95,8 +95,8 @@ const NewPassword: React.FunctionComponent<INewPasswordProps> = ({ jwt, onCreate
 
   return (
     <>
-      <div className='space-y-4 overflow-y-auto'>
-        <h1 className='text-3xl font-bold text-center '>Nhập mật khẩu mới</h1>
+      <div className='lg:space-y-4 space-y-3 overflow-y-auto'>
+        <h1 className='lg:text-3xl md:text-2xl sm:text-xl text-lg font-bold text-center'>Nhập mật khẩu mới</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-4'>
             <Controller
@@ -109,7 +109,7 @@ const NewPassword: React.FunctionComponent<INewPasswordProps> = ({ jwt, onCreate
                   type={modifyPassword.type}
                   error={errors.password?.message}
                   {...field}
-                  icon={<FontAwesomeIcon icon={modifyPassword.icon} className='opacity-50 text-xl' />}
+                  icon={<FontAwesomeIcon icon={modifyPassword.icon} className='opacity-50 md:text-xl text-lg' />}
                   onIconClick={handleModifyPassword}
                 />
               )}
@@ -126,13 +126,13 @@ const NewPassword: React.FunctionComponent<INewPasswordProps> = ({ jwt, onCreate
                   type={modifyConfirmPassword.type}
                   error={errors.confirmPassword?.message}
                   {...field}
-                  icon={<FontAwesomeIcon icon={modifyConfirmPassword.icon} className='opacity-50 text-xl' />}
+                  icon={<FontAwesomeIcon icon={modifyConfirmPassword.icon} className='opacity-50 md:text-xl text-lg' />}
                   onIconClick={handleModifyConfirmPassword}
                 />
               )}
             />
           </div>
-          <Button type='button' color='black' textColor='white' className='w-full rounded-md py-2 hover:opacity-85'>
+          <Button type='button' color='black' textColor='white' className='w-full rounded-md md:py-3 py-2.5 hover:opacity-85 md:text-base text-sm '>
             Xác nhận
           </Button>
         </form>

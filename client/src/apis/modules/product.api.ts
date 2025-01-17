@@ -18,7 +18,8 @@ const productEndpoints = {
   rated: 'Rate/rated',
   unrated: 'Rate/Not-Rated',
   updateWishList: (id: number) => `Product/wishlist/${id}`,
-  modifyProduct: (id: number) => `Product/${id}`
+  modifyProduct: (id: number) => `Product/${id}`,
+  maxPrice:'Product/maxPrice'
 }
 
 const productApi = {
@@ -65,7 +66,10 @@ const productApi = {
   },
   async modifyProduct(params: { id: number }, data: IModifyProduct): Promise<IApiResponse<{}>> {
     return axiosPublic.patch(productEndpoints.modifyProduct(params.id), { ...data }, {})
-  }
+  },
+  async maxPrice(): Promise<IApiResponse<{ maxPrice: number }>> {
+    return axiosPublic.get(productEndpoints.maxPrice)
+  },
 }
 
 export default productApi

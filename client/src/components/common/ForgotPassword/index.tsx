@@ -52,8 +52,8 @@ const ForgotPassword: React.FunctionComponent<IForgotPasswordProps> = ({ onGetOT
 
   return (
     <>
-      <div className='space-y-4 overflow-y-auto'>
-        <h1 className='text-3xl font-bold text-center '>Cấp lại mật khẩu</h1>
+      <div className='lg:space-y-4 space-y-3 overflow-y-auto'>
+        <h1 className='lg:text-3xl md:text-2xl sm:text-xl text-lg font-bold text-center '>Cấp lại mật khẩu</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-4'>
             <Controller
@@ -66,17 +66,17 @@ const ForgotPassword: React.FunctionComponent<IForgotPasswordProps> = ({ onGetOT
                   type='email'
                   error={errors.email?.message}
                   {...field}
-                  icon={<FontAwesomeIcon icon={faEnvelope} className='opacity-50 text-xl' />}
+                  icon={<FontAwesomeIcon icon={faEnvelope} className='md:text-xl text-lg opacity-50' />}
                 />
               )}
             />
           </div>
-          <Button type='button' color='black' textColor='white' className='w-full rounded-md py-2 hover:opacity-85'>
+          <Button type='button' color='black' textColor='white' className='w-full rounded-md py-2 hover:opacity-85 md:text-base text-sm'>
             Kiểm tra
           </Button>
         </form>
       </div>
-      {loading && <Loader type='inside' />}
+      {loading && <Loader type='inside'/>}
     </>
   )
 }

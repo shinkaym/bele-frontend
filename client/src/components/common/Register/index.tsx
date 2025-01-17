@@ -108,12 +108,12 @@ const Register: React.FunctionComponent<IRegisterProps> = ({ onLogin, onRegister
 
   return (
     <>
-      <div className='space-y-4 overflow-y-auto'>
+      <div className='lg:space-y-4 space-y-3 overflow-y-auto'>
         <div className='flex items-center justify-between'>
-          <h1 className='text-5xl font-semibold'>Bele</h1>
-          <h3 className='text-2xl font-medium'>Đăng ký</h3>
+          <h1 className='lg:text-5xl md:text-4xl sm:text-3xl text-2xl font-semibold'>Bele</h1>
+          <h3 className='lg:text-2xl md:text-xl sm:text-lg text-base font-medium'>Đăng ký</h3>
         </div>
-        <p className='text-gray-text text-sm'>Best Choice For Good Style</p>
+        <p className='text-gray-text md:text-base text-sm'>Best Choice For Good Style</p>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-4 flex  justify-between gap-4'>
             <Controller
@@ -142,7 +142,7 @@ const Register: React.FunctionComponent<IRegisterProps> = ({ onLogin, onRegister
                   type='email'
                   error={errors.email?.message}
                   {...field}
-                  icon={<FontAwesomeIcon icon={faEnvelope} className='opacity-50 text-xl' />}
+                  icon={<FontAwesomeIcon icon={faEnvelope} className='opacity-50 md:text-xl text-lg' />}
                 />
               )}
             />
@@ -159,7 +159,7 @@ const Register: React.FunctionComponent<IRegisterProps> = ({ onLogin, onRegister
                   type={modifyPassword.type}
                   error={errors.password?.message}
                   {...field}
-                  icon={<FontAwesomeIcon icon={modifyPassword.icon} className='opacity-50 text-xl' />}
+                  icon={<FontAwesomeIcon icon={modifyPassword.icon} className='opacity-50 md:text-xl text-lg' />}
                   onIconClick={handleModifyPassword}
                 />
               )}
@@ -176,18 +176,18 @@ const Register: React.FunctionComponent<IRegisterProps> = ({ onLogin, onRegister
                   type={modifyConfirmPassword.type}
                   error={errors.confirmPassword?.message}
                   {...field}
-                  icon={<FontAwesomeIcon icon={modifyConfirmPassword.icon} className='opacity-50 text-xl' />}
+                  icon={<FontAwesomeIcon icon={modifyConfirmPassword.icon} className='opacity-50 md:text-xl text-lg' />}
                   onIconClick={handleModifyConfirmPassword}
                 />
               )}
             />
           </div>
-          <Button type='button' color='black' textColor='white' className='w-full rounded-md py-3 hover:opacity-85'>
+          <Button type='button' color='black' textColor='white' className='w-full rounded-md py-3 hover:opacity-85 md:text-base text-sm'>
             Đăng ký
           </Button>
         </form>
         <div className='flex items-center justify-between'>
-          <button onClick={onLogin} type='button' className='font-medium text-blue-primary'>
+          <button onClick={onLogin} type='button' className='font-medium text-blue-primary  md:text-base text-sm'>
             Đăng nhập
           </button>
         </div>

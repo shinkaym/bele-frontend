@@ -176,7 +176,7 @@ const Header = memo(() => {
             </NavLink>
           </div>
 
-          <div className='flex items-center justify-between gap-2'>
+          <div className='flex items-center justify-between lg:gap-2 gap-4'>
             <FontAwesomeIcon
               icon={faSearch}
               className='md:text-2xl sm:text-xl text-lg text-white lg:hidden'
@@ -198,11 +198,11 @@ const Header = memo(() => {
               className={`cursor-pointer ${
                 isAuthenticated
                   ? 'bg-zinc-300 border-4 p-1.5 text-blue-primary border-solid border-blue-primary rounded-2xl lg:text-2xl md:text-xl sm:text-lg text-base'
-                  : 'lg:text-3xl md:text-2xl sm:text-xl text-lg text-white px-2'
+                  : 'lg:text-3xl md:text-2xl sm:text-xl text-lg text-white lg:px-2'
               }`}
               onClick={handleAction}
             />
-            <div className='relative group before:block before:h-8 before:absolute before:top-full before:inset-0 px-2'>
+            <div className='relative group before:block before:h-8 before:absolute before:top-full before:inset-0 lg:px-2'>
               <Link to={'/cart'} className=''>
                 <FontAwesomeIcon
                   icon={faBagShopping}
@@ -212,7 +212,7 @@ const Header = memo(() => {
                   {cart ? cart!.cartItems.length : 0}
                 </div>
               </Link>
-              <div className='group-hover:flex flex-col hidden bg-white pt-4 px-4 rounded-md shadow-lg border absolute top-full right-0 z-50  mt-6 text-black w-[400px] space-y-3 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-primary scrollbar-track-gray-100'>
+              <div className='lg:group-hover:flex flex-col hidden bg-white pt-4 px-4 rounded-md shadow-lg border absolute top-full right-0 z-50  mt-6 text-black w-[400px] space-y-3 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-primary scrollbar-track-gray-100'>
                 {cart && cart.cartItems.length > 0 ? (
                   <CartDropDown cart={cart} />
                 ) : (
@@ -233,7 +233,7 @@ const Header = memo(() => {
       {isShowMenu && (
         <>
           <Overlay onClose={() => setIsShowMenu(false)} className='z-50' />
-          <div className='absolute left-0 top-0 lg:w-[300px] md:w-[260px] sm:w-[220px] w-[180px] bg-black h-screen z-50 shadow-md border-r border-zinc-700'>
+          <div className='absolute left-0 top-0 lg:w-[300px] md:w-[260px] sm:w-[220px] w-[180px] bg-black h-screen z-50 shadow-md border-r border-zinc-700 overflow-hidden overflow-y-auto scrollbar-thin scrollbar-thumb-blue-primary scrollbar-track-gray-100' >
             <img src={logoList.mainLogo.url} alt={logoList.mainLogo.name} className='w-full object-cover ' />
             <div className='text-white'>
               <Link
@@ -255,84 +255,30 @@ const Header = memo(() => {
                 </label>
 
                 {/* Dropdown menu đầu tiên */}
-                <div className='text-white transition-all duration-300 ease-in-out overflow-hidden max-h-0 peer-checked:max-h-[600px] peer-checked:opacity-100 opacity-0'>
-                  {/* Áo Nam */}
-                  <div>
-                    <input type='checkbox' id='shirt' className='peer hidden' />
-                    <label
-                      htmlFor='shirt'
-                      className='flex items-center justify-between cursor-pointer md:pl-12 md:pr-10 sm:pl-10 sm:pr-8 pl-8 pr-6 w-full py-3'
-                    >
-                      <span>Áo Nam</span>
-                      <FontAwesomeIcon icon={faChevronDown} />
-                    </label>
-                    <div className='md:pl-14 sm:pl-12 pl-10  text-white transition-all duration-300 ease-in-out overflow-hidden max-h-0 peer-checked:max-h-[600px] peer-checked:opacity-100 opacity-0'>
-                      <div className='py-3'>
-                        <Link to='/all-shirts'>Tất cả Áo Nam</Link>
-                      </div>
-                      <div className='py-3'>
-                        <Link to='/t-shirts'>Áo thun</Link>
-                      </div>
-                      <div className='py-3'>
-                        <Link to='/shirts'>Áo sơ mi</Link>
-                      </div>
-                      <div className='py-3'>
-                        <Link to='/polos'>Áo polo</Link>
+                <div className='text-white transition-all duration-300 ease-in-out overflow-hidden max-h-0 peer-checked:max-h-[600px] peer-checked:opacity-100 opacity-0 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-primary scrollbar-track-gray-100'>
+                  {categories.map((cat) => (
+                    <div>
+                      <input type='checkbox' id={cat.slug} className='peer hidden' />
+                      <label
+                        htmlFor={cat.slug}
+                        className='flex items-center justify-between cursor-pointer md:pl-12 md:pr-10 sm:pl-10 sm:pr-8 pl-8 pr-6 w-full py-3'
+                      >
+                        <span>{cat.name}</span>
+                        <FontAwesomeIcon icon={faChevronDown} />
+                      </label>
+                      <div className='md:pl-14 sm:pl-12 pl-10  text-white transition-all duration-300 ease-in-out overflow-hidden max-h-0 peer-checked:max-h-[600px] peer-checked:opacity-100 opacity-0'>
+                        <div className='py-3'>
+                          <Link to={`/products/filter/${cat.slug}`}>Tất cả {cat.name}</Link>
+                        </div>
+                        {cat.referenceCategory &&
+                          cat.referenceCategory.map((catChild) => (
+                            <div className='py-3'>
+                              <Link to={`/products/filter/${catChild.slug}`}>{catChild.name}</Link>
+                            </div>
+                          ))}
                       </div>
                     </div>
-                  </div>
-
-                  {/* Quần Nam */}
-                  <div>
-                    <input type='checkbox' id='pants' className='peer hidden' />
-                    <label
-                      htmlFor='pants'
-                      className='flex items-center justify-between cursor-pointer md:pl-12 md:pr-10 sm:pl-10 sm:pr-8 pl-8 pr-6 w-full py-3'
-                    >
-                      <span>Quần Nam</span>
-                      <FontAwesomeIcon icon={faChevronDown} />
-                    </label>
-                    <div className='md:pl-14 sm:pl-12 pl-10  text-white transition-all duration-300 ease-in-out overflow-hidden max-h-0 peer-checked:max-h-[600px] peer-checked:opacity-100 opacity-0'>
-                      <div className='py-3'>
-                        <Link to='/all-pants'>Tất cả Quần Nam</Link>
-                      </div>
-                      <div className='py-3'>
-                        <Link to='/shorts'>Quần short</Link>
-                      </div>
-                      <div className='py-3'>
-                        <Link to='/long-pants'>Quần dài</Link>
-                      </div>
-                      <div className='py-3'>
-                        <Link to='/jeans'>Quần Jean</Link>
-                      </div>
-                      <div className='py-3'>
-                        <Link to='/khakis'>Quần kaki</Link>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Phụ Kiện Nam */}
-                  <div>
-                    <input type='checkbox' id='accessories' className='peer hidden' />
-                    <label
-                      htmlFor='accessories'
-                      className='flex items-center justify-between cursor-pointer md:pl-12 md:pr-10 sm:pl-10 sm:pr-8 pl-8 pr-6 w-full py-3'
-                    >
-                      <span>Phụ Kiện Nam</span>
-                      <FontAwesomeIcon icon={faChevronDown} />
-                    </label>
-                    <div className='md:pl-14 sm:pl-12 pl-10  text-white transition-all duration-300 ease-in-out overflow-hidden max-h-0 peer-checked:max-h-[600px] peer-checked:opacity-100 opacity-0'>
-                      <div className='py-3'>
-                        <Link to='/all-accessories'>Tất cả Phụ Kiện</Link>
-                      </div>
-                      <div className='py-3'>
-                        <Link to='/socks'>Tất/vớ</Link>
-                      </div>
-                      <div className='py-3'>
-                        <Link to='/wallets'>Ví</Link>
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
               <Link

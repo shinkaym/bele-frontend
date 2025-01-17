@@ -53,7 +53,7 @@ const OTPInput = React.forwardRef<HTMLInputElement, OTPInputProps>(
               placeholder={placeholder}
               onChange={(e) => handleInputChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
-              className={`w-12 h-12 text-center text-lg border rounded-md focus:outline-none ${
+              className={`md:w-12 md:h-12 w-10 h-10 text-center text-lg border rounded-md focus:outline-none ${
                 error ? 'border-red-500' : 'border-gray-300'
               }`}
               ref={ref} // Truyền ref vào từng input

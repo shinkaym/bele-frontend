@@ -38,7 +38,7 @@ const CountDownTimer: React.FC<ICountDownTimerProps> = ({ title, timeCountDown, 
   return (
     <button
       type='button'
-      className={`text-blue-primary text-sm space-x-1 ${!isActive ? 'opacity-50 cursor-not-allowed' : ''}`}
+      className={`text-blue-primary text-xs space-x-1 md:text-sm ${!isActive ? 'opacity-50 cursor-not-allowed' : ''}`}
       onClick={handleClick}
     >
       <FontAwesomeIcon icon={faRotateLeft} />

@@ -19,44 +19,9 @@ function Search() {
   const debouncedSearchValue = useDebounce(searchValue, 500)
   const [loading, setLoading] = useState<boolean>(false)
 
-  const fetchData = async (value: string, page: number, limit: number) => {
-    setLoading(true)
-    try {
-      const params = {
-        page,
-        limit
-      }
-      const res: IApiResponse<{
-        searchedProducts: IProduct[]
-        pagination: IPagination
-      }> = await searchApi.all(value, params)
-      if (res.status === 200 && res.data) {
-        setResult(res.data.searchedProducts)
-        setPagination(res.data.pagination)
-      }
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handlePageChange = (page: number) => {
-    setPagination((prev) => ({ ...prev, currentPage: page }))
-    fetchData(debouncedSearchValue, page, limit)
-  }
-
-  useEffect(() => {
-    if (!debouncedSearchValue?.trim()) {
-      setResult([])
-      return
-    }
-
-    fetchData(debouncedSearchValue, pagination.currentPage, limit)
-  }, [debouncedSearchValue])
-
   const updateLimit = () => {
     const width = window.innerWidth
+    console.log('Set Limit');
     if (width >= LG_BP) {
       setLimit(LG_LIMIT * 2)
     } else if (width >= MD_BP) {
@@ -78,32 +43,72 @@ function Search() {
     return () => {
       window.removeEventListener('resize', updateLimit)
     }
-  }, [])
+  }, [limit])
+
+  const fetchData = async (value: string, page: number, limit: number) => {
+    setLoading(true)
+    console.log(limit);
+    try {
+      const params = {
+        page,
+        limit
+      }
+      const res: IApiResponse<{
+        searchedProducts: IProduct[]
+        pagination: IPagination
+      }> = await searchApi.all(value, params)
+      if (res.status === 200 && res.data) {
+        setResult(res.data.searchedProducts)
+        console.log(res.data.pagination);
+        setPagination(res.data.pagination)
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+
+
+  const handlePageChange = (page: number) => {
+    setPagination((prev) => ({ ...prev, currentPage: page }))
+    fetchData(debouncedSearchValue, page, limit)
+  }
+
+  useEffect(() => {
+    if (!debouncedSearchValue?.trim()) {
+      setResult([])
+      return
+    }
+
+    fetchData(debouncedSearchValue, pagination.currentPage, limit)
+  }, [debouncedSearchValue,limit,pagination.currentPage])
 
   return (
     <>
-      <div className='lg:px-14 md:px-12 sm:px-10 px-6 mb-5 space-x-4 border-b py-8'>
-        <div className='flex items-center gap-8'>
-          <h1 className='text-3xl font-bold'>Sản phẩm</h1>
+      <div className='lg:px-14 md:px-12 sm:px-10 px-6 mb-5 space-x-4 border-b md:py-8 py-4'>
+        <div className='md:flex md:items-center md:space-x-8 md:space-y-0 space-y-4 '>
+          <h1 className='md:text-3xl text-2xl font-bold'>Sản phẩm</h1>
           <Input
             type='search'
             name='searchValue'
             onChange={(e) => setSearchValue(e.target.value.trimStart())}
             value={searchValue}
             placeholder='Tìm kiếm sản phẩm'
-            className='py-2 px-4 w-[250px]'
+            className='py-2 px-4 md:w-[250px] w-full'
           />
         </div>
       </div>
       <div className='lg:px-14 md:px-12 sm:px-10 px-6 space-y-4 pb-10 mb-5 relative'>
         {!loading ? (
           <>
-            <h3 className='font-semibold text-xl mb-5'>
+            <h3 className='font-semibold md:text-xl text-lg mb-5'>
               {result.length > 0 ? 'Kết quả tìm kiếm' : 'Không tìm thấy kết quả tìm kiếm'}
             </h3>
 
             {result.length > 0 ? (
-              <div className='grid grid-cols-5 gap-4'>
+              <div className={`grid grid-cols-${limit/2} gap-4`}>
                 {result.map((p) => (
                   <ProductGrid key={p.id} product={p} />
                 ))}

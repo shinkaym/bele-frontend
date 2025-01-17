@@ -44,7 +44,7 @@ const RadioColorGroup = (
             className={`relative flex items-center flex-col space-y-6 cursor-pointer rounded-xl text-center
                 ${
                   selected === option?.id
-                    ? `before:content-[''] before:block before:absolute before:-inset-0.75 before:rounded-xl before:border before:border-${colorOutline}`
+                    ? `before:content-[''] before:block before:absolute  sm:before:-inset-0.75 before:-inset-0.5  before:rounded-xl before:border before:border-${colorOutline}`
                     : ''
                 } 
                 ${classNameItems}`}
@@ -61,7 +61,7 @@ const RadioColorGroup = (
                 className='sr-only'
               />
             </div>
-            {option.optionName && <p className='text-xs'>{option.optionName}</p>}
+            {option.optionName && <p className='md:text-xs text-2xs'>{option.optionName}</p>}
           </label>
         ))}
       </div>
