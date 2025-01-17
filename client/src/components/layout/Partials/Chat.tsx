@@ -15,9 +15,9 @@ const Chat: React.FC = () => {
       {/* Floating Button */}
       <button
         onClick={handleOpenChat}
-        className='fixed bottom-4 right-4 bg-blue-primary  text-white px-4 py-3 rounded-full shadow-lg hover:bg-blue-primary-light transition focus:outline-none'
+        className='fixed md:bottom-4 md:right-4 sm:bottom-3 sm:right-3 bottom-2 right-2 bg-blue-primary  text-white md:px-4 md:py-3 px-2 py-1  rounded-full shadow-lg hover:bg-blue-primary-light transition focus:outline-none'
       >
-        💬 Chat
+        💬 <span className="md:inline-block hidden">Chat</span>
       </button>
 
       {/* Chat Box */}

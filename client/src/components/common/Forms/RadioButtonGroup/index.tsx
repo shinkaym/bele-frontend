@@ -34,7 +34,7 @@ const RadioGroup = (
           <label
             key={name + option?.value}
             htmlFor={name + option?.value}
-            className={`flex items-center justify-center lg:px-4 lg:py-3 md:h-9 sm:h-8 h-7 border-2 border-solid lg:text-base md:text-sm text-xs rounded-md hover:bg-blue-primary hover:text-white hover:border-blue-primary cursor-pointer transition-colors ease-linear duration-150 ${
+            className={`flex items-center justify-center md:px-4 md:py-3 px-3 py-2  md:h-9 sm:h-8 h-7 border-2 border-solid lg:text-base md:text-sm text-xs rounded-md hover:bg-blue-primary hover:text-white hover:border-blue-primary cursor-pointer transition-colors ease-linear duration-150 ${
               selected === option?.value
                 ? 'bg-blue-primary text-white border-blue-primary'
                 : 'bg-zinc-200 text-black border-black'

@@ -40,7 +40,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPage, onPageC
         <button
           key={1}
           onClick={() => handlePageClick(1)}
-          className={`px-3 py-1 mx-1 rounded ${
+          className={`md:px-3 px-2.5 py-1 md:text-base sm:text-sm text-xs mx-1 rounded ${
             currentPage === 1 ? 'bg-black text-white' : 'bg-white text-black hover:bg-blue-100'
           }`}
         >
@@ -49,7 +49,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPage, onPageC
       )
       if (startPage > 2) {
         pages.push(
-          <span key='start-ellipsis' className='px-3 py-1 mx-1'>
+          <span key='start-ellipsis' className='md:px-3 px-2.5 py-1 md:text-base sm:text-sm text-xs mx-1'>
             ...
           </span>
         )
@@ -61,7 +61,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPage, onPageC
         <button
           key={i}
           onClick={() => handlePageClick(i)}
-          className={`px-3 py-1 mx-1 rounded ${
+          className={`md:px-3 px-2.5 py-1 md:text-base sm:text-sm text-xs mx-1 rounded ${
             currentPage === i ? 'bg-black text-white' : 'bg-white text-black hover:bg-blue-100'
           }`}
         >
@@ -73,7 +73,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPage, onPageC
     if (endPage < totalPage) {
       if (endPage < totalPage - 1) {
         pages.push(
-          <span key='end-ellipsis' className='px-3 py-1 mx-1'>
+          <span key='end-ellipsis' className='md:px-3 px-2.5 py-1 md:text-base sm:text-sm text-xs mx-1'>
             ...
           </span>
         )
@@ -82,7 +82,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPage, onPageC
         <button
           key={totalPage}
           onClick={() => handlePageClick(totalPage)}
-          className={`px-3 py-1 mx-1 rounded ${
+          className={`md:px-3 px-2.5 py-1 md:text-base sm:text-sm text-xs mx-1 rounded ${
             currentPage === totalPage ? 'bg-black text-white' : 'bg-white text-black hover:bg-blue-100'
           }`}
         >
@@ -99,7 +99,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPage, onPageC
       <button
         onClick={handlePrevious}
         disabled={currentPage === 1}
-        className={`px-3 py-1 mx-1 flex items-center gap-2 ${
+        className={`md:px-3 px-2.5 py-1 md:text-base sm:text-sm text-xs mx-1 flex items-center gap-2 ${
           currentPage === 1 ? 'cursor-not-allowed' : 'hover:text-black dark:hover:text-white'
         }`}
       >
@@ -109,7 +109,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPage, onPageC
       <button
         onClick={handleNext}
         disabled={currentPage === totalPage}
-        className={`px-3 py-1 mx-1 flex items-center gap-2 ${
+        className={`md:px-3 px-2.5 py-1 md:text-base sm:text-sm text-xs mx-1 flex items-center gap-2 ${
           currentPage === totalPage ? 'cursor-not-allowed' : 'hover:text-black dark:hover:text-white'
         }`}
       >

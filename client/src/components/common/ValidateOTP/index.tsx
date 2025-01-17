@@ -71,10 +71,10 @@ const ValidateOTP: React.FunctionComponent<IValidateOTPProps> = ({ onValidateOTP
 
   return (
     <>
-      <div className='space-y-4 overflow-y-auto'>
-        <h1 className='text-2xl font-bold text-center '>Xác thực OTP</h1>
-        <p className='text-center text-sm'>Vui lòng nhập mã OTP được gửi về Email</p>
-        <p className='text-sm text-center'>
+      <div className='lg:space-y-4 space-y-3 overflow-y-auto'>
+        <h1 className='md:text-2xl text-xl font-bold text-center '>Xác thực OTP</h1>
+        <p className='text-center md:text-sm text-xs'>Vui lòng nhập mã OTP được gửi về Email</p>
+        <p className='md:text-sm text-xs text-center'>
           <span className='text-blue-primary'>{maskEmail(email)}</span> để truy cập nhé
         </p>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -91,7 +91,7 @@ const ValidateOTP: React.FunctionComponent<IValidateOTPProps> = ({ onValidateOTP
           </div>
           <button
             type={`${otp.length === 4 ? 'submit' : 'button'}`}
-            className={`w-full rounded-md py-2 text-white bg-black ${otp.length === 4 ? 'hover:opacity-85' : 'cursor-not-allowed opacity-50'}`}
+            className={`w-full md:text-base text-sm rounded-md md:py-3 py-2 text-white bg-black ${otp.length === 4 ? 'hover:opacity-85' : 'cursor-not-allowed opacity-50'}`}
           >
             Xác nhận
           </button>

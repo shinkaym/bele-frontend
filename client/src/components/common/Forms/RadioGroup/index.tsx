@@ -36,7 +36,7 @@ const RadioGroup = (
           <label
             key={name + option?.id}
             htmlFor={name + option?.id.toString()}
-            className={`flex cursor-pointer select-none items-center mb-2 text-sm ${
+            className={`flex cursor-pointer select-none items-center mb-2 md:text-sm text-xs ${
               layout === 'horizontal' ? 'mr-6' : ''
             }`}
           >
@@ -51,12 +51,12 @@ const RadioGroup = (
                 className='sr-only'
               />
               <div
-                className={`mr-2 flex h-5 w-5 items-center justify-center rounded-full border ${
+                className={`mr-2 flex md:h-5 md:w-5 w-4 h-4 items-center justify-center rounded-full border ${
                   selected === option?.id.toString() ? 'border-black' : 'border-gray-300'
                 }`}
               >
                 <span
-                  className={`h-2.5 w-2.5 rounded-full bg-transparent ${
+                  className={`md:h-2.5 md:w-2.5 h-2 w-2 rounded-full bg-transparent ${
                     selected === option?.id.toString() ? '!bg-blue-primary' : ''
                   }`}
                 >

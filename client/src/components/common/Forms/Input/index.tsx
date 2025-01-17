@@ -22,7 +22,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       name,
       placeholder,
       type = 'text',
-      className = 'w-full py-4 pl-6 pr-10',
+      className = 'w-full md:py-4 md:pl-6 md:pr-10 py-3 pl-4 pr-8 md:text-base text-sm',
       error,
       value = '',
       onChange,
@@ -64,7 +64,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             </span>
           )}
         </div>
-        {error && <p className='text-sm text-red-500 mt-1'>{error}</p>}
+        {error && <p className='md:text-sm text-xs text-red-500 mt-1'>{error}</p>}
       </div>
     )
   }

@@ -131,6 +131,7 @@ export interface IVariantProductColor {
 export interface IPagination {
   currentPage: number
   totalPage: number
+  totalProduct?:number
 }
 
 //Setting

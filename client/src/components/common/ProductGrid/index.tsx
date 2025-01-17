@@ -93,7 +93,7 @@ const ProductGrid = ({
   }
   return (
     <>
-      {Object.keys(product).length > 0 && variantByColor.length > 0 && Object.keys(colorData).length > 0 ? (
+      {Object.keys(product).length > 0 && variantByColor.length > 0 && Object.keys(colorData).length > 0 && (
         <div className={`${className} space-y-1`}>
           <div className='relative group transition-all duration-500 ease-linear overflow-hidden max-h-80'>
             <Link to={`/products/detail/${product.slug}`}>
@@ -196,7 +196,7 @@ const ProductGrid = ({
               selectedValue={colorData.colorId.toString()}
               name={`${product.id}-${colorData.colorId}-${colorData.variantId}`}
               onChange={handleGetColor}
-              classNameItems='lg:w-9 lg:h-5 md:w-8.5 md:h-4.5 sm:w-8 sm:h-4 w-7.5 h-3.5'
+              classNameItems='lg:w-10 lg:h-5 md:w-8 md:h-4 sm:w-6 sm:h-3 w-4 h-2'
             />
           )}
           <p className='max-w-full truncate lg:text-sm md:text-xs sm:text-2xs text-3xs font-normal'>
@@ -215,7 +215,7 @@ const ProductGrid = ({
                         currency='VND'
                       />
                     </span>
-                    <span className='px-1 py-0.5 bg-blue-primary text-white lg:text-xs md:text-2xs sm:text-3xs text-4xs rounded-md font-bold'>
+                    <span className='sm:inline-block hidden px-1 py-0.5 bg-blue-primary text-white lg:text-xs md:text-2xs sm:text-3xs text-4xs rounded-md font-bold'>
                       -{product.discount!.discountValue}%
                     </span>
                   </>
@@ -230,18 +230,6 @@ const ProductGrid = ({
               </IntlProvider>
             </div>
           )}
-          {loading && <Loader type='inside' />}
-        </div>
-      ) : (
-        <div className={`${className} space-y-1 animate-pulse`}>
-          <div className='relative group transition-all duration-500 ease-linear overflow-hidden min-h-80 w-full bg-slate-200'></div>
-          <div className='flex items-center gap-2'>
-            <div className='lg:w-9 lg:h-5 md:w-8.5 md:h-4.5 sm:w-8 sm:h-4 w-7.5 h-3.5 rounded-md bg-slate-200'></div>
-            <div className='lg:w-9 lg:h-5 md:w-8.5 md:h-4.5 sm:w-8 sm:h-4 w-7.5 h-3.5 rounded-md bg-slate-200'></div>
-            <div className='lg:w-9 lg:h-5 md:w-8.5 md:h-4.5 sm:w-8 sm:h-4 w-7.5 h-3.5 rounded-md bg-slate-200'></div>
-          </div>
-          <p className='max-w-full truncate lg:text-sm md:text-xs sm:text-2xs text-3xs font-normal bg-slate-200 h-3'></p>
-          <div className='bg-slate-200 w-full h-5'></div>
           {loading && <Loader type='inside' />}
         </div>
       )}
