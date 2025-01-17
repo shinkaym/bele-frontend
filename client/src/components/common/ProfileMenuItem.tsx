@@ -4,14 +4,23 @@ import { NavLink } from 'react-router-dom'
 
 interface MenuProfileItemProps {
   item: TMenuProfileItem
+  onClick?: () => void
 }
 
-const MenuProfileItem: React.FC<MenuProfileItemProps> = ({ item }) => {
+const MenuProfileItem: React.FC<MenuProfileItemProps> = ({ item, onClick }) => {
   const { title, icon, link } = item
+
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    if (onClick) {
+      event.preventDefault() 
+      onClick() 
+    }
+  }
 
   return (
     <NavLink
-      to={`${link}`}
+      to={link}
+      onClick={handleClick}
       className={({ isActive }) =>
         `p-3 flex items-center justify-start gap-2 ${
           isActive ? 'bg-black text-white' : 'bg-white text-black hover:bg-black hover:text-white'

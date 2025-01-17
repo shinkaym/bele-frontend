@@ -15,7 +15,7 @@ import { z } from 'zod'
 import cartApi from '@/apis/modules/cart.api'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enum'
 import { FormattedNumber } from 'react-intl'
@@ -40,6 +40,16 @@ const dynamicFormSchema = (useCustomAddress: boolean, addresses: IAddress[]) => 
 type FormData = z.infer<ReturnType<typeof dynamicFormSchema>>
 
 const Cart: React.FC = () => {
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth)
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate(-1)
+    }
+  }, [isAuthenticated, navigate])
+  
   const dispatch = useDispatch<AppDispatch>()
   const [searchParams] = useSearchParams()
   const { data: cart, loading: cartLoading } = useSelector((state: RootState) => state.cart)

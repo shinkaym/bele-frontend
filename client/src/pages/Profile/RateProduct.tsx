@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import ButtonCustom from '@/components/common/ButtonCustom'
 import Pagination from '@/components/common/Pagination'
 import ProductGrid from '@/components/common/ProductGrid'
-import { PAGINATION_CONFIG } from '@/constants'
+import { mockData, PAGINATION_CONFIG, test } from '@/constants'
 import { EToastOption } from '@/models/enum'
 import { IApiResponse, IPagination, IProduct, IProductReview } from '@/models/interfaces'
 import { UToast } from '@/utils/swal'
@@ -22,11 +22,13 @@ const RateProduct = () => {
   const fetchUnratedProducts = async (page: number, limit: number) => {
     setLoading(true)
     try {
+      // const res: IApiResponse<{ products: IProduct[]; pagination: IPagination }> = test
       const res: IApiResponse<{ items: IProduct[]; pagination: IPagination }> = await productApi.unrated({
         page,
         limit
       })
       if (res.data && res.status === 200) {
+        // setUnratedProducts(res.data.products)
         setUnratedProducts(res.data.items)
         setPagination(res.data.pagination)
       }
@@ -41,6 +43,7 @@ const RateProduct = () => {
   const fetchRatedProducts = async (page: number, limit: number) => {
     setLoading(true)
     try {
+      // const res: IApiResponse<{ items: IProductReview[]; pagination: IPagination }> = mockData
       const res: IApiResponse<{ items: IProductReview[]; pagination: IPagination }> = await productApi.rated({
         page,
         limit
@@ -105,7 +108,7 @@ const RateProduct = () => {
         )}
       </div>
 
-      {(ratedProducts.length > 0 || unratedProducts.length > 0) && (
+      {((ratedProducts.length > 0 && showRated) || (unratedProducts.length > 0 && !showRated)) && (
         <Pagination
           currentPage={pagination.currentPage}
           totalPage={pagination.totalPage}
