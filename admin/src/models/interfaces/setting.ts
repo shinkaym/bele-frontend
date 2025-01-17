@@ -1,5 +1,4 @@
 export interface ISetting {
-  id: number
   mainLogo: string
   sloganLogo: string
   slogan: string
