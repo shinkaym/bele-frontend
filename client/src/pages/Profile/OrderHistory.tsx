@@ -22,6 +22,7 @@ const OrderHistoryPage: React.FC = () => {
       const detailedOrders = await Promise.all(
         orderList.map(async (order: { id: number; status: number }) => {
           const detailRes = await orderApi.getOne(order.id)
+          console.log('🚀 ~ orderList.map ~ detailRes:', detailRes)
           return detailRes.data
         })
       )

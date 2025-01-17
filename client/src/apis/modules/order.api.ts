@@ -16,7 +16,7 @@ const orderApi = {
     return axiosPrivate.get(`Order/${id}`)
   },
   async cancel(id: number): Promise<IApiResponse<void>> {
-    return axiosPrivate.patch(`Order/${id}`)
+    return axiosPrivate.patch(`Checkout/Cancel/${id}`)
   }
 }
 

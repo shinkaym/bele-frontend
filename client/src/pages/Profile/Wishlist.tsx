@@ -22,6 +22,7 @@ const Wishlist = () => {
         page,
         limit
       })
+      console.log('🚀 ~ fetchApi ~ res:', res)
       if (res.data && res.status === 200) {
         setProducts(res.data.products)
         setPagination(res.data.pagination)

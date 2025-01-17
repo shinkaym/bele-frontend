@@ -4,6 +4,10 @@ export interface IApiResponse<T> {
   message: string
   data?: T
 }
+export interface IApiResponseWithoutData {
+  status: number
+  message: string
+}
 export interface ICategory {
   id: number
   name: string
@@ -387,19 +391,18 @@ export interface IOrder {
   status: number
   totalMoney: number
   totalDiscount: number
-  products: IOrderProduct[]
+  variants: IOrderProduct[]
 }
 
 export interface IOrderProduct {
   id: number
   name: string
   slug: string
-  image: string
-  color: string
-  size: string
+  thumbnail: string
+  attribute: [Color: any, Size: any]
   quantity: number
   price: number
-  disPrice: number
+  discount: number
 }
 export interface IRateAddDetail {
   productId: number

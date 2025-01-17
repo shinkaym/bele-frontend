@@ -73,6 +73,7 @@ axiosPrivate.interceptors.response.use(
 
     // Các lỗi khác
     if (error.response) {
+      console.log('🚀 ~ error.response:', error.response)
       // Trường hợp lỗi trả về từ server
       const errorMessage = error.response.data?.message || 'Something went wrong'
       const data: IError = {

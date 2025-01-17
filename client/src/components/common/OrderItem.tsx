@@ -68,15 +68,15 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, onCancelOrder }) => {
               <div className='text-center'>Giá</div>
             </div>
 
-            {order.products.map((product) => (
+            {order.variants.map((product) => (
               <div key={product.id} className='grid grid-cols-4 gap-4 py-2 border-b'>
                 <div className='col-span-2'>
                   <Link to={`/product/detail/${product.slug}`} className='flex items-center'>
-                    <img src={product.image} alt='' className='w-14 rounded-md' />
+                    <img src={product.thumbnail} alt='' className='w-14 rounded-md' />
                     <div className='flex flex-col justify-between ml-3'>
                       <p className='text-md font-semibold max-w-full'>{product.name}</p>
                       <p className='text-sm'>
-                        <span>{product.color}</span> / <span>{product.size}</span>
+                        <span>{product.attribute[0].Color}</span> / <span>{product.attribute[1].Size}</span>
                       </p>
                     </div>
                   </Link>
@@ -91,7 +91,13 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, onCancelOrder }) => {
                     <FormattedNumber value={product.price} style='currency' currency='VND' />
                   </p>
                   <p className='text-gray-900 font-medium'>
-                    <FormattedNumber value={product.disPrice} style='currency' currency='VND' />
+                    {product.discount > 0 && (
+                      <FormattedNumber
+                        value={product.price * (1 - 1 / product.discount)}
+                        style='currency'
+                        currency='VND'
+                      />
+                    )}
                   </p>
                 </div>
               </div>

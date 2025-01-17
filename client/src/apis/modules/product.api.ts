@@ -1,4 +1,11 @@
-import { IApiResponse, IModifyProduct, IPagination, IProduct, IProductDetail, IProductReview } from '@/models/interfaces'
+import {
+  IApiResponse,
+  IModifyProduct,
+  IPagination,
+  IProduct,
+  IProductDetail,
+  IProductReview
+} from '@/models/interfaces'
 import axiosPublic from '../client/public.client'
 import axiosPrivate from '../client/private.client'
 

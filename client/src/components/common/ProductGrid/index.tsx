@@ -82,7 +82,7 @@ const ProductGrid = ({
 
   const handleRemoveFromWishlist = async () => {
     try {
-      const res: IApiResponse<void> = await productApi.removeFromWishlist(product.id)
+      const res: IApiResponse<void> = await productApi.updateWishList({ id: product.id, actionWishList: 'Remove' })
       if (res.status === 200) {
         if (handleClickTym) handleClickTym()
         UToast(EToastOption.SUCCESS, 'Đã xóa sản phẩm khỏi danh sách yêu thích!')
@@ -186,12 +186,12 @@ const ProductGrid = ({
           {isShowColor && Object.keys(Object(colorData)).length > 0 && (
             <RadioColorGroup
               options={
-                product.variantColors.filter(
-                  (item, index, self) => self.findIndex((v) => v.colorId === item.colorId) === index
-                ).map((item) => ({
-                  id: item.colorId.toString(), // Lấy colorId làm id
-                  value: item.color, // Lấy colorName làm value (tuỳ thuộc vào cấu trúc dữ liệu)
-                })) || []
+                product.variantColors
+                  .filter((item, index, self) => self.findIndex((v) => v.colorId === item.colorId) === index)
+                  .map((item) => ({
+                    id: item.colorId.toString(), // Lấy colorId làm id
+                    value: item.color // Lấy colorName làm value (tuỳ thuộc vào cấu trúc dữ liệu)
+                  })) || []
               }
               selectedValue={colorData.colorId.toString()}
               name={`${product.id}-${colorData.colorId}-${colorData.variantId}`}

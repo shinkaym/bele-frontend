@@ -7,7 +7,7 @@ import Pagination from '@/components/common/Pagination'
 import { IOption } from '@/models/interfaces'
 import Input from '@/components/common/Forms/Input'
 import ForwardedCheckboxGroup from '@/components/common/Forms/CheckboxGroup'
-import ForwardedRadioGroup from '@/components/common/Forms/RadioGroup'
+import ForwardedRadioGroup2 from '@/components/common/Forms/RadioGroup2'
 import SelectGroup from '@/components/common/Forms/SelectGroup'
 import { IAddress } from '@/models/interfaces'
 import { fetchAddresses } from '@/redux/slices/address.slice'
@@ -250,7 +250,7 @@ const Cart: React.FC = () => {
             </div>
 
             <div className='mb-4'>
-              <ForwardedRadioGroup
+              <ForwardedRadioGroup2
                 options={paymentMethods}
                 name='paymentMethod'
                 selectedValue={paymentMethod}
@@ -385,7 +385,6 @@ const Cart: React.FC = () => {
       </div>
     </div>
   )
-  console.log('🚀 ~ useCustomAddress:', useCustomAddress)
 }
 
 export default Cart

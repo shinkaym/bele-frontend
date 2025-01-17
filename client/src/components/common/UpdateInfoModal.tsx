@@ -5,7 +5,7 @@ import { z } from 'zod'
 import Input from './Forms/Input'
 import Button from './Button'
 import Loader from './Loader'
-import ForwardedRadioGroup from './Forms/RadioGroup'
+import ForwardedRadioGroup2 from './Forms/RadioGroup2'
 import Popup from './Popup'
 import CustomDatePicker from './CustomDatePicker'
 import { IUpdateInfoFormData, ICustomer } from '@/models/interfaces'
@@ -135,7 +135,7 @@ const UpdateInfoModal: React.FunctionComponent<IUpdateInfoModalProps> = ({ onClo
             name='sex'
             control={control}
             render={({ field }) => (
-              <ForwardedRadioGroup
+              <ForwardedRadioGroup2
                 options={sexOptions}
                 name='sex'
                 selectedValue={field.value}
