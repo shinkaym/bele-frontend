@@ -70,3 +70,25 @@ export interface IService {
   serviceTitle4: string
   serviceInfo4: string
 }
+
+export interface ISettingsParams {
+  slogan: string;
+  hotline: string;
+  email: string;
+  description: string;
+  branchName1: string;
+  branchAddress1: string;
+  branchName2: string;
+  branchAddress2: string;
+  facebookLink: string;
+  instagramLink: string;
+  youtubeLink: string;
+  serviceTitle1: string;
+  serviceInfo1: string;
+  serviceTitle2: string;
+  serviceInfo2: string;
+  serviceTitle3: string;
+  serviceInfo3: string;
+  serviceTitle4: string;
+  serviceInfo4: string;
+}

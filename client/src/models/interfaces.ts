@@ -217,11 +217,11 @@ export interface IInfo {
 export interface ISetting {
   banner: IBanner
   slideShow: ISlideshow
-  social: ISocial
-  address: IAddress
-  service: IService
-  logo: ILogo
-  info: IInfo
+  social: ISocial //
+  address: IAddress //
+  service: IService //
+  logo: ILogo //
+  info: IInfo //
 }
 //End-Setting
 

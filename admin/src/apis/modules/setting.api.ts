@@ -1,26 +1,19 @@
-import { ISetting } from '@/models/interfaces/setting';
+import { ISetting, ISettingsParams } from '@/models/interfaces/setting';
 import { IApiResponse } from '@/models/interfaces/api';
 import axiosPrivate from '../client/private.client';
 
 const settingApi = {
-  async fetchSettings(): Promise<IApiResponse<ISetting>> {
-    try {
-      const response = await axiosPrivate.get<IApiResponse<ISetting>>('Setting');
-      return response.data; 
-    } catch (error) {
-      console.error('Failed to fetch settings:', error);
-      throw error; 
-    }
+  async fetchSettings(): Promise<IApiResponse<{setting:ISetting}>> {
+    return axiosPrivate.get('Setting');
   },
 
-  async updateSettings(data: ISetting): Promise<IApiResponse<ISetting>> {
-    try {
-      const response = await axiosPrivate.put<IApiResponse<ISetting>>('Setting', data);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to update settings:', error);
-      throw error;
-    }
+  async updateSettings(params:ISettingsParams,data: FormData): Promise<IApiResponse<{setting:ISetting}>> {
+    return axiosPrivate.put('Setting',data,{
+      params, 
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   },
 };
 
