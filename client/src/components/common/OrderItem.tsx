@@ -38,13 +38,13 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, onCancelOrder }) => {
   }
 
   return (
-    <div className='border border-black rounded-lg p-4'>
+    <div className='border border-black rounded-lg p-4 cursor-pointer' onClick={() => setIsExpanded(!isExpanded)}>
       <div className='flex justify-between items-center'>
         <div className='flex items-center gap-2'>
           <h2 className='text-lg font-semibold'>Đơn hàng #{order.id}</h2>
           <span className={`text-sm px-2 py-1 rounded-full ${status?.className}`}>{status?.title}</span>
         </div>
-        <button onClick={() => setIsExpanded(!isExpanded)} className='text-blue-500 hover:text-blue-700'>
+        <button className='text-blue-500 hover:text-blue-700'>
           {isExpanded ? (
             <FontAwesomeIcon icon={faChevronUp} className='text-black' />
           ) : (

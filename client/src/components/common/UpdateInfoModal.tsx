@@ -17,8 +17,8 @@ interface IUpdateInfoModalProps {
 }
 
 const sexOptions = [
-  { value: 'Nam', label: 'Nam' },
-  { value: 'Nữ', label: 'Nữ' }
+  { value: 'Male', label: 'Nam' },
+  { value: 'Female', label: 'Nữ' }
 ]
 
 const updateInfoSchema = z.object({
@@ -44,7 +44,7 @@ const UpdateInfoModal: React.FunctionComponent<IUpdateInfoModalProps> = ({ onClo
     defaultValues: {
       name: initialData?.fullName || '',
       phone: initialData?.phoneNumber || '',
-      sex: initialData?.sex || 'Nữ',
+      sex: initialData?.sex || '',
       birthday: initialData?.birthday ? new Date(initialData.birthday).toISOString() : ''
     }
   })
@@ -54,7 +54,7 @@ const UpdateInfoModal: React.FunctionComponent<IUpdateInfoModalProps> = ({ onClo
       reset({
         name: initialData.fullName || '',
         phone: initialData.phoneNumber || '',
-        sex: initialData.sex || 'Nữ',
+        sex: initialData.sex || '',
         birthday: initialData?.birthday ? new Date(initialData.birthday).toISOString() : ''
       })
     }

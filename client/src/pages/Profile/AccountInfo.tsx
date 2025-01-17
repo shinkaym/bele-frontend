@@ -55,15 +55,11 @@ const AccountInfo = () => {
   const infoOptions = [
     { label: 'Họ và tên', value: info?.fullName || 'N/A' },
     { label: 'Số điện thoại', value: info?.phoneNumber || 'N/A' },
-    { label: 'Giới tính', value: info?.sex || 'N/A' },
+    { label: 'Giới tính', value: info?.sex === 'Female' ? 'Nữ' : info?.sex === 'Male' ? 'Nam' : 'N/A' },
     { label: 'Ngày sinh', value: info?.birthday ? formatDate(info.birthday!) : 'N/A' },
     {
-      label: 'Thời gian cập nhật tài khoản',
-      value: info?.updatedAt
-        ? formatYouTubeLikeTime(info.updatedAt!)
-        : info?.createdAt
-          ? formatYouTubeLikeTime(info.createdAt!)
-          : 'N/A'
+      label: 'Thời gian tạo tài khoản',
+      value: info?.createdAt ? formatYouTubeLikeTime(info.createdAt!) : 'N/A'
     }
   ]
 
