@@ -2,13 +2,15 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IApiResponse, IRateDetail } from '@/models/interfaces';
 import { z } from 'zod';
 import { UToast } from '@/utils/swal';
 import { EToastOption } from '@/models/enum';
 import rateApi from '@/apis/modules/rate.api';
 import { useSearchParams } from 'react-router-dom';
+import { socket } from '@/sockets/connect';
+import Swal from 'sweetalert2';
 
 interface IProps {
   handleAddReview:any,
@@ -18,11 +20,23 @@ interface IProps {
 }
 
 const AddReview: React.FC <IProps>= ({handleAddReview,reviews,productId}) => {
+  useEffect(() => {
+    // Kết nối và lắng nghe sự kiện 'messageServer'
+    socket.on("AddReviewReturn", (data) => {
+      if(productId===data.productId)
+        handleAddReview(data.reviews);
+    });
+  
+    // Hủy lắng nghe sự kiện khi component bị unmount
+    return () => {
+      socket.off("AddReviewReturn");
+    };
+  }, [])
+  
   const [searchParams] = useSearchParams();
   const orderIdParam = searchParams.get('orderId');
- 
   const orderId: number | null = orderIdParam ? parseInt(orderIdParam) : null;
-
+;
   const schema = z.object({
     orderId: z.number(),
     productId:z.number(),
@@ -35,22 +49,36 @@ const AddReview: React.FC <IProps>= ({handleAddReview,reviews,productId}) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try{
-     const data = schema.parse({
-        star:rating,
-        content:comment,
-        productId:productId,
-        orderId:orderId
+      Swal.fire({
+        title: 'Bạn có chắc chắn?',
+        text: 'Hành động này không thể hoàn tác!',
+        icon: 'warning',
+        showCancelButton: true, // Hiển thị nút hủy
+        confirmButtonText: 'Xác nhận', // Văn bản nút xác nhận
+        cancelButtonText: 'Hủy', // Văn bản nút hủy
+        reverseButtons: true, // Đảo thứ tự nút (Hủy bên trái, Xác nhận bên phải)
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const data = schema.parse({
+            star:rating,
+            content:comment,
+            productId:productId,
+            orderId:orderId
+          });
+        const res: IApiResponse<{ rate: IRateDetail }> = await rateApi.addRate(data)
+        if(res.status === 201){
+          const rate:IRateDetail = res.data?.rate!;
+          handleAddReview([rate,...reviews])
+          socket.emit("AddReview",{reviews: [rate,...reviews],productId: productId});
+          setComment('');
+          setRating(1);
+          UToast(EToastOption.SUCCESS,"Đánh giá thành công.");
+        }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          // Khi nhấn nút Hủy
+          Swal.fire('Hủy bỏ', 'Bạn đã hủy hành động.', 'error');
+        }
       });
-      console.log(data);
-    const res: IApiResponse<{ rate: IRateDetail }> = await rateApi.addRate(data)
-
-    if(res.status === 201){
-      const rate:IRateDetail = res.data?.rate!;
-      handleAddReview([rate,...reviews])
-      setComment('');
-      setRating(1);
-      UToast(EToastOption.SUCCESS,"Đánh giá thành công.");
-    }
     }catch(error){
       setComment('');
       setRating(1);

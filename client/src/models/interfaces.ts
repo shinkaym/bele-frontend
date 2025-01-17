@@ -340,4 +340,9 @@ export interface IRateAddDetail{
   content:string
 }
 
+export interface IModifyProduct{
+  modifyField: string,
+  modifyValue: string,
+  modifyAction: string
+}
 //end

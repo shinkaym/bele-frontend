@@ -1,4 +1,4 @@
-import { IApiResponse, IPagination, IProduct,IProductDetail } from '@/models/interfaces'
+import { IApiResponse, IModifyProduct, IPagination, IProduct,IProductDetail } from '@/models/interfaces'
 import axiosPublic from '../client/public.client'
 import axiosPrivate from '../client/private.client'
 
@@ -8,6 +8,7 @@ const productEndpoints = {
   detail: (id: string | number) => `product/${id}`,
   hdetail:(slug: string) => `Product/detail/${slug}`,
   updateWishList:(id:number)=>`Product/wishlist/${id}`,
+  modifyProduct:(id:number)=>`Product/${id}`
 }
 
 const productApi = {
@@ -25,6 +26,9 @@ const productApi = {
 
   async updateWishList(params:{id:number,actionWishList:string}):Promise<IApiResponse<{}>>{
     return axiosPrivate.patch(productEndpoints.updateWishList(params.id),null,{params:{actionWishList:params.actionWishList}})
+  },
+  async modifyProduct(params:{id:number},data:IModifyProduct):Promise<IApiResponse<{}>>{
+    return axiosPublic.patch(productEndpoints.modifyProduct(params.id),{...data},{})
   }
 }
 

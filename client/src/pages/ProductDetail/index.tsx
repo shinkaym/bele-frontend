@@ -17,6 +17,7 @@ import { UToast } from '@/utils/swal';
 import { EToastOption } from '@/models/enum';
 import ListRalatedProduct from '@/components/common/ListRatedProduct';
 import AddFavorite from '@/components/common/AddFavorite';
+import ViewProduct from '@/components/common/ViewProduct';
 interface IColorSize{
     image:string,
     color:string,
@@ -47,6 +48,8 @@ const [activeIndexSize, setActiveIndexSize] = useState(0); // Theo dõi nút đa
 const [rates,setRates] = useState<IRateDetail[]>();
 const [product,setProduct] = useState<IProductDetail>();
 const [ratingCard,setRatingCard] = useState<IRateCard>();
+const [view,setView] = useState<number>(0);
+
 
     useEffect(() => {
         const fetchApi = async () => {
@@ -57,7 +60,8 @@ const [ratingCard,setRatingCard] = useState<IRateCard>();
               const productData = res.data.product;
               setProduct(productData);
               setRates(res.data.product.rates);
-              setWishLists(res.data.product.wishLists)
+              setWishLists(res.data.product.wishLists);
+              setView(res.data.product.view);
               const avgRate:number =  res.data.product.rates?.reduce((pre,cur)=>pre+=cur.star,0);
               const toTalRangting: number =  res.data.product.rates?.length ;
 
@@ -127,6 +131,9 @@ const [ratingCard,setRatingCard] = useState<IRateCard>();
         }
 
     }
+    const handleView = (view:number)=>{
+      setView(view);
+    }
     const variant = product?.variants.find(item=>item.attributes[0].Color== imgState.color && item.attributes[1].Size == imgState.size);
     const handleCounterChange = (value: number) => {
         setCounterValue(value); // Cập nhật giá trị khi Counter thay đổi
@@ -152,7 +159,7 @@ return (<>
         <h1 className="text-3xl font-bold">{product.name}</h1>
         <div className="flex items-center space-x-4 text-gray-500">
             <span><FontAwesomeIcon icon={faHouse} /> {variant?.stock}</span>
-            <span><FontAwesomeIcon icon={faEye} /> {product.view}</span>
+            <ViewProduct view={view} handleView={handleView} productId={product.id}/>
             <span><FontAwesomeIcon icon={faHeart} /> {wishLists?.length}</span>
         </div>
         <AvgStar rate={ratingCard?.ratings!} />

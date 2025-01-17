@@ -2,9 +2,11 @@ import productApi from "@/apis/modules/product.api";
 import { EToastOption } from "@/models/enum";
 import { IApiResponse } from "@/models/interfaces";
 import { RootState } from "@/redux/store";
+import { socket } from "@/sockets/connect";
 import { UToast } from "@/utils/swal";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 interface AddFavoriteProps{
@@ -14,18 +16,41 @@ interface AddFavoriteProps{
 }
 
 const AddFavorite :React.FC<AddFavoriteProps> = ({productId,wistList,handleAddWistList})=>{
+    useEffect(() => {
+        // Kết nối và lắng nghe sự kiện 'messageServer'
+        socket.on("AddFavoriteReturn", (data) => {
+            if(data.productId === productId)
+                handleAddWistList(data.wistList);
+        });
+      
+        // Hủy lắng nghe sự kiện khi component bị unmount
+        return () => {
+          socket.off("AddFavoriteReturn");
+        };
+      }, []);
+
     const customer= useSelector((state: RootState) => state.auth.customer);
     const handleClick = async ()=>{
         if(!customer)
             UToast(EToastOption.ERROR,"Chưa đăng nhập.")
-    
         const action:string = wistList.includes(customer!.id)?"Remove":"Add";
-        console.log(productId,action);
         try{
+            console.log(productId,action)
         const res: IApiResponse<{}> = await productApi.updateWishList({ id: productId,actionWishList:action });
         if(res.status === 200){
             
-            action==="Add"?handleAddWistList([customer?.id,...wistList]):handleAddWistList(wistList.filter(item=>item!==customer?.id));
+            if(action==="Add"){
+                const result = [customer!.id,...wistList];
+                handleAddWistList(result)
+                socket.emit("AddFavorite",{wistList:result,productId:productId});
+
+            }else{
+                const result = wistList.filter(item=>item!==customer?.id);
+                handleAddWistList(result);
+                socket.emit("AddFavorite",{wistList:result,productId:productId});
+
+            
+            }
             UToast(EToastOption.SUCCESS,"Thành công")
         }
 
