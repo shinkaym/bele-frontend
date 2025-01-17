@@ -2,7 +2,9 @@ import permissionRoleApi from '@/apis/modules/permissonRole.api'
 import Breadcrumb from '@/components/common/Breadcrumbs/Breadcrumb'
 import Loader from '@/components/common/Loader'
 import DecentralizeTable from '@/components/common/Tables/DencentralizeTable'
+import { EToastOption } from '@/models/enums/option'
 import { IPermission, IPermissionRoles, IRole } from '@/models/interfaces/permissionRole'
+import { UToast } from '@/utils/swal'
 import { useEffect, useState } from 'react'
 
 type Props = {}
@@ -17,20 +19,38 @@ function Decentralize({}: Props) {
   }
 
   const handleSubmit = (payload: IPermissionRoles[]) => {
-    console.log(payload);
+    const fetchApi = async (data: IPermissionRoles) => {
+      setLoading(true)
+      try {
+        const res = await permissionRoleApi.decentralize(data)
+        if (res.data && res.status === 200) {
+          
+          setRolesData(res.data.roles)
+          UToast(EToastOption.SUCCESS, 'Phân quyền thành công!')
+        }
+      } catch (error) {
+        console.log(error)
+        UToast(EToastOption.ERROR, 'Phân quyền thất bại!')
+      } finally {
+        setLoading(false)
+      }
+    }
+    payload.forEach((data) => fetchApi(data))
   }
 
   useEffect(() => {
     const handleGetDecentralizeList = async () => {
       setLoading(true) // Bật trạng thái loading
       try {
-        const permisisons = await permissionRoleApi.getPermissionList()
-        const roles = await permissionRoleApi.getRoleList()
-        setPermissionsData(permisisons)
-        setRolesData(roles)
-        setLoading(false)
+        const resPermissions = await permissionRoleApi.getPermissionList()
+        const resRoles = await permissionRoleApi.getRoleList()
+        if (resPermissions.data && resRoles.data) {
+          setPermissionsData(resPermissions.data)
+          setRolesData(resRoles.data.roles)
+        }
       } catch (error) {
         console.error('Error fetching categories:', error)
+      } finally {
         setLoading(false)
       }
     }

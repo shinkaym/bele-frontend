@@ -18,7 +18,7 @@ const customerApi = {
     })
   },
   async changePassword(data: IChangePasswordFormData): Promise<IApiResponse<void>> {
-    return axiosPrivate.post(customerEndpoints.changePassword, data)
+    return axiosPrivate.post(customerEndpoints.changePassword, { ...data })
   }
 }
 

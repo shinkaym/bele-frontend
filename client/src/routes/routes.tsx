@@ -71,8 +71,7 @@ const AppRouter = () => {
           ]
         },
         {
-          path: 'product',
-          element: <ProductDetail />,
+          path: 'products', 
           children: [
             {
               path: 'detail/:slug',

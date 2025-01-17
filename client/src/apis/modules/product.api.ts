@@ -32,7 +32,7 @@ const productApi = {
     },
     params: { page?: number; limit?: number }
   ): Promise<IApiResponse<{ products: IProduct[]; pagination: IPagination }>> {
-    return axiosPublic.get(productEndpoints.list, { params: { ...filter, ...params } })
+    return axiosPublic.get(productEndpoints.list, { params: { filter, ...params } })
   },
   async detail(params: { Slug: string }): Promise<IApiResponse<{ product: IProductDetail }>> {
     return axiosPublic.get(productEndpoints.hdetail(params.Slug))

@@ -38,6 +38,7 @@ const ChangePasswordModal: React.FunctionComponent<IChangePasswordModalProps> = 
   })
 
   const handleFormSubmit = async (data: IChangePasswordFormData) => {
+    console.log(data);
     setLoading(true)
     try {
       await onSubmit(data)

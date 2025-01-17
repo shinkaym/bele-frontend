@@ -96,7 +96,7 @@ const ProductGrid = ({
       {Object.keys(product).length > 0 && variantByColor.length > 0 && Object.keys(colorData).length > 0 ? (
         <div className={`${className} space-y-1`}>
           <div className='relative group transition-all duration-500 ease-linear overflow-hidden max-h-80'>
-            <Link to={`/product/detail/${product.slug}`}>
+            <Link to={`/products/detail/${product.slug}`}>
               <img
                 src={colorData.thumbnail}
                 alt={product.name}
@@ -124,7 +124,7 @@ const ProductGrid = ({
                   ) : (
                     ''
                   )}
-                </div>
+                </div>  
               </div>
             </Link>
             {isShowAddCart && (
@@ -162,7 +162,7 @@ const ProductGrid = ({
             )}
             {unrated && (
               <Link
-                to={`/product/detail/${product.slug}?orderId=${product.orderId}`}
+                to={`/products/detail/${product.slug}?orderId=${product.orderId}`}
                 className='absolute -top-40  lg:right-5  md:right-4  sm:right-3 right-2 bg-transparent p-2 rounded-md lg:group-hover:top-5 md:group-hover:top-4 sm:group-hover:top-3 group-hover:top-2  z-50 transition-all duration-300 ease-linear'
               >
                 <FontAwesomeIcon
@@ -200,7 +200,7 @@ const ProductGrid = ({
             />
           )}
           <p className='max-w-full truncate lg:text-sm md:text-xs sm:text-2xs text-3xs font-normal'>
-            <Link to={`/product/detail/${product.slug}`}>{product.name}</Link>
+            <Link to={`/products/detail/${product.slug}`}>{product.name}</Link>
           </p>
 
           {isShowPrice && (
