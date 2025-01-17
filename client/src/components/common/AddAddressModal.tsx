@@ -29,7 +29,13 @@ const AddAddressModal: React.FunctionComponent<IAddAddressModalProps> = ({ onClo
     handleSubmit,
     formState: { errors }
   } = useForm<IAddressFormData>({
-    resolver: zodResolver(addressSchema)
+    resolver: zodResolver(addressSchema),
+    defaultValues: {
+      name: '',
+      phoneNumber: '',
+      address: '',
+      isDefault: false
+    }
   })
 
   const handleFormSubmit = async (data: IAddressFormData) => {

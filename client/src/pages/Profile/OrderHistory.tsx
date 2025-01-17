@@ -47,12 +47,12 @@ const OrderHistoryPage: React.FC = () => {
   }
 
   if (loading) {
-    return <p>Loading...</p>
+    return <p>Đang tải dữ liệu...</p>
   }
 
   return (
-    <div className='p-4'>
-      <h1 className='text-2xl font-bold mb-4'>Lịch sử đơn hàng</h1>
+    <div>
+      <h3 className='font-medium text-3xl tracking-wider mb-3 lg:mb-5'>Lịch sử đơn hàng</h3>
       {orders.length === 0 ? (
         <p>Không có đơn hàng nào.</p>
       ) : (

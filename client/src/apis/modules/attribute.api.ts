@@ -1,4 +1,4 @@
-import { IAddress, IApiResponse, IAttributeValue } from '@/models/interfaces'
+import { IApiResponse, IAttributeValue } from '@/models/interfaces'
 import axiosPublic from '../client/public.client'
 
 const attributeApi = {

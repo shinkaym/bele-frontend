@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/redux/store'
-import { addToCart, fetchCart, subToCart } from '@/redux/slices/cart.slice'
+import { addToCart, fetchCart, removeFromCart, subToCart } from '@/redux/slices/cart.slice'
 import { fetchCustomerInfo } from '@/redux/slices/customer.slice'
 import Pagination from '@/components/common/Pagination'
 import { IOption } from '@/models/interfaces'
@@ -15,7 +15,7 @@ import { z } from 'zod'
 import cartApi from '@/apis/modules/cart.api'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { redirect, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { UToast } from '@/utils/swal'
 import { EToastOption } from '@/models/enum'
 import { FormattedNumber } from 'react-intl'
@@ -23,16 +23,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmarkCircle, faSubtract, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { calculateDiscount, calculateSubtotal, calculateTotal } from '@/utils'
 import { PAGINATION_CONFIG } from '@/constants'
+import ConfirmationModal from '@/components/common/ConfirmationModal'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const dynamicFormSchema = (useCustomAddress: boolean) => {
+const dynamicFormSchema = (useCustomAddress: boolean, addresses: IAddress[]) => {
   return z.object({
     fullName: z.string().min(1, 'Họ và tên là bắt buộc'),
     phoneNumber: z
       .string()
       .min(1, { message: 'Số điện thoại không được để trống' })
       .regex(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, { message: 'Số điện thoại không đúng định dạng' }),
-    address: useCustomAddress ? z.string().min(1, 'Địa chỉ là bắt buộc') : z.string().optional()
+    address: useCustomAddress || addresses.length < 1 ? z.string().min(1, 'Địa chỉ là bắt buộc') : z.string().optional()
   })
 }
 
@@ -51,6 +52,7 @@ const Cart: React.FC = () => {
   const [paymentMethod, setPaymentMethod] = useState('COD')
   const [useCustomAddress, setUseCustomAddress] = useState(false)
   const [selectedAddressName, setSelectedAddressName] = useState<string | null>(null)
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false)
 
   const {
     control,
@@ -58,7 +60,7 @@ const Cart: React.FC = () => {
     formState: { errors },
     reset
   } = useForm<FormData>({
-    resolver: zodResolver(dynamicFormSchema(useCustomAddress)),
+    resolver: zodResolver(dynamicFormSchema(useCustomAddress, addresses)),
     defaultValues: {
       fullName: info?.fullName || '',
       phoneNumber: info?.phoneNumber || '',
@@ -67,8 +69,25 @@ const Cart: React.FC = () => {
   })
 
   useEffect(() => {
+    dispatch(fetchAddresses())
+  }, [])
+
+  useEffect(() => {
     if (!useCustomAddress && addresses.length > 0) {
-      setSelectedAddressName(addressOptions[0].value)
+      const selectedAddress = addresses.find((addr) => addr.isDefault)
+      if (selectedAddress) {
+        setSelectedAddressName(selectedAddress.name)
+        reset({
+          fullName: selectedAddress.name,
+          phoneNumber: selectedAddress.phoneNumber
+        })
+      } else {
+        setSelectedAddressName(addressOptions[0].value)
+        reset({
+          fullName: addresses[0].name,
+          phoneNumber: addresses[0].phoneNumber
+        })
+      }
     }
   }, [addresses])
 
@@ -77,6 +96,10 @@ const Cart: React.FC = () => {
     dispatch(fetchCustomerInfo())
     dispatch(fetchAddresses())
   }, [dispatch])
+
+  const handleConfirmOrder = () => {
+    setIsConfirmationModalOpen(true)
+  }
 
   useEffect(() => {
     const status = searchParams.get('status')
@@ -122,21 +145,33 @@ const Cart: React.FC = () => {
   }
 
   const onSubmit = async (data: FormData) => {
+    console.log({
+      fullName: data.fullName,
+      phoneNumber: data.phoneNumber,
+      address: useCustomAddress ? (data.address ?? '') : (selectedAddressName ?? ''),
+      note
+    })
     try {
-      const res = await cartApi.checkout(paymentMethod, {
-        fullName: data.fullName,
-        phoneNumber: data.phoneNumber,
-        address: useCustomAddress ? (data.address ?? '') : (selectedAddressName ?? ''),
-        note
-      })
-      if (res.status === 200) {
-        if (res.message === 'Redirect') redirect(res.data)
-        else {
-          UToast(EToastOption.SUCCESS, 'Thanh toán đơn hàng thành công')
+      if (cart.cartItems.length === 0) {
+        UToast(EToastOption.ERROR, 'Chưa có sản phẩm trong giỏ hàng')
+      } else {
+        const res = await cartApi.checkout(paymentMethod, {
+          fullName: data.fullName,
+          phoneNumber: data.phoneNumber,
+          address: useCustomAddress || addresses.length < 1 ? (data.address ?? '') : (selectedAddressName ?? ''),
+          note
+        })
+        if (res.status === 200) {
+          if (res.message === 'Redirect') window.location.href = res.data
+          else {
+            UToast(EToastOption.SUCCESS, 'Thanh toán đơn hàng thành công')
+          }
         }
       }
     } catch {
       UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra')
+    } finally {
+      setIsConfirmationModalOpen(false)
     }
   }
 
@@ -260,12 +295,11 @@ const Cart: React.FC = () => {
               />
             </div>
           </div>
-
           <button
-            onClick={handleSubmit(onSubmit)}
+            onClick={handleConfirmOrder}
             className='bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600'
           >
-            Xác nhận đơn hàng
+            ĐẶT HÀNG
           </button>
         </div>
 
@@ -279,6 +313,7 @@ const Cart: React.FC = () => {
                 <p>Chưa có sản phẩm trong giỏ hàng</p>
               ) : (
                 <>
+                  <button onClick={() => dispatch(removeFromCart())}>Xoá tất cả</button>
                   {currentItems.map((item, i) => (
                     <div key={i} className='border-t-2 p-4'>
                       <li className='grid grid-cols-[auto_1fr]' key={i}>
@@ -383,6 +418,18 @@ const Cart: React.FC = () => {
           )}
         </div>
       </div>
+      {isConfirmationModalOpen && (
+        <ConfirmationModal
+          onClose={() => setIsConfirmationModalOpen(false)}
+          onConfirm={handleSubmit(onSubmit)}
+          title='Xác nhận thanh toán'
+          description='Bạn có chắc chắn muốn thanh toán đơn hàng này?'
+          confirmButtonText='Thanh toán'
+          confirmButtonColor='blue'
+          cancelButtonText='Huỷ'
+          cancelButtonColor='gray'
+        />
+      )}
     </div>
   )
 }

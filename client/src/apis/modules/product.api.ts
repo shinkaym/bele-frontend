@@ -14,7 +14,7 @@ const productEndpoints = {
   removeFromWishlist: 'Product',
   detail: (id: string | number) => `product/${id}`,
   hdetail: (slug: string) => `Product/detail/${slug}`,
-  wishlist: 'Product/wishlist',
+  wishlist: 'Product/wishlish',
   rated: 'Rate/rated',
   unrated: 'Rate/Not-Rated',
   updateWishList: (id: number) => `Product/wishlist/${id}`,

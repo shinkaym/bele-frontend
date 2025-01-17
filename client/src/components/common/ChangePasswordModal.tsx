@@ -2,15 +2,15 @@ import React, { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import Input from './Forms/Input'
 import Button from './Button'
 import Loader from './Loader'
 import Popup from './Popup'
 import { IChangePasswordFormData } from '@/models/interfaces'
+import PasswordInput from './Forms/PasswordInput'
 
 interface IChangePasswordModalProps {
   onClose: () => void
-  onSubmit: (data: IChangePasswordFormData) => void // Sử dụng IChangePasswordFormData ở đây
+  onSubmit: (data: IChangePasswordFormData) => void
 }
 
 const changePasswordSchema = z
@@ -59,9 +59,8 @@ const ChangePasswordModal: React.FunctionComponent<IChangePasswordModalProps> = 
             control={control}
             defaultValue=''
             render={({ field }) => (
-              <Input
+              <PasswordInput
                 placeholder='Mật khẩu hiện tại'
-                type='password'
                 error={errors.currentPassword?.message}
                 {...field}
                 label='Mật khẩu hiện tại:'
@@ -76,9 +75,8 @@ const ChangePasswordModal: React.FunctionComponent<IChangePasswordModalProps> = 
             control={control}
             defaultValue=''
             render={({ field }) => (
-              <Input
+              <PasswordInput
                 placeholder='Mật khẩu mới'
-                type='password'
                 error={errors.newPassword?.message}
                 {...field}
                 label='Mật khẩu mới:'
@@ -93,9 +91,8 @@ const ChangePasswordModal: React.FunctionComponent<IChangePasswordModalProps> = 
             control={control}
             defaultValue=''
             render={({ field }) => (
-              <Input
+              <PasswordInput
                 placeholder='Xác nhận mật khẩu mới'
-                type='password'
                 error={errors.confirmPassword?.message}
                 {...field}
                 label='Xác nhận mật khẩu mới:'

@@ -25,12 +25,14 @@ const AddressNotes = () => {
   const handleAddAddress = async (data: IAddressFormData) => {
     await dispatch(addAddress(data))
     setIsAddModalOpen(false)
+    dispatch(fetchAddresses())
   }
 
   const handleUpdateAddress = async (data: IAddressFormData) => {
     if (selectedAddress) {
       await dispatch(updateAddress({ id: selectedAddress.id, data }))
       setIsUpdateModalOpen(false)
+      dispatch(fetchAddresses())
     }
   }
 
@@ -48,6 +50,7 @@ const AddressNotes = () => {
       }
 
       await dispatch(updateAddress({ id, data: updatedData }))
+      dispatch(fetchAddresses())
     }
   }
 
@@ -63,55 +66,60 @@ const AddressNotes = () => {
         </ButtonCustom>
       </div>
       <h4 className='py-5 text-2xl'>Sổ địa chỉ</h4>
-      <div>
-        {addresses.map((address) => (
-          <div key={address.id} className='flex justify-between mb-6 pb-6 border-b'>
-            <div className='flex-1'>
-              <div className='flex items-center gap-2 mb-2'>
-                {address.name}
-                {address.isDefault && (
-                  <div className='text-xs border border-black px-2 py-1 rounded-full flex items-center gap-1'>
-                    <IconStar className='w-3 h-3' />
-                    Mặc định
-                  </div>
+      {addresses.length === 0 ? (
+        <p>Không có địa chỉ nào.</p>
+      ) : (
+        <div>
+          {addresses.map((address) => (
+            <div key={address.id} className='flex justify-between mb-6 pb-6 border-b'>
+              <div className='flex-1'>
+                <div className='flex items-center gap-2 mb-2'>
+                  {address.name}
+                  {address.isDefault && (
+                    <div className='text-xs border border-black px-2 py-1 rounded-full flex items-center gap-1'>
+                      <IconStar className='w-3 h-3' />
+                      Mặc định
+                    </div>
+                  )}
+                </div>
+                <div className='text-gray-500 text-md'>
+                  {address.phoneNumber}
+                  <br />
+                  {address.address}
+                </div>
+              </div>
+              <div className='flex flex-col'>
+                <div className='flex items-start justify-end flex-1'>
+                  <button
+                    className='text-[#2f5acf] hover:text-black'
+                    onClick={() => {
+                      setSelectedAddress(address)
+                      setIsUpdateModalOpen(true)
+                    }}
+                  >
+                    Cập nhật
+                  </button>
+                  <button
+                    className='text-[#2f5acf] hover:text-black ml-4 pl-4 border-l'
+                    onClick={() => handleDeleteAddress(address.id)}
+                  >
+                    Xoá
+                  </button>
+                </div>
+                {!address.isDefault && (
+                  <ButtonCustom
+                    className='h-[34px] font-normal lg:text-sm'
+                    onClick={() => handleSetDefaultAddress(address.id)}
+                  >
+                    Đặt làm mặc định
+                  </ButtonCustom>
                 )}
               </div>
-              <div className='text-gray-500 text-md'>
-                {address.phoneNumber}
-                <br />
-                {address.address}
-              </div>
             </div>
-            <div className='flex flex-col'>
-              <div className='flex items-start justify-end flex-1'>
-                <button
-                  className='text-[#2f5acf] hover:text-black'
-                  onClick={() => {
-                    setSelectedAddress(address)
-                    setIsUpdateModalOpen(true)
-                  }}
-                >
-                  Cập nhật
-                </button>
-                <button
-                  className='text-[#2f5acf] hover:text-black ml-4 pl-4 border-l'
-                  onClick={() => handleDeleteAddress(address.id)}
-                >
-                  Xoá
-                </button>
-              </div>
-              {!address.isDefault && (
-                <ButtonCustom
-                  className='h-[34px] font-normal lg:text-sm'
-                  onClick={() => handleSetDefaultAddress(address.id)}
-                >
-                  Đặt làm mặc định
-                </ButtonCustom>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
+
       {isAddModalOpen && <AddAddressModal onClose={() => setIsAddModalOpen(false)} onSubmit={handleAddAddress} />}
       {isUpdateModalOpen && selectedAddress && (
         <UpdateAddressModal

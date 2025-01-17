@@ -5,7 +5,7 @@ import { vi } from 'date-fns/locale'
 export const formatDate = (dateString: string): string => {
   const date = parseISO(dateString)
 
-  return format(date, 'dd/MM/yyyy')
+  return format(date, "'ngày' dd 'tháng' MM 'năm' yyyy")
 }
 
 export const calculateSubtotal = (cart: ICart) => {

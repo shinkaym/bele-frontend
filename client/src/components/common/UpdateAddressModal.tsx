@@ -91,24 +91,25 @@ const UpdateAddressModal: React.FunctionComponent<IUpdateAddressModalProps> = ({
               )}
             />
           </div>
-
-          <div className='mb-4 col-span-2 md:col-span-1'>
-            <Controller
-              name='isDefault'
-              control={control}
-              render={({ field }) => (
-                <CheckboxGroup
-                  options={[{ value: 'isDefault', label: 'Đặt làm địa chỉ mặc định' }]}
-                  name='isDefault'
-                  selectedValues={field.value ? ['isDefault'] : []}
-                  onChange={(values) => {
-                    field.onChange(values.includes('isDefault')) // Convert to boolean
-                  }}
-                  layout='horizontal'
-                />
-              )}
-            />
-          </div>
+          {!initialData.isDefault && (
+            <div className='mb-4 col-span-2 md:col-span-1'>
+              <Controller
+                name='isDefault'
+                control={control}
+                render={({ field }) => (
+                  <CheckboxGroup
+                    options={[{ value: 'isDefault', label: 'Đặt làm địa chỉ mặc định' }]}
+                    name='isDefault'
+                    selectedValues={field.value ? ['isDefault'] : []}
+                    onChange={(values) => {
+                      field.onChange(values.includes('isDefault')) // Convert to boolean
+                    }}
+                    layout='horizontal'
+                  />
+                )}
+              />
+            </div>
+          )}
         </div>
 
         <Button

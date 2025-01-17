@@ -6,6 +6,7 @@ import ButtonCustom from './ButtonCustom'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
+import { formatDate } from '@/utils'
 
 interface OrderItemProps {
   order: IOrder
@@ -17,6 +18,24 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, onCancelOrder }) => {
 
   const status = orderStatus.find((s) => s.value === order.status)
   const canCancel = order.status === 1 || order.status === 2
+
+  const calculateSubtotal = () => {
+    return order.variants.reduce((total, item) => {
+      return total + item.price * item.quantity
+    }, 0)
+  }
+
+  const calculateDiscount = () => {
+    return order.variants.reduce((total, item) => {
+      return total + item.price * (item.discount / 100) * item.quantity
+    }, 0)
+  }
+
+  const calculateTotal = () => {
+    const subtotal = calculateSubtotal()
+    const discount = calculateDiscount()
+    return subtotal - discount
+  }
 
   return (
     <div className='border border-black rounded-lg p-4'>
@@ -53,10 +72,10 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, onCancelOrder }) => {
               <strong>Phương thức thanh toán:</strong> {order.payMethod}
             </p>
             <p>
-              <strong>Ngày giao hàng:</strong> {order.shipDate}
+              <strong>Ngày giao hàng:</strong> {order.status > 2 ? formatDate(order.shipDate) : 'Chưa có'}
             </p>
             <p>
-              <strong>Ngày nhận hàng:</strong> {order.receiveDate}
+              <strong>Ngày nhận hàng:</strong> {order.status > 2 ? formatDate(order.receiveDate) : 'Chưa có'}
             </p>
           </div>
 
@@ -86,18 +105,20 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, onCancelOrder }) => {
                   <p>{product.quantity}</p>
                 </div>
 
-                <div className='flex flex-col items-center'>
-                  <p className='line-through text-gray-400'>
-                    <FormattedNumber value={product.price} style='currency' currency='VND' />
-                  </p>
+                <div className='flex flex-col items-center w-full justify-center'>
                   <p className='text-gray-900 font-medium'>
-                    {product.discount > 0 && (
+                    {product.discount > 0 ? (
                       <FormattedNumber
                         value={product.price * (1 - 1 / product.discount)}
                         style='currency'
                         currency='VND'
                       />
+                    ) : (
+                      <FormattedNumber value={product.price} style='currency' currency='VND' />
                     )}
+                  </p>
+                  <p className='line-through text-gray-400'>
+                    {product.discount > 0 && <FormattedNumber value={product.price} style='currency' currency='VND' />}
                   </p>
                 </div>
               </div>
@@ -106,14 +127,13 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, onCancelOrder }) => {
 
           <div className='flex flex-col gap-3 text-right mt-4'>
             <p>
-              <strong>Tạm tính:</strong>{' '}
-              <FormattedNumber value={order.totalMoney + order.totalDiscount} style='currency' currency='VND' />
+              <strong>Tạm tính:</strong> <FormattedNumber value={calculateSubtotal()} style='currency' currency='VND' />
             </p>
             <p>
-              <strong>Giảm giá:</strong> <FormattedNumber value={order.totalDiscount} style='currency' currency='VND' />
+              <strong>Giảm giá:</strong> <FormattedNumber value={calculateDiscount()} style='currency' currency='VND' />
             </p>
             <p>
-              <strong>Tổng cộng:</strong> <FormattedNumber value={order.totalMoney} style='currency' currency='VND' />
+              <strong>Tổng cộng:</strong> <FormattedNumber value={calculateTotal()} style='currency' currency='VND' />
             </p>
           </div>
 

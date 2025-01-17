@@ -50,19 +50,26 @@ const Wishlist = () => {
   }
 
   return (
-    <>
+    <div>
+      <h3 className='font-medium text-3xl tracking-wider mb-3 lg:mb-5'>Sản phẩm yêu thích</h3>
       {loading && <p>Đang tải dữ liệu...</p>}
-      <div className={`grid grid-cols-2 md:grid-cols-3 gap-2 mb-5`}>
-        {products.map((p) => (
-          <ProductGrid key={p.id} product={p} isShowTym handleClickTym={handleRemoveFromWishlist} />
-        ))}
-      </div>
-      <Pagination
-        currentPage={pagination.currentPage}
-        totalPage={pagination.totalPage}
-        onPageChange={handlePageChange}
-      />
-    </>
+      {products.length === 0 ? (
+        <p>Không có sản phẩm đã yêu thích.</p>
+      ) : (
+        <>
+          <div className={`grid grid-cols-2 md:grid-cols-3 gap-2 mb-5`}>
+            {products.map((p) => (
+              <ProductGrid key={p.id} product={p} isShowTym handleClickTym={handleRemoveFromWishlist} />
+            ))}
+          </div>
+          <Pagination
+            currentPage={pagination.currentPage}
+            totalPage={pagination.totalPage}
+            onPageChange={handlePageChange}
+          />
+        </>
+      )}
+    </div>
   )
 }
 

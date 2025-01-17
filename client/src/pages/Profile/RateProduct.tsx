@@ -81,7 +81,8 @@ const RateProduct = () => {
   }, [pagination.currentPage, showRated])
 
   return (
-    <div className='p-4'>
+    <div>
+      <h3 className='font-medium text-3xl tracking-wider mb-3 lg:mb-5'>Đánh giá sản phẩm</h3>
       {loading && <p>Đang tải dữ liệu...</p>}
       <div className='grid grid-cols-2 max-w-[500px] gap-3 mb-3 md:mb-5'>
         <ButtonCustom inverted={!showRated} onClick={() => handleTabChange(false)}>
@@ -104,11 +105,13 @@ const RateProduct = () => {
         )}
       </div>
 
-      <Pagination
-        currentPage={pagination.currentPage}
-        totalPage={pagination.totalPage}
-        onPageChange={handlePageChange}
-      />
+      {(ratedProducts.length > 0 || unratedProducts.length > 0) && (
+        <Pagination
+          currentPage={pagination.currentPage}
+          totalPage={pagination.totalPage}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   )
 }
