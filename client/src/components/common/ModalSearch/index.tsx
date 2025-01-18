@@ -72,7 +72,7 @@ const ModalSearch: React.FunctionComponent<ISearchProps> = ({ onSearchClose }) =
     navigateToSearchPage(searchValue)
   }
 
-  const highlightKeywords = ['Tập Gym', 'Yoga', 'Bóng đá', 'Chạy bộ']
+  const highlightKeywords = ['Áo thun', 'Tất ngắn', 'Áo nam', 'Quần nam']
 
   // Trigger search whenever the debounced value changes
   useEffect(() => {
