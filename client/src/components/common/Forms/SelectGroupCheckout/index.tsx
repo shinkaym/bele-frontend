@@ -4,7 +4,10 @@ import React from 'react'
 interface SelectGroupCheckoutProps {
   value: number | string
   onChange: (value: string) => void
-  options: IOption[]
+  options: {
+    value: string | number
+    label: string
+  }[]
   error?: string
   label?: string
   className?: string

@@ -21,9 +21,9 @@ export enum EToastOption {
 
 export enum EOrderStatus {
   UNKNOWN = 'Unknown',
-  PENDING_CONFIRMATION = 'Pending confirmation',
-  PENDING = 'Pending',
-  DELIVERED = 'Delivered',
-  SHIPPED = 'Shipped',
-  CANCELED = 'Cancelled'
+  PENDING_CONFIRMATION = 'Chờ xác nhận',
+  PENDING = 'Đang chuẩn bị',
+  DELIVERED = 'Đang giao hàng',
+  SHIPPED = 'Đã giao',
+  CANCELED = 'Đã huỷ'
 }

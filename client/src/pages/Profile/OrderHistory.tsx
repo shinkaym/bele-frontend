@@ -3,33 +3,41 @@ import { IOrder } from '@/models/interfaces'
 import OrderItem from '@/components/common/OrderItem'
 import orderApi from '@/apis/modules/order.api'
 import { UToast } from '@/utils/swal'
-import { EToastOption } from '@/models/enum'
+import { EOrderStatus, EToastOption } from '@/models/enum'
 import Swal from 'sweetalert2'
-// import { mockOrders } from '@/constants'
+import SelectGroupCheckout from '@/components/common/Forms/SelectGroupCheckout'
 
 const OrderHistoryPage: React.FC = () => {
   const [orders, setOrders] = useState<IOrder[]>([])
   const [loading, setLoading] = useState(true)
+  const [selectedStatus, setSelectedStatus] = useState<number | string>('')
+
+  const statusOptions = [
+    { value: '', label: 'Tất cả' },
+    { value: -1, label: EOrderStatus.CANCELED },
+    { value: 1, label: EOrderStatus.PENDING_CONFIRMATION },
+    { value: 2, label: EOrderStatus.PENDING },
+    { value: 3, label: EOrderStatus.DELIVERED },
+    { value: 4, label: EOrderStatus.SHIPPED }
+  ]
 
   useEffect(() => {
-    fetchOrders()
-  }, [])
+    fetchOrders(selectedStatus)
+  }, [selectedStatus])
 
-  const fetchOrders = async () => {
+  const fetchOrders = async (status: number | string) => {
     try {
-      const res = await orderApi.getAll()
+      const res = await orderApi.getAll(status)
       const orderList: Array<{ id: number; status: number }> = Array.isArray(res.data?.orders) ? res.data.orders : []
 
       const detailedOrders = await Promise.all(
         orderList.map(async (order: { id: number; status: number }) => {
           const detailRes = await orderApi.getOne(order.id)
-          console.log('🚀 ~ orderList.map ~ detailRes:', detailRes)
           return detailRes.data
         })
       )
 
       setOrders(detailedOrders.filter((order): order is IOrder => order !== undefined))
-      // setOrders(mockOrders)
     } catch {
       UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra')
     } finally {
@@ -51,7 +59,7 @@ const OrderHistoryPage: React.FC = () => {
         try {
           await orderApi.cancel(orderId)
           UToast(EToastOption.SUCCESS, 'Đã huỷ đơn hàng thành công')
-          fetchOrders()
+          fetchOrders(selectedStatus)
         } catch {
           UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra')
         }
@@ -66,6 +74,16 @@ const OrderHistoryPage: React.FC = () => {
   return (
     <div>
       <h3 className='font-medium text-3xl tracking-wider mb-3 lg:mb-5'>Lịch sử đơn hàng</h3>
+
+      <div className='mb-6'>
+        <SelectGroupCheckout
+          value={selectedStatus}
+          onChange={(value) => setSelectedStatus(value)}
+          options={statusOptions}
+          label='Lọc theo trạng thái'
+        />
+      </div>
+
       {orders.length === 0 ? (
         <p>Không có đơn hàng nào.</p>
       ) : (
