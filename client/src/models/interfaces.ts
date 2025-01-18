@@ -131,7 +131,7 @@ export interface IVariantProductColor {
 export interface IPagination {
   currentPage: number
   totalPage: number
-  totalProduct?:number
+  totalProduct?: number
 }
 
 //Setting
@@ -304,6 +304,7 @@ export interface ICartItem {
   ]
   quantity: number
   discount: number
+  slug: string
 }
 export interface ICart {
   totalMoney: number
@@ -334,16 +335,16 @@ export interface IContactAddResponse {
 
 //Hoang
 export interface IProductDetail {
-  id:number,
-  name:string,
-  view:number,
-  like: number,
-  wishLists:Array<number>,
-  categoryId:number,
-  variants:IVariantDetail[],
-  discount:number,
-  description:string,
-  rates:IRateDetail[]
+  id: number
+  name: string
+  view: number
+  like: number
+  wishLists: Array<number>
+  categoryId: number
+  variants: IVariantDetail[]
+  discount: number
+  description: string
+  rates: IRateDetail[]
 }
 export interface IVariantDetail {
   id: number

@@ -13,6 +13,7 @@ interface ICartDropDownProps {
 }
 
 const CartDropDown: React.FunctionComponent<ICartDropDownProps> = ({ cart }) => {
+  console.log('🚀 ~ cart:', cart)
   const dispatch = useDispatch<AppDispatch>()
   return (
     <>
@@ -27,12 +28,17 @@ const CartDropDown: React.FunctionComponent<ICartDropDownProps> = ({ cart }) => 
       <ul className='space-y-2 flex-1'>
         {cart.cartItems.map((item) => (
           <li className='flex gap-3'>
-            <img src={item.thumbnail} alt={item.productName} className='w-25 object-cover rounded-md' />
+            <Link to={'/products/detail/' + item.slug} className='font-semibold max-w-full'>
+              <img src={item.thumbnail} alt={item.productName} className='w-25 object-cover rounded-md' />
+            </Link>
+
             <div className='flex items-center flex-1'>
               <div className='flex justify-between flex-1'>
                 <div>
                   <div className='text-sm mb-2'>
-                    <p className='font-semibold max-w-full'>{item.productName}</p>
+                    <Link to={'/products/detail/' + item.slug} className='font-semibold max-w-full'>
+                      {item.productName}
+                    </Link>
                     <p className='text-xs'>
                       <span>{item.attributes[0].Color}</span> / <span>{item.attributes[1].Size}</span>
                     </p>
