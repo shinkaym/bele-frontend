@@ -109,7 +109,7 @@ const AreaChart: React.FC<AreaChartProps> = ({ data,onClick }) => {
               <span className='block h-2.5 w-full max-w-2.5 rounded-full bg-primary'></span>
             </span>
             <div className='w-full'>
-              <p className='font-semibold text-primary'>{data.name}</p>
+              <p className='font-semibold text-primary'>{data.name + ' (VND)'}</p>
               <p className='text-sm font-medium'>Year: {data.year}</p>
             </div>
           </div>

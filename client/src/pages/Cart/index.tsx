@@ -26,6 +26,7 @@ import Swal from 'sweetalert2'
 import ForwardedRadioGroupPayMethod from '@/components/common/Forms/RadioGroupPayMethod'
 import TextareaCheckout from '@/components/common/Forms/TextareaCheckout'
 import ButtonCustom from '@/components/common/ButtonCustom'
+import { Link } from 'react-router-dom'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dynamicFormSchema = (useCustomAddress: boolean, addresses: IAddress[]) => {
@@ -87,7 +88,7 @@ const Cart: React.FC = () => {
     if (!useCustomAddress && addresses.length > 0) {
       const selectedAddress = addresses.find((addr) => addr.isDefault)
       if (selectedAddress) {
-        setSelectedAddressName(selectedAddress.name)
+        setSelectedAddressName(selectedAddress.address)
         reset({
           fullName: selectedAddress.name,
           phoneNumber: selectedAddress.phoneNumber
@@ -111,10 +112,10 @@ const Cart: React.FC = () => {
   useEffect(() => {
     const status = searchParams.get('status')
     if (status) {
-      if (status === '00') {
+      if (status == '00') {
         UToast(EToastOption.SUCCESS, 'Thanh toán đơn hàng thành công')
         dispatch(removeFromCart())
-      } else {
+      } else if (status == '11') {
         UToast(EToastOption.SUCCESS, 'Thanh toán đơn hàng thất bại')
       }
     }
@@ -145,7 +146,7 @@ const Cart: React.FC = () => {
   const handleAddressChange = (value: string) => {
     const selectedAddress = addresses.find((addr) => addr.name === value)
     if (selectedAddress) {
-      setSelectedAddressName(selectedAddress.name)
+      setSelectedAddressName(selectedAddress.address)
       reset({
         fullName: selectedAddress.name,
         phoneNumber: selectedAddress.phoneNumber
@@ -211,8 +212,8 @@ const Cart: React.FC = () => {
   })
 
   const addressOptions: IOption[] = sortedAddresses.map((addr: IAddress) => ({
-    value: addr.name,
-    label: addr.name
+    value: addr.address,
+    label: addr.address
   }))
 
   const customAddressOption: IOption[] = [{ value: 'customAddress', label: 'Nhập địa chỉ khác' }]
@@ -340,10 +341,14 @@ const Cart: React.FC = () => {
                   {currentItems.map((item, i) => (
                     <div key={i} className='border-t-2 p-4'>
                       <li className='grid grid-cols-[auto_1fr]' key={i}>
-                        <img src={item.thumbnail} alt={item.productName} className='w-25 object-cover rounded-md' />
+                        <Link to={`/products/detail/${item.slug}`}>
+                          <img src={item.thumbnail} alt={item.productName} className='w-25 object-cover rounded-md' />
+                        </Link>
                         <div className='pl-4 py-2 flex flex-col items-start justify-between'>
                           <div className='text-sm mb-2'>
-                            <p className='text-md font-semibold max-w-full'>{item.productName}</p>
+                            <Link to={`/products/detail/${item.slug}`}>
+                              <p className='text-md font-semibold max-w-full'>{item.productName}</p>
+                            </Link>
                             <p className='text-sm'>
                               <span>{item.attributes[0].Color}</span> / <span>{item.attributes[1].Size}</span>
                             </p>
