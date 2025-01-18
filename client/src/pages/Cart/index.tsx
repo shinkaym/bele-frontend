@@ -152,7 +152,6 @@ const Cart: React.FC = () => {
       })
     }
   }
-
   const onSubmit = async (data: FormData) => {
     if (cart.cartItems.length === 0) {
       UToast(EToastOption.ERROR, 'Chưa có sản phẩm trong giỏ hàng')

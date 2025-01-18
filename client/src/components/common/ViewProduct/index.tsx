@@ -35,6 +35,7 @@ const ViewProduct:React.FC<ViewProductProps> = ({productId,view,handleView})=>{
                     modifyField:"View",
                     modifyValue:"1",
                     modifyAction:"Reduce"
+                    modifyAction:"Increase"
                 } 
                 const res: IApiResponse<{}> = await productApi.modifyProduct({id:productId},{...data});
                 if(res.status===200){
