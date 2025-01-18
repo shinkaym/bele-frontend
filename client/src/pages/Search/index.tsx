@@ -33,6 +33,10 @@ function Search() {
     }
   }
 
+  useEffect(()=>{
+    setSearchValue(searchParams.get('value') || '')
+  },[searchParams.get('value')])
+
   useEffect(() => {
     updateLimit()
 

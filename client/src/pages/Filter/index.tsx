@@ -84,7 +84,7 @@ function Filter() {
       }> = await productApi.list(filter, params)
       if (res.status === 200 && res.data) {
         setResult(res.data.products)
-        console.log(res.data.pagination)
+        console.log(res.data)
         setPagination(res.data.pagination)
       }
     } catch (error) {

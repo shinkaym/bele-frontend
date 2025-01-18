@@ -25,6 +25,7 @@ interface IProductGridProps {
   handleClickTym?: () => void
   isShowTym?: boolean
   unrated?: boolean
+  onClose?: () => void
 }
 
 const ProductGrid = ({
@@ -36,12 +37,20 @@ const ProductGrid = ({
   isShowAddCart = true,
   isShowTym = false,
   handleClickTym,
+  onClose,
   unrated = false
 }: IProductGridProps) => {
   const [colorData, setColorData] = useState<IVariantColor>(product.variantColors?.[0] ?? Object)
   const [variantByColor, setVariantByColor] = useState<IVariantProductColor[]>([])
   const { isAuthenticated } = useSelector((state: RootState) => state.auth)
   const dispatch = useDispatch<AppDispatch>()
+  const handleClick = () => {
+    console.log('onClose')
+    if (onClose) {
+      onClose()
+    }
+  }
+
   const handleGetColor = (value: string) => {
     const data = product!.variantColors.find((color) => color.colorId === Number(value))
     if (data) {
@@ -90,7 +99,7 @@ const ProductGrid = ({
       {Object.keys(product).length > 0 && variantByColor.length > 0 && Object.keys(colorData).length > 0 && (
         <div className={`${className} space-y-1`}>
           <div className='relative group transition-all duration-500 ease-linear overflow-hidden max-h-80'>
-            <Link to={`/products/detail/${product.slug}`}>
+            <Link to={`/products/detail/${product.slug}`} onClick={handleClick}>
               <img
                 src={colorData.thumbnail}
                 alt={product.name}
@@ -118,7 +127,7 @@ const ProductGrid = ({
                   ) : (
                     ''
                   )}
-                </div>  
+                </div>
               </div>
             </Link>
             {isShowAddCart && (
