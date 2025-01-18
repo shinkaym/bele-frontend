@@ -38,25 +38,25 @@ const OrderHistoryPage: React.FC = () => {
   }
 
   const handleCancelOrder = async (orderId: number) => {
-    try {
-      Swal.fire({
-        title: 'Bạn có chắc chắn?',
-        text: 'Hành động này không thể hoàn tác!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Xác nhận',
-        cancelButtonText: 'Hủy',
-        reverseButtons: true
-      }).then(async (result) => {
-        if (result.isConfirmed) {
+    Swal.fire({
+      title: 'Bạn có chắc chắn?',
+      text: 'Hành động này không thể hoàn tác!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Xác nhận',
+      cancelButtonText: 'Hủy',
+      reverseButtons: true
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
           await orderApi.cancel(orderId)
           UToast(EToastOption.SUCCESS, 'Đã huỷ đơn hàng thành công')
           fetchOrders()
+        } catch {
+          UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra')
         }
-      })
-    } catch {
-      UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra')
-    }
+      }
+    })
   }
 
   if (loading) {

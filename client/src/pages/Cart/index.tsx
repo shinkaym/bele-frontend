@@ -154,37 +154,41 @@ const Cart: React.FC = () => {
   }
 
   const onSubmit = async (data: FormData) => {
-    try {
-      if (cart.cartItems.length === 0) {
-        UToast(EToastOption.ERROR, 'Chưa có sản phẩm trong giỏ hàng')
-      } else {
-        Swal.fire({
-          title: 'Xác nhận đặt hàng',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Xác nhận',
-          cancelButtonText: 'Hủy',
-          reverseButtons: true
-        }).then(async (result) => {
-          if (result.isConfirmed) {
+    if (cart.cartItems.length === 0) {
+      UToast(EToastOption.ERROR, 'Chưa có sản phẩm trong giỏ hàng')
+    } else {
+      Swal.fire({
+        title: 'Xác nhận đặt hàng',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Xác nhận',
+        cancelButtonText: 'Hủy',
+        reverseButtons: true
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
             const res = await cartApi.checkout(paymentMethod, {
               fullName: data.fullName,
               phoneNumber: data.phoneNumber,
               address: useCustomAddress || addresses.length < 1 ? (data.address ?? '') : (selectedAddressName ?? ''),
               note: note || 'Không có'
             })
+
             if (res.status === 200) {
-              if (res.message === 'Redirect') window.location.href = res.data
-              else {
+              if (res.message === 'Redirect') {
+                window.location.href = res.data
+              } else {
                 UToast(EToastOption.SUCCESS, 'Thanh toán đơn hàng thành công')
                 dispatch(removeFromCart())
               }
+            } else {
+              UToast(EToastOption.ERROR, 'Có lỗi xảy ra khi thanh toán đơn hàng')
             }
+          } catch {
+            UToast(EToastOption.ERROR, 'Đơn hàng có sản phẩm không đủ hàng')
           }
-        })
-      }
-    } catch {
-      UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra')
+        }
+      })
     }
   }
 
