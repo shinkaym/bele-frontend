@@ -230,7 +230,7 @@ export interface ICustomer {
   fullName: string
   phoneNumber: string
   email: string
-  sex: 'Nam' | 'Nữ'
+  sex: 'Male' | 'Female'
   address?: string
   birthday: string
   totalSpending?: number
