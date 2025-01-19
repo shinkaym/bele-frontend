@@ -44,17 +44,11 @@ const productApi = {
   }): Promise<IApiResponse<{ products: IProduct[]; pagination: IPagination }>> {
     return axiosPrivate.get(productEndpoints.wishlist, { params })
   },
-  async rated(params: {
-    page: number
-    limit: number
-  }): Promise<IApiResponse<{ items: IProductReview[]; pagination: IPagination }>> {
-    return axiosPrivate.get(productEndpoints.rated, { params })
+  async rated(): Promise<IApiResponse<{ items: IProductReview[]; pagination: IPagination }>> {
+    return axiosPrivate.get(productEndpoints.rated)
   },
-  async unrated(params: {
-    page: number
-    limit: number
-  }): Promise<IApiResponse<{ items: IProduct[]; pagination: IPagination }>> {
-    return axiosPrivate.get(productEndpoints.unrated, { params })
+  async unrated(): Promise<IApiResponse<{ items: IProduct[]; pagination: IPagination }>> {
+    return axiosPrivate.get(productEndpoints.unrated)
   },
   async removeFromWishlist(productId: number): Promise<IApiResponse<void>> {
     return axiosPrivate.patch(productEndpoints.removeFromWishlist, { params: { productId, action: 'Remove' } })

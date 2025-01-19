@@ -4,33 +4,25 @@ import Pagination from '@/components/common/Pagination'
 import ProductGrid from '@/components/common/ProductGrid'
 import { mockData, PAGINATION_CONFIG, test } from '@/constants'
 import { EToastOption } from '@/models/enum'
-import { IApiResponse, IPagination, IProduct, IProductReview } from '@/models/interfaces'
+import { IApiResponse, IPagination, IProduct, IProduct1, IProductReview } from '@/models/interfaces'
 import { UToast } from '@/utils/swal'
 import ProductReview from '@/components/common/ProductReview'
 import productApi from '@/apis/modules/product.api'
 
 const RateProduct = () => {
-  const [unratedProducts, setUnratedProducts] = useState<IProduct[]>([])
+  const [unratedProducts, setUnratedProducts] = useState<IProduct1[]>([])
   const [ratedProducts, setRatedProducts] = useState<IProductReview[]>([])
-  const [pagination, setPagination] = useState<IPagination>({
-    currentPage: PAGINATION_CONFIG.DEFAULT_PAGE,
-    totalPage: 0
-  })
   const [showRated, setShowRated] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const fetchUnratedProducts = async (page: number, limit: number) => {
+  const fetchUnratedProducts = async () => {
     setLoading(true)
     try {
       // const res: IApiResponse<{ products: IProduct[]; pagination: IPagination }> = test
-      const res: IApiResponse<{ items: IProduct[]; pagination: IPagination }> = await productApi.unrated({
-        page,
-        limit
-      })
+      const res: IApiResponse<{ items: IProduct[] }> = await productApi.unrated()
       if (res.data && res.status === 200) {
         // setUnratedProducts(res.data.products)
         setUnratedProducts(res.data.items)
-        setPagination(res.data.pagination)
       }
     } catch {
       UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra')
@@ -40,17 +32,14 @@ const RateProduct = () => {
     }
   }
 
-  const fetchRatedProducts = async (page: number, limit: number) => {
+  const fetchRatedProducts = async () => {
     setLoading(true)
     try {
       // const res: IApiResponse<{ items: IProductReview[]; pagination: IPagination }> = mockData
-      const res: IApiResponse<{ items: IProductReview[]; pagination: IPagination }> = await productApi.rated({
-        page,
-        limit
-      })
+      const res: IApiResponse<{ items: IProductReview[] }> = await productApi.rated()
+      console.log('🚀 ~ fetchRatedProducts ~ res:', res)
       if (res.data && res.status === 200) {
         setRatedProducts(res.data.items)
-        setPagination(res.data.pagination)
       }
     } catch {
       UToast(EToastOption.ERROR, 'Đã có lỗi xảy ra')
@@ -61,27 +50,17 @@ const RateProduct = () => {
   }
 
   const handleTabChange = (isRated: boolean) => {
-    setPagination((prev) => ({
-      ...prev,
-      currentPage: PAGINATION_CONFIG.DEFAULT_PAGE
-    }))
     setShowRated(isRated)
-  }
-
-  const handlePageChange = (page: number) => {
-    setPagination((prev) => ({
-      ...prev,
-      currentPage: page
-    }))
   }
 
   useEffect(() => {
     if (showRated) {
-      fetchRatedProducts(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_RATED_LIMIT)
+      console.log('🚀 ~ useEffect ~ showRated:', showRated)
+      fetchRatedProducts()
     } else {
-      fetchUnratedProducts(pagination.currentPage, PAGINATION_CONFIG.DEFAULT_UNRATED_LIMIT)
+      fetchUnratedProducts()
     }
-  }, [pagination.currentPage, showRated])
+  }, [showRated])
 
   return (
     <div>
@@ -104,17 +83,18 @@ const RateProduct = () => {
             ))}
           </div>
         ) : (
-          unratedProducts.map((p) => <ProductGrid key={p.id} product={p} unrated />)
+          unratedProducts.map((p) => (
+            <ProductGrid
+              key={p.product.id}
+              product={{
+                ...p.product,
+                orderId: p.orderId
+              }}
+              unrated
+            />
+          ))
         )}
       </div>
-
-      {((ratedProducts.length > 0 && showRated) || (unratedProducts.length > 0 && !showRated)) && (
-        <Pagination
-          currentPage={pagination.currentPage}
-          totalPage={pagination.totalPage}
-          onPageChange={handlePageChange}
-        />
-      )}
     </div>
   )
 }

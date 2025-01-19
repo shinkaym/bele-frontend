@@ -4,6 +4,11 @@ export interface IApiResponse<T> {
   message: string
   data?: T
 }
+export interface IApiResponse1<T> {
+  status: number
+  message: string
+  items?: T
+}
 export interface IApiResponseWithoutData {
   status: number
   message: string
@@ -109,6 +114,29 @@ export interface IProduct {
   createdAt: string // Thời gian tạo sản phẩm
   variantColors: IVariantColor[]
   attributeTypes: IAttributeType[]
+}
+export interface IProduct1 {
+  orderId: number //
+  product: {
+    id: number // ID của sản phẩm
+    name: string // Tên sản phẩm
+    orderId?: number
+    category: ICategory
+    thumbnail: string
+    description: string
+    discount: IDiscount | null
+    rateAVG: number[]
+    tags: ITag[]
+    basePrice: number // Giá sản phẩm
+    slug: string // URL slug của sản phẩm
+    view: number // Số lượt xem sản phẩm
+    like: number // Số lượt thích sản phẩm
+    status: number // Trạng thái sản phẩm (1: hoạt động, 0: không hoạt động)
+    updatedAt: string // Trạng thái xóa (0: chưa xóa, 1: đã xóa)
+    createdAt: string // Thời gian tạo sản phẩm
+    variantColors: IVariantColor[]
+    attributeTypes: IAttributeType[]
+  }
 }
 
 export interface IProductReview {

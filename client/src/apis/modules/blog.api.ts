@@ -5,7 +5,7 @@ const blogApi = {
   // Lấy danh sách blogs với phân trang
   async getAll(): Promise<IApiResponse<IBlogListResponse>> {
     try {
-      const response = await axiosPrivate.get<IApiResponse<IBlogListResponse>>('/blog')
+      const response = await axiosPrivate.get<IApiResponse<IBlogListResponse>>('/blog', {params: { limit: 2 }})
       return response.data
     } catch (error) {
       console.error('Error in getAll:', error)
